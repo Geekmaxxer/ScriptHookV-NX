@@ -20,7 +20,7 @@
       "text": "ScriptHookV-NX Showcase Test 1\nstate=mph\n"
     }
   },
-  "user_confirmed": "Everything runs beautifully after game restart.",
+  "console_validation": "Startup and saved-mode restoration passed after a full game restart.",
   "confirmed_report_scope": [
     "Auto Drive HUD and plugin-manager both loaded and running after restart.",
     "Pit Stop and Stunt Journal retain Manual and are not running.",

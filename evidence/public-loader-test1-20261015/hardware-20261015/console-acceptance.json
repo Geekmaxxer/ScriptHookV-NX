@@ -25,5 +25,5 @@
       }
     }
   },
-  "scope": "User console acceptance: one external plugin loaded, zero loader errors, all seven sample checks passed. Does not validate every native, simultaneous arbitrary mods, future revisions or general performance."
+  "scope": "Console acceptance: one external plugin loaded, zero loader errors, all seven sample checks passed. Does not validate every native, simultaneous arbitrary mods, future revisions or general performance."
 }

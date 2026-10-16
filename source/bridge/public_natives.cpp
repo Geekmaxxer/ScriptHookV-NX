@@ -5,14 +5,14 @@
 namespace ScriptHook {
 namespace {
 struct Context { uint64_t* result; uint32_t count,pad; uint64_t* args; };
-struct Record { uint32_t magic,version,generation,bytes,checksum; uint32_t data[256]; };
+struct Record { uint32_t magic,version,generation,bytes,checksum; uint32_t data[2048]; };
 uint32_t crc(const void* data,size_t n,uint32_t c=~0u) {
     auto* p=static_cast<const uint8_t*>(data);
     while(n--) {c^=*p++;for(unsigned i=0;i<8;++i)c=(c>>1)^(0xedb88320u&uint32_t(0-int32_t(c&1)));}
     return c;
 }
 uint32_t checksum(const Record& r) {return ~crc(r.data,r.bytes,crc(&r,16));}
-bool valid(const Record& r,size_t got) {return r.magic==0x584e4853&&r.version==1&&r.generation&&r.bytes&&r.bytes<=1024&&!(r.bytes%4)&&got==20+r.bytes&&r.checksum==checksum(r);}
+bool valid(const Record& r,size_t got) {return r.magic==0x584e4853&&r.version==1&&r.generation&&r.bytes&&r.bytes<=8192&&!(r.bytes%4)&&got==20+r.bytes&&r.checksum==checksum(r);}
 void names(char (&a)[40],char (&b)[40],uint32_t id) {
     constexpr char prefix[]="settings/nsc-";size_t n=0;for(char c:prefix){if(!c)break;a[n]=b[n]=c;++n;}
     for(int i=7;i>=0;--i)a[n]=b[n]="0123456789abcdef"[(id>>(i*4))&15],++n;
@@ -30,7 +30,7 @@ bool args(void* raw,uint64_t*& words,uint32_t& count,uint32_t& id) {
         const auto tls=sh_get_thread_pointer();
         if(!Memory::Read(tls+binding::script_tls_active,active)||active!=1||!Memory::Read(tls+binding::script_tls_thread,thread)||!Memory::Read(thread+0xc,id))return false;
     }
-    return id&&count&&count<=256;
+    return id&&count&&count<=2048;
 }
 void save(void* raw) {
     uint64_t* words=nullptr;uint32_t count=0,id=0;if(!args(raw,words,count,id)||!Memory::IsReadable(reinterpret_cast<uintptr_t>(words),size_t(count)*8))return;

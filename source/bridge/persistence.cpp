@@ -5,7 +5,7 @@
 
 namespace ScriptHook {
 namespace {
-constexpr size_t max_words = 256;
+constexpr size_t max_words = 2048;
 constexpr uint32_t record_magic = 0x584e4853; // SHNX
 struct ScriptContext { void* result; uint32_t count, padding; uint64_t* args; };
 static_assert(offsetof(ScriptContext, count) == 8 && offsetof(ScriptContext, args) == 16);
@@ -139,9 +139,10 @@ uint32_t crc(const uint8_t* bytes, size_t count, uint32_t value = ~0u) {
 uint32_t checksum(const Record& record) {
     return ~crc(record.data, record.bytes, crc(reinterpret_cast<const uint8_t*>(&record), 16));
 }
-const char* slot_name(bool test, unsigned slot) {
-    return test ? (slot ? "storage-test-b.bin" : "storage-test-a.bin") :
-                  (slot ? "megatard-settings-b.bin" : "megatard-settings-a.bin");
+const char* slot_name(uint32_t storage, unsigned slot) {
+    if (storage == 1) return slot ? "storage-test-b.bin" : "storage-test-a.bin";
+    if (storage == 2) return slot ? "megatard-vehicles-b.bin" : "megatard-vehicles-a.bin";
+    return slot ? "megatard-settings-b.bin" : "megatard-settings-a.bin";
 }
 bool load_record(const char* name, Record& record) {
     size_t got = 0;
@@ -153,7 +154,7 @@ bool load_record(const char* name, Record& record) {
 }
 bool newest(const Record& a, const Record& b) { return int32_t(b.generation - a.generation) > 0; }
 
-bool arguments(void* context, uint64_t*& buffer, size_t& words, bool& test) {
+bool arguments(void* context, uint64_t*& buffer, size_t& words, uint32_t& storage) {
     const uintptr_t address = reinterpret_cast<uintptr_t>(context);
     if (!Memory::IsReadable(address, sizeof(ScriptContext))) return false;
     auto* call = static_cast<ScriptContext*>(context);
@@ -165,9 +166,8 @@ bool arguments(void* context, uint64_t*& buffer, size_t& words, bool& test) {
     // Stock PUSH_CONST instructions use STR W and leave the upper half stale;
     // reading that padding as part of a size/flag rejects valid native calls.
     words = uint32_t(call->args[1]);
-    const uint32_t storage = call->count >= 3 ? uint32_t(call->args[2]) : 0;
-    test = storage == 1;
-    const bool valid = words && words <= max_words && storage <= 1;
+    storage = call->count >= 3 ? uint32_t(call->args[2]) : 0;
+    const bool valid = words && words <= max_words && storage <= 2;
     // RAGE reuses the first argument slot for the return value. Snapshot all
     // arguments before initializing that slot, or the buffer pointer is lost.
     *static_cast<uint64_t*>(call->result) = 0;
@@ -182,12 +182,12 @@ bool Persistence::Initialize() {
 }
 
 bool Persistence::Save(const char* relativePath, const void* data, size_t size) {
-    if (!size || size > 4096 || !Memory::IsReadable(reinterpret_cast<uintptr_t>(data), size)) return false;
+    if (!size || size > 8192 || !Memory::IsReadable(reinterpret_cast<uintptr_t>(data), size)) return false;
     Session session; return session.mounted && write_file(relativePath, data, size);
 }
 bool Persistence::Read(const char* relativePath, void* buffer, size_t maxBytes, size_t* bytesRead) {
     if (bytesRead) *bytesRead = 0;
-    if (!maxBytes || maxBytes > 4096 || !Memory::IsWritable(reinterpret_cast<uintptr_t>(buffer), maxBytes)) return false;
+    if (!maxBytes || maxBytes > 8192 || !Memory::IsWritable(reinterpret_cast<uintptr_t>(buffer), maxBytes)) return false;
     Session session; size_t got = 0;
     const bool ok = session.mounted && read_file(relativePath, buffer, maxBytes, got);
     if (bytesRead && ok) *bytesRead = got;
@@ -195,16 +195,16 @@ bool Persistence::Read(const char* relativePath, void* buffer, size_t maxBytes, 
 }
 
 void Persistence::Native_SaveMenuSettings(void* ctx) {
-    uint64_t* source = nullptr; size_t words = 0; bool test = false;
-    if (!arguments(ctx, source, words, test) || !Memory::IsReadable(reinterpret_cast<uintptr_t>(source), words * 8)) return;
+    uint64_t* source = nullptr; size_t words = 0; uint32_t storage = 0;
+    if (!arguments(ctx, source, words, storage) || !Memory::IsReadable(reinterpret_cast<uintptr_t>(source), words * 8)) return;
     ++save_calls;
-    if (test) {
+    if (storage == 1) {
         caller_selftest_ran = true; (void)nativeCallerSelfTest(&caller_selftest);
         (void)scriptRuntimeSelfTest();
     }
     Session session; if (!session.mounted) return;
     Record a{}, b{}, next{};
-    const bool valid_a = load_record(slot_name(test, 0), a), valid_b = load_record(slot_name(test, 1), b);
+    const bool valid_a = load_record(slot_name(storage, 0), a), valid_b = load_record(slot_name(storage, 1), b);
     const Record* chosen = valid_a && valid_b ? (newest(a, b) ? &b : &a) : valid_a ? &a : valid_b ? &b : nullptr;
     const unsigned slot = chosen == &a ? 1u : 0u;
     next.magic = record_magic; next.version = 1; next.generation = chosen ? chosen->generation + 1 : 1;
@@ -215,18 +215,18 @@ void Persistence::Native_SaveMenuSettings(void* ctx) {
         for (unsigned j = 0; j < 4; ++j) next.data[i * 4 + j] = uint8_t(word >> (8 * j));
     }
     next.crc = checksum(next);
-    const bool ok = write_file(slot_name(test, slot), &next, 20 + next.bytes);
+    const bool ok = write_file(slot_name(storage, slot), &next, 20 + next.bytes);
     if (ok) ++save_successes;
     result(ctx, ok ? 1 : 0);
 }
 
 void Persistence::Native_LoadMenuSettings(void* ctx) {
-    uint64_t* destination = nullptr; size_t words = 0; bool test = false;
-    if (!arguments(ctx, destination, words, test) || !Memory::IsWritable(reinterpret_cast<uintptr_t>(destination), words * 8)) return;
+    uint64_t* destination = nullptr; size_t words = 0; uint32_t storage = 0;
+    if (!arguments(ctx, destination, words, storage) || !Memory::IsWritable(reinterpret_cast<uintptr_t>(destination), words * 8)) return;
     ++load_calls;
     Session session; if (!session.mounted) return;
     Record a{}, b{};
-    const bool valid_a = load_record(slot_name(test, 0), a), valid_b = load_record(slot_name(test, 1), b);
+    const bool valid_a = load_record(slot_name(storage, 0), a), valid_b = load_record(slot_name(storage, 1), b);
     const Record* chosen = valid_a && valid_b ? (newest(a, b) ? &b : &a) : valid_a ? &a : valid_b ? &b : nullptr;
     if (!chosen || chosen->bytes > words * 4) return;
     const size_t count = chosen->bytes / 4;

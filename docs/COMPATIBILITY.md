@@ -11,9 +11,9 @@ verification, not speculative offset changes.
 | Familiar syntax | ScriptMain, WAIT, typed native namespaces and raw invocation |
 | NSC integration | Generic journaled INT persistence and declared custom NRO natives |
 | Discovery | Up to 16 catalog entries; Auto, Manual and Disabled startup policies |
-| Resident modules | Four, including completed plugins/providers/standalone manager |
-| Memory limits | Image and BSS each at most 2 MiB; combined loader accounting budget 8 MiB |
-| Scheduling | Eight total 64 KiB cooperative stacks, one run entry per external plugin |
+| Resident modules | Eight by default; startup override up to 16 in the standard build |
+| Memory limits | Image and BSS each at most 2 MiB; combined loader accounting defaults to 8 MiB (configurable) |
+| Scheduling | Sixteen 64 KiB stacks by default; startup override up to 32 |
 | CPU budget | Stops starting additional scripts after 2 ms; cannot preempt a runaway plugin |
 | Process control | Kill stops a cooperative script; Load Now can restart its run entry |
 | Replacement | Close GTA to replace mapped code or release a resident slot |
@@ -27,6 +27,14 @@ Windows .asi/.dll binaries, Win32/DirectX, arbitrary hosted C++ libraries,
 automatic PC hash translation, ScriptHookVDotNet and direct NSC-from-SD loading
 are not implemented. Port compatible source and audit native/data contracts.
 Unloading code with live cached native pointers remains intentionally unavailable.
+
+See [runtime limits](RUNTIME-LIMITS.md) for player configuration, NRO project
+settings and runtime build defaults. All ABIs remain unchanged.
+
+Capacity Test 1 keeps the plugin budget at 8 MiB and all ABIs unchanged. Published
+four-resident runtimes retain their previous limits; eight-resident console
+acceptance is pending. More plugins may reach the memory budget before eight
+images load, depending on their image and BSS sizes.
 
 Console evidence covers the caller/runtime samples, external loading, simultaneous
 showcase mods, manager use and restored startup modes after restart. New SDK

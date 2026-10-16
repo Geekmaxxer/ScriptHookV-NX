@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_TOOLS = ('build_plugin.py', 'native_bindings.py', 'create_mod.py', 'build_mod.py', 'doctor.py',
     'native_query.py', 'inspect_mod.py', 'report_summary.py', 'check_examples.py', 'build.py',
     'generate_bindings.py', 'nso.py', 'compare_core.py', 'test_portable.py', 'package_runtime.py',
-    'export_source.py', 'generate_natives.py', 'make_native_index.py')
+    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py')
 ACCEPTANCES = (
     'native-caller-research/hardware-20261015/console-acceptance.json',
     'public-loader-test1-20261015/hardware-20261015/console-acceptance.json',
@@ -38,7 +38,7 @@ def export(output):
     selected = [ROOT/name for name in ('README.md', 'LICENSE', 'NOTICE', '.gitignore')]
     extensions = {
         'source': {'.cpp', '.hpp', '.h', '.s', '.ld'}, 'include': {'.h', '.hpp'},
-        'sdk': {'.cpp', '.s', '.ld', '.sch', '.json'}, 'targets': {'.hpp', '.json', '.md'},
+        'sdk': {'.cpp', '.s', '.ld', '.sch', '.json', '.example'}, 'targets': {'.hpp', '.json', '.md'},
         'examples': {'.cpp', '.sc'}, 'mods': {'.cpp', '.hpp', '.h', '.md'}, 'docs': {'.md'},
     }
     for folder, allowed in extensions.items():

@@ -1,0 +1,8 @@
+# Optional: copy as switch/gtav-scripthook/runtime.ini on your SD card.
+# Restart GTA after editing. Remove a key to use the runtime build's default.
+# Standard defaults: 8 resident NROs, 16 script slots, 8 MiB plugin budget.
+# Standard ranges: resident_limit 1-16; script_slots 1-32; plugin_memory_mib 1-64.
+# Uncomment only the settings you want to override:
+# resident_limit=8
+# script_slots=16
+# plugin_memory_mib=8

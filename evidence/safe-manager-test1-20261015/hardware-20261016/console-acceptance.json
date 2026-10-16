@@ -58,7 +58,7 @@
   "observed_on_console": [
     "Three gameplay NROs and public sample loaded together: four resident modules, zero per-module loading errors.",
     "Public sample reported seven passed and zero failed.",
-    "User reports all three gameplay overlays visible and the MEGATARD plugin page working.",
+    "All three gameplay overlays displayed correctly and the MEGATARD plugin page operated successfully.",
     "Pit Stop reported an actual vehicle repair and wash action."
   ],
   "standalone_manager": {
@@ -80,7 +80,7 @@
     "Startup mode changes or manual loading after a fresh launch.",
     "Full bug testing of gameplay mods, jump scoring and restart persistence.",
     "Measured console FPS, CPU cost, or peak physical memory.",
-    "Exact installed update2.rpf hash; runtime menu behavior is user reported and the installed .snb matches the package."
+    "Exact installed update2.rpf hash and running menu binary identity; the installed .snb matches the package."
   ],
   "sd_modified": false,
   "prior_build_and_package_manifests_unchanged": true

@@ -8,6 +8,7 @@ import subprocess
 
 from build_plugin import build
 from native_bindings import generate
+from runtime_limits import render, validate
 
 def inputs(project):
     data = json.loads(project.read_text(encoding='utf-8'))
@@ -29,6 +30,8 @@ def inputs(project):
     sources, includes = paths('sources'), paths('includes')
     if not sources or any(not p.is_file() for p in sources):
         raise ValueError('Provide at least one source file')
+    if 'runtime_limits' in data:
+        validate(data['runtime_limits'])
     return data, sources, includes
 
 def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, reference=None):
@@ -38,6 +41,9 @@ def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, refe
     if data['kind'] == 'nro':
         build(sources, output, devkit, includes)
         shutil.copy2(project, output/'project.json')
+        if 'runtime_limits' in data:
+            # Optional suggestion beside the NRO, never auto-installed globally.
+            (output/'runtime.ini').write_text(render(data['runtime_limits']), encoding='utf-8')
         return output/'plugin.nro'
     if len(sources) != 1 or sources[0].suffix.lower() != '.sc':
         raise ValueError('Each NSC project builds one named .sc entry')
@@ -75,6 +81,8 @@ def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, refe
     proof['switch_runtime_verified'] = False
     (output/'project-build.json').write_text(json.dumps(proof, indent=2)+'\n')
     shutil.copy2(project, output/'project.json')
+    if 'runtime_limits' in data:
+        (output/'runtime.ini').write_text(render(data['runtime_limits']), encoding='utf-8')
     return script
 
 def main():

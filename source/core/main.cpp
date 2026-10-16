@@ -31,7 +31,7 @@ extern "C" void* memmove(void* p, const void* q, size_t n) {
 
 extern "C" void scripthook_module_init() {
     ScriptHook::Memory::Log("\n========================================\n");
-    ScriptHook::Memory::Log("   ScriptHookV-NX safe plugin manager test 2\n");
+    ScriptHook::Memory::Log("   ScriptHookV-NX configurable limits test 1\n");
     ScriptHook::Memory::Log("========================================\n");
 
     if (!ScriptHook::Memory::Initialize()) {

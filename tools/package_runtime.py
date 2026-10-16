@@ -42,7 +42,8 @@ Target title: {title}. Game build: {build}.
 This download contains only the runtime, this guide and required license/credit.
 No menu, NRO mods, game archive or saved settings are included. An NSC menu is
 optional; Auto plugins work independently. The standalone manager source is in
-the SDK/repository. Four NROs can remain resident; restart GTA to release slots.
+the SDK/repository. Check resident_limit in loader-report.txt for this runtime's
+module capacity; restart GTA to release resident slots.
 Restore your backed-up module to roll back. Disable dependent scripts before
 removing the runtime. See the repository's install guide for details.
 '''.format(title=target['title_id'], build=target['build_id'], status=

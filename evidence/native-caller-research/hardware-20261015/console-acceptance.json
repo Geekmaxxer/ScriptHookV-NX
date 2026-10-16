@@ -1,7 +1,7 @@
 {
   "date": "2026-10-15",
   "test": "Native Caller Candidate 1",
-  "evidence_source": "User-provided console report, verified against the live SD report and installed module",
+  "evidence_source": "Console report verified against the live SD report and installed module",
   "report_source": "D:/switch/gtav-megatard/bridge-report.txt",
   "report_sha256": "d61b9ce633f75746b74ec86b114e4b4206f2f136c1eafeaf4d11723168931b40",
   "installed_module_sha256": "2788218eff0ae38669e4f157b12b25c55ea73ec303cc7b76b8c4c649d1aa8d50",

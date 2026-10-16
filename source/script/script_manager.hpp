@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include "runtime_defaults.h"
 
 namespace ScriptHook {
 struct alignas(16) FiberContext {
@@ -14,7 +15,11 @@ extern "C" void sh_fiber_switch(FiberContext* from, const FiberContext* to);
 
 class ScriptManager {
 public:
-    static constexpr size_t MaxScripts = 8, StackBytes = 64 * 1024;
+    static constexpr size_t MaxScripts = SHVNX_MAX_SCRIPT_SLOTS, StackBytes = 64 * 1024;
+    static constexpr size_t BaseScripts = SHVNX_DEFAULT_SCRIPT_SLOTS;
+    static size_t ConfigureSlots(size_t requested, uint32_t& error);
+    static size_t SlotLimit();
+    static size_t StackAllocationBytes();
     static void Initialize();
     static bool Register(ScriptFunction function);
     // Internal loader reservation. Tokens are one-based slots; zero fails.

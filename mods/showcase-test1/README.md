@@ -1,9 +1,9 @@
 # Showcase mods - Test 1
 
 Three small ABI 1 NRO mods for testing together with the accepted public sample.
-The user confirmed all three appear and work together on Switch, then confirmed
-Manager Test 2 after restart. Their sources and local integration tests are kept
-here. Full gameplay bug testing and measured console FPS/peak memory remain pending.
+Console testing passed for all three overlays running simultaneously and for
+Manager Test 2 after a full game restart. Sources and local integration tests
+are included. Full gameplay testing and console FPS/peak-memory measurements remain pending.
 
 | Mod | Shortcut: hold L + R, then press | Behavior |
 | --- | --- | --- |

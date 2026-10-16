@@ -3,6 +3,12 @@
 Native C++ plugins and custom SanScript natives for GTA V on Nintendo Switch.
 Target: title `0100b00b51230000`, build `6e3e9b3af5746e74b615bd981080c9271bc226620`.
 
+The current source defaults to **eight resident NROs, sixteen cooperative script
+slots and an 8 MiB plugin budget**. Builders and mod authors can prepare custom
+limits; players can override each setting in an optional SD configuration file.
+See [runtime limits](docs/RUNTIME-LIMITS.md). Switch acceptance of the new
+configurable-limits test is pending. Previously published runtimes are unchanged.
+
 Created by MEGATARD (@Geekmaxver; GitHub: Geekmaxxer).
 Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
 Use, editing, redistribution and sale require attribution; see [LICENSE](LICENSE)
@@ -22,7 +28,7 @@ the optional standalone manager, or choose filenames yourself. No particular
 NSC menu is required. Keep saved settings when updating.
 
 [Installation and troubleshooting](docs/INSTALL.md) covers startup modes, binding
-files, process controls and the four-resident-module limit. Windows ASI/DLL mods
+files, process controls and resident-module limits. Windows ASI/DLL mods
 need a source port and ARM64 rebuild.
 
 ## For developers
@@ -81,7 +87,8 @@ OS and RO services and cannot establish console FPS, peak memory or arbitrary
 third-party plugin compatibility. See [remaining work](docs/COMPATIBILITY.md).
 
 Plugins cooperate: they must yield. A 2 ms scheduler budget cannot interrupt a
-runaway loop. Four NROs remain mapped until GTA exits, even after Kill Process or
+runaway loop. Up to eight NROs remain mapped until GTA exits in Capacity Test 1,
+even after Kill Process or
 normal completion; process cancellation retains native-handler pointers. Direct
 NSC loading from SD, hot code replacement and Windows platform APIs are outside
 the current API. See the linked guides for the complete limits and workflows.

@@ -17,6 +17,9 @@ Alternatively set `DEVKITPRO` to the devkitPro root. Tools with and without
 when needed. Windows builds are tested; POSIX executable-name discovery is
 covered locally, but this release does not claim an actual Linux/macOS build test.
 Output paths may contain spaces. A previous output directory is never overwritten.
+Use `--resident-limit`, `--script-slots` and `--plugin-memory-mib` to select
+compiled defaults, or edit `include/runtime_defaults.h`. See
+[runtime limits](RUNTIME-LIMITS.md) for startup overrides and bounded ceilings.
 
 ## Target configuration
 

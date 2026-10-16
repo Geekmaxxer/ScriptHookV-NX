@@ -19,7 +19,9 @@ def summarize(path):
         try: error = int(plugin.get('error', '0'), 0)
         except ValueError: error = -1
         if error == 0x10015:
-            report['notes'].append(plugin['filename']+': four resident modules already mapped; disable one and restart GTA')
+            try: limit = int(report['global_values'].get('resident_limit', '0'), 0)
+            except ValueError: limit = 0
+            report['notes'].append(plugin['filename']+': '+(str(limit)+' resident modules' if limit else 'resident module limit')+' already reached; disable one and restart GTA')
         elif error == 0x10017:
             report['notes'].append(plugin['filename']+': keep exactly one Auto/Manual/Disabled filename for this plugin')
         elif error:

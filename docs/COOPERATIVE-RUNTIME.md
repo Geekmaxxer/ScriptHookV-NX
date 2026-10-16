@@ -36,12 +36,18 @@ host ticks and the frame count changes. New registrations during a dispatch wait
 until the next frame. A returned function releases its slot; re-registering it
 starts with a fresh stack. Duplicate registration of an active function is harmless.
 
-The runtime has eight fixed 64 KiB stacks (512 KiB total), no scheduler heap
-allocations or sleeping OS threads, and no scripts registered at module startup.
-Each frame permits at most eight resumes. A two-millisecond elapsed-time check
+The default pool has sixteen fixed 64 KiB stacks (1 MiB). Optional startup
+configuration can select up to 32 slots in the standard build; only additional
+stacks allocate pages, once before plugins start. There are no sleeping OS
+threads or scripts registered at module startup. See [runtime limits](RUNTIME-LIMITS.md).
+Each frame permits at most one resume per configured slot. A two-millisecond elapsed-time check
 after each resume defers further work fairly; it cannot interrupt a script that
 never yields. Plugins must call `scriptWait` regularly. Stack canaries detect
 boundary damage at yields/dispatch; they are not guard pages or fault recovery.
+
+The earlier console-accepted runtime has eight stacks. The sixteen-stack build
+keeps ABI 1 and the same two-millisecond budget; its increased capacity requires
+separate Switch acceptance.
 
 The ARM64 switch preserves x19-x30, SP, d8-d15 and FPCR/FPSR with 16-byte stack
 alignment. It leaves x18 and the OS thread pointer untouched. The register and

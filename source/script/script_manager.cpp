@@ -4,6 +4,7 @@
 #include "../../include/natives.h"
 #include "bindings.hpp"
 #include "../plugins/plugin_loader.hpp"
+#include "../core/storage.hpp"
 
 namespace ScriptHook {
 namespace {
@@ -19,7 +20,13 @@ struct Entry {
     bool cancel;
 };
 Entry scripts[ScriptManager::MaxScripts];
-alignas(16) uint8_t stacks[ScriptManager::MaxScripts][ScriptManager::StackBytes];
+alignas(16) uint8_t stacks[ScriptManager::BaseScripts][ScriptManager::StackBytes];
+uintptr_t extra_stacks;
+size_t slot_limit = ScriptManager::BaseScripts;
+uint8_t* stack_memory(size_t slot) {
+    return slot < ScriptManager::BaseScripts ? stacks[slot] :
+        reinterpret_cast<uint8_t*>(extra_stacks) + (slot - ScriptManager::BaseScripts) * ScriptManager::StackBytes;
+}
 FiberContext scheduler;
 size_t current = none, next_slot;
 uintptr_t owner_tls, host_pointer;
@@ -73,8 +80,8 @@ struct GameContext {
     }
 };
 bool guards_ok(size_t slot) {
-    const auto* low = reinterpret_cast<const uint64_t*>(stacks[slot]);
-    const auto* high = reinterpret_cast<const uint64_t*>(stacks[slot] + ScriptManager::StackBytes - 16);
+    const auto* low = reinterpret_cast<const uint64_t*>(stack_memory(slot));
+    const auto* high = reinterpret_cast<const uint64_t*>(stack_memory(slot) + ScriptManager::StackBytes - 16);
     if (scripts[slot].context.sp < reinterpret_cast<uintptr_t>(low + 16) ||
         scripts[slot].context.sp > reinterpret_cast<uintptr_t>(high) || scripts[slot].context.sp % 16) return false;
     for (size_t i = 0; i < 16; ++i) if (low[i] != guard) return false;
@@ -144,6 +151,25 @@ void ScriptManager::Initialize() {
     test_pending = test_running = test_main_done = test_peer_done = test_reported = false;
     set_status(ScriptRuntime_Ok);
 }
+size_t ScriptManager::ConfigureSlots(size_t requested, uint32_t& error) {
+    error = 0;
+    Mutation lock;
+    if (!lock.held || dispatching || requested < 1 || requested > MaxScripts) { error = 0x10021; return slot_limit; }
+    // Preserve any script/reservation registered before the first VM tick.
+    for (size_t i = requested; i < MaxScripts; ++i)
+        if (scripts[i].state != Free) { error = 0x10022; return slot_limit; }
+    if (requested > BaseScripts && !extra_stacks) {
+        uintptr_t address = 0;
+        const size_t bytes = (requested - BaseScripts) * StackBytes;
+        error = sdk_call<uint32_t(*)(uintptr_t*,size_t)>(binding::allocate_pages)(&address, bytes);
+        if (error || !address || address % 4096) { if (!error) error = 0x10021; return slot_limit; }
+        extra_stacks = address;
+    }
+    slot_limit = requested;
+    return slot_limit;
+}
+size_t ScriptManager::SlotLimit() { return slot_limit; }
+size_t ScriptManager::StackAllocationBytes() { return (slot_limit > BaseScripts ? slot_limit : BaseScripts) * StackBytes; }
 bool ScriptManager::Register(ScriptFunction function) {
     Mutation lock; if (!lock.held) return false;
     if (!function || !Memory::IsExecutable(reinterpret_cast<uintptr_t>(function))) {
@@ -152,11 +178,11 @@ bool ScriptManager::Register(ScriptFunction function) {
     for (const auto& entry : scripts) if (entry.state != Free && entry.function == function) {
         set_status(ScriptRuntime_Ok); return true;
     }
-    for (size_t i = 0; i < MaxScripts; ++i) if (scripts[i].state == Free) {
+    for (size_t i = 0; i < slot_limit; ++i) if (scripts[i].state == Free) {
         auto& entry = scripts[i]; entry = {};
-        auto* low = reinterpret_cast<uint64_t*>(stacks[i]);
+        auto* low = reinterpret_cast<uint64_t*>(stack_memory(i));
         for (size_t j = 0; j < 16; ++j) low[j] = guard;
-        auto* high = reinterpret_cast<uint64_t*>(stacks[i] + StackBytes - 16);
+        auto* high = reinterpret_cast<uint64_t*>(stack_memory(i) + StackBytes - 16);
         high[0] = high[1] = guard;
         entry.context.sp = reinterpret_cast<uintptr_t>(high);
         entry.context.x19_x30[11] = reinterpret_cast<uintptr_t>(&ScriptManager::RunEntry);
@@ -169,7 +195,7 @@ bool ScriptManager::Register(ScriptFunction function) {
 }
 uint32_t ScriptManager::ReserveSlot() {
     Mutation lock; if (!lock.held) return 0;
-    for (size_t i = 0; i < MaxScripts; ++i) if (scripts[i].state == Free) {
+    for (size_t i = 0; i < slot_limit; ++i) if (scripts[i].state == Free) {
         scripts[i] = {}; scripts[i].state = Reserved;
         set_status(ScriptRuntime_Ok); return uint32_t(i + 1);
     }
@@ -177,14 +203,14 @@ uint32_t ScriptManager::ReserveSlot() {
 }
 bool ScriptManager::CommitReserved(uint32_t token, ScriptFunction function) {
     Mutation lock; if (!lock.held) return false;
-    if (!token || token > MaxScripts || scripts[token - 1].state != Reserved ||
+    if (!token || token > slot_limit || scripts[token - 1].state != Reserved ||
         !function || !Memory::IsExecutable(reinterpret_cast<uintptr_t>(function))) {
         set_status(ScriptRuntime_InvalidFunction); return false;
     }
     const auto i = size_t(token - 1); auto& entry = scripts[i]; entry = {};
-    auto* low = reinterpret_cast<uint64_t*>(stacks[i]);
+    auto* low = reinterpret_cast<uint64_t*>(stack_memory(i));
     for (size_t j = 0; j < 16; ++j) low[j] = guard;
-    auto* high = reinterpret_cast<uint64_t*>(stacks[i] + StackBytes - 16);
+    auto* high = reinterpret_cast<uint64_t*>(stack_memory(i) + StackBytes - 16);
     high[0] = high[1] = guard;
     entry.context.sp = reinterpret_cast<uintptr_t>(high);
     entry.context.x19_x30[11] = reinterpret_cast<uintptr_t>(&ScriptManager::RunEntry);
@@ -285,8 +311,8 @@ void ScriptManager::OnTick(void* host) {
     dispatching = true; ++serial; ++info.dispatches;
     const auto started = sh_get_tick();
     const auto first = next_slot;
-    for (size_t n = 0; n < MaxScripts; ++n) {
-        const auto i = (first + n) % MaxScripts; auto& entry = scripts[i];
+    for (size_t n = 0; n < slot_limit; ++n) {
+        const auto i = (first + n) % slot_limit; auto& entry = scripts[i];
         if ((entry.state != Ready && entry.state != Sleeping) || entry.earliest_dispatch > serial ||
             int64_t(sh_get_tick() - entry.wake_tick) < 0) continue;
         if (!guards_ok(i)) { ++info.stack_failures; set_status(ScriptRuntime_StackCorrupt); release(entry, true); continue; }
@@ -296,7 +322,7 @@ void ScriptManager::OnTick(void* host) {
         current = none;
         if (!guards_ok(i)) { ++info.stack_failures; entry.cancel = true; set_status(ScriptRuntime_StackCorrupt); }
         if (entry.state == Finished || entry.cancel) release(entry, entry.cancel);
-        next_slot = (i + 1) % MaxScripts;
+        next_slot = (i + 1) % slot_limit;
         if (sh_get_tick() - started >= 2 * ticks_per_ms) { ++info.budget_overruns; break; }
     }
     dispatching = false;

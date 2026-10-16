@@ -14,8 +14,65 @@ from generate_bindings import DEFAULT_PROFILE, profile_bindings
 from inspect_mod import inspect_bindings
 from native_query import search
 from nso import decode_nso, lz4_block, segments
+from report_summary import summarize
+from runtime_limits import definitions, build_defaults, render, validate, HEADER
 
 class PortableTests(unittest.TestCase):
+    def test_runtime_default_definitions(self):
+        values=definitions()
+        # Intentional edits to build defaults must not break the portable suite.
+        from runtime_limits import KEYS
+        validate({key:values[macros[0]] for key,macros in KEYS.items()},values)
+    def test_runtime_partial_config_generation(self):
+        text=render({'script_slots':24})
+        self.assertIn('script_slots=24\n',text)
+        self.assertNotIn('resident_limit=',text)
+        self.assertNotIn('plugin_memory_mib=',text)
+    def test_runtime_invalid_config_values(self):
+        values=definitions()
+        for settings in ({'resident_limit':values['SHVNX_MAX_RESIDENT_PLUGINS']+1},
+                         {'script_slots':values['SHVNX_MAX_SCRIPT_SLOTS']+1},
+                         {'plugin_memory_mib':values['SHVNX_MAX_PLUGIN_MEMORY_MIB']+1},
+                         {'script_slots':0},{'resident_limit':True},{'script_slots':'24'},
+                         {'plugin_memory_mib':1.5},{'typo':8},[]):
+            with self.subTest(settings=settings), self.assertRaises(ValueError): validate(settings)
+    def test_runtime_build_overrides_snapshot_only(self):
+        before=HEADER.read_bytes()
+        with tempfile.TemporaryDirectory() as name:
+            header=Path(name)/'runtime_defaults.h';shutil.copy2(HEADER,header)
+            values=build_defaults(header,{'resident_limit':12,'script_slots':24,'plugin_memory_mib':16})
+            self.assertEqual(values['SHVNX_DEFAULT_SCRIPT_SLOTS'],24)
+            self.assertEqual(values['SHVNX_MAX_SCRIPT_SLOTS'],32)
+            self.assertEqual(HEADER.read_bytes(),before)
+    def test_runtime_project_config_validation(self):
+        with tempfile.TemporaryDirectory() as name:
+            project=Path(name)/'mod';create('hello','test-mod',project)
+            path=project/'project.json';data=json.loads(path.read_text())
+            data['runtime_limits']={'resident_limit':12,'script_slots':24}
+            path.write_text(json.dumps(data));self.assertEqual(inputs(path)[0]['runtime_limits'],data['runtime_limits'])
+            data['runtime_limits']={'script_slots':9000};path.write_text(json.dumps(data))
+            with self.assertRaises(ValueError):inputs(path)
+    def test_runtime_config_cli_preserves_existing_file(self):
+        import subprocess,sys
+        with tempfile.TemporaryDirectory() as name:
+            output=Path(name)/'runtime.ini'
+            command=[sys.executable,str(HEADER.parent.parent/'tools/configure_runtime.py'),'--script-slots','24','--output',str(output)]
+            self.assertEqual(subprocess.run(command,capture_output=True).returncode,0)
+            before=output.read_bytes()
+            self.assertNotEqual(subprocess.run(command,capture_output=True).returncode,0)
+            self.assertEqual(output.read_bytes(),before)
+    def test_resident_capacity_diagnostic_uses_reported_limit(self):
+        for limit in (4,8):
+            with self.subTest(limit=limit), tempfile.TemporaryDirectory() as name:
+                report=Path(name)/'loader-report.txt'
+                report.write_text('ScriptHookV-NX capacity test\nresident_limit='+hex(limit)+'\nplugin=extra.nro\nerror=0x10015\n')
+                self.assertIn(str(limit)+' resident modules',summarize(report)['notes'][0])
+    def test_resident_capacity_diagnostic_tolerates_older_or_invalid_report(self):
+        for field in ('','resident_limit=invalid\n'):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as name:
+                report=Path(name)/'loader-report.txt'
+                report.write_text('ScriptHookV-NX old report\n'+field+'plugin=extra.nro\nerror=0x10015\n')
+                self.assertIn('resident module limit already reached',summarize(report)['notes'][0])
     def test_lz4_literals(self):
         self.assertEqual(lz4_block(b'\x30abc', 3), b'abc')
     def test_lz4_overlapping_reference(self):

@@ -1,4 +1,5 @@
 #include "plugin_loader.hpp"
+#include "../core/runtime_config.hpp"
 #include "plugin.h"
 #include "../../include/nativeCaller.h"
 #include "../core/storage.hpp"
@@ -7,7 +8,8 @@
 #include "../script/script_manager.hpp"
 namespace ScriptHook {
 namespace {
-constexpr size_t max_plugins=16,max_residents=4,max_image=2*1024*1024,max_memory=8*1024*1024;
+constexpr size_t max_plugins=16,max_image=2*1024*1024;
+static_assert(SHVNX_MAX_RESIDENT_PLUGINS<=max_plugins);
 enum Policy : uint32_t { Disabled, Manual, Auto };
 struct Nro {uint32_t start,mod,reserved[2],magic,version,size,flags,text,text_bytes,ro,ro_bytes,data,data_bytes,bss,reserved2;uint8_t rest[64];};
 static_assert(sizeof(Nro)==0x80);
@@ -155,7 +157,7 @@ void load(Plugin& p){
         p.error=0;p.stopped=false;p.step=7;return;
     }
     p.error=0;p.pending_count=0;
-    if(resident_count()>=max_residents){p.error=0x10015;return;}
+    if(resident_count()>=RuntimeConfig::Residents()){p.error=0x10015;return;}
     struct Reservation {
         uint32_t token=ScriptManager::ReserveSlot();
         ~Reservation(){ScriptManager::ReleaseReserved(token);}
@@ -165,7 +167,7 @@ void load(Plugin& p){
     { Storage disk;if(!disk.mounted){p.error=disk.error;return;}
     char path[128]{};filename(path,"plugins/",p.filename);size_t size=0;
     if(!disk.Size(path,size)||size<0x1000||size>max_image||size%4096){p.error=disk.error?disk.error:0x10001;return;}
-    if(memory_used()+2*(size+4096)+4096>max_memory){p.error=0x10016;return;}
+    if(memory_used()+2*(size+4096)+4096>RuntimeConfig::MemoryBytes()){p.error=0x10016;return;}
     p.image_bytes=size;
     if(!allocate(p.image,size)){p.error=0x10002;return;}
     size_t got=0;if(!disk.Read(path,reinterpret_cast<void*>(p.image),size,got)||got!=size){fail(p,disk.error?disk.error:0x10003);return;}
@@ -185,7 +187,7 @@ void load(Plugin& p){
     }
     if(!ended){fail(p,0x1000c);return;}
     p.bss_bytes=h.bss?h.bss:4096;p.text_bytes=h.text_bytes;
-    if(memory_used()+2*p.bss_bytes+4096>max_memory){fail(p,0x10016);return;}
+    if(memory_used()+2*p.bss_bytes+4096>RuntimeConfig::MemoryBytes()){fail(p,0x10016);return;}
     if(!allocate(p.bss,p.bss_bytes)||!allocate(p.nrr,4096)){fail(p,0x10002);return;}
     auto* nrr=reinterpret_cast<uint8_t*>(p.nrr);for(size_t i=0;i<4096;++i)nrr[i]=0;
     *reinterpret_cast<uint32_t*>(nrr)=0x3052524e;*reinterpret_cast<uint64_t*>(nrr+0x330)=0x0100b00b51230000ULL;
@@ -302,6 +304,7 @@ void PluginLoader::Tick(){
     uint32_t frame=0;if(!Memory::Read(Memory::s_mainBase+binding::game_frame_counter,frame))return;
     if(frame_seen&&frame==last_frame)return;
     frame_seen=true;last_frame=frame;
+    RuntimeConfig::LoadOnce();
     // This callback runs before scheduler dispatch, after the previous native
     // invocation has returned. Cancel only this plugin's cooperative entry;
     // its module, published handlers and other plugins remain untouched.
@@ -346,12 +349,18 @@ void PluginLoader::Report(){
     char report[8192]{};size_t n=0;bool clipped=false;
     auto append=[&](const char* s){while(*s){if(n+32>=sizeof(report)){clipped=true;return;}report[n++]=*s++;}};
     auto field=[&](const char* key,uint64_t v){append(key);append("=0x");char tmp[16];unsigned at=0;do{tmp[at++]="0123456789abcdef"[v&15];v>>=4;}while(v);while(at){char digit[2]={tmp[--at],0};append(digit);}append("\n");};
-    append("ScriptHookV-NX safe plugin manager test 2\n");field("loader_stage",stage);
+    append("ScriptHookV-NX configurable limits test 1\n");field("loader_stage",stage);
     append("loader_stage_name=");append(stage==3?"complete":stage==2?"loading_plugins":stage==1?"initializing_loader":"discovering_plugins");append("\n");
     field("loader_error",error);append("loader_error_name=");append(error_name(error,0));append("\n");
     field("plugins_found",count);field("plugins_discovered",discovered);field("plugins_loaded",resident_count());field("plugins_skipped",skipped);field("plugins_disabled",disabled);
     field("plugin_directory_entries",plugin_entries);field("binding_directory_entries",binding_entries);field("directory_entry_limit",4096);field("native_manifests",NativeManifest::Count());
-    field("resident_limit",max_residents);field("plugin_memory_budget",max_memory);field("plugin_memory_accounted",memory_used());field("last_action_error",last_action_error);
+    field("resident_limit",RuntimeConfig::Residents());field("plugin_memory_budget",RuntimeConfig::MemoryBytes());field("plugin_memory_accounted",memory_used());field("last_action_error",last_action_error);
+    field("script_slot_limit",ScriptManager::SlotLimit());field("script_stack_bytes",ScriptManager::StackBytes);
+    field("runtime_config_state",RuntimeConfig::State());field("runtime_config_error",RuntimeConfig::Error());
+    field("runtime_config_applied_mask",RuntimeConfig::AppliedMask());field("runtime_config_invalid_mask",RuntimeConfig::InvalidMask());
+    field("runtime_config_stack_error",RuntimeConfig::StackError());field("script_stack_allocated_bytes",ScriptManager::StackAllocationBytes());
+    field("default_resident_limit",SHVNX_DEFAULT_RESIDENT_PLUGINS);field("default_script_slots",SHVNX_DEFAULT_SCRIPT_SLOTS);field("default_plugin_memory_mib",SHVNX_DEFAULT_PLUGIN_MEMORY_MIB);
+    field("resident_limit_ceiling",SHVNX_MAX_RESIDENT_PLUGINS);field("script_slots_ceiling",SHVNX_MAX_SCRIPT_SLOTS);field("plugin_memory_mib_ceiling",SHVNX_MAX_PLUGIN_MEMORY_MIB);
     field("policy_request_slot",policy_slot);field("policy_requested",policy_requested);field("policy_previous",policy_previous);field("policy_effective",policy_effective);
     field("policy_rename_attempted",policy_rename_attempted);field("policy_rename_result",policy_rename_result);field("policy_readback_flags",policy_postcheck);
     uint32_t running_count=0;for(size_t i=0;i<count;++i)if(IsRunning(uint32_t(i)))++running_count;
@@ -440,7 +449,7 @@ bool PluginLoader::RequestLoad(uint32_t idx){
     }
     if(!p.present)return reject(0x10018);
     if(p.conflict)return reject(0x10017);
-    if(resident_count()>=max_residents)return reject(0x10015);
+    if(resident_count()>=RuntimeConfig::Residents())return reject(0x10015);
     p.queued=true;p.error=0;p.step=0;reported=false;last_action_error=0;return true;
 }
 bool PluginLoader::IsRunning(uint32_t idx){

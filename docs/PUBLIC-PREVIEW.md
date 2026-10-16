@@ -24,6 +24,11 @@ must visibly credit and link the original source.
 
 ## Known limits
 
+These are the limits of the previously published preview. The newer source's
+[Capacity Test 1](CAPACITY-TEST1.md) raises residency to eight and script slots to
+sixteen with the same 8 MiB plugin budget; that binary needs separate Switch
+acceptance and does not replace the historical accepted download automatically.
+
 Windows DLL/ASI binaries need compatible source ports and ARM64 rebuilds. Four
 NROs can remain resident; Kill Process stops a script but does not unmap code or
 free that resident slot. Restart GTA to replace code/release slots. The scheduler

@@ -29,7 +29,8 @@ are recognized; the current toolchain was tested on Windows.
 Copy `out/my-plugin/plugin.nro` to
 `sd:/switch/gtav-scripthook/plugins/my-plugin.nro`, then restart GTA.
 The loader scans directory pages, retains a bounded 16-entry catalog and allows
-four resident NROs. Auto candidates load one per frame after obtaining a valid
+eight resident NROs in Capacity Test 1 (four in earlier published runtimes).
+Auto candidates load one per frame after obtaining a valid
 game script context. `.nro.manual` waits for Load Now; `.nro.disabled` cannot load
 until its policy changes. Suffixes are case-insensitive. Catalog order is stable;
 duplicate policy filenames for one canonical module are reported as conflicts.
@@ -78,13 +79,12 @@ corresponding game objects are ready.
 
 Modules remain mapped until game exit because NSCs can retain their native
 handler addresses. Hot unloading/reloading is deliberately unavailable. Images
-and BSS are each limited to 2 MiB; eight cooperative stacks remain the total
-runtime capacity. Duplicate IDs (case-insensitive), mismatched ABIs, malformed layouts,
+and BSS are each limited to 2 MiB. The default is sixteen cooperative stacks;
+[optional runtime limits](RUNTIME-LIMITS.md) can change that capacity. Duplicate IDs (case-insensitive), mismatched ABIs, malformed layouts,
 global constructors/destructors and missing entry points are rejected. Mods are
 trusted executable code; faults or loops inside a plugin cannot be recovered by
 the loader. The runtime borrows a live game script context and must not use
 native WAIT/TERMINATE_THIS_THREAD or assume a separately owned RAGE thread.
-
 Compatible PC plugin sources need rebuilding and adapting their entry point.
 Windows DLL/ASI binaries, Windows/DirectX APIs, arbitrary PC hashes and a hosted
 PC C++ standard library are not supported. The provided shim supports typed/raw
@@ -160,8 +160,9 @@ readiness and does not mean the startup policy is Manual. A successful Load Now 
 after the scheduler has run. The legacy `SHVNX_TOGGLE_PLUGIN` cycles startup
 policies only. Kill Process stops a plugin's scheduled entry and releases its
 cooperative stack. It keeps mapped code and custom handlers alive; it does not
-unwind destructors or undo previous game changes. Restart GTA to replace resident code. Four resident modules
-share an 8 MiB accounting budget; the catalog contains up to 16 entries.
+unwind destructors or undo previous game changes. Restart GTA to replace resident code. Eight resident modules in Capacity Test 1
+share an 8 MiB accounting budget by default; the catalog contains up to 16
+entries. The current source supports [startup overrides](RUNTIME-LIMITS.md).
 
 Status outputs require three distinct writable eight-byte VM slots. Names and
 status strings belong to the core; copy names if retaining them across rescans.

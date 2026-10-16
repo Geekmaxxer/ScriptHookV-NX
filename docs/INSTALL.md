@@ -1,5 +1,8 @@
 # Install ScriptHookV-NX
 
+Optional [runtime limits](RUNTIME-LIMITS.md) let you change resident NRO count,
+script slots and plugin memory budget. No configuration file is required.
+
 1. Close GTA. Back up any existing `exefs/subsdk5`.
 2. Copy `atmosphere` and `switch` from the EASY ZIP to your SD root.
 3. Launch Story Mode. Keep your existing menu and Self Radio files installed.
@@ -28,7 +31,10 @@ startup mode. Its code and native handlers remain mapped. **Load Now** can resta
 a stopped or finished run entry. Kill does not undo game changes, run destructors
 or free a resident NRO slot; close GTA to replace code or release that slot.
 
-Up to four NROs can stay resident, with a combined 8 MiB memory budget.
+Capacity Test 1 allows up to eight resident NROs, with the same combined 8 MiB
+plugin accounting budget. Older published runtimes allow four; check the
+`resident_limit` field in `loader-report.txt`. The eight-resident build is
+awaiting Switch acceptance.
 The optional standalone manager uses one of those slots. Completed plugins also
 stay resident because other scripts may still call their custom natives.
 Each mod needs a unique plugin ID. Keep one policy file per plugin; do not keep

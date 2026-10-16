@@ -11,6 +11,7 @@ from pathlib import Path
 from generate_bindings import generate, Image, DEFAULT_PROFILE
 from build_plugin import toolchain, tool
 from nso import decode_nso, segments
+from runtime_limits import build_defaults, definitions, validate
 
 def main():
     parser = argparse.ArgumentParser(description="Build ScriptHookV-NX NSO")
@@ -23,9 +24,15 @@ def main():
     parser.add_argument('--target-profile', type=Path, default=DEFAULT_PROFILE, help='Audited target profile directory')
     parser.add_argument('--target-main', type=Path, help='Optional extracted main NSO for rederivation; requires --target-sdk')
     parser.add_argument('--target-sdk', type=Path, help='Optional extracted SDK NSO for rederivation; requires --target-main')
+    parser.add_argument('--resident-limit', type=int, help='Compiled default resident NRO limit (8 unless the header is edited)')
+    parser.add_argument('--script-slots', type=int, help='Compiled default cooperative script slots (16 unless the header is edited)')
+    parser.add_argument('--plugin-memory-mib', type=int, help='Compiled default plugin accounting budget in MiB (8 unless the header is edited)')
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parents[1]
+    overrides = {key: getattr(args, key) for key in ('resident_limit', 'script_slots', 'plugin_memory_mib')
+                 if getattr(args, key) is not None}
+    validate(overrides, definitions(project_root/'include/runtime_defaults.h'))
     if args.slot != 'subsdk5':
         parser.error('The supported runtime uses subsdk5; subsdk4 is reserved for Self Radio')
     if args.menu is not None and (args.target_main is None or args.target_sdk is None):
@@ -56,6 +63,7 @@ def main():
         shutil.copytree(project_root/folder, build_dir/folder, ignore=shutil.ignore_patterns('__pycache__'))
     for name in ('LICENSE', 'NOTICE'):
         shutil.copy2(project_root/name, build_dir/name)
+    limits = build_defaults(build_dir/'include/runtime_defaults.h', overrides)
 
     print("========================================")
     print("   Building ScriptHookV-NX (AArch64)   ")
@@ -81,6 +89,7 @@ def main():
         project_root / 'source/core/start.s',
         project_root / 'source/core/memory.cpp',
         project_root / 'source/core/storage.cpp',
+        project_root / 'source/core/runtime_config.cpp',
         project_root / 'source/core/main.cpp',
         project_root / 'source/script/native_table.cpp',
         project_root / 'source/script/native_manifest.cpp',
@@ -179,7 +188,10 @@ def main():
                   toolchain=dict(compiler=str(compiler), elf2nso=str(elf2nso), readelf=str(readelf)),
                   external_plugin_loading_enabled=True,
                   runtime_scheduler_enabled=True, startup_scripts=0,
-                  runtime_max_scripts=8, runtime_stack_bytes=65536)
+                  runtime_max_scripts=limits['SHVNX_DEFAULT_SCRIPT_SLOTS'], runtime_stack_bytes=65536,
+                  plugin_resident_limit=limits['SHVNX_DEFAULT_RESIDENT_PLUGINS'],
+                  plugin_memory_budget_bytes=limits['SHVNX_DEFAULT_PLUGIN_MEMORY_MIB']*1024*1024,
+                  runtime_limits=limits, runtime_config_path='switch/gtav-scripthook/runtime.ini')
     (build_dir / 'build-manifest.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
 
     slot_size = os.path.getsize(nso_slot_file)

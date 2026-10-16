@@ -5,7 +5,8 @@ Generate each lesson with `tools/create_mod.py --template NAME --id YOUR-ID
 Run `python tools/create_mod.py --list` for all templates. The original tutorial
 sources are also directly buildable with `build_plugin.py --source ...`.
 
-Test **one lesson at a time**. The runtime supports four resident NROs total;
+Test **one lesson at a time**. Capacity Test 1 supports eight resident NROs total
+(four on earlier public runtimes);
 the standalone manager uses one slot and completed providers also stay mapped.
 Changing startup policy or killing a script does not free its module slot.
 

@@ -69,7 +69,11 @@ large entity sets or writing settings every frame. Each plugin has a 64 KiB stac
 large buffers belong in bounded static storage rather than local arrays.
 
 The scheduler has a 2 ms cooperative budget and cannot interrupt a plugin that
-never returns or yields. Images and BSS are each capped at 2 MiB, with four resident
-plugins total. Unloading an NRO during play is unavailable. Disable it and restart
+never returns or yields. Images and BSS are each capped at 2 MiB, with eight resident
+plugins by default; see [runtime limits](RUNTIME-LIMITS.md) for optional overrides. Unloading an NRO during play is unavailable. Disable it and restart
 GTA instead. Test menu-open/closed, transitions, death/respawn, vehicles and a soak
 on the actual Switch; compilation and emulation are separate evidence.
+
+Those capacities describe the current Capacity Test 1 core. Earlier public
+runtimes support four resident NROs. The plugin budget remains 8 MiB; eight
+resident images are possible only if their combined accounting fits it.

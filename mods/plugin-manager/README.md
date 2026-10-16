@@ -1,6 +1,6 @@
 # Standalone plugin manager
 
-Use this optional NRO when your NSC menu has no plugin manager. It uses one of the four resident plugin slots.
+Use this optional NRO when your NSC menu has no plugin manager. It uses one resident plugin slot: Capacity Test 1 allows eight total, while earlier public runtimes allow four.
 
 Hold **L + R**, then press **D-pad Down** to open. Use Up/Down to select, Left/Right to choose a startup policy, **A** to save that policy, **X** to load the selected plugin now, **Y** to rescan, and **B** to close. Close other mod menus first.
 
