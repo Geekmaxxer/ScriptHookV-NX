@@ -1,0 +1,1 @@
+Drive HUD reads the occupied vehicle's speed and heading every 100 ms and draws one compact line while visible. Hold L + R and press D-Pad Right to cycle km/h, mph, and hidden; the mode is saved. No entities are created or game settings changed. The overlay and restored mph mode were observed on Switch; extended gameplay and measured performance remain pending.

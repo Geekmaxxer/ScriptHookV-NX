@@ -1,0 +1,141 @@
+{
+  "main_sha256": "6d4d4f670d2e7b3ef9a8ac33787859b2d4d80667148132b5d815997c2a196fd5",
+  "main_build_id": "6e3e9b3af5746e74b615bd981080c9271bc22662000000000000000000000000",
+  "sdk_sha256": "2549a08225392c12b2dee7f14a5c6e49f955aae0dc99bc65628c4b47bf5d7652",
+  "constants": {
+    "native_registry": 64840224,
+    "native_register": 40066312,
+    "missing_native": 40057040,
+    "vm_tick": 40058432,
+    "vm_slot_base": 49930080,
+    "vm_slot_derived": 49065024,
+    "program_table": 64836960,
+    "program_mutex": 64838584,
+    "script_tls_thread": 944,
+    "script_tls_active": 952,
+    "active_script_thread": 64842304,
+    "active_script_aux": 64842320,
+    "game_frame_counter": 65419748,
+    "lock_mutex": 43971520,
+    "unlock_mutex": 43971552,
+    "open_directory": 43970592,
+    "read_directory": 43970624,
+    "close_directory": 43970608,
+    "open_file": 43970368,
+    "read_file": 43970448,
+    "close_file": 43970480,
+    "create_file": 43970384,
+    "set_file_size": 43970400,
+    "write_file": 43970432,
+    "create_directory": 43970560,
+    "rename_file": 43970528,
+    "delete_file": 43970512,
+    "mount_sd_debug": 951392,
+    "unmount": 674672,
+    "disable_thread_abort": 971672,
+    "restore_thread_context": 971744,
+    "allocate_pages": 1287936,
+    "free_pages": 1288032,
+    "ro_initialize": 1325232,
+    "ro_register": 1325712,
+    "ro_unregister": 1326304,
+    "ro_load": 1326496,
+    "ro_unload": 1329872,
+    "ro_symbol": 1329520,
+    "sha256": 19776,
+    "fs_size": 680224,
+    "fs_open_dir": 687024,
+    "fs_read_dir": 677952,
+    "fs_close_dir": 677808,
+    "ro_client": 11878408,
+    "free_address": 1288000,
+    "sdk_anchor_slot": 50087520,
+    "sdk_anchor_offset": 1273936,
+    "sdk_fallback_slot": 50087392,
+    "sdk_fallback_offset": 906432
+  },
+  "fingerprints": {
+    "main": [
+      {
+        "offset": 40058432,
+        "bytes": "ff4305d1fd7b0fa9fc6f10a9fa6711a9"
+      },
+      {
+        "offset": 40066312,
+        "bytes": "fe67bca9f85f01a9f65702a9f44f03a9"
+      },
+      {
+        "offset": 40059972,
+        "bytes": "684f4038ac0218cb6af35f388cfd43d3"
+      },
+      {
+        "offset": 40055516,
+        "bytes": "e8031faa09bd00f0298108911f2003d5"
+      },
+      {
+        "offset": 16909440,
+        "bytes": "087201f0090040f908e549b9280100b9"
+      }
+    ],
+    "sdk": [
+      {
+        "offset": 951392,
+        "bytes": "ff0301d1fd7b01a9f65702a9f44f03a9"
+      },
+      {
+        "offset": 971672,
+        "bytes": "fd7bbea9f44f01a9fd030091f45200d0"
+      },
+      {
+        "offset": 971744,
+        "bytes": "e85200d0e10300aa00014bb969e51314"
+      },
+      {
+        "offset": 1325712,
+        "bytes": "ff0301d1fd7b01a9f65702a9f44f03a9"
+      },
+      {
+        "offset": 1326496,
+        "bytes": "e5031f2a030000140000000000000000"
+      },
+      {
+        "offset": 1329520,
+        "bytes": "fd7bbea9f44f01a9fd030091f30300aa"
+      },
+      {
+        "offset": 1287936,
+        "bytes": "484f0090e20301aa084141f9e10300aa"
+      },
+      {
+        "offset": 1325232,
+        "bytes": "403d009000281091d29f121400000000"
+      },
+      {
+        "offset": 1288000,
+        "bytes": "484f0090e10300aa084141f900a11091"
+      },
+      {
+        "offset": 19776,
+        "bytes": "ffc302d1fd7b08a9f65709a9f44f0aa9"
+      }
+    ]
+  },
+  "vm_slot_proof": "R_AARCH64_RELATIVE -> 0x2633e40",
+  "menu_sha256": null,
+  "menu_fixture_only": true,
+  "menu_natives": [],
+  "menu_code_start": "",
+  "menu_cache_identity": "name hash, code length, native count and 32-byte entry fingerprint",
+  "native_context": {
+    "return_pointer": 0,
+    "arg_count": 8,
+    "args_pointer": 16,
+    "data_count": 24,
+    "script_slot_bytes": 8,
+    "vector_destinations": 32,
+    "vector_temporaries": 64,
+    "vector_temporary_bytes": 16,
+    "vector_plugin_bytes": 24,
+    "caller_abi_version": 1
+  }
+}

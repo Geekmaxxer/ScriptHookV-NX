@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-16",
+  "module_sha256": "209bec71c3f5608f4777c214218ec0a9ccef22a6d794de9f55de311904213ce6",
+  "installed_file_sha256": {
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk5": "209bec71c3f5608f4777c214218ec0a9ccef22a6d794de9f55de311904213ce6",
+    "switch/gtav-scripthook/bindings/ragemenu.snb": "b7b4f5d6be01ef246de10ac83a87c033bf1d8298b72e2ba467cc53d9ae9d8a56",
+    "switch/gtav-scripthook/plugins/plugin-manager.nro": "99724e75a618d1b5049e6016bf6d380e6f886ffb153c5d52409202ab81cf9621"
+  },
+  "reports": {
+    "loader-report.txt": {
+      "sha256": "27cb0c3bc376c24e416ce89bde044de035f9e36b31c898182a71dd1cd43c19f1",
+      "text": "ScriptHookV-NX safe plugin manager test 2\nloader_stage=0x3\nloader_stage_name=complete\nloader_error=0x0\nloader_error_name=none\nplugins_found=0x5\nplugins_discovered=0x5\nplugins_loaded=0x2\nplugins_skipped=0x0\nplugins_disabled=0x1\nplugin_directory_entries=0x5\nbinding_directory_entries=0x1\ndirectory_entry_limit=0x1000\nnative_manifests=0x1\nresident_limit=0x4\nplugin_memory_budget=0x800000\nplugin_memory_accounted=0x1c000\nlast_action_error=0x0\npolicy_request_slot=0xffffffff\npolicy_requested=0xffffffff\npolicy_previous=0xffffffff\npolicy_effective=0xffffffff\npolicy_rename_attempted=0x0\npolicy_rename_result=0xffffffff\npolicy_readback_flags=0x0\nplugins_running=0x2\nplugin=drive-hud.nro\nslot=0x0\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nplugin=plugin-manager.nro\nslot=0x1\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nplugin=pit-stop.nro.manual\nslot=0x2\npolicy=0x1\nresident=0x0\nrunning=0x0\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x0\nstep_name=not_started\nerror=0x0\nerror_name=none\nplugin=stunt-journal.nro.manual\nslot=0x3\npolicy=0x1\nresident=0x0\nrunning=0x0\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x0\nstep_name=not_started\nerror=0x0\nerror_name=none\nplugin=public-sample.nro.disabled\nslot=0x4\npolicy=0x0\nresident=0x0\nrunning=0x0\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x0\nstep_name=not_started\nerror=0x0\nerror_name=none\nreport_clipped=0\n"
+    },
+    "bridge-report.txt": {
+      "sha256": "6cdb630e3d86b16cd0aaaf4905d647c67a4038fb32be08cc35fa887b50b9aea8",
+      "text": "ScriptHookV-NX cooperative runtime test 1\nmain_base=0x314a405000\nsdk_base=0x314e2f5000\nvm_ticks=0x137\ncached_native_repairs=0x0\ncached_native_rejections=0x0\nsave_calls=0x0\nload_calls=0x1\nsave_successes=0x0\nload_successes=0x1\nlast_fs_result=0x0\nnative_caller_abi=0x1\nnative_caller_self_test_ran=0x0\nnative_caller_self_test_passed=0x0\nnative_caller_self_test_failed=0x0\nnative_caller_self_test_error=0x0\nnative_caller_self_test_error_hash=0x0\nruntime_abi=0x1\nruntime_active=0x2\nruntime_resumes=0x11\nruntime_context_rejections=0x0\nruntime_test_runs=0x0\nruntime_test_done=0x0\nruntime_test_passed=0x0\nruntime_test_failed=0x0\n"
+    },
+    "drive-hud-status.txt": {
+      "sha256": "3195b533e0e93a255de59756f721f52d2df3b23fdb663fcfcafb011fbd7014cd",
+      "text": "ScriptHookV-NX Showcase Test 1\nstate=mph\n"
+    }
+  },
+  "user_confirmed": "Everything runs beautifully after game restart.",
+  "confirmed_report_scope": [
+    "Auto Drive HUD and plugin-manager both loaded and running after restart.",
+    "Pit Stop and Stunt Journal retain Manual and are not running.",
+    "Public sample retains Disabled.",
+    "Zero loader and scheduler context errors.",
+    "Legacy menu settings loaded once successfully.",
+    "112 KiB accounted plugin memory."
+  ],
+  "unverified_in_this_report": [
+    "No native caller/runtime self-tests were requested in this session.",
+    "No explicit kill/restart actions appear in these report snapshots.",
+    "No measured console FPS or physical peak-memory measurement.",
+    "New description-renderer revision has not been console-tested."
+  ],
+  "sd_modified": false
+}

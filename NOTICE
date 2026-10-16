@@ -1,0 +1,19 @@
+ScriptHookV-NX
+Created by MEGATARD (@Geekmaxver; GitHub: Geekmaxxer).
+Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
+
+Licensed under the ScriptHookV-NX Attribution License 1.0; see LICENSE.
+Use, modification, redistribution and sale are permitted with the required
+notices and visible original-source credit on public repost/download/sales pages.
+
+Suggested credit:
+Based on ScriptHookV-NX by MEGATARD (@Geekmaxver).
+Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
+
+The runtime, portable tooling and examples are this project's implementation.
+Generated native wrappers and target metadata describe the supported game ABI;
+they do not include a game executable, game assets or a proprietary compiler.
+No rights to third-party material are granted by this project's license.
+
+GTA V, Nintendo Switch, ScriptHookV and other product names belong to their
+respective owners. This independent project is not endorsed by those owners.

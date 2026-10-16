@@ -1,0 +1,11 @@
+{
+  "format": 1,
+  "title_id": "0100b00b51230000",
+  "build_id": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "files": {
+    "bindings.hpp": "359e819c184885d271168936fb0bae1f96050f76ad6686cd3d86efaefac57150",
+    "bindings.json": "6bd7c9f374cf053fe8b9b6bcbdbbb383bb8617aeb93c7d7df162866ebdd60ce3"
+  },
+  "origin": "Exact generated bindings from console-accepted Manager Test 2; no menu identity compiled into production",
+  "accepted_runtime_sha256": "209bec71c3f5608f4777c214218ec0a9ccef22a6d794de9f55de311904213ce6"
+}

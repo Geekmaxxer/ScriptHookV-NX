@@ -1,0 +1,75 @@
+# Porting a plugin to Switch
+
+Start with `examples/scriptmain_plugin.cpp` and build it with `tools/build_plugin.py`.
+The SDK is freestanding C++17 for AArch64. It needs devkitA64 and Python 3.10+;
+plugin developers do not need extracted game files or the core's private build inputs.
+
+## Entry point and familiar syntax
+
+Include `script.h`, keep your `void ScriptMain()` function, and add
+`SHV_NX_PLUGIN("unique-id", ScriptMain)` once after the function. Calls such as
+`PLAYER::PLAYER_ID()` and `MISC::GET_GAME_TIMER()` use the supplied target wrappers.
+`WAIT(0)` yields until the next game frame; larger values wait in milliseconds.
+Waiting is supported from ScriptMain and its callees, not initialization or
+custom native handlers.
+
+Replace Windows DLL initialization and `DllMain` with the entry macro. An advanced
+plugin can instead export a `ShvNxPlugin` descriptor to register custom natives
+in its explicit initialization callback. Each ABI 1 plugin supplies one scheduled
+entry function. The core's `scriptRegister`, `scriptStopAll`, runtime self-test and
+cache-management exports are not external plugin shim APIs.
+
+## Native calls and data
+
+Recompile against these headers. PC hash constants and PC structure layouts must
+be audited; matching a native name alone does not prove Switch behavior. Check
+`nativeIsAvailable(hash)` before optional raw calls and `getNativeCallStatus()`
+after calls that can fail. Availability confirms a handler exists, not its semantics.
+New gameplay natives still need target verification and a console test.
+
+`BOOL` output storage is four bytes. Do not pass a one-byte C++ `bool*` to a BOOL
+output. `Vector3` has three floats in padded eight-byte slots (24 bytes total).
+Use the typed wrappers for vectors and references. Use `float` literals, not
+`double`, for FLOAT arguments. The typed SDK rejects several unsafe argument forms
+at compilation. Raw calls require an explicit target ABI audit.
+
+`scriptWait` and `WAIT` are the scheduler's yield points. Do not call the game's
+native WAIT or TERMINATE_THIS_THREAD: plugins borrow a game script context.
+
+## Platform work
+
+Windows headers, DLL imports, keyboard hooks, DirectX, and an ordinary hosted C++
+standard library are unavailable. Replace input with verified GTA PAD calls and
+rendering with verified GTA graphics/HUD calls. Poll on the game script thread.
+The linker rejects unresolved platform dependencies. Global constructors and
+destructors are rejected; initialize state explicitly. A port is source work,
+not a renamed Windows binary.
+
+For additional header folders, pass `--include path/to/headers`. Header snapshots
+are compiled and hashed with the plugin. Build outputs go in a fresh directory.
+
+## Settings and script providers
+
+`scriptSaveFile` / `scriptReadFile` use flat filenames and place files under
+`switch/gtav-scripthook/settings/<plugin-id>-<filename>`. Keep the ID stable across
+updates. Writes are limited to 64 KiB and are raw single-file operations; a mod
+that needs crash recovery should maintain its own validated alternating records.
+
+NSC mods use `SHVNX_SAVE` / `SHVNX_LOAD` from `commands_scripthook_nx.sch` for
+checksummed alternating settings records. Default namespaces follow script names.
+For a custom native provided by another mod, generate binding metadata from the
+exact NSC and include the provider hash. The SDK guide describes the complete binding workflow.
+
+## Staying within the Switch budget
+
+Yield regularly. Use WAIT(0) for frame rendering/input, and longer waits for
+background work. Cache constant lookups, request models asynchronously, cap
+entity counts and release models/entities when no longer needed. Avoid scanning
+large entity sets or writing settings every frame. Each plugin has a 64 KiB stack;
+large buffers belong in bounded static storage rather than local arrays.
+
+The scheduler has a 2 ms cooperative budget and cannot interrupt a plugin that
+never returns or yields. Images and BSS are each capped at 2 MiB, with four resident
+plugins total. Unloading an NRO during play is unavailable. Disable it and restart
+GTA instead. Test menu-open/closed, transitions, death/respawn, vehicles and a soak
+on the actual Switch; compilation and emulation are separate evidence.

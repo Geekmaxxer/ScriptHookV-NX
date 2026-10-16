@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-15",
+  "module_sha256": "289d3bf4866420f38fc2548de085e1e8d9d115be359a958e6ef6945582ca0cf2",
+  "sample_sha256": "b90c19a4d42507137334da3b33c387e8920428a2247774bbafa0cbc41d43fb8b",
+  "matched_package": "refinement-test2-20261015",
+  "reports": {
+    "loader-report.txt": {
+      "sha256": "bbf8affb3507cbb3ddf472723e695bfb0b5479ab51be6c909e0744d0b26d8d10",
+      "values": {
+        "loader_stage": 3,
+        "loader_stage_name": "complete",
+        "loader_error": 0,
+        "loader_error_name": "none",
+        "plugins_found": 1,
+        "plugins_discovered": 1,
+        "plugins_loaded": 1,
+        "plugins_skipped": 0,
+        "plugins_disabled": 0,
+        "plugin_directory_entries": 1,
+        "binding_directory_entries": 1,
+        "directory_entry_limit": 4096,
+        "native_manifests": 1,
+        "plugin": "public-sample.nro",
+        "step": 7,
+        "step_name": "loaded",
+        "error": 0,
+        "error_name": "none"
+      }
+    },
+    "public-sample-sample-result.txt": {
+      "sha256": "ce5b726d2f9830df9585e8f111760ba020afe39e1586aaa265115fb75cde9b6f",
+      "values": {
+        "passed": 7,
+        "failed": 0
+      }
+    }
+  },
+  "console_sample_passed": true,
+  "scope": "One external NRO discovered, loaded and initialized; all seven sample checks passed on the installed Refinement Test 2 module. Stock/custom native calls, next-frame resumption with preserved local, delayed resumption and namespaced file operations exercised.",
+  "limits": [
+    "Timed wait check asserts a nondecreasing timer, not an exact 100 ms elapsed delay.",
+    "Readback validates byte length and record magic, not every stored value.",
+    "This console run does not test four plugins, disabled/error paths, the ScriptMain starter, NSC use of imported bindings, FPS or peak memory."
+  ],
+  "prior_package_manifests_unchanged": true
+}

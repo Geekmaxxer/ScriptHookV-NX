@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-15",
+  "test": "Native Caller Candidate 1",
+  "evidence_source": "User-provided console report, verified against the live SD report and installed module",
+  "report_source": "D:/switch/gtav-megatard/bridge-report.txt",
+  "report_sha256": "d61b9ce633f75746b74ec86b114e4b4206f2f136c1eafeaf4d11723168931b40",
+  "installed_module_sha256": "2788218eff0ae38669e4f157b12b25c55ea73ec303cc7b76b8c4c649d1aa8d50",
+  "required_menu_sha256": "2877bd10e1b31ed7400ef905931102ecf78c478cf04c937ee1aea06ec4ebad0a",
+  "zip_sha256": "daeb019768afb639a6f8e184bc9f73f932fdb34c4248c7df00daa258968858f8",
+  "console_verified_behaviors": [
+    "Explicit native caller self-test completed: seven passed and zero failed",
+    "Getter paths exercised scalar, float, string input, integer output references, vector return, nullable pointer return and boolean return",
+    "One save and two loads completed successfully with no recorded filesystem error"
+  ],
+  "counters": {
+    "main_base": 352619352064,
+    "sdk_base": 352685346816,
+    "vm_ticks": 51646,
+    "cached_native_repairs": 0,
+    "cached_native_rejections": 0,
+    "save_calls": 1,
+    "load_calls": 2,
+    "save_successes": 1,
+    "load_successes": 2,
+    "last_fs_result": 0,
+    "native_caller_abi": 1,
+    "native_caller_self_test_ran": 1,
+    "native_caller_self_test_passed": 7,
+    "native_caller_self_test_failed": 0,
+    "native_caller_self_test_error": 0,
+    "native_caller_self_test_error_hash": 0
+  },
+  "limits": [
+    "The report does not verify every native or vector-reference copyback on hardware",
+    "The report alone does not establish settings restoration after relaunch for this candidate",
+    "Plugin scheduling remains disabled and real scriptWait yielding is not implemented"
+  ],
+  "package_record": "The original package-verification.json describes checks at packaging time and remains unchanged"
+}

@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-16",
+  "module_sha256": "3b383482682cc85ca878389fabbbf5bb857959bbf27ed52fad71b64946c07eee",
+  "matched_package": "safe-manager-test1-20261015",
+  "installed_files": {
+    "switch/gtav-scripthook/bindings/ragemenu.snb": {
+      "sha256": "766e861aa68dc156e3df7f8b1db253d6c0da6328021648bc9619d2d2dc899ab6",
+      "matches_package": true
+    },
+    "switch/gtav-scripthook/plugins/drive-hud.nro": {
+      "sha256": "14dbe422c5e19939186616f11a82933fa7e8aaf4bb783bf2147633315586a99c",
+      "matches_package": true
+    },
+    "switch/gtav-scripthook/plugins/pit-stop.nro": {
+      "sha256": "8d97dafff7f2a226297b509231589189ea14b9095bca820b297b2b18c4d1f487",
+      "matches_package": true
+    },
+    "switch/gtav-scripthook/plugins/plugin-manager.nro.manual": {
+      "sha256": "286f65e945016024e1aae843d6db3d437409a958c9a9a34437a07688eb96020b",
+      "matches_package": true
+    },
+    "switch/gtav-scripthook/plugins/stunt-journal.nro": {
+      "sha256": "5b066fd938725971d17fe346d320f1744a58aaf9a28852306b3198a401c35f1d",
+      "matches_package": true
+    },
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk5": {
+      "sha256": "3b383482682cc85ca878389fabbbf5bb857959bbf27ed52fad71b64946c07eee",
+      "matches_package": true
+    },
+    "switch/gtav-scripthook/plugins/public-sample.nro": {
+      "sha256": "b90c19a4d42507137334da3b33c387e8920428a2247774bbafa0cbc41d43fb8b",
+      "matches_prior_accepted_sample": true,
+      "included_in_manager_test_package": false
+    }
+  },
+  "reports": {
+    "loader-report.txt": {
+      "sha256": "5c0ad4cc6b5bfb51f2f44073f65bb50c07d689e4b7dd1f8e4bf1a486ef546b39",
+      "text": "ScriptHookV-NX safe plugin manager test 1\nloader_stage=0x3\nloader_stage_name=complete\nloader_error=0x0\nloader_error_name=none\nplugins_found=0x5\nplugins_discovered=0x5\nplugins_loaded=0x4\nplugins_skipped=0x0\nplugins_disabled=0x0\nplugin_directory_entries=0x5\nbinding_directory_entries=0x1\ndirectory_entry_limit=0x1000\nnative_manifests=0x1\nresident_limit=0x4\nplugin_memory_budget=0x800000\nplugin_memory_accounted=0x34000\nlast_action_error=0x0\nplugin=drive-hud.nro\nslot=0x0\npolicy=0x2\nresident=0x1\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nplugin=pit-stop.nro\nslot=0x1\npolicy=0x2\nresident=0x1\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nplugin=public-sample.nro\nslot=0x2\npolicy=0x2\nresident=0x1\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nplugin=stunt-journal.nro\nslot=0x3\npolicy=0x2\nresident=0x1\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nplugin=plugin-manager.nro.manual\nslot=0x4\npolicy=0x1\nresident=0x0\nqueued=0x0\npresent=0x1\nstep=0x0\nstep_name=not_started\nerror=0x0\nerror_name=none\nreport_clipped=0\n"
+    },
+    "public-sample-sample-result.txt": {
+      "sha256": "ce5b726d2f9830df9585e8f111760ba020afe39e1586aaa265115fb75cde9b6f",
+      "text": "ScriptHookV-NX external plugin sample\npassed=7\nfailed=0\n"
+    },
+    "drive-hud-status.txt": {
+      "sha256": "6c97434abd824b2af163dc72ea8927017fbfb2dbe34d7236973f4ac9e499a4a1",
+      "text": "ScriptHookV-NX Showcase Test 1\nstate=kph\n"
+    },
+    "pit-stop-status.txt": {
+      "sha256": "424af1bfd1ca1c8eb58ae75e6c192776b1f97ec73e2b0d42a918bfb4cf91715e",
+      "text": "ScriptHookV-NX Showcase Test 1\nstate=Vehicle repaired and washed.\n"
+    },
+    "stunt-journal-status.txt": {
+      "sha256": "e3d91cbf7b3a356839d65a116d07acf312f4c1437d82828d176087415b92af7f",
+      "text": "ScriptHookV-NX Showcase Test 1\nstate=running\n"
+    }
+  },
+  "observed_on_console": [
+    "Three gameplay NROs and public sample loaded together: four resident modules, zero per-module loading errors.",
+    "Public sample reported seven passed and zero failed.",
+    "User reports all three gameplay overlays visible and the MEGATARD plugin page working.",
+    "Pit Stop reported an actual vehicle repair and wash action."
+  ],
+  "standalone_manager": {
+    "console_startup_verified": false,
+    "policy": "Manual",
+    "resident": false,
+    "screenshot_request_error_decimal": 65557,
+    "screenshot_request_error_hex": "0x10015",
+    "reason": "resident_plugin_limit_reached",
+    "report_precedes_failed_request": "The supplied report still has last_action_error=0; the screenshot provides the rejected request code.",
+    "remedy": "Save public-sample Disabled and plugin-manager Auto in the menu; fully close and relaunch GTA."
+  },
+  "resident_modules": 4,
+  "resident_limit": 4,
+  "accounted_plugin_memory_bytes": 212992,
+  "memory_budget_bytes": 8388608,
+  "not_established": [
+    "Standalone manager loading and controller behavior on Switch.",
+    "Startup mode changes or manual loading after a fresh launch.",
+    "Full bug testing of gameplay mods, jump scoring and restart persistence.",
+    "Measured console FPS, CPU cost, or peak physical memory.",
+    "Exact installed update2.rpf hash; runtime menu behavior is user reported and the installed .snb matches the package."
+  ],
+  "sd_modified": false,
+  "prior_build_and_package_manifests_unchanged": true
+}

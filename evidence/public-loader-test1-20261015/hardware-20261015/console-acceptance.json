@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-15",
+  "module_sha256": "24fe83d2e4c217604972202e0f5c452ff85a0d951330728f860ed96d8bcf93db",
+  "sample_sha256": "b90c19a4d42507137334da3b33c387e8920428a2247774bbafa0cbc41d43fb8b",
+  "reports": {
+    "loader-report.txt": {
+      "sha256": "1f5bd4cdeb8bd36e4a4cb77dca299da060132127593ee4b430aabdf2aebd6924",
+      "values": {
+        "loader_stage": 3,
+        "loader_error": 0,
+        "plugins_found": 1,
+        "plugins_loaded": 1,
+        "plugins_skipped": 0,
+        "native_manifests": 1,
+        "plugin": "public-sample.nro",
+        "step": 7,
+        "error": 0
+      }
+    },
+    "public-sample-sample-result.txt": {
+      "sha256": "ce5b726d2f9830df9585e8f111760ba020afe39e1586aaa265115fb75cde9b6f",
+      "values": {
+        "passed": 7,
+        "failed": 0
+      }
+    }
+  },
+  "scope": "User console acceptance: one external plugin loaded, zero loader errors, all seven sample checks passed. Does not validate every native, simultaneous arbitrary mods, future revisions or general performance."
+}

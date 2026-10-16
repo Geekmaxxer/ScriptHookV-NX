@@ -1,0 +1,60 @@
+ScriptHookV-NX Attribution License 1.0
+SPDX-License-Identifier: LicenseRef-ScriptHookV-NX-Attribution-1.0
+
+Copyright (c) 2026 MEGATARD (@Geekmaxver; GitHub: Geekmaxxer)
+and the ScriptHookV-NX contributors.
+
+Original project: ScriptHookV-NX
+Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
+
+Permission is granted, free of charge, to any person obtaining a copy of the
+original software, documentation and examples in this project (the "Software")
+to use, copy, modify, merge, publish, distribute, sublicense and sell copies of
+the Software, including modified and compiled versions, subject to all of the
+following conditions:
+
+1. Retain this license, the applicable copyright notices and the original
+   project's attribution notice in all copies or substantial portions of the
+   Software that you distribute. Do not remove or misrepresent its origin.
+
+2. Each public repository, repost, release/download page or sales listing that
+   you control and use to distribute or offer the Software or a modified version
+   must visibly credit the original project, its creator and its original source
+   URL. The following credit satisfies this condition:
+
+   "Based on ScriptHookV-NX by MEGATARD (@Geekmaxver).
+    Original source: https://github.com/Geekmaxxer/ScriptHookV-NX"
+
+   Put this credit in the repository README, release/download description or
+   sales listing as applicable. If distribution has no public listing, include
+   the credit in accompanying documentation. A license file hidden inside a
+   download alone does not satisfy the public-page credit requirement.
+   Private use and private modification require no public announcement.
+
+3. Clearly identify your material modifications when distributing a modified
+   version. Do not imply that your version is the original project or that the
+   original author endorses it. You may add your own accurate contribution and
+   copyright notices alongside the original attribution.
+
+4. You may license your own contributions under additional or different terms,
+   but you may not remove these conditions from the original Software or grant
+   recipients permission to distribute it without the required attribution.
+   Selling, charging for access, or bundling the Software does not waive any of
+   these conditions.
+
+This license applies only to material the project authors have the right to
+license. Third-party code, tools, game software, assets, trademarks and other
+separately licensed material retain their own terms. No rights to those works
+are granted by this license. Using the public interface without copying a
+copyrightable portion of the Software does not, by itself, place an independent
+mod under this license.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+This is a custom attribution license, not the MIT License, Apache License or
+an assertion of approval by the Open Source Initiative.
