@@ -8,7 +8,7 @@ and [NOTICE](NOTICE). This is a Public Preview with the limits documented below.
 [Downloads](https://github.com/Geekmaxxer/ScriptHookV-NX/releases) are separate
 runtime, developer SDK and clean source archives. See [release notes](docs/PUBLIC-PREVIEW.md).
 
-**[Developer quickstart](docs/START-HERE.md)** | **[Install mods](docs/INSTALL.md)** ?
+**[Developer quickstart](docs/START-HERE.md)** | **[Install mods](docs/INSTALL.md)** |
 **[Tutorials](docs/TUTORIALS.md)** | **[Tools](docs/TOOLS.md)** | **[NSC modding](docs/NSC-MODDING.md)**
 
 ## For players
