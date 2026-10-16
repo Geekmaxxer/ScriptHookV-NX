@@ -3,8 +3,6 @@
 Native C++ plugins and custom SanScript natives for GTA V on Nintendo Switch.
 Target: title `0100b00b51230000`, build `6e3e9b3af5746e74b615bd981080c9271bc226620`.
 
-Created by MEGATARD (@Geekmaxver; GitHub: Geekmaxxer).
-Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
 Use, editing, redistribution and sale require attribution; see [LICENSE](LICENSE)
 and [NOTICE](NOTICE). This is a Public Preview with the limits documented below.
 [Downloads](https://github.com/Geekmaxxer/ScriptHookV-NX/releases) are separate
