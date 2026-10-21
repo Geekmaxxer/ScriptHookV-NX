@@ -1,0 +1,74 @@
+[
+  {
+    "files": [
+      "common/data/carvariations.meta",
+      "common/data/dlctext.meta",
+      "common/data/handling.meta",
+      "common/data/levels/gta5/vehicles.meta",
+      "common/data/shop_vehicle.meta",
+      "content.xml",
+      "setup2.xml",
+      "switch/levels/gta5/vehicles/vehicles.rpf",
+      "switch/levels/gta5/vehicles/vehicles.rpf::mrrc.nft",
+      "switch/levels/gta5/vehicles/vehicles.rpf::mrrc.ntd",
+      "switch/levels/gta5/vehicles/vehicles.rpf::mrrc_hi.nft"
+    ],
+    "invisible": [],
+    "unsorted": [],
+    "sha256": "1f8948672d128c083f2c85bd0febba567a9aef7605dbdf47a6a5fee5ea53972c",
+    "archive": "mrrc"
+  },
+  {
+    "files": [
+      "common/data/peds.meta",
+      "content.xml",
+      "setup2.xml",
+      "switch/models/cdimages/peds.rpf",
+      "switch/models/cdimages/peds.rpf::zoro.ndd",
+      "switch/models/cdimages/peds.rpf::zoro.nft",
+      "switch/models/cdimages/peds.rpf::zoro.nmt",
+      "switch/models/cdimages/peds.rpf::zoro.ntd"
+    ],
+    "invisible": [],
+    "unsorted": [],
+    "sha256": "cf4c406fd7766bfc06243913dc90e8687091319289b4be68585aaba77670bc32",
+    "archive": "zoro"
+  },
+  {
+    "files": [
+      "common/data/peds.meta",
+      "content.xml",
+      "setup2.xml",
+      "switch/models/cdimages/peds.rpf",
+      "switch/models/cdimages/peds.rpf::misaki.ndd",
+      "switch/models/cdimages/peds.rpf::misaki.nft",
+      "switch/models/cdimages/peds.rpf::misaki.nmt",
+      "switch/models/cdimages/peds.rpf::misaki.ntd"
+    ],
+    "invisible": [],
+    "unsorted": [],
+    "sha256": "e65498dae315296485eeb7ed51613f7478604fafb022b06cc522f2f7d96898fd",
+    "archive": "misaki"
+  },
+  {
+    "files": [
+      "common/data/carcols.meta",
+      "common/data/carvariations.meta",
+      "common/data/dlctext.meta",
+      "common/data/handling.meta",
+      "common/data/levels/gta5/vehicles.meta",
+      "common/data/shop_vehicle.meta",
+      "content.xml",
+      "setup2.xml",
+      "switch/levels/gta5/vehicles/vehicles.rpf",
+      "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye.nft",
+      "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye.ntd",
+      "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye_1.nft",
+      "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye_hi.nft"
+    ],
+    "invisible": [],
+    "unsorted": [],
+    "sha256": "6432bb9d345f7f6b3d33048cb483a3a4489f7b27053190938075e94028cd5f6a",
+    "archive": "torachry300redeye"
+  }
+]

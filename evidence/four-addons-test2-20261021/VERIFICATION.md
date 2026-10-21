@@ -1,0 +1,17 @@
+# Four add-ons — Test 2
+
+The RPF writer emitted directories in insertion order and retained uppercase ASCII names. The engine uses lowercase path segments and binary search. An independent implementation of that lookup against installed Test 1 archives could not reach either `common/data/peds.meta`, or the Chrysler's four mixed-case resource entries. Test 2 uses normalized, ordinal-sorted directory ranges, including nested archives. Every file in all four rebuilt DLCs is reachable under the independent lookup.
+
+The original Cullinan archive passes that lookup. Its precise runtime registration failure is not established locally. Test 2 rebuilds its vehicle definition using the installed Serrano schema/defaults while retaining supported authored settings and offsets, uses the verified `vehshare` texture parent, normalizes color indices, removes unprovided text/shop registrations, and mounts the data as additions. An automatic streaming probe distinguishes absent registration, invalid type, and streaming failure on Switch.
+
+Each vehicle texture allocation falls from 64 MiB to 32 MiB with a 512px cap and mipmaps. Distance thresholds use the installed Serrano values rather than 500 metres for every level. All 14 model, skeleton, and variation resources checked, including the optional Zoro variant, remain byte-identical. All 304 textures retain their identities and formats; 282 mip tails or unchanged pixel ranges are byte-exact, and 22 chains are generated. These counts include both Zoro variants.
+
+The collision stall is not established as fixed. Mesh complexity remains high: the Chrysler's main drawable contains 530,250 triangles across its stored models, and the Cullinan 452,471, compared with 22,425 for the extracted stock Buffalo drawable. Those totals are not a measurement of rendered triangles or a diagnosis. Collision bounds are retained. A separate manual NRO compares normal damage with visual damage disabled for 30 seconds each, records long frames, and restores visible damage. No general physics or executable patch is applied.
+
+The current v1.0.7 menu already supports registered PED hashes beyond its catalog. Its feedback previously treated a seated swap rejection or an 8-second timeout as NOT FOUND. The compiled candidate distinguishes EXIT VEHICLE, LOADING, and LOAD TIMEOUT, with a 20-second request limit. It has 328,378 code bytes, 8,268 static words, and 499 native entries: 484 stock matches and 15 existing bridge entries covered by a freshly generated 304-byte binding manifest. Header/name checks pass. No native was added. The SD archive's other script entries and existing compressed payloads are preserved.
+
+The Mod Porter suite passes 138 checks. The portable Windows tool and clean source archives have complete ZIP readback verification. The six changed source/documentation files are mirrored to the ScriptHookV-NX GitHub checkout; no commit or push is performed. The working menu source is maintained in MG-SwitchMenu SDK, with its complete build snapshot in the candidate output directory.
+
+SD installation backs up all replaced files locally, stages and hashes each replacement, renames it into place, and verifies the installed bytes. The existing update.rpf, runtime modules, gameconfig, and other plugins are preserved. The optional collision diagnostic is packaged separately, not installed automatically.
+
+Switch runtime and appearance checks remain pending. Local format, compilation, lookup, and installation verification do not constitute console verification.

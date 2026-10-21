@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-21",
+  "plugin": "footprints-nx",
+  "tested_package": "Footprints-NX-Switch-Test.zip",
+  "tested_package_sha256": "ed8c22b9fb7f6224ae8073b8c4d3f962bd926c0e22ef5648528614a21de1b9a0",
+  "tested_nro_sha256": "b47db5e43ff827221a92590c5af9b30341f36e6d94ea749f8dfc5910bd702b49",
+  "nro_bytes": 12288,
+  "console_gameplay_passed": true,
+  "checks": {
+    "plugin_loaded": true,
+    "startup_text_displayed": true,
+    "manager_runtime_running": true,
+    "shortcut_activates_effect": true,
+    "flaming_feet_and_footprints_visible": true
+  },
+  "shortcut": "L + R + Y",
+  "target_control_actions": [
+    205,
+    206,
+    203
+  ],
+  "mapped_memory_kib": 36,
+  "label_correction_only": true,
+  "not_covered": [
+    "toggle-off behavior",
+    "character changes",
+    "plugin-stop cleanup",
+    "extended soak",
+    "frame-time and peak-memory profiling"
+  ],
+  "scope": "Gameplay acceptance applies to the original test NRO hash above. The corrected prompt retains identical control IDs and effect logic; rebuilt binaries require separate acceptance."
+}

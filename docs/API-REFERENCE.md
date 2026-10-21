@@ -9,6 +9,7 @@ are rejected by the builder/loader.
 | API | Contract |
 | --- | --- |
 | `SHV_NX_PLUGIN("id", ScriptMain)` | Define an entry with a compile-time checked 1-31 character ID |
+| `SHV_NX_PLUGIN_WITH_STOP("id", ScriptMain, Stop)` | Same ABI 1 descriptor with an optional `void Stop()` export; see lifecycle requirements below |
 | `WAIT(ms)` / `scriptWait(ms)` | Yield from the run entry/callees; zero means next game frame |
 | `ScriptHook::invoke<R>(hash, args...)` | Per-call typed context; zero result on failure, inspect status |
 | `nativeInit`, `nativePush64`, `nativeCall` | Raw encoded argument slots; finish before yielding |
@@ -32,6 +33,46 @@ self-tests and diagnostics. External ABI 1 does **not** supply `scriptRegister`,
 `nativeCallerSelfTest`, `invalidateNativeLookupCache` or `getScriptHookVersion`.
 Use the one scheduled run entry and optional manager native helpers externally.
 Undefined imports fail at link time instead of becoming a promised API.
+
+## Bounded nearby-ped queries
+
+`<shv/world.h>` provides `ScriptHook::World::NearbyPeds<Capacity>` (default 32,
+range 1–64). `Refresh(anchorPed, excludedPedType = -1)` returns whether the query
+succeeded. Read `Size()` and `list[index]`; a failed query clears old handles and
+an out-of-range index returns zero. Revalidate handles before using them.
+
+The helper owns the native's length header and eight-byte element slots and
+validates the complete writable output range. A normal `Ped[]` is not that buffer.
+Results come from the anchor's nearby scanner, not the global pedestrian pool.
+Call from the scheduled plugin entry and bound work between `WAIT(0)` calls.
+This is a header-only helper using existing ABI 1 calls; runtime installation is unchanged.
+
+## Optional cleanup and portable helpers
+
+Lifecycle Test 1 resolves `shvPluginStop` in the owning module's executable text.
+It runs once after the scheduled entry is stopped or returns, and once again if
+a restarted entry later stops. Run bounded cleanup that releases owned entities
+or effects; use ordinary native calls and namespaced file I/O. Do not call WAIT,
+run loading loops or leave an unfinished native call. The runtime diagnoses those
+last two call-state violations; it cannot preempt an infinite callback or recover
+from arbitrary invalid memory access. Keep cleanup idempotent.
+
+Existing ABI 1 plugins without the export remain supported. Older runtimes ignore
+the export. Cleanup does not unmap the NRO or remove its custom-native handlers,
+and is not guaranteed on a crash or process exit.
+
+`<shv/input.h>` provides Nintendo-labeled GTA frontend controls and
+`ScriptHook::Input::ShoulderChord`, defaulting to L + R + Y. Poll once per frame;
+the chord fires once per complete press. These are GTA control actions rather
+than raw Joy-Con button reads. Keyboard behavior needs explicit adaptation.
+
+`<shv/ini.h>` provides `ScriptHook::Util::Ini<Bytes, Entries>` with no heap allocation.
+Call `Load("config.ini")` once, then `Get(section,key,fallback)`,
+`Int(section,key,fallback,min,max)` or `Bool(section,key,fallback)`. Defaults are
+4096 bytes and 64 entries; maximums are 16384 bytes and 128 entries. It accepts
+UTF-8, comments, sections and duplicate keys with last-value precedence. Malformed
+input fails as a whole so callers retain defaults. Quoted/escaped values and
+automatic writes are not supported. File reads use the plugin's existing namespace.
 
 ## Native call status
 

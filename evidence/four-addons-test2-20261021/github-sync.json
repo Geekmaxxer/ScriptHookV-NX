@@ -1,0 +1,26 @@
+[
+  {
+    "path": "desktop/ModPorter.Core/Assets/RpfArchive.cs",
+    "sha256": "9863b7991d7af0fba68c0dd0a5373683015e80aea5c990bcb91f1ab1e936b68d"
+  },
+  {
+    "path": "desktop/ModPorter.Core/Assets/TextureDictionary.cs",
+    "sha256": "a4f4fe6e317f60223163c75f2834f5e602062ba72d55811efd8c3d890fb30ce5"
+  },
+  {
+    "path": "desktop/ModPorter.Core/Assets/TextureResampler.cs",
+    "sha256": "ae5fbfdb533fc895a5639223547ab596abd91ff0008e9a8efd51ba21997333dd"
+  },
+  {
+    "path": "desktop/ModPorter.Tests/AssetTests.cs",
+    "sha256": "e1fb08a5dcb5aa42b0f45075114d19e4e8bc5a7474f2b203f578c63bcf9846cc"
+  },
+  {
+    "path": "desktop/CHANGELOG.md",
+    "sha256": "a52654357370b450f32cb40f16e3e531e99281b7b07e571ed1ed08ab05237cf0"
+  },
+  {
+    "path": "docs/GAME-ASSETS.md",
+    "sha256": "867a0f047d539704913350cabf13276663068456154b1557434dfd6eadf1b30f"
+  }
+]

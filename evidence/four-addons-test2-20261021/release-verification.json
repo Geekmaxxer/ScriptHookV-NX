@@ -1,0 +1,31 @@
+{
+  "archives": [
+    {
+      "file": "Four-Addons-NX-Test2-EASY.zip",
+      "bytes": 1037369686,
+      "sha256": "800d91f534eecd455d4711cf411de3a84b7f259c3ed8cc5236ebbc54d6e7576c"
+    },
+    {
+      "file": "Vehicle-Collision-Isolation-Test2.zip",
+      "bytes": 5089,
+      "sha256": "d56d298166a3929ca3af6ad75eb26e9c187bf721140f0e4c881412a98406e56d"
+    },
+    {
+      "file": "Zoro-No-Bandana-Test2.zip",
+      "bytes": 3241003,
+      "sha256": "e3ba3b0740d783098851086c48f3231aaceb5aae0f9e0c1c0358ff0acc0190b8"
+    }
+  ],
+  "easy_files": {
+    "READ-ME-FIRST.md": "2e9d7761feb6aa1eb462c4c949264af80240bd537f091fa8636464eb718d073a",
+    "switch/gtav-scripthook/bindings/ragemenu.snb": "9e8ab5d0ca323f517826efd8461bbb3f9ca28399c8b869514b15e16870bd2136",
+    "switch/gtav-scripthook/plugins/asset-probe.nro": "ed6504529d61a8f8ed594caa10202197a6262170e357560c6ed9c711d24dbe29",
+    "atmosphere/contents/0100b00b51230000/romfs/update/update2.rpf": "e4734b2f2492bc67686c64ba7af755dd7da013ea5b1390ed3c99205f1874605d",
+    "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/mrrc/dlc.rpf": "1f8948672d128c083f2c85bd0febba567a9aef7605dbdf47a6a5fee5ea53972c",
+    "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_misaki/dlc.rpf": "e65498dae315296485eeb7ed51613f7478604fafb022b06cc522f2f7d96898fd",
+    "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_zoro/dlc.rpf": "cf4c406fd7766bfc06243913dc90e8687091319289b4be68585aaba77670bc32",
+    "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/torachry300redeye/dlc.rpf": "6432bb9d345f7f6b3d33048cb483a3a4489f7b27053190938075e94028cd5f6a"
+  },
+  "menu_pair_generated_from_current_nsc": true,
+  "switch_runtime_verified": false
+}

@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "source_geometry_skeleton_variation_resources_byte_identical": 14,
+  "ped_component_drawables_checked": 21,
+  "textures_checked": 304,
+  "retained_mip_reductions_byte_exact": 16,
+  "unchanged_texture_pixels_byte_exact": 262,
+  "reencoded_textures": 23,
+  "rows": [
+    {
+      "pack": "torachry300redeye",
+      "device": "dlc_torachry300redeye",
+      "registered_files": 7,
+      "resources": 4,
+      "texture_count": 155,
+      "max_texture": 1024,
+      "system_and_graphics_bytes": 153780224
+    },
+    {
+      "pack": "mrrc",
+      "device": "dlc_mrrc",
+      "registered_files": 6,
+      "resources": 3,
+      "texture_count": 48,
+      "max_texture": 1024,
+      "system_and_graphics_bytes": 111165440
+    },
+    {
+      "pack": "zoro",
+      "device": "dlc_nx_zoro",
+      "registered_files": 2,
+      "resources": 4,
+      "texture_count": 31,
+      "max_texture": 1024,
+      "system_and_graphics_bytes": 12142592
+    },
+    {
+      "pack": "misaki",
+      "device": "dlc_nx_misaki",
+      "registered_files": 2,
+      "resources": 4,
+      "texture_count": 39,
+      "max_texture": 1024,
+      "system_and_graphics_bytes": 70319104
+    },
+    {
+      "pack": "zoro-no-bandana",
+      "device": "dlc_nx_zoro",
+      "registered_files": 2,
+      "resources": 4,
+      "texture_count": 31,
+      "max_texture": 1024,
+      "system_and_graphics_bytes": 13346816
+    }
+  ],
+  "switch_runtime_verified": false
+}

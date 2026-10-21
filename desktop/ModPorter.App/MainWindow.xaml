@@ -1,0 +1,576 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="ModPorter.App.MainWindow" Title="ScriptHookV-NX Mod Porter" Width="1200" Height="850" MinWidth="800" MinHeight="500" Background="#10151F" Foreground="{StaticResource Ink}" FontFamily="Segoe UI" FontSize="13" UseLayoutRounding="True" SnapsToDevicePixels="True" AllowDrop="True" PreviewDragOver="Window_DragOver" PreviewDrop="Window_Drop" PreviewKeyDown="Window_PreviewKeyDown" Closing="Window_Closing" TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" WindowStartupLocation="CenterScreen">
+ <Grid x:Name="AppShell" Background="#10151F">
+  <Grid.ColumnDefinitions>
+   <ColumnDefinition Width="176" />
+   <ColumnDefinition />
+  </Grid.ColumnDefinitions>
+  <Grid.RowDefinitions>
+   <RowDefinition Height="Auto" />
+   <RowDefinition />
+   <RowDefinition Height="Auto" />
+  </Grid.RowDefinitions>
+  <Border Grid.RowSpan="3" Background="#131B27" BorderBrush="{StaticResource Line}" BorderThickness="0,0,1,0" />
+  <StackPanel Margin="20,21,12,0">
+   <TextBlock Text="SCRIPTHOOKV-NX" Foreground="{StaticResource Accent}" FontSize="10" FontWeight="Bold" />
+   <TextBlock Text="Mod Porter" FontSize="21" FontWeight="SemiBold" Margin="0,4,0,0" />
+  </StackPanel>
+  <Grid Grid.Column="1" Margin="24,20,24,18" x:Name="PageHeader" MaxWidth="1280" HorizontalAlignment="Stretch">
+   <Grid.ColumnDefinitions>
+    <ColumnDefinition />
+    <ColumnDefinition Width="Auto" />
+   </Grid.ColumnDefinitions>
+   <StackPanel>
+    <TextBlock x:Name="PageTitle" Text="Import a mod" FontSize="23" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+    <TextBlock x:Name="PageSubtitle" Text="Open source code, a ZIP, or a compiled plugin." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,4,20,0" />
+   </StackPanel>
+   <Border Grid.Column="1" Background="#1B2634" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="4" Padding="10,5" VerticalAlignment="Top" Margin="0,5,0,0" x:Name="PreviewBadge">
+    <TextBlock Text="0.4.0 · Preview" FontSize="11" Foreground="{StaticResource Muted}" />
+   </Border>
+  </Grid>
+  <TabControl x:Name="Tabs" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource NavigationTabs}" SelectionChanged="Navigation_SelectionChanged">
+   <TabItem Header="Import" Tag="1" Style="{StaticResource NavigationItem}" Margin="0,0,0,4">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,6,0">
+     <StackPanel>
+      <Border Style="{StaticResource Card}" BorderBrush="{StaticResource Line}" Padding="20">
+       <StackPanel>
+        <TextBlock Text="Source mod or compiled plugin" FontSize="17" FontWeight="SemiBold" />
+        <TextBlock Text="Drop a folder or file here, or browse below." Foreground="{StaticResource Muted}" Margin="0,9,0,22" />
+        <TextBlock Text="Mod file or source folder" Style="{StaticResource FieldLabel}" />
+        <Grid>
+         <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+         </Grid.ColumnDefinitions>
+         <TextBox x:Name="InputPath" AutomationProperties.AutomationId="InputPath" AutomationProperties.Name="Mod file or source folder" ToolTip="Source folder, ZIP, C++ file, ASI, DLL or NRO" Tag="Select a file or source folder" TextChanged="InputPath_Changed" />
+         <Button Grid.Column="1" Content="Browse file…" Click="ChooseInput_Click" Style="{StaticResource Quiet}" Margin="8,0,8,0" MinWidth="70" />
+         <Button Grid.Column="2" Content="Folder…" Click="ChooseFolder_Click" Style="{StaticResource Quiet}" Margin="0" MinWidth="80" />
+        </Grid>
+        <WrapPanel Margin="0,14,0,0">
+         <Button x:Name="AnalyzeButton" AutomationProperties.AutomationId="AnalyzeButton" Content="Analyze mod" Style="{StaticResource Primary}" Click="Analyze_Click" ToolTip="Analyze this input (Ctrl+Enter)" IsEnabled="False" />
+         <Button Content="Open project…" Click="OpenProject_Click" Style="{StaticResource Quiet}" ToolTip="Open an existing project (Ctrl+Shift+O)" />
+        </WrapPanel>
+        <TextBlock Text="C++ source can become an NRO project. ASI and DLL files receive a compatibility report." Style="{StaticResource Hint}" Margin="0,6,0,0" />
+       </StackPanel>
+      </Border>
+      <Border Padding="0,18,0,10" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Margin="0,0,0,8">
+       <StackPanel>
+        <TextBlock Text="Examples" Style="{StaticResource SectionTitle}" />
+        <TextBlock Text="Included source you can inspect and build." Foreground="{StaticResource Muted}" FontSize="13" Margin="0,0,0,14" />
+        <WrapPanel>
+         <Button Content="C++ starter" Click="Example_Click" Style="{StaticResource Quiet}" />
+         <Button Content="Footprints" Click="RealExample_Click" Style="{StaticResource Quiet}" />
+        </WrapPanel>
+       </StackPanel>
+      </Border>
+      <Border Padding="0,18,0,10" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Margin="0,0,0,8">
+       <StackPanel>
+        <TextBlock Text="Other tasks" Style="{StaticResource SectionTitle}" />
+        <TextBlock Text="" Foreground="{StaticResource Muted}" FontSize="13" Margin="0,0,0,14" Visibility="Collapsed" />
+        <WrapPanel>
+         <Button Content="Prepare game assets" Click="GoAssets_Click" Style="{StaticResource Quiet}" />
+         <Button Content="Configure build tools" Click="GoTools_Click" Style="{StaticResource Quiet}" ToolTip="Python, devkitPro and SDK paths for NRO builds" />
+        </WrapPanel>
+       </StackPanel>
+      </Border>
+     </StackPanel>
+    </ScrollViewer>
+   </TabItem>
+   <TabItem Header="Findings" Tag="2" Style="{StaticResource NavigationItem}" Margin="0,0,0,4">
+    <Grid>
+     <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="0" />
+      <RowDefinition Height="Auto" />
+     </Grid.RowDefinitions>
+     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0" x:Name="ReviewScroll">
+      <StackPanel x:Name="ReviewBody">
+       <Border Style="{StaticResource Card}" Padding="18" x:Name="ReviewCard">
+        <StackPanel>
+         <TextBlock x:Name="ReviewInput" Text="No input selected" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,0,6" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+         <TextBlock x:Name="ReviewTitle" Text="No analysis" FontSize="17" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+         <TextBlock x:Name="ReviewSummary" Text="Import a mod to view its findings." Foreground="{StaticResource Muted}" FontSize="13" Margin="0,7,0,0" />
+        </StackPanel>
+       </Border>
+       <Grid x:Name="ReviewPanels">
+        <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="3*" />
+         <ColumnDefinition Width="16" />
+         <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="FindingsPane" Height="380">
+         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+          <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+         <TextBlock Text="Findings" Style="{StaticResource FieldLabel}" />
+         <Grid Grid.Row="1" Margin="0,0,0,10">
+          <Grid.ColumnDefinitions>
+           <ColumnDefinition />
+           <ColumnDefinition Width="120" />
+          </Grid.ColumnDefinitions>
+          <TextBox x:Name="FindingFilter" AutomationProperties.Name="Filter findings" TextChanged="FindingFilter_TextChanged" ToolTip="Search messages, codes, or filenames (Ctrl+F)" Margin="0,0,8,0" Tag="Search findings" />
+          <ComboBox x:Name="SeverityFilter" Grid.Column="1" SelectedIndex="0" SelectionChanged="SeverityFilter_Changed" AutomationProperties.Name="Finding severity">
+           <ComboBoxItem Content="All findings" />
+           <ComboBoxItem Content="Required" />
+           <ComboBoxItem Content="Review" />
+           <ComboBoxItem Content="Info" />
+          </ComboBox>
+         </Grid>
+         <Grid Grid.Row="2">
+          <ListBox x:Name="FindingsList" SelectionChanged="Findings_SelectionChanged" MinHeight="120">
+           <ListBox.ItemTemplate>
+            <DataTemplate>
+             <StackPanel>
+              <TextBlock Text="{Binding Code}" FontWeight="SemiBold" Foreground="{StaticResource Muted}" FontSize="12" x:Name="FindingCode" />
+              <TextBlock Text="{Binding Message}" Margin="0,5,0,7" FontSize="13" />
+              <TextBlock Foreground="{StaticResource Muted}" FontSize="11">
+               <Run Text="{Binding Severity}" />
+               <Run Text=" · " />
+               <Run Text="{Binding File}" />
+               <Run Text=":" />
+               <Run Text="{Binding Line}" />
+              </TextBlock>
+             </StackPanel>
+             <DataTemplate.Triggers>
+              <DataTrigger Binding="{Binding Severity}" Value="Blocker">
+               <Setter TargetName="FindingCode" Property="Foreground" Value="#F2A49A" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Severity}" Value="Review">
+               <Setter TargetName="FindingCode" Property="Foreground" Value="#DFC084" />
+              </DataTrigger>
+             </DataTemplate.Triggers>
+            </DataTemplate>
+           </ListBox.ItemTemplate>
+          </ListBox>
+          <TextBlock x:Name="FindingsEmpty" Text="Import a mod to see findings." Foreground="{StaticResource Muted}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" IsHitTestVisible="False" />
+         </Grid>
+         <Border Grid.Row="3" Style="{StaticResource Card}" Padding="14" Margin="0,12,0,0">
+          <StackPanel>
+           <TextBlock Text="Suggested action" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,5" />
+           <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="115">
+            <TextBlock x:Name="FindingAction" Text="Select a finding to view its next step." Style="{StaticResource Hint}" />
+           </ScrollViewer>
+          </StackPanel>
+         </Border>
+        </Grid>
+        <Grid Grid.Column="2" x:Name="SourceColumn" Height="380">
+         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+          <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+         <TextBlock Text="Source files to compile" Style="{StaticResource FieldLabel}" />
+         <ListBox x:Name="SourceList" Grid.Row="1" MinHeight="120">
+          <ListBox.ItemTemplate>
+           <DataTemplate>
+            <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}" Checked="SourceSelection_Changed" Unchecked="SourceSelection_Changed" Margin="0,2">
+             <TextBlock Text="{Binding Path}" FontSize="12" MaxHeight="38" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}" />
+            </CheckBox>
+           </DataTemplate>
+          </ListBox.ItemTemplate>
+         </ListBox>
+         <StackPanel Grid.Row="2" Margin="0,12,0,0">
+          <TextBlock Text="Select the translation units to compile. Headers are included automatically." Style="{StaticResource Hint}" />
+          <Button Content="Analyze selection" Click="Reanalyze_Click" Style="{StaticResource Quiet}" HorizontalAlignment="Left" Margin="0,12,0,0" />
+         </StackPanel>
+        </Grid>
+        <Grid Grid.Column="2" x:Name="BinaryColumn" Visibility="Collapsed" Height="380">
+         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+         </Grid.RowDefinitions>
+         <TextBlock Text="Executable details &amp; imports" Style="{StaticResource FieldLabel}" />
+         <TextBox x:Name="BinaryDetails" Grid.Row="1" IsReadOnly="True" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" />
+        </Grid>
+       </Grid>
+      </StackPanel>
+     </ScrollViewer>
+     <WrapPanel Grid.Row="2" Margin="0,16,0,0">
+      <Button x:Name="ReviewNextButton" Content="Prepare project →" Style="{StaticResource Primary}" Click="GoProject_Click" IsEnabled="False" />
+      <Button Content="Export report…" Click="ExportReport_Click" Style="{StaticResource Quiet}" />
+     </WrapPanel>
+    </Grid>
+   </TabItem>
+   <TabItem Header="Project &amp; build" Tag="3" Style="{StaticResource NavigationItem}" Margin="0,0,0,4">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0" x:Name="ProjectScroll">
+     <Grid x:Name="ProjectLayout">
+      <Grid.RowDefinitions>
+       <RowDefinition Height="Auto" />
+       <RowDefinition Height="Auto" />
+       <RowDefinition Height="Auto" />
+       <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Expander x:Name="ProjectSetup" Header="Project setup" IsExpanded="True" Grid.Row="0">
+       <Border Style="{StaticResource Card}" Margin="0,12,0,4" Padding="18">
+        <StackPanel>
+         <Grid x:Name="ProjectFields">
+          <Grid.ColumnDefinitions>
+           <ColumnDefinition Width="150" />
+           <ColumnDefinition Width="14" />
+           <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+           <RowDefinition Height="Auto" />
+           <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <StackPanel x:Name="PluginIdField">
+           <TextBlock Text="Plugin ID" Style="{StaticResource FieldLabel}" />
+           <TextBox x:Name="PluginId" Text="my-mod" AutomationProperties.AutomationId="PluginId" AutomationProperties.Name="Plugin ID" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+          </StackPanel>
+          <StackPanel Grid.Column="2" x:Name="ProjectFolderField">
+           <TextBlock Text="New project folder" Style="{StaticResource FieldLabel}" />
+           <Grid>
+            <Grid.ColumnDefinitions>
+             <ColumnDefinition />
+             <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="OutputPath" AutomationProperties.Name="New project folder" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Tag="Choose a new project folder" />
+            <Button Grid.Column="1" Content="Browse…" Click="OutputBrowse_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+           </Grid>
+          </StackPanel>
+         </Grid>
+         <WrapPanel Margin="0,10,0,10">
+          <CheckBox x:Name="AdaptDll" IsChecked="True" Content="Adapt standard DllMain" ToolTip="Replace standard PC plugin registration with a Switch entry point" />
+          <CheckBox x:Name="AdaptSleep" Content="Replace Sleep with WAIT" ToolTip="Use only for Sleep calls inside ScriptMain or its callees" />
+         </WrapPanel>
+         <WrapPanel>
+          <Button x:Name="CreateButton" Content="Create copied project" Click="CreateProject_Click" Style="{StaticResource Primary}" IsEnabled="False" />
+          <Button Content="Open existing project…" Click="OpenProject_Click" Style="{StaticResource Quiet}" />
+         </WrapPanel>
+         <TextBlock Text="The project is a copy. Your original source is preserved." Style="{StaticResource Hint}" />
+        </StackPanel>
+       </Border>
+      </Expander>
+      <StackPanel Grid.Row="1" x:Name="ProjectActions">
+       <TextBlock x:Name="ProjectLabel" Text="No project open" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,3,0,12" />
+       <WrapPanel>
+        <Button x:Name="CheckCppButton" Content="Check C++" Click="CheckCpp_Click" Style="{StaticResource Quiet}" IsEnabled="False" />
+        <Button x:Name="BuildNroButton" AutomationProperties.AutomationId="BuildNroButton" Content="Build NRO" Click="BuildNro_Click" IsEnabled="False" />
+        <Button x:Name="BuildButton" AutomationProperties.AutomationId="BuildButton" Content="Build NRO + Install ZIP" Click="Build_Click" Style="{StaticResource Primary}" IsEnabled="False" />
+       </WrapPanel>
+      </StackPanel>
+      <Grid Grid.Row="2" Margin="0,12,0,0" x:Name="BuildOutputPanel" Height="240">
+       <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+       </Grid.RowDefinitions>
+       <Grid Margin="0,0,0,8">
+        <Grid.ColumnDefinitions>
+         <ColumnDefinition />
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Output" Foreground="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" />
+        <CheckBox x:Name="DetailedLog" Grid.Column="1" Content="Full log" Margin="0,0,12,0" Checked="DetailedLog_Changed" Unchecked="DetailedLog_Changed" />
+        <Button Grid.Column="2" Content="Copy" Click="CopyBuildLog_Click" Style="{StaticResource Quiet}" Padding="10,3" MinHeight="26" Margin="0" />
+       </Grid>
+       <TextBox Grid.Row="1" x:Name="BuildLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Text="Create or open a project to check and build its source." />
+      </Grid>
+      <StackPanel Grid.Row="3" x:Name="ProjectFooter">
+       <TextBlock x:Name="BuildSummary" Text="NRO builds require Python, devkitA64 and switch-tools." Style="{StaticResource Hint}" Margin="0,10,0,12" />
+       <WrapPanel>
+        <Button x:Name="OpenBuildButton" Content="Open build output" Click="OpenBuild_Click" Style="{StaticResource Quiet}" IsEnabled="False" />
+        <Button x:Name="OpenProjectFolderButton" Content="Open project folder" Click="OpenProjectFolder_Click" Style="{StaticResource Quiet}" IsEnabled="False" />
+       </WrapPanel>
+       <Expander Header="SD installation" Margin="0,6,0,0" x:Name="SdInstallation">
+        <StackPanel Margin="0,12,0,0">
+         <WrapPanel>
+          <Button x:Name="InstallNroButton" Content="Install built NRO to SD…" Click="InstallNro_Click" IsEnabled="False" />
+          <Button Content="Restore previous install…" Click="RestoreInstall_Click" Style="{StaticResource Quiet}" />
+         </WrapPanel>
+         <TextBlock Text="Close GTA first. New plugins use Manual startup; installation keeps a verified backup." Style="{StaticResource Hint}" />
+        </StackPanel>
+       </Expander>
+      </StackPanel>
+     </Grid>
+    </ScrollViewer>
+   </TabItem>
+   <TabItem Header="Tools" Tag="4" Style="{StaticResource NavigationItem}" Margin="0,20,0,4">
+    <TabControl x:Name="ToolTabs" SelectedIndex="0" Background="Transparent" BorderThickness="0" Padding="0,16,0,0">
+     <TabItem Header="Build tools">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,6,0">
+       <StackPanel>
+        <Border Style="{StaticResource Card}" Padding="0" Background="Transparent" BorderThickness="0">
+         <StackPanel>
+          <TextBlock Text="Build toolchain" Style="{StaticResource SectionTitle}" />
+          <TextBlock Text="Required for NRO builds. Paths are saved on this PC." Foreground="{StaticResource Muted}" FontSize="13" Margin="0,0,0,12" />
+          <Grid>
+           <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+           </Grid.ColumnDefinitions>
+           <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+           </Grid.RowDefinitions>
+           <TextBlock Text="ScriptHookV-NX SDK folder" Style="{StaticResource FieldLabel}" />
+           <TextBox Grid.Row="1" x:Name="SdkPath" AutomationProperties.AutomationId="SdkPath" AutomationProperties.Name="ScriptHookV-NX SDK folder" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+           <Button Grid.Row="1" Grid.Column="1" Content="Browse…" Click="SdkBrowse_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+           <TextBlock Grid.Row="2" Text="Python executable · 3.10 or newer" Style="{StaticResource FieldLabel}" Margin="0,14,0,7" />
+           <TextBox Grid.Row="3" x:Name="PythonPath" Text="python" AutomationProperties.Name="Python executable" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+           <Button Grid.Row="3" Grid.Column="1" Content="Browse…" Click="PythonBrowse_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+           <TextBlock Grid.Row="4" Text="devkitPro folder · contains devkitA64 and tools" Style="{StaticResource FieldLabel}" Margin="0,14,0,7" />
+           <TextBox Grid.Row="5" x:Name="DevkitPath" AutomationProperties.Name="devkitPro folder" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+           <Button Grid.Row="5" Grid.Column="1" Content="Browse…" Click="DevkitBrowse_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+          </Grid>
+          <WrapPanel Margin="0,18,0,5">
+           <Button Content="Check tools" Click="Doctor_Click" Style="{StaticResource Primary}" />
+           <Button Content="Get Python ↗" Click="PythonLink_Click" Style="{StaticResource Quiet}" />
+           <Button Content="Get devkitPro ↗" Click="DevkitLink_Click" Style="{StaticResource Quiet}" />
+          </WrapPanel>
+          <TextBlock x:Name="ToolchainSummary" Text="Not checked" Foreground="{StaticResource Muted}" Margin="0,10,0,12" FontSize="13" />
+          <Expander Header="Tool details">
+           <TextBlock x:Name="DoctorResult" Text="Run a check before your first NRO build." Style="{StaticResource Hint}" Margin="0,3,0,0" />
+          </Expander>
+         </StackPanel>
+        </Border>
+       </StackPanel>
+      </ScrollViewer>
+     </TabItem>
+     <TabItem Header="Native lookup">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0" x:Name="NativeScroll">
+       <Grid>
+        <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Search by name or exact hash in the matched SDK." Style="{StaticResource Hint}" Margin="0,0,0,14" />
+        <Grid Grid.Row="1">
+         <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto" />
+         </Grid.ColumnDefinitions>
+         <TextBox x:Name="NativeQuery" Text="PLAYER_PED_ID" AutomationProperties.Name="Native name or hash" KeyDown="NativeQuery_KeyDown" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Tag="Native name or hash" />
+         <Button Grid.Column="1" Content="Search" Click="SearchNative_Click" Margin="8,0,0,0" />
+        </Grid>
+        <TextBox x:Name="NativeResults" VerticalContentAlignment="Top" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,14,0,0" FontFamily="Consolas" FontSize="12" Grid.Row="2" Height="300" />
+       </Grid>
+      </ScrollViewer>
+     </TabItem>
+     <TabItem Header="Diagnostics">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0" x:Name="DiagnosticsScroll">
+       <Grid>
+        <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <WrapPanel>
+         <Button Content="Import Switch diagnostic report…" Click="ImportRuntimeReport_Click" Style="{StaticResource Quiet}" />
+        </WrapPanel>
+        <TextBox x:Name="DiagnosticReport" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Text="Import a loader, runtime, or mod status report from your SD card." Margin="0,8,0,0" Height="300" />
+       </Grid>
+      </ScrollViewer>
+     </TabItem>
+    </TabControl>
+   </TabItem>
+   <TabItem Header="Game assets" Tag="5" Style="{StaticResource NavigationItem}" Margin="0,0,0,4">
+    <ScrollViewer x:Name="AssetPageScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0">
+     <Grid>
+      <Grid.RowDefinitions>
+       <RowDefinition Height="Auto" />
+       <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <TabControl x:Name="AssetTabs" SelectedIndex="0" Background="Transparent" BorderThickness="0" Padding="0,16,0,0">
+       <TabItem Header="Prepare assets">
+        <Grid>
+         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+         <StackPanel>
+          <Border Style="{StaticResource Card}" Padding="0" Background="Transparent" BorderThickness="0" Margin="0,4,0,14">
+           <StackPanel>
+            <TextBlock Text="Prepare resources" Style="{StaticResource SectionTitle}" />
+            <TextBlock Text="Cars, PEDs, clothing and weapons. Legacy formats." Foreground="{StaticResource Muted}" FontSize="13" Margin="0,0,0,12" />
+            <TextBlock Text="Input assets" Style="{StaticResource FieldLabel}" />
+            <Grid>
+             <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+             </Grid.ColumnDefinitions>
+             <TextBox x:Name="AssetInputPath" AutomationProperties.Name="Input assets" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Tag="Select assets or a DLC archive" />
+             <Button Grid.Column="1" Content="Browse file…" Click="AssetFile_Click" Style="{StaticResource Quiet}" Margin="8,0,8,0" MinWidth="70" />
+             <Button Grid.Column="2" Content="Folder…" Click="AssetFolder_Click" Style="{StaticResource Quiet}" Margin="0" MinWidth="80" />
+            </Grid>
+            <Grid Margin="0,16,0,16">
+             <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="16" />
+              <ColumnDefinition />
+             </Grid.ColumnDefinitions>
+             <StackPanel>
+              <TextBlock Text="Asset type" Style="{StaticResource FieldLabel}" />
+              <ComboBox x:Name="AssetKindCombo" SelectedIndex="0" AutomationProperties.Name="Asset type">
+               <ComboBoxItem Content="Auto" />
+               <ComboBoxItem Content="Vehicles" />
+               <ComboBoxItem Content="Weapons" />
+               <ComboBoxItem Content="Clothes" />
+               <ComboBoxItem Content="Peds" />
+              </ComboBox>
+             </StackPanel>
+             <StackPanel Grid.Column="2">
+              <TextBlock Text="Maximum texture size" Style="{StaticResource FieldLabel}" />
+              <ComboBox x:Name="TextureCapCombo" SelectedIndex="3" AutomationProperties.Name="Maximum texture size">
+               <ComboBoxItem Content="Off" />
+               <ComboBoxItem Content="256" />
+               <ComboBoxItem Content="512" />
+               <ComboBoxItem Content="1024" />
+               <ComboBoxItem Content="2048" />
+               <ComboBoxItem Content="4096" />
+              </ComboBox>
+             </StackPanel>
+            </Grid>
+            <TextBlock Text="New output folder" Style="{StaticResource FieldLabel}" />
+            <Grid>
+             <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+             </Grid.ColumnDefinitions>
+             <TextBox x:Name="AssetOutputPath" AutomationProperties.Name="New asset output folder" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Tag="Choose an output folder" />
+             <Button Grid.Column="1" Content="Browse…" Click="AssetOutput_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+            </Grid>
+            <TextBlock Text="Original files stay intact. Compatible rigs and add-on metadata are still required." Style="{StaticResource Hint}" Margin="0,10,0,0" />
+           </StackPanel>
+          </Border>
+          <Expander Header="Supported formats and limitations">
+           <TextBlock Margin="0,10,8,0" Text="Legacy resource naming, explicit platform paths and supported texture reduction. It preserves mesh and rig data. Missing registration metadata, incompatible rigs, Enhanced formats and encrypted archives require further work." Style="{StaticResource Hint}" />
+          </Expander>
+         </StackPanel>
+         <WrapPanel Margin="0,10,0,0" Grid.Row="1">
+          <Button Content="Inspect assets" Click="AnalyzeAssets_Click" />
+          <Button x:Name="ConvertAssetsButton" Content="Prepare assets + ZIP" Style="{StaticResource Primary}" Click="ConvertAssets_Click" />
+         </WrapPanel>
+        </Grid>
+       </TabItem>
+       <TabItem Header="Add to game">
+        <Grid>
+         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+         <StackPanel>
+          <Border Style="{StaticResource Card}" Padding="0" Background="Transparent" BorderThickness="0" Margin="0,4,0,14">
+           <StackPanel>
+            <TextBlock Text="Target game files" Style="{StaticResource SectionTitle}" />
+            <TextBlock Text="Select the files from the installation you intend to update." Foreground="{StaticResource Muted}" FontSize="13" Margin="0,0,0,12" />
+            <TextBlock Text="Prepared DLC archive or replacement asset" Style="{StaticResource FieldLabel}" />
+            <Grid>
+             <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+             </Grid.ColumnDefinitions>
+             <TextBox x:Name="PreparedAssetPath" AutomationProperties.Name="Prepared DLC or replacement asset" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Tag="Select the converted asset or dlc.rpf" />
+             <Button Grid.Column="1" Content="Browse…" Click="PreparedAsset_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+            </Grid>
+            <TextBlock Text="Current game archive, SD root or game folder" Style="{StaticResource FieldLabel}" Margin="0,14,0,7" />
+            <Grid>
+             <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+             </Grid.ColumnDefinitions>
+             <TextBox x:Name="CurrentGamePath" AutomationProperties.Name="Current archive or game folder" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" Tag="Select the current RPF, SD drive, or game folder" />
+             <Button Grid.Column="1" Content="RPF…" Click="CurrentArchive_Click" Style="{StaticResource Quiet}" Margin="8,0,8,0" />
+             <Button Grid.Column="2" Content="SD / folder…" Click="CurrentGameFolder_Click" Style="{StaticResource Quiet}" Margin="0" />
+            </Grid>
+            <WrapPanel Margin="0,22,0,18">
+             <RadioButton x:Name="AddDlcMode" GroupName="GameAction" Content="Add a DLC pack" IsChecked="True" Checked="GameAction_Changed" />
+             <RadioButton x:Name="ReplaceAssetMode" GroupName="GameAction" Content="Replace an existing asset" Checked="GameAction_Changed" />
+            </WrapPanel>
+            <StackPanel x:Name="DlcGameControls">
+             <TextBlock Text="DLC folder ID" Style="{StaticResource FieldLabel}" />
+             <TextBox x:Name="DlcId" Text="my-addon" MaxWidth="240" HorizontalAlignment="Left" MinWidth="180" AutomationProperties.Name="DLC folder ID" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+             <TextBlock Text="Existing DLC registrations are retained. Originals stay unchanged." Style="{StaticResource Hint}" />
+             <Expander Header="Advanced: archive import files" Margin="0,14,0,0">
+              <StackPanel Margin="0,10,0,0">
+               <TextBlock Text="Already have an extracted dlclist.xml? Create a smaller archive-import package using the DLC ID above." Style="{StaticResource Hint}" Margin="0,0,0,10" />
+               <Button Content="Prepare DLC registration…" Click="PrepareDlc_Click" Style="{StaticResource Quiet}" HorizontalAlignment="Left" />
+              </StackPanel>
+             </Expander>
+            </StackPanel>
+            <StackPanel x:Name="ReplacementControls" Visibility="Collapsed">
+             <TextBlock Text="Existing archive entry" Style="{StaticResource FieldLabel}" />
+             <Grid>
+              <Grid.ColumnDefinitions>
+               <ColumnDefinition />
+               <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <ComboBox x:Name="ArchiveEntryPath" IsEditable="True" AutomationProperties.Name="Exact archive entry path" />
+              <Button x:Name="FindArchiveEntryButton" Grid.Column="1" Content="Find matching entry" Click="ListArchiveEntries_Click" Margin="8,0,0,0" />
+             </Grid>
+             <TextBlock Text="Only the selected entry changes. For nested RPFs, select the extracted containing archive." Style="{StaticResource Hint}" />
+            </StackPanel>
+           </StackPanel>
+          </Border>
+         </StackPanel>
+         <WrapPanel Grid.Row="1" Margin="0,14,0,0">
+          <WrapPanel Margin="0" x:Name="DlcFooterActions">
+           <Button x:Name="UpdateGameDlcButton" Content="Build updated game files…" Style="{StaticResource Primary}" Click="UpdateGameDlc_Click" />
+          </WrapPanel>
+          <WrapPanel Margin="0" x:Name="ReplacementFooterActions" Visibility="Collapsed">
+           <Button Content="Build archive with replacement…" Style="{StaticResource Primary}" Click="ReplaceGameAsset_Click" />
+          </WrapPanel>
+         </WrapPanel>
+        </Grid>
+       </TabItem>
+       <TabItem Header="Report">
+        <Grid>
+         <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+         <Grid>
+          <Grid.ColumnDefinitions>
+           <ColumnDefinition />
+           <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBlock x:Name="AssetReportSummary" Text="No asset operation yet." Foreground="{StaticResource Muted}" FontSize="13" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+          <Button Grid.Column="1" Content="Add prepared files to game?" Click="UsePreparedAssets_Click" Style="{StaticResource Quiet}" Margin="12,0,0,0" />
+         </Grid>
+         <TextBox x:Name="AssetLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Text="Inspect or prepare assets to see the report." Margin="0,12,0,0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" Height="300" />
+        </Grid>
+       </TabItem>
+      </TabControl>
+      <Grid Grid.Row="1" Margin="0,12,0,0" x:Name="AssetOutputFooter">
+       <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+       </Grid.ColumnDefinitions>
+       <TextBlock x:Name="AssetOutputLabel" Text="No output prepared" Foreground="{StaticResource Muted}" FontSize="12" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" VerticalAlignment="Center" />
+       <Button x:Name="OpenAssetOutputButton" Grid.Column="1" Content="Open output" Click="OpenAssets_Click" Style="{StaticResource Quiet}" Margin="12,0,0,0" IsEnabled="False" VerticalAlignment="Top" />
+      </Grid>
+     </Grid>
+    </ScrollViewer>
+   </TabItem>
+  </TabControl>
+  <StackPanel Grid.Row="2" Margin="20,12,12,15">
+   <TextBlock Text="MEGATARD" Foreground="{StaticResource Muted}" FontSize="11" FontWeight="SemiBold" />
+   <TextBlock Text="@Geekmaxxer" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,4,0,0" />
+  </StackPanel>
+  <Border Grid.Row="2" Grid.Column="1" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="24,10,24,10" x:Name="StatusFooter" MinHeight="52">
+   <Grid MaxWidth="1280">
+    <Grid.ColumnDefinitions>
+     <ColumnDefinition />
+     <ColumnDefinition Width="Auto" />
+     <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <TextBlock x:Name="StatusText" Text="Ready · Choose a mod to begin" Foreground="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxHeight="38" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" TextWrapping="NoWrap" />
+    <ProgressBar x:Name="BusyBar" Grid.Column="1" Height="3" IsIndeterminate="True" Visibility="Collapsed" Foreground="{StaticResource Accent}" Background="#263448" Margin="12,0" Width="100" />
+    <Button x:Name="CancelButton" Grid.Column="2" Content="Cancel" Click="Cancel_Click" Visibility="Collapsed" Padding="12,5" MinHeight="30" Margin="0" ToolTip="Cancel the current operation (Esc)" />
+   </Grid>
+  </Border>
+ </Grid>
+</Window>

@@ -1,0 +1,58 @@
+{
+  "version": "0.1.0",
+  "regression_checks_passed": 63,
+  "regression_checks_failed": 0,
+  "desktop_workflow_checks_passed": 10,
+  "desktop_workflow_checks_failed": 0,
+  "real_aarch64_builds": true,
+  "nested_headers_and_multiple_translation_units": true,
+  "extracted_windows_package_tested": true,
+  "extracted_source_package_tested": true,
+  "self_contained_publish": true,
+  "dotnet_root_override_test_passed": true,
+  "clean_repo_export_links_checked": 73,
+  "source_sha256": {
+    "desktop/CHANGELOG.md": "ed4a40b195419a6ddc411f630bd7529a168944f5fbf98f8ed80feb08a9a653bd",
+    "desktop/Directory.Build.props": "b5c87211bbef41a9dfb2f788221babe806d847dd7446098be83e4f7e91d18cd3",
+    "desktop/package.py": "6b2e8013089153db4e8242cd94e9769f58c6a1c7227dc03493a12f1ded18256b",
+    "desktop/README.md": "67dcc18b57963686c8e626d5b297b8f8f3f2b8eed9ced681907984f32d08c9fc",
+    "desktop/ModPorter.App/app.manifest": "bcb251237405a9ac72d746627c3e287d1b61284a5e2ad8995a3d859098966990",
+    "desktop/ModPorter.App/App.xaml": "393ffc8cce195ed2fbe72aa26eb7128ccf69dc9a803ba0781fb03b65d607f878",
+    "desktop/ModPorter.App/App.xaml.cs": "287daac623d49db2a8b46cec6a5ee7bb2592e0d52daf9d451d2c075c0b97f761",
+    "desktop/ModPorter.App/MainWindow.xaml": "fe4b9dec7843c32db56b8bcf658f71edb637ca9dc9ad4d311c6c561e87850d69",
+    "desktop/ModPorter.App/MainWindow.xaml.cs": "f0913e803bed967b6e1cec1dc8fbfbcca3a0efa9766763fb89f15104272eb112",
+    "desktop/ModPorter.App/ModPorter.App.csproj": "35eeddee0cfb88ced6e5adb77c0f6a00898984ee97f4c972dab5609c99374d30",
+    "desktop/ModPorter.App/UiSmokeTest.cs": "6f80b82f7046bcb7d0df7108a2fd96a786a574dae6f6a63f6da16edf2e7cf05e",
+    "desktop/ModPorter.Cli/ModPorter.Cli.csproj": "73d901af9ec2e13bf1921fa9452d1b0214ccd4ffa39968aaa82d12eecbd1bbf1",
+    "desktop/ModPorter.Cli/Program.cs": "a8a2f43aa0cdd27e6024a253452da761a2b616a07025a35344053343e8f53b95",
+    "desktop/ModPorter.Core/AsiAnalyzer.cs": "334fcf3698a62097a673cd5df1260b4818034ac06169ce80d032ee04bc644af0",
+    "desktop/ModPorter.Core/BuildService.cs": "0e358fcc54222fd52294a5245f98454c50dc2610cb736a37071fa647988653c8",
+    "desktop/ModPorter.Core/CppLexer.cs": "2adea38ca70a60adeb5cd939f793cab1c120f2415fbce7321d3749a821f877c7",
+    "desktop/ModPorter.Core/InputLoader.cs": "2e68f5a0a606ca7a6400bc55111692293be8feb9c4ee5bf0f3bb5036d07d1672",
+    "desktop/ModPorter.Core/Models.cs": "4ce52c8e6f8c70760462cb7891e3fad62ca32b23ae1305d8b0cc9cfff736211d",
+    "desktop/ModPorter.Core/ModPorter.Core.csproj": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3",
+    "desktop/ModPorter.Core/NativeCatalog.cs": "736ce85530b3abcf4719df4cba836e81bef91320c8fefd6fc377aaa563f76057",
+    "desktop/ModPorter.Core/NroInspector.cs": "6ddaadea44cf57d2328415b0a5dde24ae600ab807746bbcc63a254a88452adbc",
+    "desktop/ModPorter.Core/PortProject.cs": "125f10ad958e1803f1af1703fbba4409f3a73085306518a55302e14d23b7a75d",
+    "desktop/ModPorter.Core/SourceAnalyzer.cs": "118e80c3ae08c499dae712b2db83152cd59113149ff5c6d55fa3c821f4140a2e",
+    "desktop/ModPorter.Tests/ModPorter.Tests.csproj": "930e540dd7603fbe983754981df6b0c33b53f071ca3bc77c3a2f4dc2e022dac0",
+    "desktop/ModPorter.Tests/Program.cs": "f8690ff3479d56dabd74009a0978e702b3aad43e89358c56788811f4369dd096",
+    "desktop/examples/pc-native-loop/README.md": "1f590e71186a12421386a847fecb891060b3146591d76a71eed2cfe45c03cadb",
+    "desktop/examples/pc-native-loop/script.cpp": "f6b2a95d486844110f46803f01d9acad5910c1058385f915e4bca1595fc29f9b"
+  },
+  "archives": {
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.1.0-Windows-x64.zip",
+      "bytes": 60156435,
+      "sha256": "c43e33c6ff56f9f456a6d805576fd712efe33ce8e44a2beec6e465c0baf144e5"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.1.0-Source.zip",
+      "bytes": 640964,
+      "sha256": "de1f36720994fef8c8e30070eb656ff6094c344f0c2a74d3a57b26f35e3e8894"
+    }
+  },
+  "compiled_asi_translation": false,
+  "core_runtime_modified": false,
+  "switch_runtime_verified": false
+}

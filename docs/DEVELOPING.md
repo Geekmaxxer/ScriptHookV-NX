@@ -63,6 +63,11 @@ console-tested. Runtime downloads retain the exact accepted binary.
 A different compiler version can also change code generation and fail that
 comparison. It is a strict reference check, not a diagnosis of every mismatch.
 
+`runtime-reference.json` now identifies the console-accepted lifecycle runtime.
+`runtime-reference-public-preview1.json` preserves the earlier reference for
+historical comparisons. The target profile directory keeps its existing name;
+the canonical 20-byte game build ID is the `build_id` value in profile.json.
+
 ## Public and research tests
 
 `test_portable.py` exercises LZ4/NSO verification, corrupted profiles, executable

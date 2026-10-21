@@ -1,0 +1,42 @@
+{
+  "version": "0.4.0",
+  "windows_x64": {
+    "file": "ScriptHookV-NX-Mod-Porter-0.4.0-Windows-x64.zip",
+    "bytes": 60591268,
+    "sha256": "bd2e8b1e16f7b0012ec648f5cae110dc7bd57c4830acad8de8c6051964c6fa8a"
+  },
+  "source": {
+    "file": "ScriptHookV-NX-Mod-Porter-0.4.0-Source.zip",
+    "bytes": 738953,
+    "sha256": "9aeb600119f90931088453d9f4d6dda9d3cbae7a833c1c9f6bcf5813c49738c6"
+  },
+  "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+  "binary_asi_translation": false,
+  "game_files_included": false,
+  "core_runtime_included": false,
+  "switch_runtime_verified": false,
+  "zip_readback_verified": true,
+  "packaged_executable_workflow_checks": 42,
+  "screen_sizes": [
+    [
+      1210,
+      850
+    ],
+    [
+      920,
+      680
+    ]
+  ],
+  "ui_source_sha256": {
+    "app.manifest": "a029a294de66895a1a15d4556f0e7e75b0fcfa2e017ca195bac41c4824191ccb",
+    "App.xaml": "4b6098c7cf3695dd7ca3fce5c19be2d858ba3dbcf77af6e2dceed84134448cf8",
+    "App.xaml.cs": "27ffbadf989ae3c85aa6d6c1874fa71bbc57dacfb5d66d6d33cc538b0b0400a3",
+    "AssetWorkflow.cs": "a3edb055f0e4e1e9a7fc92db742852a8cbf1408d5c39b53114d4ee5a05433ceb",
+    "DeploymentWorkflow.cs": "f18470969c2e54081449e968ed749734f0008379b1b457efcc6fd55c4c83cdf9",
+    "GameArchiveWorkflow.cs": "c460aa61c25d1c1a14c0ba8f0c24bcdea6fc5d1f50b5604a08cc83ce9f696b9d",
+    "MainWindow.xaml": "212c9768cb00a0340375bc1243a953aae138567dc191424cb1578c579d1657a9",
+    "MainWindow.xaml.cs": "86b092cc494308e6ab400cac61e1e4b3e45a7fb603f77ecc159d0f2f6f0b4d5e",
+    "ModPorter.App.csproj": "35eeddee0cfb88ced6e5adb77c0f6a00898984ee97f4c972dab5609c99374d30",
+    "UiSmokeTest.cs": "5433438fb2a6b4a1f09e32156d303ae80313545f8000673f31ba329dc2796d77"
+  }
+}

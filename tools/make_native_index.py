@@ -16,7 +16,7 @@ def generate(coverage, header, output):
         natives.append(dict(name=name, hash=f'0x{int(row["hash"], 16):016x}',
                             signature=row['return_type']+' '+name+'('+parameters+')',
                             registered=row['registered_in_target'] is True))
-    result = dict(format=1, target_build='6e3e9b3af5746e74b615bd981080c9271bc226620',
+    result = dict(format=1, target_build='6e3e9b3af5746e74b615bd981080c9271bc22662',
                   header_sha256=digest, runtime_verified=False, natives=natives)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, separators=(',', ':'))+'\n', encoding='utf-8')

@@ -35,21 +35,36 @@ def documentation_links(stage):
 def export(output):
     if output.exists(): raise FileExistsError('Use a fresh export directory')
     stage = output/'repo/ScriptHookV-NX'; stage.mkdir(parents=True)
-    selected = [ROOT/name for name in ('README.md', 'LICENSE', 'NOTICE', '.gitignore')]
+    selected = [ROOT/name for name in ('README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE', '.gitignore')]
+    selected.extend((ROOT/'.github/ISSUE_TEMPLATE').glob('*.md'))
     extensions = {
         'source': {'.cpp', '.hpp', '.h', '.s', '.ld'}, 'include': {'.h', '.hpp'},
         'sdk': {'.cpp', '.s', '.ld', '.sch', '.json', '.example'}, 'targets': {'.hpp', '.json', '.md'},
         'examples': {'.cpp', '.sc'}, 'mods': {'.cpp', '.hpp', '.h', '.md'}, 'docs': {'.md'},
+        'desktop': {'.cs', '.csproj', '.props', '.xaml', '.manifest', '.py', '.md', '.cpp', '.hpp', '.txt', '.json', '.ini'},
     }
     for folder, allowed in extensions.items():
         for path in (ROOT/folder).rglob('*'):
-            if path.is_file() and path.suffix.lower() in allowed and not any(part.startswith('.') or part=='__pycache__' for part in path.relative_to(ROOT/folder).parts):
+            if path.is_file() and path.suffix.lower() in allowed and not any(part.startswith('.') or part in ('__pycache__', 'bin', 'obj') for part in path.relative_to(ROOT/folder).parts):
                 if path.name not in ('RESEARCH-WORKSPACE.md', 'native_caller_sample.cpp'): selected.append(path)
     selected.extend(ROOT/'tools'/name for name in PUBLIC_TOOLS)
     selected.extend(ROOT/'evidence'/name for name in ACCEPTANCES)
     # Compact prior regression evidence: source hashes/metrics, no dumps or binaries.
     for relative in ('sdk-refinement1-20261016/sdk-refinement-tests.json',
-                     'sdk-refinement1-20261016/package-verification.json'):
+                     'sdk-refinement1-20261016/package-verification.json',
+                     'mod-porter-20261021/verification.json',
+                     'mod-porter-20261021/VERIFICATION.md',
+                     'mod-porter-0.2.0-20261021/verification.json',
+                     'mod-porter-0.2.0-20261021/footprints-console-acceptance.json',
+                     'disarm-nx-test1-20261021/verification.json',
+                     'disarm-nx-test1-20261021/console-acceptance.json',
+                     'completion-test1-20261021/verification.json',
+                     'completion-test1-20261021/VERIFICATION.md',
+                     'completion-test1-20261021/console-acceptance.json',
+                     'repo-update-20261021/verification.json',
+                     'repo-update-20261021/VERIFICATION.md',
+                     'disarm-nx-test1-20261021/VERIFICATION.md',
+                     'mod-porter-0.2.0-20261021/VERIFICATION.md'):
         selected.append(ROOT/'evidence'/relative)
     for path in selected:
         if path.is_symlink(): raise ValueError('Symlink in public source: '+str(path))

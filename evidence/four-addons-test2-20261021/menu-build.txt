@@ -1,0 +1,18 @@
+compiling 'C:\Users\Megatard\Desktop\switchgta5\MG-SwitchMenu SDK\source\ragemenu.sc'...
+Error: Unrecognized aes key name 'Users\Megatard\Desktop\switchgta5\MG-SwitchMenu SDK\source\ragemenu.sc', using default 'fefffff'.
+compile succeeded, 103852 insns emitted, 328378 bytes of code (max = 11534336 bytes), 8268 static words, 416888 string bytes (max = 2097152 bytes), 537 pad bytes, node heap size = 30175888 bytes (max = 536870912 bytes), number of lines = 48188 (max = 1350000), number of includes = 56 (max = 1374)
+Main thread used 417792 of 16777216 bytes stack space.
+Main thread used 24576 of 1048576 bytes stack space.
+HEADER_REFERENCE_FOLDER fallback: C:\Users\Megatard\Desktop\switchgta5\stock nsc's for cross-reference\script_rel.rpf\achievement_controller.nsc
+REFERENCE_PAYLOAD 81920 bytes, RSC7 envelope, deflate payload
+CANDIDATE_PAYLOAD 819200 bytes, RSC7 envelope, uncompressed payload
+WROTE_ADAPTED_HEADER C:\Users\Megatard\Desktop\switchgta5\MG-SwitchMenu SDK\out-addon-search-test2-20261021\ragemenu.nsc
+PAGE_BASE 0x00007FF775F4B3A8 -> 0x00007FF7BAD5B3A8
+BUILD_WORD 0x00000000 -> 0x94C75B53
+ADAPTED_BYTES changed=6 offsets=0x02-0x03,0x18-0x1B
+VALIDATED 1 files; mismatches=0
+BUILT C:\Users\Megatard\Desktop\switchgta5\MG-SwitchMenu SDK\out-addon-search-test2-20261021\ragemenu.nsc
+INTERMEDIATE (do not install): C:\Users\Megatard\Desktop\switchgta5\MG-SwitchMenu SDK\out-addon-search-test2-20261021\ragemenu.pc.nsc
+MANIFEST C:\Users\Megatard\Desktop\switchgta5\MG-SwitchMenu SDK\out-addon-search-test2-20261021\ragemenu.build.json
+BUILD_SECONDS 5.2
+These are raw Switch script payloads. Insert them into script_rel.rpf as normal compressed file entries, not as RPF resource entries.

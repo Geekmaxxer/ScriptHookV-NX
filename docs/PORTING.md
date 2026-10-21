@@ -1,5 +1,22 @@
 # Porting a plugin to Switch
 
+The [Mod Porter desktop app](../desktop/README.md) can analyze a PC source folder
+or ZIP, prepare a copied NX project and build a test NRO. ASI input produces a
+dependency report; compiled Windows binary translation is not included. The Assets tab
+prepares Legacy mod resources and nested OPEN RPF archives, with standalone and
+typed embedded texture caps, metadata checks and DLC-list merging. Compiler-only
+checking and verified SD NRO backup/restore are available before deployment.
+See its [compatibility coverage](../desktop/COMPATIBILITY.md) before publishing a port.
+
+For nearby-ped gameplay, `include/shv/world.h` supplies
+`ScriptHook::World::NearbyPeds<32>`. Call `Refresh(playerPed)`, then read `Size()`
+and indexed handles. It owns the native's eight-byte VM array slots and validates
+the full writable buffer. Capacity is bounded to 1–64. This scanner is not a
+drop-in implementation of PC `worldGetAllPeds`.
+The [Disarm NX example](../desktop/examples/disarm-nx/README.md) demonstrates a
+rotating processing budget; hand/weapon disarming passed Switch gameplay testing.
+The extension to both arms also passed console gameplay testing.
+
 Start with `examples/scriptmain_plugin.cpp` and build it with `tools/build_plugin.py`.
 The SDK is freestanding C++17 for AArch64. It needs devkitA64 and Python 3.10+;
 plugin developers do not need extracted game files or the core's private build inputs.

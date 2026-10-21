@@ -4,3 +4,12 @@
 /releases/
 __pycache__/
 *.pyc
+/desktop/**/bin/
+/desktop/**/obj/
+/desktop/.vs/
+*.rpf
+*.nso
+*.nro
+*.nsc
+*.asi
+*.pdb

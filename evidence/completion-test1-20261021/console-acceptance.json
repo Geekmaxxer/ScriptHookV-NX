@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-21",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "module_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95",
+  "verification_method": "Console gameplay acceptance for Completion Test 1 packages",
+  "console_acceptance": true,
+  "checks": {
+    "disarm_both_arms_and_forearms": true,
+    "nsc_menu_plugin_kill_and_load": true,
+    "footprints_lifecycle": true,
+    "mod_porter_workflow": true
+  },
+  "plugin_artifacts": {
+    "disarm-nx": {
+      "image_bytes": 20480,
+      "bss_bytes": 4096,
+      "accounted_bytes": 53248,
+      "sha256": "a4bd9c95f1f01ed2b9dbd987e4ea1332e835489c6baed11a43767c1f97a45308",
+      "query_export_present": true
+    },
+    "footprints-nx": {
+      "image_bytes": 20480,
+      "bss_bytes": 4096,
+      "accounted_bytes": 53248,
+      "sha256": "9fe13982083c9dfe8778e9133349285ccfd2d825c100df52278514f27ba9103f",
+      "query_export_present": true
+    }
+  },
+  "desktop_release": {
+    "version": "0.3.0",
+    "windows_zip_sha256": "726dc71c3f84acc27db09551b0edb7b6332532574f86987882bbe4d1ebca8ff0"
+  },
+  "not_covered": [
+    "New current-game archive updater",
+    "Full eight-module saturation",
+    "Custom runtime-limit overrides",
+    "INI override combinations not separately exercised",
+    "Long-duration soak and peak-memory/frame-time profiling",
+    "Arbitrary add-on gameplay compatibility"
+  ]
+}

@@ -31,7 +31,8 @@ MG build engine rather than maintaining a second adapter.
 
 ## Core changes
 
-The [maintainer guide](DEVELOPING.md) lists private research/toolchain requirements.
+The [maintainer guide](DEVELOPING.md) explains public core builds and the separate
+requirements for target-instruction research.
 The SDK ZIP alone cannot run target-instruction regressions: those need the
 maintainer checkout's extracted images and emulator adapters. Production images
 must never contain test-fixture entry points. Record a source manifest, module
@@ -42,3 +43,12 @@ Useful bug reports include the installed core/plugin hashes, exact game build,
 loader report, startup policy, reproduction steps, observed/expected result and
 whether the problem occurs with only that plugin enabled. Omit personal save
 contents unless essential to a reported persistence failure.
+
+## Desktop and archive changes
+
+Run `dotnet run --project desktop/ModPorter.Tests -- .` and build the WPF app on
+Windows with .NET 10. Public checks use generated fixtures and a located NRO
+toolchain; game files are not required. Keep source archives read-only, use new
+output folders and verify unchanged payloads as well as changed entries. Exercise
+cancellation and malformed/encrypted input. Document install and rollback paths
+and keep gameplay acceptance separate.

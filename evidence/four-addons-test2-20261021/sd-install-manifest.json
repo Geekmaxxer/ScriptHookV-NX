@@ -1,0 +1,48 @@
+{
+  "state": "installed_and_readback_verified",
+  "files": [
+    {
+      "path": "switch/gtav-scripthook/bindings/ragemenu.snb",
+      "existed": true,
+      "before": "c766743eecbe5c58c1aa47552e807103c722a8fd1b89a67c41bc09059dd01c30",
+      "after": "9e8ab5d0ca323f517826efd8461bbb3f9ca28399c8b869514b15e16870bd2136"
+    },
+    {
+      "path": "switch/gtav-scripthook/plugins/asset-probe.nro",
+      "existed": false,
+      "before": null,
+      "after": "ed6504529d61a8f8ed594caa10202197a6262170e357560c6ed9c711d24dbe29"
+    },
+    {
+      "path": "atmosphere/contents/0100b00b51230000/romfs/update/update2.rpf",
+      "existed": true,
+      "before": "37762cfcc5ca6639737d24c7d0cc085523de2bc5fe51b5fce7c107b0993f7d79",
+      "after": "e4734b2f2492bc67686c64ba7af755dd7da013ea5b1390ed3c99205f1874605d"
+    },
+    {
+      "path": "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/mrrc/dlc.rpf",
+      "existed": true,
+      "before": "01652836c0b095b008083e9e797cd8ef0c808f253c508afc4eaff1c3f58acefa",
+      "after": "1f8948672d128c083f2c85bd0febba567a9aef7605dbdf47a6a5fee5ea53972c"
+    },
+    {
+      "path": "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_misaki/dlc.rpf",
+      "existed": true,
+      "before": "88022848a672c0bd5672cb2b6631f76521fd2174fd7ab8d424866519a83ce09d",
+      "after": "e65498dae315296485eeb7ed51613f7478604fafb022b06cc522f2f7d96898fd"
+    },
+    {
+      "path": "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_zoro/dlc.rpf",
+      "existed": true,
+      "before": "4bd91ceaa93f4a78f2df8f40a11b7cc968bff04bd1915c21481674f2b52018d9",
+      "after": "cf4c406fd7766bfc06243913dc90e8687091319289b4be68585aaba77670bc32"
+    },
+    {
+      "path": "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/torachry300redeye/dlc.rpf",
+      "existed": true,
+      "before": "3f1093cbec49a2be0d50ac2a57c559875c6ba10a96d5cd4bfb1ecec6d666df40",
+      "after": "6432bb9d345f7f6b3d33048cb483a3a4489f7b27053190938075e94028cd5f6a"
+    }
+  ],
+  "switch_runtime_verified": false
+}

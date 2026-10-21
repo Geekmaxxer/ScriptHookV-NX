@@ -1,7 +1,7 @@
 # Supported scope and remaining work
 
 The accepted runtime targets title `0100b00b51230000`, executable build
-`6e3e9b3af5746e74b615bd981080c9271bc226620`. Caller, runtime and plugin ABI are
+`6e3e9b3af5746e74b615bd981080c9271bc22662`. Caller, runtime and plugin ABI are
 version 1; manager controls are version 3. A game update requires renewed target
 verification, not speculative offset changes.
 
@@ -32,8 +32,9 @@ See [runtime limits](RUNTIME-LIMITS.md) for player configuration, NRO project
 settings and runtime build defaults. All ABIs remain unchanged.
 
 Capacity Test 1 keeps the plugin budget at 8 MiB and all ABIs unchanged. Published
-four-resident runtimes retain their previous limits; eight-resident console
-acceptance is pending. More plugins may reach the memory budget before eight
+four-resident runtimes retain their previous limits; the current lifecycle runtime has console
+acceptance. Full eight-resident stress and custom-limit configurations still
+require their own tests. More plugins may reach the memory budget before eight
 images load, depending on their image and BSS sizes.
 
 Console evidence covers the caller/runtime samples, external loading, simultaneous
@@ -45,5 +46,5 @@ arbitrary third-party plugin compatibility and future game builds remain work.
 The most useful next runtime milestone is measured console performance/soak
 coverage with independent third-party ports. Expand platform APIs only for a
 concrete port with verified target behavior and a versioned contract. The current
-SDK work preserves the accepted runtime rather than requiring another core test
-for documentation, tooling or optional header helpers.
+accepted runtime includes optional bounded stop callbacks. Desktop archive
+preparation and new assets have separate validation requirements.

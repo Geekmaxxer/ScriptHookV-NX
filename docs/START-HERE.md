@@ -31,7 +31,7 @@ and the MG-SwitchMenu SDK. Neither is silently downloaded or bundled here.
 | File/folder | Use |
 | --- | --- |
 | `include/script.h` | ScriptMain, native namespaces, WAIT and entry macro |
-| `include/shv/` | Optional bounded text, timers and journaled settings helpers |
+| `include/shv/` | Optional bounded text, timers, controller input, INI files, nearby-ped queries and journaled settings |
 | `include/plugin_manager.h` | Optional standalone manager interface |
 | `examples/tutorials/` | Five small NRO and two NSC lessons |
 | `examples/public_plugin.cpp` | Advanced provider and seven-check diagnostic sample |
@@ -40,8 +40,10 @@ and the MG-SwitchMenu SDK. Neither is silently downloaded or bundled here.
 | `sdk/commands_scripthook_nx.sch` | Public SanScript native declarations |
 | `docs/` | User, developer and maintainer guides |
 
-The SDK refinement keeps ABI 1 and the accepted runtime unchanged. New tutorial
-code is locally built/tested; it still needs its own console gameplay tests.
+The SDK keeps ABI 1. The accepted runtime supports optional plugin stop callbacks;
+see the [API reference](API-REFERENCE.md). Individual tutorials need their own
+console gameplay tests. For PC source and asset workflows, use
+[Mod Porter](../desktop/README.md).
 
 The [attribution license](../LICENSE) permits use, edits, distribution and sale
 with original-source credit. See [licensing](LICENSING.md) when sharing SDK code.

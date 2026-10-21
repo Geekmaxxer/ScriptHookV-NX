@@ -1,0 +1,42 @@
+﻿[
+    {
+        "file":  "desktop/ModPorter.App/MainWindow.xaml",
+        "sha256":  "8d4a01bbdc81c437d7c33606ede11b1f47c156f6408e0e68946fc0b899fb4b4d"
+    },
+    {
+        "file":  "desktop/ModPorter.App/MainWindow.xaml.cs",
+        "sha256":  "1f32f1bb83aba0e8923a35561265282578e2b532ab8c21d9b2c32e1d27fef916"
+    },
+    {
+        "file":  "desktop/ModPorter.App/App.xaml",
+        "sha256":  "4e3c09d873f60fc86ae12828039d7aaa171fe8e974cd914cda7291bcc36b2229"
+    },
+    {
+        "file":  "desktop/ModPorter.App/App.xaml.cs",
+        "sha256":  "2e7777a2def170b945344961ed6eda16ce14385da702dbd1d218fdb474c000dc"
+    },
+    {
+        "file":  "desktop/ModPorter.App/app.manifest",
+        "sha256":  "5beb60406336cbfcf4b1e107afd8d154b55cbbcf9f99baa1d476048e95501ef3"
+    },
+    {
+        "file":  "desktop/ModPorter.App/UiSmokeTest.cs",
+        "sha256":  "32a44144f079b8a00755ae2849539f354a6703fe46471a38392cebfbd7bf2684"
+    },
+    {
+        "file":  "desktop/ModPorter.App/ResponsiveLayout.cs",
+        "sha256":  "f3d6889e7020fee0c9dc863b62c122c588f2cba48b0c9497c50f3266a5a4b999"
+    },
+    {
+        "file":  "desktop/ModPorter.App/ResponsiveLayoutTests.cs",
+        "sha256":  "a771ca014c6947bafdd4c8d3d8a73d567f2e613a29339b8bfaadcb0590382ba1"
+    },
+    {
+        "file":  "desktop/README.md",
+        "sha256":  "d23ee1d5e579cd080add55ee7f6f85615a6610bb1097d9d206b8f722dc2d2e72"
+    },
+    {
+        "file":  "desktop/CHANGELOG.md",
+        "sha256":  "434956104d6258ee5d4f8589b06411719e2548ae6c589a841e90bd0ea2b61e3e"
+    }
+]

@@ -1,0 +1,140 @@
+PASS RSC7 page flags and payload roundtrip
+PASS Texture dictionary identity and dimensions
+PASS Texture Off preserves exact input bytes
+PASS Within-cap dictionaries are byte identical
+PASS Existing BC mip tail retained exactly
+PASS No-mip BC texture is decoded and re-encoded
+PASS RGBA downsample keeps independent channels
+PASS Single-mip 32-bit textures gain a full chain without swapping channels
+PASS Enhanced dictionaries rejected
+PASS Invalid texture pointers rejected
+PASS Invalid resource allocations rejected
+PASS RPF empty binary and nested entries roundtrip
+PASS Engine binary lookup reaches every normalized RPF path
+PASS Cyclic output RPF rejected
+PASS Unsafe output archive names rejected
+PASS RPF case collisions rejected
+PASS Encrypted RPF rejected
+PASS Cyclic input RPF rejected
+PASS Platform names map without changing model identity
+PASS Inspect leaves inputs unchanged and does not claim output
+PASS Nested DLC naming, metadata, textures and ZIP
+PASS Assets never overwrite existing output
+PASS Assets cannot write inside input
+PASS Scripts cannot become assets by renaming
+PASS Asset ZIP traversal rejected
+PASS Asset conversion cancellation
+PASS UTF-16 metadata encoding and text retained
+PASS Undecodable metadata is rejected without replacement characters
+PASS Embedded texture typed graph .ydr
+PASS Embedded texture typed graph .ydd
+PASS Embedded texture typed graph .yft
+PASS Embedded no-mip resize preserves geometry
+PASS Embedded invalid typed pointer rejected
+PASS Embedded Off is byte identical
+PASS DLC registration preserves original entries and source files
+PASS DLC registration avoids duplicate entries
+PASS DLC registration rejects unsafe IDs
+PASS DLC registration refuses an existing output
+PASS DLC list rejects DTD entities
+PASS Metadata dependency is reported
+PASS Malformed XML metadata rejected
+PASS File-backed archive lists and reads existing entries
+PASS Archive copy changes only selected table rows in original byte prefix
+PASS Archive resource replacement retains other payloads
+PASS Unknown replacement is rejected before output exists
+PASS Current archive cannot be overwritten
+PASS Source change after list reading rejects stale merge
+PASS Cancellation removes partial archive and preserves source
+PASS Encrypted archive table gives actionable rejection
+PASS Truncated archive is rejected
+PASS SD root and local archive resolution
+PASS Ambiguous game folder requires an exact archive
+PASS Add-on update preserves current list and prepares SD-root files
+PASS Add-on updater refuses existing output
+PASS Add-on updater rejects unsafe IDs
+PASS Replacement workflow validates exact target and writes copied archive
+PASS Executable replacement cannot enter the asset workflow
+PASS Matched native index
+PASS Native search by hash
+PASS Reject stale native index
+PASS Reject unsafe path ../escape.cpp
+PASS Reject unsafe path /root.cpp
+PASS Reject unsafe path C:/evil.cpp
+PASS Reject unsafe path a/../../evil.cpp
+PASS Reject unsafe path a:stream.cpp
+PASS Reject unsafe path a/CON.cpp
+PASS Reject unsafe path x/NUL
+PASS Reject unsafe path x./a.cpp
+PASS Reject unsafe path x /a.cpp
+PASS Reject unsafe path a//b.cpp
+PASS Preserve nested header paths
+PASS Reject ZIP traversal before extraction
+PASS Reject case collisions
+PASS Reject invalid source encoding
+PASS Reject binary content masquerading as source
+PASS Reject inputs without source
+PASS Ignore build output trees
+PASS Comments and strings do not create findings
+PASS Raw string contents ignored
+PASS Detect missing entry
+PASS Entry declaration is not a definition
+PASS Detect multiple entries
+PASS Translation-unit selection
+PASS Detect unknown native
+PASS Detect missing target registration
+PASS Namespace alias verified per function
+PASS PC cheat native needs controller adaptation
+PASS PC version guard is not faked
+PASS PC world enumeration needs target implementation
+PASS Legacy names use verified target declarations
+PASS Custom registered entry is discovered and adapted
+PASS Raw PC hash calls blocked
+PASS Win32 memory hooks blocked
+PASS Keyboard polling blocked
+PASS Unsupported hosted includes blocked
+PASS Custom types header is preserved
+PASS Standard DllMain recognized
+PASS Custom DllMain initialization not removed
+PASS DllMain assignment not treated as boilerplate
+PASS Second PC script registration rejected
+PASS Plugin ID restrictions
+PASS Port transformations are recorded and isolated
+PASS Existing output is preserved
+PASS Output inside source rejected
+PASS Sleep adapter is explicit
+PASS Local header copied and found
+PASS Unreachable headers do not block selected sources
+PASS Custom SDK-named header survives adaptation
+PASS Original UTF-16 bytes preserved
+PASS Existing descriptor ID cannot silently change
+PASS Manifest traversal rejected
+PASS Cleanup descriptor entry and identity preserved
+PASS Valid ASI imports enumerated
+PASS Malformed PE rejected
+PASS PE import RVA bounds checked
+PASS PE oversized directory count rejected
+PASS PE unterminated import name rejected
+PASS Invalid NRO header rejected
+PASS Cancellation before input read
+PASS Markdown and JSON keep testing status explicit
+PASS Toolchain doctor detects local prerequisites
+PASS Real AArch64 compile and NRO validation
+PASS SD install defaults Manual and restore removes new install
+PASS SD update preserves policy and restores original bytes
+PASS Restore protects later local changes
+PASS Conflicting startup copies rejected
+PASS Install rejects invalid NRO
+PASS Restore rejects path traversal
+PASS Runtime report zero formats and plugin grouping
+PASS Runtime report rejects arbitrary text
+PASS Compiler syntax and types accepted
+PASS Compiler rejects wrong native arity
+PASS Compiler respects inactive conditional code
+PASS Standalone NRO build produces no install ZIP
+PASS Install ZIP contains mod, namespaced defaults, instructions and attribution
+PASS NRO tampering detected
+PASS Multi-unit and nested include compiler integration
+PASS Cancel terminates the child process
+
+138 passed; 0 failed. Switch runtime testing was not performed.

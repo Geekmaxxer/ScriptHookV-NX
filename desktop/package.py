@@ -1,0 +1,124 @@
+"""Publish the Windows desktop tool, matched SDK and source archive."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[1]
+VERSION = '0.4.0'
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def run(*args):
+    subprocess.run([str(a) for a in args], check=True, cwd=ROOT)
+
+
+def archive(folder, output):
+    files = sorted(p for p in folder.rglob('*') if p.is_file())
+    with zipfile.ZipFile(output, 'x', compression=zipfile.ZIP_DEFLATED) as z:
+        for path in files:
+            z.write(path, path.relative_to(folder).as_posix())
+    with zipfile.ZipFile(output) as z:
+        if z.testzip() is not None:
+            raise ValueError('Archive CRC verification failed')
+        for path in files:
+            if hashlib.sha256(z.read(path.relative_to(folder).as_posix())).hexdigest() != sha(path):
+                raise ValueError('Archive readback differs: '+str(path))
+
+
+def package(output):
+    if output.exists():
+        raise FileExistsError('Select a new release directory')
+    output.mkdir(parents=True)
+    stage = output/'Windows'
+    run('dotnet', 'publish', 'desktop/ModPorter.App/ModPorter.App.csproj', '-c', 'Release',
+        '-r', 'win-x64', '--self-contained', 'true', '-p:PublishSingleFile=true',
+        '-p:IncludeNativeLibrariesForSelfExtract=true', '-p:EnableCompressionInSingleFile=true',
+        '-p:DebugType=None', '-p:DebugSymbols=false', '-o', stage)
+    run('dotnet', 'publish', 'desktop/ModPorter.Cli/ModPorter.Cli.csproj', '-c', 'Release',
+        '-r', 'win-x64', '--self-contained', 'false', '-p:DebugType=None',
+        '-p:DebugSymbols=false', '-o', stage/'developer-cli')
+    for name in ('include', 'sdk'):
+        shutil.copytree(ROOT/name, stage/'SDK'/name)
+    (stage/'SDK/tools').mkdir()
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py'):
+        shutil.copy2(ROOT/'tools'/name, stage/'SDK/tools'/name)
+    for name in ('LICENSE', 'NOTICE'):
+        shutil.copy2(ROOT/name, stage/name)
+        shutil.copy2(ROOT/name, stage/'SDK'/name)
+    shutil.copytree(ROOT/'desktop/examples', stage/'examples')
+    shutil.copytree(ROOT/'desktop/third-party', stage/'third-party')
+    (stage/'GUIDE.md').write_text((ROOT/'desktop/README.md').read_text(encoding='utf-8').replace('../docs/GAME-ASSETS.md','docs/GAME-ASSETS.md'), encoding='utf-8')
+    shutil.copy2(ROOT/'desktop/CHANGELOG.md', stage/'WHATS-NEW.md')
+    shutil.copy2(ROOT/'desktop/COMPATIBILITY.md', stage/'COMPATIBILITY.md')
+    (stage/'docs').mkdir()
+    shutil.copy2(ROOT/'docs/GAME-ASSETS.md', stage/'docs/GAME-ASSETS.md')
+    (stage/'READ-ME-FIRST.md').write_text(
+        '# ScriptHookV-NX Mod Porter 0.4.0 Public Preview\n\n'
+        'Open ScriptHookV-NX-Mod-Porter.exe on Windows x64. Keep the SDK and examples '
+        'folders beside it. Import a mod or try the included example.\n\n'
+        'To build NROs, install Python 3.10+, devkitA64 and switch-tools, then check '
+        'their paths in Tools > Build tools. The desktop app includes its .NET runtime.\n\n'
+        'Use Build NRO for a plugin alone, or Build NRO + Install ZIP to package it. '
+        'Game assets > Prepare assets converts Legacy resources; Add to game builds updated copies from your current archives. See docs/GAME-ASSETS.md. Use Check C++ for compiler diagnostics, or expand SD installation to install with a verified backup and restore it later.\n\n'
+        'This release ports supported C++ source and analyzes ASI dependencies. '
+        'It does not translate compiled ASI binaries. Generated NROs need Switch testing.\n\n'
+        'See GUIDE.md for the workflow. Created by MEGATARD (@Geekmaxver). '
+        'Source: https://github.com/Geekmaxxer/ScriptHookV-NX\n', encoding='utf-8')
+    dotnet = Path(shutil.which('dotnet')).resolve().parent
+    notices = stage/'dotnet-notices'
+    notices.mkdir()
+    for name in ('LICENSE.txt', 'ThirdPartyNotices.txt'):
+        if not (dotnet/name).is_file():
+            raise FileNotFoundError('Missing .NET redistribution notice: '+name)
+        shutil.copy2(dotnet/name, notices/name)
+    app_zip = output/f'ScriptHookV-NX-Mod-Porter-{VERSION}-Windows-x64.zip'
+    archive(stage, app_zip)
+
+    source = output/'Source'/'ScriptHookV-NX-Mod-Porter'
+    source.mkdir(parents=True)
+    for path in (ROOT/'desktop').rglob('*'):
+        if not path.is_file() or any(p in ('bin', 'obj', '.vs', '__pycache__') for p in path.relative_to(ROOT/'desktop').parts):
+            continue
+        dest = source/'desktop'/path.relative_to(ROOT/'desktop')
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, dest)
+    for name in ('include', 'sdk'):
+        shutil.copytree(ROOT/name, source/name)
+    (source/'tools').mkdir()
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py'):
+        shutil.copy2(ROOT/'tools'/name, source/'tools'/name)
+    for name in ('LICENSE', 'NOTICE'):
+        shutil.copy2(ROOT/name, source/name)
+    (source/'.gitignore').write_text('**/bin/\n**/obj/\n**/.vs/\n__pycache__/\n/releases/\n', encoding='utf-8')
+    shutil.copy2(ROOT/'desktop/README.md', source/'README.md')
+    (source/'docs').mkdir()
+    shutil.copy2(ROOT/'docs/GAME-ASSETS.md', source/'docs/GAME-ASSETS.md')
+    (source/'README.md').write_text((ROOT/'desktop/README.md').read_text(encoding='utf-8').replace('../docs/GAME-ASSETS.md','docs/GAME-ASSETS.md'),encoding='utf-8')
+    shutil.copy2(ROOT/'desktop/COMPATIBILITY.md', source/'COMPATIBILITY.md')
+    source_zip = output/f'ScriptHookV-NX-Mod-Porter-{VERSION}-Source.zip'
+    archive(output/'Source', source_zip)
+    result = {
+        'version': VERSION, 'windows_x64': {'file': app_zip.name, 'bytes': app_zip.stat().st_size, 'sha256': sha(app_zip)},
+        'source': {'file': source_zip.name, 'bytes': source_zip.stat().st_size, 'sha256': sha(source_zip)},
+        'sdk_header_sha256': sha(ROOT/'include/natives.h'), 'binary_asi_translation': False,
+        'game_files_included': False, 'core_runtime_included': False, 'switch_runtime_verified': False,
+        'zip_readback_verified': True,
+        'files': {p.relative_to(stage).as_posix(): sha(p) for p in stage.rglob('*') if p.is_file()}
+    }
+    (output/'package-verification.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+    print(json.dumps({k: v for k, v in result.items() if k != 'files'}, indent=2))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', required=True, type=Path)
+    arguments = parser.parse_args()
+    package(arguments.output.resolve())

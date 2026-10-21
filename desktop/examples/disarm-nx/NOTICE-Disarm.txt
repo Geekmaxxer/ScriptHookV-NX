@@ -1,0 +1,12 @@
+Disarm NX
+
+Original Disarm gameplay mod: ikt32
+https://github.com/ikt32/GTAVDisarm
+Reference revision: 92d6646e0c649fb6c387189758abdcb72ab376cc
+
+Switch implementation and ScriptHookV-NX integration: MEGATARD (@Geekmaxver)
+https://github.com/Geekmaxxer/ScriptHookV-NX
+
+This bounded Switch behavior port uses nearby-ped scanning, checked native
+outputs and explicit Switch signatures. The upstream source files are not
+bundled. Credit for the original Disarm mod remains with ikt32.

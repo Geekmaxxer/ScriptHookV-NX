@@ -28,6 +28,7 @@ public:
     static bool CommitReserved(uint32_t token, ScriptFunction function);
     static void ReleaseReserved(uint32_t token);
     static void Unregister(ScriptFunction function);
+    static bool RunCleanup(ScriptFunction function);
     static bool Contains(ScriptFunction function);
     static void StopAll();
     static void Wait(uint32_t ms);

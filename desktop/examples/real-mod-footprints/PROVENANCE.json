@@ -1,0 +1,21 @@
+{
+  "repository": "https://github.com/root-cause/v-footprints",
+  "commit": "750fc538a37364da655485decdfbdfbee45b83ad",
+  "license": "MIT, copyright 2020 root-cause",
+  "original_sha256": {
+    "Main.cpp": "7bd8f04f6f1a5ebd42178cb8971484027274a6eb75d93ab89e7cd21db177e8e7",
+    "Script.cpp": "9b79838e91c65fe0e84dd1fd3e6e0de1e1ba31bc6e5bb92347afd90106895af5",
+    "Header.hpp": "c98f52182f4a85e5ec74fb7c3e6ff1400bfa84f55fd50e6dc2d1db4ff8d46c10"
+  },
+  "adaptations": [
+    "PC input replaced by L + R + Y on Nintendo controllers (unchanged target actions 205/206/203)",
+    "Particle asset wait capped at 3000ms; failed load does not enable flag 421",
+    "Verified foot override native guarded at startup; its PC spelling is mapped by Mod Porter"
+  ],
+  "switch_runtime_verified": false,
+  "console_verified_reference": {
+    "tested_nro_sha256": "b47db5e43ff827221a92590c5af9b30341f36e6d94ea749f8dfc5910bd702b49",
+    "date": "2026-10-21",
+    "scope": "Startup, controller activation and flaming-footprint effect; corrected-prompt rebuild not console-tested"
+  }
+}

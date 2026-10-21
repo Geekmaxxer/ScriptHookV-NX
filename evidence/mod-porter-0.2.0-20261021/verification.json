@@ -1,0 +1,163 @@
+{
+  "tool_version": "0.2.0",
+  "regression_checks_passed": 95,
+  "regression_checks_failed": 0,
+  "real_pc_mod_sources": [
+    {
+      "repository": "https://github.com/root-cause/v-footprints",
+      "commit": "750fc538a37364da655485decdfbdfbee45b83ad",
+      "source_sha256": {
+        "Footprints/Main.cpp": "7bd8f04f6f1a5ebd42178cb8971484027274a6eb75d93ab89e7cd21db177e8e7",
+        "Footprints/Script.cpp": "9b79838e91c65fe0e84dd1fd3e6e0de1e1ba31bc6e5bb92347afd90106895af5",
+        "Footprints/Header.hpp": "c98f52182f4a85e5ec74fb7c3e6ff1400bfa84f55fd50e6dc2d1db4ff8d46c10",
+        "LICENSE.md": "6d902994e169b02d85fbc52aeb836f3222d8f5d8389768c735005f0499957cdc"
+      },
+      "expected_blockers": [
+        "PC_CHEAT_INPUT"
+      ],
+      "blockers_detected": true,
+      "compiled": false
+    },
+    {
+      "repository": "https://github.com/CamxxCore/RealisticReload",
+      "commit": "cc902a6c0b6ab937a2320faffd331517358baeaa",
+      "source_sha256": {
+        "ManualReload/main.cpp": "4ab050d0145b6bd6d707f6d667d03a08b17a2d332a1f017d2ed392bcf0e6f8db",
+        "ManualReload/stdafx.h": "9fffcaca43658515d173a40e09728ff9c17336752dcd3aba07af9a82e29b9cda",
+        "ManualReload/dllmain.cpp": "c055aaaa5253ad8a25a963d893a89e3e023538029fe96d4abbb1733f0c9d5ace"
+      },
+      "expected_blockers": [
+        "API_BYTEPATTERN",
+        "API_GETGAMEVERSION",
+        "API_GETSCRIPTHANDLEBASEADDRESS"
+      ],
+      "blockers_detected": true,
+      "compiled": false
+    },
+    {
+      "repository": "https://github.com/ItsMeDeli/VaritrafV",
+      "commit": "6ac844f16851a4512959c395862b066755e864a6",
+      "source_sha256": {
+        "src/main.cpp": "2e2ae886c1b46aa37698c58a4f514d1dd995a918871ca2d4c9e2f8348947522b",
+        "src/hook.cpp": "9787b3f302f47d146fad0da6e80eff9b527a6259145ddfe060a4210b20763da5",
+        "src/hook.h": "18b02262c943194e3f7a530cac5380f09d755523834fa2961886b580ab577c1f",
+        "src/resolve.cpp": "6e20bcafbed77a0a48748df79ec19d9921088afdd01dda040626f1a26b027af3",
+        "src/resolve.h": "65f3d8ec24b4940cf09720f0c22acb33099441a0d012505b7f60cdbefba10997",
+        "src/log.h": "8fad1db37f4428cf434aec56c2a80f77e7443b828b6c9986d24581af2b7e2afb",
+        "src/dedup.h": "d6eebc3aa31889b7b5639d9c2b65b9af9204a17be0f49c76904f1aa12de28e39"
+      },
+      "expected_blockers": [
+        "API_MH_CREATEHOOK"
+      ],
+      "blockers_detected": true,
+      "compiled": false
+    },
+    {
+      "repository": "https://github.com/ikt32/GTAVDisarm",
+      "commit": "92d6646e0c649fb6c387189758abdcb72ab376cc",
+      "source_sha256": {
+        "Disarm/main.cpp": "5f4e28fc6166a178b88b73a91854fa4affde7aed08df72d8343be43bf38d31eb",
+        "Disarm/script.cpp": "75b2a15d56294642eb48e2e47347a7d7262ce087935c9c048a73c8ef3b0cb860",
+        "Disarm/script.h": "cb1abc62e75caed3f9c22fcf3fc3870a638e8d64a3e7399e8890c32322a952c9"
+      },
+      "expected_blockers": [
+        "API_WORLDGETALLPEDS"
+      ],
+      "blockers_detected": true,
+      "compiled": false
+    }
+  ],
+  "footprints": {
+    "nro": {
+      "image_bytes": 12288,
+      "bss_bytes": 4096,
+      "accounted_bytes": 36864,
+      "sha256": "b47db5e43ff827221a92590c5af9b30341f36e6d94ea749f8dfc5910bd702b49",
+      "query_export_present": true
+    },
+    "controller_adaptation": true,
+    "bounded_streaming_wait_ms": 3000,
+    "switch_runtime_verified": true,
+    "console_acceptance": {
+      "file": "footprints-console-acceptance.json",
+      "tested_nro_sha256": "b47db5e43ff827221a92590c5af9b30341f36e6d94ea749f8dfc5910bd702b49",
+      "scope": "Startup, shortcut activation and visible flaming-footprint effect",
+      "shortcut": "L + R + Y"
+    }
+  },
+  "real_asset_checks": {
+    "legacy_ntd": {
+      "texture_count": 2,
+      "controller_before": [
+        512,
+        512
+      ],
+      "controller_after": [
+        256,
+        256
+      ],
+      "graphics_allocation_bytes_before": 278528,
+      "graphics_allocation_bytes_after": 131072,
+      "bc_format_preserved": true
+    },
+    "nested_open_dlc": {
+      "files_inspected": 64,
+      "rebuild_and_readback": true,
+      "was_already_switch_named": true
+    }
+  },
+  "clean_source_build": {
+    "passed": true,
+    "warnings": 0,
+    "errors": 0
+  },
+  "zip_readback_verified": true,
+  "core_runtime_modified": false,
+  "game_files_distributed": false,
+  "switch_runtime_verified": false,
+  "desktop_workflow": {
+    "passed": 16,
+    "failed": 0,
+    "checks": [
+      "Import and analyze through the UI",
+      "Source-file selection populated",
+      "Finding action updates on selection",
+      "Finding filter",
+      "Generate project through the UI",
+      "Build becomes available after project generation",
+      "Build and install ZIP through the UI",
+      "Compiler log and NRO validation shown",
+      "Standalone Build NRO through the UI",
+      "Pinned real Footprints mod imported through the UI",
+      "Real Footprints AArch64 NRO built through the UI",
+      "Toolchain doctor through the UI",
+      "Native lookup through the UI",
+      "Asset workflow defaults to Auto and 1024",
+      "Actual asset inspection through the UI",
+      "Actual asset conversion and ZIP through the UI"
+    ],
+    "original_input_modified": false,
+    "switch_runtime_verified": false,
+    "extracted_self_contained_package": true,
+    "relocated_bundled_sdk": true,
+    "invalid_dotnet_root_override": true
+  },
+  "independent_asset_reader": {
+    "reader": "CodeWalker.Core",
+    "nested_dlc_resource_payloads_sha256_unchanged": 57,
+    "ntd_texture_names_count_bc_format_and_dimensions_valid": true,
+    "errors": 0
+  },
+  "downloads": {
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.2.0-Windows-x64.zip",
+      "bytes": 60517412,
+      "sha256": "8d0f4aca674b4275757d703f3acb64e311dcb668c0ab3f63cf38e1319449b5e3"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.2.0-Source.zip",
+      "bytes": 680970,
+      "sha256": "8d901f17127ae1ab9b4d68e97151341627921039b7862e4c7090d726326f03cd"
+    }
+  }
+}

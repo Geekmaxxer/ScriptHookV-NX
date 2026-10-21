@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "unchanged_model_rig_variation_resources": 14,
+  "textures_checked": 304,
+  "byte_exact_mip_tails_or_unchanged_pixels": 282,
+  "generated_mip_chains": 22,
+  "graphics_allocation_bytes_saved": 67108864,
+  "rows": [
+    {
+      "pack": "torachry300redeye",
+      "model_resources_identical": true,
+      "texture_bytes_before": 67108864,
+      "texture_bytes_after": 33554432,
+      "registered_files": 5
+    },
+    {
+      "pack": "mrrc",
+      "model_resources_identical": true,
+      "texture_bytes_before": 67108864,
+      "texture_bytes_after": 33554432,
+      "registered_files": 4
+    },
+    {
+      "pack": "zoro",
+      "model_resources_identical": true,
+      "texture_bytes_before": 8388608,
+      "texture_bytes_after": 8388608,
+      "registered_files": 2
+    },
+    {
+      "pack": "misaki",
+      "model_resources_identical": true,
+      "texture_bytes_before": 36700160,
+      "texture_bytes_after": 36700160,
+      "registered_files": 2
+    },
+    {
+      "pack": "zoro-no-bandana",
+      "model_resources_identical": true,
+      "texture_bytes_before": 8388608,
+      "texture_bytes_after": 8388608,
+      "registered_files": 2
+    }
+  ],
+  "switch_runtime_verified": false
+}

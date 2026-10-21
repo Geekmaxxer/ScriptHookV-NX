@@ -1,0 +1,21 @@
+{
+  "target_reference": "a_m_m_business_01.nft from installed switche.rpf",
+  "passed": true,
+  "models": [
+    {
+      "model": "misaki",
+      "target_bone_tags_matched": 17,
+      "bone_count": 128
+    },
+    {
+      "model": "zoro-v1",
+      "target_bone_tags_matched": 17,
+      "bone_count": 98
+    },
+    {
+      "model": "zoro-v2",
+      "target_bone_tags_matched": 17,
+      "bone_count": 98
+    }
+  ]
+}

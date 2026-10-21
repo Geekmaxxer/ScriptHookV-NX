@@ -4,11 +4,12 @@ Optional [runtime limits](RUNTIME-LIMITS.md) let you change resident NRO count,
 script slots and plugin memory budget. No configuration file is required.
 
 1. Close GTA. Back up any existing `exefs/subsdk5`.
-2. Copy `atmosphere` and `switch` from the EASY ZIP to your SD root.
+2. Copy `atmosphere` from the runtime ZIP to your SD root. Install plugin files
+   separately under `switch/gtav-scripthook/plugins/`.
 3. Launch Story Mode. Keep your existing menu and Self Radio files installed.
 
 This build supports title `0100b00b51230000`, game build
-`6e3e9b3af5746e74b615bd981080c9271bc226620`.
+`6e3e9b3af5746e74b615bd981080c9271bc22662`.
 
 ## Add or disable mods
 
@@ -28,13 +29,14 @@ on the next launch. Rescan discovers files without unloading running mods.
 
 **Kill Process** stops the selected cooperative script without changing its
 startup mode. Its code and native handlers remain mapped. **Load Now** can restart
-a stopped or finished run entry. Kill does not undo game changes, run destructors
-or free a resident NRO slot; close GTA to replace code or release that slot.
+a stopped or finished run entry. The current runtime calls a plugin's optional stop callback for owned-effect/entity
+cleanup. Plugins without that callback retain their game changes. Kill does not
+run C++ destructors or free a resident NRO slot; close GTA to replace code or release that slot.
 
 Capacity Test 1 allows up to eight resident NROs, with the same combined 8 MiB
 plugin accounting budget. Older published runtimes allow four; check the
-`resident_limit` field in `loader-report.txt`. The eight-resident build is
-awaiting Switch acceptance.
+`resident_limit` field in `loader-report.txt`. Current runtime lifecycle and
+NSC menu management passed console checks; full-capacity stress testing is separate.
 The optional standalone manager uses one of those slots. Completed plugins also
 stay resident because other scripts may still call their custom natives.
 Each mod needs a unique plugin ID. Keep one policy file per plugin; do not keep

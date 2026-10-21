@@ -17,12 +17,13 @@ struct alignas(8) Plugin {
     uint8_t module[0x140],registration[0x20];
     uintptr_t image,bss,nrr,base,tls;size_t image_bytes,bss_bytes,text_bytes;
     ShvNxApi api;
-    ScriptFunction run;
+    ScriptFunction run,cleanup;
+    uint32_t cleanup_calls,cleanup_failures;
     char filename[64],canonical[55],id[32];
     CustomNativeEntry pending[32];uint32_t pending_count;
     uint32_t step,error;
     uint32_t policy,loaded_policy;
-    bool loaded,registered,active,published,queued,present,conflict,kill_queued,stopped;
+    bool loaded,registered,active,published,queued,present,conflict,kill_queued,stopped,stopping,cleanup_done;
 };
 struct Candidate { char filename[64],canonical[55]; uint32_t policy; bool conflict; };
 Plugin plugins[max_plugins];size_t count;
@@ -154,7 +155,7 @@ void load(Plugin& p){
         if(!p.active||!p.run){p.error=0x1001a;return;}
         if(ScriptManager::Contains(p.run))return;
         if(!ScriptManager::Register(p.run)){p.error=0x10009;return;}
-        p.error=0;p.stopped=false;p.step=7;return;
+        p.error=0;p.stopped=false;p.cleanup_done=false;p.step=7;return;
     }
     p.error=0;p.pending_count=0;
     if(resident_count()>=RuntimeConfig::Residents()){p.error=0x10015;return;}
@@ -229,6 +230,10 @@ void load(Plugin& p){
     if(p.pending_count)p.published=true;
     for(uint32_t i=0;i<p.pending_count;++i)if(!NativeTable::RegisterCustom(p.pending[i].hash,p.pending[i].handler)){p.error=0x1000e;return;}
     p.run=descriptor->run;
+    uintptr_t stop=0;
+    // Missing optional export is normal for existing ABI 1 plugins.
+    const auto stop_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&stop,p.module,"shvPluginStop");
+    if(!stop_result&&stop){if(!code(p,stop)){fail(p,0x10006);return;}p.cleanup=reinterpret_cast<ScriptFunction>(stop);}
     p.step=6;if(!ScriptManager::CommitReserved(reservation.token,p.run)){p.error=0x10009;return;}
     p.active=true;p.loaded_policy=p.policy;p.step=7;
 }
@@ -308,8 +313,11 @@ void PluginLoader::Tick(){
     // This callback runs before scheduler dispatch, after the previous native
     // invocation has returned. Cancel only this plugin's cooperative entry;
     // its module, published handlers and other plugins remain untouched.
-    for(auto& p:plugins)if(p.kill_queued){
-        p.kill_queued=false;ScriptManager::Unregister(p.run);p.stopped=true;reported=false;
+    for(auto& p:plugins)if(p.kill_queued||(p.active&&!p.cleanup_done&&!ScriptManager::Contains(p.run))){
+        const bool killed=p.kill_queued;
+        p.kill_queued=false;p.stopping=true;ScriptManager::Unregister(p.run);p.stopped=killed;p.cleanup_done=true;
+        if(p.cleanup){++p.cleanup_calls;if(!ScriptManager::RunCleanup(p.cleanup))++p.cleanup_failures;}
+        p.stopping=false;reported=false;
     }
     if(!stage||rescan_requested){
         rescan_requested=false;scan();reported=false;stage=any_queued()?1:3;
@@ -349,12 +357,14 @@ void PluginLoader::Report(){
     char report[8192]{};size_t n=0;bool clipped=false;
     auto append=[&](const char* s){while(*s){if(n+32>=sizeof(report)){clipped=true;return;}report[n++]=*s++;}};
     auto field=[&](const char* key,uint64_t v){append(key);append("=0x");char tmp[16];unsigned at=0;do{tmp[at++]="0123456789abcdef"[v&15];v>>=4;}while(v);while(at){char digit[2]={tmp[--at],0};append(digit);}append("\n");};
-    append("ScriptHookV-NX configurable limits test 1\n");field("loader_stage",stage);
+    append("ScriptHookV-NX lifecycle test 1\n");field("loader_stage",stage);
     append("loader_stage_name=");append(stage==3?"complete":stage==2?"loading_plugins":stage==1?"initializing_loader":"discovering_plugins");append("\n");
     field("loader_error",error);append("loader_error_name=");append(error_name(error,0));append("\n");
     field("plugins_found",count);field("plugins_discovered",discovered);field("plugins_loaded",resident_count());field("plugins_skipped",skipped);field("plugins_disabled",disabled);
     field("plugin_directory_entries",plugin_entries);field("binding_directory_entries",binding_entries);field("directory_entry_limit",4096);field("native_manifests",NativeManifest::Count());
     field("resident_limit",RuntimeConfig::Residents());field("plugin_memory_budget",RuntimeConfig::MemoryBytes());field("plugin_memory_accounted",memory_used());field("last_action_error",last_action_error);
+    uint32_t cleanup_count=0,cleanup_errors=0;for(const auto& p:plugins){cleanup_count+=p.cleanup_calls;cleanup_errors+=p.cleanup_failures;}
+    field("cleanup_callbacks",cleanup_count);field("cleanup_failures",cleanup_errors);
     field("script_slot_limit",ScriptManager::SlotLimit());field("script_stack_bytes",ScriptManager::StackBytes);
     field("runtime_config_state",RuntimeConfig::State());field("runtime_config_error",RuntimeConfig::Error());
     field("runtime_config_applied_mask",RuntimeConfig::AppliedMask());field("runtime_config_invalid_mask",RuntimeConfig::InvalidMask());
@@ -441,6 +451,7 @@ bool PluginLoader::RequestLoad(uint32_t idx){
     if(!own_thread())return reject(0x10013);
     if(idx>=count)return reject(0x10012);
     auto& p=plugins[idx];
+    if(p.stopping)return reject(0x10013);
     if(p.policy==Disabled)return reject(0x10014);
     if(p.loaded){
         if(!p.active||!p.run)return reject(p.error?p.error:0x1001a);
@@ -458,6 +469,7 @@ bool PluginLoader::IsRunning(uint32_t idx){
 bool PluginLoader::Kill(uint32_t idx){
     if(!own_thread())return reject(0x10013);
     if(idx>=count)return reject(0x10012);
+    if(plugins[idx].stopping)return reject(0x10013);
     if(!IsRunning(idx))return reject(0x1001c);
     plugins[idx].kill_queued=true;reported=false;last_action_error=0;return true;
 }

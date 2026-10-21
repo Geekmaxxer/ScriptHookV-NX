@@ -32,6 +32,7 @@ size_t current = none, next_slot;
 uintptr_t owner_tls, host_pointer;
 uint32_t host_id, frame_seen;
 bool have_frame, dispatching;
+bool cleanup_active, cleanup_wait_attempted;
 uint64_t serial;
 uint32_t mutation_lock, runtime_status;
 ScriptRuntimeInfo info;
@@ -250,6 +251,7 @@ void ScriptManager::StopAll() {
     set_status(ScriptRuntime_Ok);
 }
 void ScriptManager::Wait(uint32_t ms) {
+    if (cleanup_active) { cleanup_wait_attempted = true; set_status(ScriptRuntime_UnsafeYield); return; }
     if (!own_thread()) { set_status(ScriptRuntime_WrongThread); return; }
     if (!dispatching || current == none || scripts[current].state != Running) {
         set_status(ScriptRuntime_NotRunning); return;
@@ -270,6 +272,18 @@ void ScriptManager::RunEntry() {
     entry.state = Finished;
     sh_fiber_switch(&entry.context, &scheduler);
     __builtin_trap();
+}
+bool ScriptManager::RunCleanup(ScriptFunction function) {
+    if (!own_thread() || dispatching || cleanup_active || current != none || !function ||
+        !Memory::IsExecutable(reinterpret_cast<uintptr_t>(function)) || !NativeInvoker::CanYield()) return false;
+    const auto saved_status = getNativeCallStatus(); const auto saved_hash = getLastNativeHash();
+    cleanup_active = true; cleanup_wait_attempted = false;
+    function();
+    cleanup_active = false;
+    const bool finished = NativeInvoker::CanYield();
+    if (!finished) NativeInvoker::AbandonCalls();
+    NativeInvoker::RestoreStatus(saved_status, saved_hash);
+    return finished && !cleanup_wait_attempted;
 }
 void ScriptManager::OnTick(void* host) {
     if ((!info.active && !test_pending && !PluginLoader::Pending()) || !Memory::s_mainBase || dispatching) return;

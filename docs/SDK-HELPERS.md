@@ -11,6 +11,26 @@ an expensive catch-up loop. Pass `uint32_t(MISC::GET_GAME_TIMER())` and interval
 below 2^31 milliseconds. `Due` and `Elapsed` handle the counter wrapping. Sampling
 must occur within that half-range. Your loop still needs `WAIT`.
 
+## Controller input and INI files
+
+`<shv/input.h>` supplies Nintendo-labeled frontend actions and a once-per-press
+`Input::ShoulderChord` for L + R + Y. Poll once per frame. Supply `Button::X` to
+select X instead. Controls use game action mappings, not raw controller hardware.
+
+`<shv/ini.h>` supplies a fixed-size `Util::Ini<>` reader:
+
+```cpp
+ScriptHook::Util::Ini<> config;
+(void)config.Load("config.ini");
+bool enabled = config.Bool("Effects", "Enabled", false);
+int interval = config.Int("Effects", "IntervalMs", 1000, 100, 10000);
+```
+
+Load during initialization. The filename is namespaced by plugin ID, and missing
+or invalid files leave the supplied defaults in effect. UTF-8, sections, whole-line
+comments and duplicate keys are supported. Quoting and automatic saves are not.
+See [API contracts](API-REFERENCE.md) for capacities and optional stop cleanup.
+
 ## Settings: `shv/settings.h`
 
 ```cpp

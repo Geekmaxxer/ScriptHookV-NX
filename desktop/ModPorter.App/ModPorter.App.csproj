@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>ScriptHookV-NX-Mod-Porter</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Description>Source porting and ASI analysis for ScriptHookV-NX</Description>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../ModPorter.Core/ModPorter.Core.csproj" /></ItemGroup>
+</Project>

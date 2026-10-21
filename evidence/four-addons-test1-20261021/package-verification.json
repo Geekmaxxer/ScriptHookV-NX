@@ -1,0 +1,38 @@
+{
+  "switch_runtime_verified": false,
+  "zip_readback_verified": true,
+  "packages": [
+    {
+      "file": "Four-Addons-NX-Test1-EASY.zip",
+      "bytes": 1023697415,
+      "sha256": "c54f21ae231d8c0f05db3be6fb795215db80b64cc2ed1c05228ea422a1e3dfc7",
+      "files": {
+        "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/mrrc/dlc.rpf": "01652836c0b095b008083e9e797cd8ef0c808f253c508afc4eaff1c3f58acefa",
+        "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_misaki/dlc.rpf": "88022848a672c0bd5672cb2b6631f76521fd2174fd7ab8d424866519a83ce09d",
+        "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_zoro/dlc.rpf": "4bd91ceaa93f4a78f2df8f40a11b7cc968bff04bd1915c21481674f2b52018d9",
+        "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/torachry300redeye/dlc.rpf": "3f1093cbec49a2be0d50ac2a57c559875c6ba10a96d5cd4bfb1ecec6d666df40",
+        "atmosphere/contents/0100b00b51230000/romfs/update/update.rpf": "49901dbd4fc7104492fdbef8a1d085dedff52fc6ec5aa4e228c5c32660159843",
+        "READ-ME-FIRST.md": "36c9587c45dcead55b4d2dea73cabbffbb19c936d906f6c62cafb31b58aad5d5"
+      }
+    },
+    {
+      "file": "Zoro-No-Bandana-Test1.zip",
+      "bytes": 3241122,
+      "sha256": "ad30ae936b5cd74bc9a89fdf36b653b6ee32daf81be29e0f54173873c00e3778",
+      "files": {
+        "atmosphere/contents/0100b00b51230000/romfs/update/switch/dlcpacks/nx_zoro/dlc.rpf": "384f5021b47acca3e21832e12354c836592065b7d360f96923071f9b4c048a36",
+        "READ-ME-FIRST.md": "b5886aea9280cdad8c22d5ebe96c0d5a111d5e3d7fa6f221df4062467898e31e"
+      }
+    },
+    {
+      "file": "Four-Addons-Optional-Streaming-Probe.zip",
+      "bytes": 3789,
+      "sha256": "8bfa147ce2401eab029aee41fa94bfba240960a2522c5ee5bf8fb77174f73b46",
+      "files": {
+        "READ-ME-FIRST.md": "920d4d6264084ce064e87e996caaaf27f3608068770ed85411b2999d63da4baf",
+        "switch/gtav-scripthook/plugins/asset-probe.nro.manual": "307cdc9401ee94717579dfd6e6a77e3ac83b38f307ad5dc1b81cbb22fe4928be"
+      }
+    }
+  ],
+  "source_update_sha256": "09ca74117b12377827a3bfafd88c3f5c303d4e4e576b2b1e2bc5416515a22b18"
+}

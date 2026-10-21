@@ -1,5 +1,9 @@
 # Eight-plugin capacity - Test 1
 
+This page preserves the historical capacity test and its original evidence.
+For the current accepted runtime, use [installation](INSTALL.md) and
+[current validation scope](COMPATIBILITY.md).
+
 Maintainer archive: `releases/capacity8-test1-20261016/ScriptHookV-NX-Eight-Plugins-Test1-EASY.zip`.
 It is a module-only update; no game archive or replacement menu is included.
 

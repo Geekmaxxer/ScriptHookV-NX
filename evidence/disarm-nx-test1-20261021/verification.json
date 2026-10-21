@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-21",
+  "plugin_id": "disarm-nx",
+  "upstream_repository": "https://github.com/ikt32/GTAVDisarm",
+  "upstream_revision": "92d6646e0c649fb6c387189758abdcb72ab376cc",
+  "implementation": "Bounded Switch behavior port with checked outputs; upstream sources not bundled",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc226620",
+  "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+  "nro": {
+    "image_bytes": 20480,
+    "bss_bytes": 4096,
+    "accounted_bytes": 53248,
+    "sha256": "186fb2eefc739113af6909ad657564d4c765a3726f0b3bcbbe5d0459eadb73a5",
+    "query_export_present": true
+  },
+  "source_hashes": {
+    "src/disarm_support.hpp": "e871dd41c6ef50c55e2fba387ab5e3da234529afb9975584a9a4231326f6c5ff",
+    "src/native_requirements.hpp": "b20cc27dabda39a6c72d58c91ba71a3109a01aa8d1edc018c09f75acdd52f754",
+    "src/nx_port_compat.h": "22b3845697c7615d0d066815fc9372bbd65502bc0da5e74191db10aae07f347b",
+    "src/main.cpp": "4b9540c9b7120adb2478a5cb14b48d1017b4a3b229a0a401e47643a282ad6760",
+    "disarm_support.hpp": "39281872e147a90a40c236c6f81edbdd6fe0f2314f34f56b0acd8468dba343cc"
+  },
+  "host_tests": {
+    "passed": 20,
+    "failed": 0,
+    "compiler": "cl.exe",
+    "audited_target_natives": 17,
+    "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "host_simulation": true,
+    "switch_runtime_verified": false
+  },
+  "native_audit": {
+    "target_build": "6e3e9b3af5746e74b615bd981080c9271bc226620",
+    "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "natives": [
+      {
+        "name": "PLAYER::PLAYER_ID",
+        "hash": "0x9e2d6c50374fcfa9",
+        "signature": "Player PLAYER::PLAYER_ID()",
+        "registered": true
+      },
+      {
+        "name": "PLAYER::PLAYER_PED_ID",
+        "hash": "0xe2d3d51028f0428a",
+        "signature": "Ped PLAYER::PLAYER_PED_ID()",
+        "registered": true
+      },
+      {
+        "name": "PLAYER::IS_PLAYER_CONTROL_ON",
+        "hash": "0x1c7a1a7e9e4766cf",
+        "signature": "bool PLAYER::IS_PLAYER_CONTROL_ON(Player PlayerIndex)",
+        "registered": true
+      },
+      {
+        "name": "PLAYER::IS_PLAYER_BEING_ARRESTED",
+        "hash": "0x99c20d75af0fb22e",
+        "signature": "bool PLAYER::IS_PLAYER_BEING_ARRESTED(Player PlayerIndex, bool CheckBustedTask)",
+        "registered": true
+      },
+      {
+        "name": "MISC::GET_GAME_TIMER",
+        "hash": "0x320d1840b6daa1cc",
+        "signature": "int32_t MISC::GET_GAME_TIMER()",
+        "registered": true
+      },
+      {
+        "name": "ENTITY::DOES_ENTITY_EXIST",
+        "hash": "0xe5965cdf24f93a9f",
+        "signature": "bool ENTITY::DOES_ENTITY_EXIST(Entity EntityIndex)",
+        "registered": true
+      },
+      {
+        "name": "ENTITY::IS_ENTITY_DEAD",
+        "hash": "0x55b23fe400fcea6b",
+        "signature": "bool ENTITY::IS_ENTITY_DEAD(Entity EntityIndex, bool bIgnoreVehicleDrowningIfInvincible)",
+        "registered": true
+      },
+      {
+        "name": "WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX",
+        "hash": "0x4d03373543a78098",
+        "signature": "Entity WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(Ped PedIndex, bool DoDeadCheck)",
+        "registered": true
+      },
+      {
+        "name": "PED::GET_PED_LAST_DAMAGE_BONE",
+        "hash": "0x7709b2482f29a1bb",
+        "signature": "bool PED::GET_PED_LAST_DAMAGE_BONE(Ped PedIndex, int32_t* ReturnBoneTag)",
+        "registered": true
+      },
+      {
+        "name": "PED::CLEAR_PED_LAST_DAMAGE_BONE",
+        "hash": "0xe657cd67ef2ecdd3",
+        "signature": "void PED::CLEAR_PED_LAST_DAMAGE_BONE(Ped PedIndex)",
+        "registered": true
+      },
+      {
+        "name": "ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED",
+        "hash": "0xe10b76698e5cf067",
+        "signature": "bool ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED(Entity EntityIndex)",
+        "registered": true
+      },
+      {
+        "name": "ENTITY::CLEAR_ENTITY_LAST_DAMAGE_ENTITY",
+        "hash": "0xe68645525d451a8b",
+        "signature": "void ENTITY::CLEAR_ENTITY_LAST_DAMAGE_ENTITY(Entity EntityIndex)",
+        "registered": true
+      },
+      {
+        "name": "WEAPON::SET_PED_DROPS_WEAPON",
+        "hash": "0xa6d4fbb3b47cf11e",
+        "signature": "void WEAPON::SET_PED_DROPS_WEAPON(Ped PedIndex)",
+        "registered": true
+      },
+      {
+        "name": "PED::GET_PED_NEARBY_PEDS",
+        "hash": "0x46951d3186547c7a",
+        "signature": "int32_t PED::GET_PED_NEARBY_PEDS(Ped PedIndex, Ped* array, int32_t ExclusionPedType)",
+        "registered": true
+      },
+      {
+        "name": "HUD::BEGIN_TEXT_COMMAND_PRINT",
+        "hash": "0x38bd019deccc5482",
+        "signature": "void HUD::BEGIN_TEXT_COMMAND_PRINT(const char* pMainTextLabel)",
+        "registered": true
+      },
+      {
+        "name": "HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME",
+        "hash": "0x76db21247ae4e4e2",
+        "signature": "void HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(const char* PlayerName)",
+        "registered": true
+      },
+      {
+        "name": "HUD::END_TEXT_COMMAND_PRINT",
+        "hash": "0x23d3ee043de19c4b",
+        "signature": "void HUD::END_TEXT_COMMAND_PRINT(int32_t Duration, bool bPrintNow)",
+        "registered": true
+      }
+    ],
+    "bone_tags": {
+      "right_hand": 57005,
+      "right_forearm": 28252
+    },
+    "array_abi": {
+      "capacity_header_bytes": 8,
+      "element_stride_bytes": 8,
+      "handle_bytes": 4,
+      "maximum_capacity": 64
+    },
+    "switch_runtime_verified": false
+  },
+  "limits": {
+    "nearby_capacity": 32,
+    "ped_checks_per_frame": 8,
+    "scanner_refresh_ms": 250,
+    "cooperative_script_slots": 1
+  },
+  "zip": {
+    "file": "Disarm-NX-Test1.zip",
+    "sha256": "013c0f853d5a8fbde182f46de64e0e275b796168841cb94b834ee52227252e8e",
+    "bytes": 9959,
+    "readback_verified": true
+  },
+  "core_runtime_modified": false,
+  "switch_runtime_verified": false,
+  "sdk_helper_sha256": "2485fb8a516dce62fcdcd19b1505b64ef503ad74b415f47c4a73405a904b50c4"
+}

@@ -1,0 +1,9 @@
+{
+  "SourceSha256": "37762cfcc5ca6639737d24c7d0cc085523de2bc5fe51b5fce7c107b0993f7d79",
+  "OutputSha256": "e4734b2f2492bc67686c64ba7af755dd7da013ea5b1390ed3c99205f1874605d",
+  "SourceBytes": 730963456,
+  "OutputBytes": 958844928,
+  "Entries": [
+    "switch/levels/gta5/script/script_rel.rpf"
+  ]
+}

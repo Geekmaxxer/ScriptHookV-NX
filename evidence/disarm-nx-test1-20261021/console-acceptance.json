@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-21",
+  "plugin": "disarm-nx",
+  "tested_nro_sha256": "186fb2eefc739113af6909ad657564d4c765a3726f0b3bcbbe5d0459eadb73a5",
+  "console_gameplay_passed": true,
+  "checks": {
+    "weapon_object_shots_drop_weapon": true,
+    "hand_shots_drop_weapon": true,
+    "armed_police_shotgun_drops": true
+  },
+  "observed_behavior": "Police can draw a sidearm after the primary weapon drops. The mod drops the held weapon; it does not empty inventories.",
+  "not_covered": [
+    "upper-arm hit extension",
+    "extended soak",
+    "frame-time profiling",
+    "death and character-change acceptance"
+  ]
+}

@@ -7,5 +7,5 @@
     "bindings.json": "6bd7c9f374cf053fe8b9b6bcbdbbb383bb8617aeb93c7d7df162866ebdd60ce3"
   },
   "origin": "Exact generated bindings from console-accepted Manager Test 2; no menu identity compiled into production",
-  "accepted_runtime_sha256": "209bec71c3f5608f4777c214218ec0a9ccef22a6d794de9f55de311904213ce6"
+  "accepted_runtime_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95"
 }

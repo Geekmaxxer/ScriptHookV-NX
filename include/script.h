@@ -34,3 +34,10 @@ template <size_t N> constexpr bool ValidId(const char (&id)[N]) {
             plugin_id, shvBindApi, entry_function }; \
         return &descriptor; \
     }
+
+// Optional export understood by lifecycle-aware runtimes. ABI 1 descriptor and
+// API sizes remain unchanged. Stop runs in game context without a fiber: no
+// WAIT, loops waiting for assets, C++ unwinding or reliance on entry-stack locals.
+#define SHV_NX_PLUGIN_WITH_STOP(plugin_id, entry_function, stop_function) \
+    SHV_NX_PLUGIN(plugin_id, entry_function) \
+    extern "C" SHV_NX_API void shvPluginStop() { stop_function(); }

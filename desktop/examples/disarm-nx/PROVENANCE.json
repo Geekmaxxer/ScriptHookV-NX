@@ -1,0 +1,24 @@
+{
+  "upstream_repository": "https://github.com/ikt32/GTAVDisarm",
+  "upstream_revision": "92d6646e0c649fb6c387189758abdcb72ab376cc",
+  "original_author": "ikt32",
+  "original_source_sha256": {
+    "main.cpp": "5f4e28fc6166a178b88b73a91854fa4affde7aed08df72d8343be43bf38d31eb",
+    "script.cpp": "75b2a15d56294642eb48e2e47347a7d7262ce087935c9c048a73c8ef3b0cb860",
+    "script.h": "cb1abc62e75caed3f9c22fcf3fc3870a638e8d64a3e7399e8890c32322a952c9"
+  },
+  "port_implementation": "Bounded Switch behavior port; original source files are not redistributed",
+  "changes": [
+    "PC worldGetAllPeds replaced by target nearby scanner: 32 handles maximum, eight processed per frame",
+    "Removed unused srand/GetTickCount initialization",
+    "Uses explicit Switch arguments for IS_ENTITY_DEAD and GET_CURRENT_PED_WEAPON_ENTITY_INDEX",
+    "Reads damage bone only when its BOOL result is true",
+    "Queries and clears damage before weapon drop; one drop for combined hand/weapon hits",
+    "Skips invalid, dead, unarmed and player handles; suspends on death/arrest/loss of player control",
+    "Refreshes scanner immediately on character change and handles game timer wrap",
+    "Namespaced bounded status reports; no per-frame SD writes"
+  ],
+  "sdk_helper": "include/shv/world.h",
+  "console_testing": "pending",
+  "switch_runtime_verified": false
+}

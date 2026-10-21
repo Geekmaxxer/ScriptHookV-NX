@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-21",
+  "desktop_version": "0.4.0",
+  "canonical_target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "accepted_runtime_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95",
+  "fresh_core_build_exact_match": true,
+  "core_tests_passed": 136,
+  "desktop_ui_checks": 21,
+  "portable_python_checks": 24,
+  "real_archive_validation": {
+    "independent_reader": "CodeWalker.Core",
+    "original_bytes": 932831232,
+    "updated_bytes": 932834816,
+    "entries_preserved": 1368,
+    "registrations_preserved": 71,
+    "registrations_after": 72,
+    "changed_original_bytes": 7,
+    "only_selected_table_row_changed": true,
+    "unchanged_nested_encrypted_archives_not_decrypted": 14
+  },
+  "packages": {
+    "version": "0.4.0",
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.4.0-Windows-x64.zip",
+      "bytes": 60582512,
+      "sha256": "5e5395d07ff9ea993a832fffd7a8b9eb79c0a2b29c7e36b2b243b4533c7caddf"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.4.0-Source.zip",
+      "bytes": 730990,
+      "sha256": "73976e7c3dc2f4c179b981f23aa965581895db8dfb4fbd82518f1fde66592ea5"
+    },
+    "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "binary_asi_translation": false,
+    "game_files_included": false,
+    "core_runtime_included": false,
+    "switch_runtime_verified": false,
+    "zip_readback_verified": true
+  },
+  "runtime_package": {
+    "module_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95",
+    "console_acceptance_matched": true,
+    "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+    "game_files_included": false,
+    "plugins_or_bindings_or_settings_included": false,
+    "zip_sha256": "e51c2ff3bc7d44235e66856a2fd08ee3fe29413446f263865165fa9604fc3164",
+    "zip_bytes": 52636,
+    "zip_readback_verified": true
+  },
+  "game_archive_outputs_console_tested": false,
+  "game_files_in_release": false
+}

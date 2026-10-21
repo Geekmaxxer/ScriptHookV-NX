@@ -1,7 +1,7 @@
 # Public plugin and SanScript SDK
 
 The current loader targets GTA V Switch build
-`6e3e9b3af5746e74b615bd981080c9271bc226620`. Interfaces are shared by developers;
+`6e3e9b3af5746e74b615bd981080c9271bc22662`. Interfaces are shared by developers;
 they do not depend on the MEGATARD menu name, code length or native indices.
 The first public loader passed on Switch: one plugin loaded and all seven sample
 checks passed. Refinement Test 2 retains ABI 1 and also passed those seven console
