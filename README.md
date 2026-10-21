@@ -9,14 +9,12 @@ limits; players can override each setting in an optional SD configuration file.
 See [runtime limits](docs/RUNTIME-LIMITS.md). Switch acceptance of the new
 configurable-limits test is pending. Previously published runtimes are unchanged.
 
-Created by MEGATARD (@Geekmaxver; GitHub: Geekmaxxer).
-Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
 Use, editing, redistribution and sale require attribution; see [LICENSE](LICENSE)
 and [NOTICE](NOTICE). This is a Public Preview with the limits documented below.
 [Downloads](https://github.com/Geekmaxxer/ScriptHookV-NX/releases) are separate
 runtime, developer SDK and clean source archives. See [release notes](docs/PUBLIC-PREVIEW.md).
 
-**[Developer quickstart](docs/START-HERE.md)** | **[Install mods](docs/INSTALL.md)** ?
+**[Developer quickstart](docs/START-HERE.md)** | **[Install mods](docs/INSTALL.md)** |
 **[Tutorials](docs/TUTORIALS.md)** | **[Tools](docs/TOOLS.md)** | **[NSC modding](docs/NSC-MODDING.md)**
 
 ## For players
