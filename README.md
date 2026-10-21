@@ -10,8 +10,6 @@ See [runtime limits](docs/RUNTIME-LIMITS.md). The current runtime passed console
 plugin lifecycle tests with MEGATARD's NSC menu. Custom limit overrides and full
 capacity stress tests have their own validation requirements.
 
-Created by MEGATARD (@Geekmaxver; GitHub: Geekmaxxer).
-Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
 Use, editing, redistribution and sale require attribution; see [LICENSE](LICENSE)
 and [NOTICE](NOTICE). This is a Public Preview with the limits documented below.
 [Downloads](https://github.com/Geekmaxxer/ScriptHookV-NX/releases) are separate
