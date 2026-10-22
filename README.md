@@ -105,3 +105,6 @@ runaway loop. Resident NROs remain mapped until GTA exits, even after Kill Proce
 completion; process cancellation retains native-handler pointers. Direct
 NSC loading from SD, hot code replacement and Windows platform APIs are outside
 the current API. See the linked guides for the complete limits and workflows.
+
+#
+AI was used throughout the entirety of this project; it was solely to get it to a working state and to even make this possible in any way.
