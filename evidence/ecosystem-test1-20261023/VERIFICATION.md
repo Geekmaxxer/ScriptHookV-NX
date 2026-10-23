@@ -27,3 +27,8 @@ The asset output merges the current selected DLC list and retains its other
 entries. Rendering quality, animations and collision freezes need the console
 matrix in [maintenance](../../docs/MAINTENANCE.md). The pipeline does not alter
 mesh/collision complexity or claim to resolve those freezes.
+
+The clean source export passed the full suite with devkitA64. Compiler-free
+mode passed 151 assertions and explicitly skipped four compiler groups.
+The packaged SDK and desktop SDK both generate the byte-identical UI NRO.
+The packaged Windows application also completed the PED builder workflow.

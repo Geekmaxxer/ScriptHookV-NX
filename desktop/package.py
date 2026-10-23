@@ -62,7 +62,7 @@ def package(output):
     for name in ('include', 'sdk'):
         shutil.copytree(ROOT/name, stage/'SDK'/name)
     (stage/'SDK/tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py'):
         shutil.copy2(ROOT/'tools'/name, stage/'SDK/tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, stage/name)
@@ -77,8 +77,11 @@ def package(output):
     public_guide('EXTENSIONS.md', stage/'docs/EXTENSIONS.md')
     public_guide('RUNTIME-COMPLETION.md', stage/'docs/RUNTIME-COMPLETION.md')
     public_guide('CONTROLLER-UI.md', stage/'docs/CONTROLLER-UI.md')
-    (stage/'SDK/examples/tutorials/controller-ui').mkdir(parents=True)
-    shutil.copy2(ROOT/'examples/tutorials/controller-ui/main.cpp', stage/'SDK/examples/tutorials/controller-ui/main.cpp')
+    for folder, suffixes in (('examples', {'.cpp', '.sc'}), ('tests', {'.cpp'})):
+        for path in (ROOT/folder).rglob('*'):
+            if path.is_file() and path.suffix in suffixes:
+                destination = stage/'SDK'/path.relative_to(ROOT)
+                destination.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(path, destination)
     (stage/'READ-ME-FIRST.md').write_text(
         '# ScriptHookV-NX Mod Porter 0.5.0 Public Preview\n\n'
         'Open ScriptHookV-NX-Mod-Porter.exe on Windows x64. Keep the SDK and examples '
@@ -112,7 +115,7 @@ def package(output):
     for name in ('include', 'sdk'):
         shutil.copytree(ROOT/name, source/name)
     (source/'tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py'):
         shutil.copy2(ROOT/'tools'/name, source/'tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, source/name)
@@ -123,8 +126,11 @@ def package(output):
     public_guide('EXTENSIONS.md', source/'docs/EXTENSIONS.md')
     public_guide('RUNTIME-COMPLETION.md', source/'docs/RUNTIME-COMPLETION.md')
     public_guide('CONTROLLER-UI.md', source/'docs/CONTROLLER-UI.md')
-    (source/'examples/tutorials/controller-ui').mkdir(parents=True)
-    shutil.copy2(ROOT/'examples/tutorials/controller-ui/main.cpp', source/'examples/tutorials/controller-ui/main.cpp')
+    for folder, suffixes in (('examples', {'.cpp', '.sc'}), ('tests', {'.cpp'})):
+        for path in (ROOT/folder).rglob('*'):
+            if path.is_file() and path.suffix in suffixes:
+                destination = source/path.relative_to(ROOT)
+                destination.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(path, destination)
     (source/'README.md').write_text((ROOT/'desktop/README.md').read_text(encoding='utf-8').replace('../docs/GAME-ASSETS.md','docs/GAME-ASSETS.md'),encoding='utf-8')
     shutil.copy2(ROOT/'desktop/COMPATIBILITY.md', source/'COMPATIBILITY.md')
     source_zip = output/f'ScriptHookV-NX-Mod-Porter-{VERSION}-Source.zip'

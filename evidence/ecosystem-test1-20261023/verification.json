@@ -171,5 +171,11 @@
     "Menyoo and GTAVSpeedo are assessed source projects, not playable ports."
   ],
   "sd_modified": false,
-  "switch_runtime_verified": false
+  "switch_runtime_verified": false,
+  "clean_checkout_full_suite_passed": true,
+  "compiler_free_ci_assertions": 151,
+  "compiler_free_ci_skipped_groups": 4,
+  "packaged_sdk_ui_build_byte_identical": true,
+  "packaged_porter_ui_build_byte_identical": true,
+  "packaged_porter_ped_workflow_passed": true
 }
