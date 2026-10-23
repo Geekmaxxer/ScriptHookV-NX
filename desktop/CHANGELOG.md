@@ -1,4 +1,4 @@
-# Unreleased
+# Mod Porter 0.6.0 Public Preview - 2026-10-23
 
 - Offer folder-only output alongside ZIP packaging for assets, PED add-ons and
   DLC registration. CLI equivalents accept `--no-zip`.

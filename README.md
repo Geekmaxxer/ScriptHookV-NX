@@ -6,7 +6,7 @@ Target: title `0100b00b51230000`, build `6e3e9b3af5746e74b615bd981080c9271bc2266
 The current source defaults to **eight resident NROs, sixteen cooperative script
 slots and an 8 MiB plugin budget**. Builders and mod authors can prepare custom
 limits; players can override each setting in an optional SD configuration file.
-See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.3 Public Preview** includes
+See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.4 Public Preview** ships the unchanged v1.3 runtime with
 [matched console acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json). Earlier runtime revisions passed
 console plugin lifecycle tests with MEGATARD's NSC menu. The current SDK Parity
 Test 1 adds [world enumeration, multiple scripts, globals/entity pointers, PNG
@@ -28,10 +28,11 @@ runtime, developer SDK and clean source archives. See [release notes](docs/PUBLI
 **[Developer quickstart](docs/START-HERE.md)** | **[Install mods](docs/INSTALL.md)** |
 **[Tutorials](docs/TUTORIALS.md)** | **[Tools](docs/TOOLS.md)** | **[NSC modding](docs/NSC-MODDING.md)**
 
-Current development adds [reusable controller menus](docs/CONTROLLER-UI.md),
+This release adds [reusable controller menus](docs/CONTROLLER-UI.md),
 [complete loose-PED DLC creation and batch add-on checks](docs/GAME-ASSETS.md),
 and [repeatable maintenance checks](docs/MAINTENANCE.md). These SDK/tool additions
-have their own test scope; published v1.3 downloads remain unchanged.
+have their own test scope. Mod Porter **0.6.0** adds folder-only asset, PED and
+DLC registration outputs alongside ZIP packaging.
 
 ## For players
 

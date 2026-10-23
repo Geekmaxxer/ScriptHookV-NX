@@ -129,7 +129,7 @@ public static class PortProject {
                 format = 1, kind = "nro", id = options.PluginId,
                 sources = chosen.Order().Select(s => "src/" + s).ToArray(),
                 includes = includeDirs.Select(s => ("src/" + s).TrimEnd('/').Replace('\\', '/')).ToArray(),
-                mod_porter = new { version = "0.5.0", target_build = catalog.TargetBuild, header_sha256 = catalog.HeaderSha256, original_input = input.Path, original_hashes = input.Files.ToDictionary(f => f.RelativePath, f => f.Sha256), options, switch_runtime_verified = false }
+                mod_porter = new { version = "0.6.0", target_build = catalog.TargetBuild, header_sha256 = catalog.HeaderSha256, original_input = input.Path, original_hashes = input.Files.ToDictionary(f => f.RelativePath, f => f.Sha256), options, switch_runtime_verified = false }
             };
             JsonFiles.Write(Path.Combine(output, "project.json"), manifest);
             JsonFiles.Write(Path.Combine(output, "changes.json"), changes);

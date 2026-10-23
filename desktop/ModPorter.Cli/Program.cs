@@ -5,7 +5,7 @@ using System.Text.Json;
 try {
     if (args.Length == 0 || args[0] is "--help" or "help") {
         Console.WriteLine("""
-            ScriptHookV-NX Mod Porter 0.5.0
+            ScriptHookV-NX Mod Porter 0.6.0
             analyze <source-folder|zip|asi|dll|nro> --sdk <SDK> [--report <new-folder>]
             port <source-folder|zip> --sdk <SDK> --output <new-folder> --id <plugin-id>
                  [--source <relative.cpp> ...] [--keep-dllmain] [--adapt-sleep]

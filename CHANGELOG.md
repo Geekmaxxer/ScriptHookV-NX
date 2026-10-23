@@ -1,12 +1,16 @@
 # Changelog
 
-## Unreleased
+## v1.4 Public Preview - 2026-10-23
 
 - Complete loose-PED DLC wrappers from explicitly selected target metadata.
 - Add-on registration/model/shader dependency audits and multi-pack preparation.
 - Texture reduction through supported Legacy fragment physics-child drawables.
 - Header-only controller UI with measured layout, navigation and persistence demo.
 - Public verification command, UI model tests and pinned Windows/Linux CI workflow.
+- Mod Porter 0.6.0: folder-only asset/PED/DLC output alongside ZIP packaging,
+  selected-game metadata and multi-pack registration checks.
+- Ships the unchanged console-accepted v1.3 runtime; new SDK/UI and asset
+  preparation features have local build/file validation and require per-mod Switch tests.
 
 
 ## v1.3 Public Preview - 2026-10-23

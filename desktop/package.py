@@ -10,7 +10,7 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.5.0'
+VERSION = '0.6.0'
 
 
 def sha(path):
@@ -83,7 +83,7 @@ def package(output):
                 destination = stage/'SDK'/path.relative_to(ROOT)
                 destination.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(path, destination)
     (stage/'READ-ME-FIRST.md').write_text(
-        '# ScriptHookV-NX Mod Porter 0.5.0 Public Preview\n\n'
+        '# ScriptHookV-NX Mod Porter 0.6.0 Public Preview\n\n'
         'Open ScriptHookV-NX-Mod-Porter.exe on Windows x64. Keep the SDK and examples '
         'folders beside it. Import a mod or try the included example.\n\n'
         'To build NROs, install Python 3.10+, devkitA64 and switch-tools, then check '

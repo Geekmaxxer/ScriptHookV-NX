@@ -1,7 +1,7 @@
 # ScriptHookV-NX Mod Porter
 
 A Windows desktop tool for PC mod source ports, ASI dependency reports and Legacy
-asset preparation. **0.5.0 Public Preview**.
+asset preparation. **0.6.0 Public Preview**.
 
 Extract the complete Windows ZIP and open `ScriptHookV-NX-Mod-Porter.exe`. Its .NET
 runtime and matched SDK are included. No game files are bundled.
@@ -108,7 +108,7 @@ dotnet build desktop/ModPorter.App -c Release
 dotnet run --project desktop/ModPorter.Tests -- .
 dotnet build desktop/ModPorter.Cli -c Release
 python desktop/verification/real_mods.py --output ../real-mod-checks --devkitpro <devkitPro-root>
-python desktop/package.py --output releases/mod-porter-0.5.0
+python desktop/package.py --output releases/mod-porter-0.6.0
 ```
 
 Run from the SDK/repository root. The CLI shares the desktop analysis/build/asset
