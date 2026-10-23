@@ -31,6 +31,14 @@ static class RefinementTests {
         File.WriteAllBytes(dlc,RpfArchive.Write(root)); File.WriteAllText(list,"<SMandatoryPacksData><Paths><Item>dlcpacks:/original/</Item></Paths></SMandatoryPacksData>");
         string originalList = File.ReadAllText(list);
         check("DLC registration preserves original entries and source files", () => { string output = Path.Combine(scratch,"dlc-registration"); string zip = DlcPackageService.Prepare(dlc,list,"my-addon",output); Must(XDocument.Load(Path.Combine(output,"dlclist.xml")).Descendants("Item").Select(n=>n.Value).SequenceEqual(new[]{"dlcpacks:/original/","dlcpacks:/my-addon/"}) && File.Exists(zip) && File.ReadAllText(list) == originalList); Must(File.ReadAllBytes(dlc).SequenceEqual(File.ReadAllBytes(Path.Combine(output,"dlcpacks/my-addon/dlc.rpf")))); });
+        check("Folder-only DLC registration matches ZIP files and retains the current list", () => {
+            string output = Path.Combine(scratch, "DLC folder only");
+            Must(DlcPackageService.Prepare(dlc, list, "my-addon", output, createZip: false) == output);
+            Must(!Directory.EnumerateFiles(output, "*.zip", SearchOption.AllDirectories).Any());
+            var existing = Path.Combine(scratch, "dlc-registration");
+            foreach (string file in Directory.EnumerateFiles(existing, "*", SearchOption.AllDirectories).Where(f => !f.EndsWith(".zip"))) Must(File.ReadAllBytes(file).SequenceEqual(File.ReadAllBytes(Path.Combine(output, Path.GetRelativePath(existing, file)))));
+            Must(File.ReadAllText(list) == originalList);
+        });
         check("DLC registration avoids duplicate entries", () => { string output=Path.Combine(scratch,"dlc-duplicate");DlcPackageService.Prepare(dlc,Path.Combine(scratch,"dlc-registration/dlclist.xml"),"my-addon",output);Must(XDocument.Load(Path.Combine(output,"dlclist.xml")).Descendants("Item").Count()==2); });
         check("DLC registration rejects unsafe IDs",()=>Reject(()=>DlcPackageService.Prepare(dlc,list,"../bad",Path.Combine(scratch,"bad-dlc"))));
         check("DLC registration refuses an existing output",()=>Reject(()=>DlcPackageService.Prepare(dlc,list,"my-addon",Path.Combine(scratch,"dlc-registration"))));

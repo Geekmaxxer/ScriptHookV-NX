@@ -179,7 +179,7 @@ public static class AssetService {
         return report;
     }
     public static AssetReport Analyze(string input, AssetOptions options, CancellationToken cancel = default) => Process(Load(input, cancel), input, options, false, cancel);
-    public static AssetConversion Convert(string input, string output, AssetOptions options, CancellationToken cancel = default) {
+    public static AssetConversion Convert(string input, string output, AssetOptions options, CancellationToken cancel = default, bool createZip = true) {
         input = Path.GetFullPath(input); output = Path.GetFullPath(output);
         if (Directory.Exists(output) || File.Exists(output) || Directory.Exists(input) && InputLoader.Inside(output, input)) throw new IOException("Choose a new output folder outside the input assets.");
         var root = Load(input, cancel); var report = Process(root, input, options, true, cancel); report.Output = output;
@@ -191,14 +191,16 @@ public static class AssetService {
         File.WriteAllText(Path.Combine(output, "ASSET-REPORT.txt"), report.Text(), new UTF8Encoding(false));
         string install = "# Prepared Switch assets\n\nImport the contents of converted into the corresponding mod/game RPF location using OpenIV, CodeWalker or the Switch Toolbox. These files are not an NRO or a complete SD-root installation.\n\nFor add-on dlc.rpf packs, preserve their mod folder and add their registration to the game's dlclist.xml. Do not replace the complete list with a one-entry file. Keep the original metadata and test the mod on Switch.\n\nTexture reductions retain existing encoded mip levels where possible; otherwise supported BC textures are resized and re-encoded. Standalone texture allocations are rebuilt. Supported embedded model textures are reduced while retaining the shared graphics allocation and geometry. See ASSET-REPORT.txt for required follow-up.\n";
         File.WriteAllText(Path.Combine(output, "READ-ME-FIRST.md"), install, new UTF8Encoding(false));
-        string archive = Path.Combine(output, "Switch-assets-test.zip");
-        using (var zip = ZipFile.Open(archive, ZipArchiveMode.Create)) {
-            foreach (string path in Directory.EnumerateFiles(converted, "*", SearchOption.AllDirectories)) zip.CreateEntryFromFile(path, "converted/" + Path.GetRelativePath(converted, path).Replace('\\', '/'), CompressionLevel.Optimal);
-            foreach (string name in new[] { "READ-ME-FIRST.md", "ASSET-REPORT.txt" }) zip.CreateEntryFromFile(Path.Combine(output, name), name, CompressionLevel.Optimal);
-        }
-        using (var zip = ZipFile.OpenRead(archive)) foreach (var entry in zip.Entries) {
-            using var stream = entry.Open(); string hash = System.Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream)).ToLowerInvariant();
-            if (hash != JsonFiles.Hash(File.ReadAllBytes(Path.Combine(output, entry.FullName.Replace('/', Path.DirectorySeparatorChar))))) throw new InvalidDataException("Asset ZIP readback differs: " + entry.FullName);
+        string archive = createZip ? Path.Combine(output, "Switch-assets-test.zip") : "";
+        if (createZip) {
+            using (var zip = ZipFile.Open(archive, ZipArchiveMode.Create)) {
+                foreach (string path in Directory.EnumerateFiles(converted, "*", SearchOption.AllDirectories)) zip.CreateEntryFromFile(path, "converted/" + Path.GetRelativePath(converted, path).Replace('\\', '/'), CompressionLevel.Optimal);
+                foreach (string name in new[] { "READ-ME-FIRST.md", "ASSET-REPORT.txt" }) zip.CreateEntryFromFile(Path.Combine(output, name), name, CompressionLevel.Optimal);
+            }
+            using (var zip = ZipFile.OpenRead(archive)) foreach (var entry in zip.Entries) {
+                using var stream = entry.Open(); string hash = System.Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream)).ToLowerInvariant();
+                if (hash != JsonFiles.Hash(File.ReadAllBytes(Path.Combine(output, entry.FullName.Replace('/', Path.DirectorySeparatorChar))))) throw new InvalidDataException("Asset ZIP readback differs: " + entry.FullName);
+            }
         }
         return new(output, archive, report);
     }

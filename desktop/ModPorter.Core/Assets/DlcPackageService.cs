@@ -19,7 +19,9 @@ public static class DlcPackageService {
         using var output=new MemoryStream();using(var writer=XmlWriter.Create(output,new XmlWriterSettings{Encoding=new UTF8Encoding(false),Indent=true}))doc.Save(writer);
         return output.ToArray();
     }
-    public static string Prepare(string dlcArchive, string currentDlcList, string id, string output, CancellationToken cancel = default) {
+    /// <returns>The ZIP path, or the output directory when createZip is false.</returns>
+    public static string Prepare(string dlcArchive, string currentDlcList, string id, string output, CancellationToken cancel = default, bool createZip = true) {
+        output = Path.GetFullPath(output);
         if (!PortProject.ValidId(id) || id != id.ToLowerInvariant()) throw new ArgumentException("DLC ID requires 1–31 lowercase letters, digits, underscores or hyphens.");
         if (Directory.Exists(output) || File.Exists(output)) throw new IOException("Choose a new DLC package output directory.");
         if (new FileInfo(dlcArchive).Length > 256 * 1024 * 1024 || new FileInfo(currentDlcList).Length > 4 * 1024 * 1024) throw new InvalidDataException("DLC/list exceeds preparation limits.");
@@ -33,6 +35,7 @@ public static class DlcPackageService {
         File.WriteAllBytes(merged,mergedList);
         File.WriteAllText(Path.Combine(output, "READ-ME-FIRST.md"), "# DLC import package\n\nImport dlcpacks/" + id + "/dlc.rpf into the game's DLC packs location. Import this merged dlclist.xml into update.rpf/common/data/dlclist.xml. It retains the entries from the list selected during preparation.\n\nUse the list from your actual installation, back up the affected archives and test the mod on Switch. These are archive import files, not an SD-root installation.\n", new UTF8Encoding(false));
         JsonFiles.Write(Path.Combine(output, "dlc-package.json"), new { id, archive_sha256 = JsonFiles.HashFile(dlcArchive), original_list_sha256 = JsonFiles.HashFile(currentDlcList), merged_list_sha256 = JsonFiles.HashFile(merged), switch_runtime_verified = false });
+        if (!createZip) return output;
         string zipPath = Path.Combine(output, id + "-DLC-import.zip");
         using (var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create)) foreach (string file in Directory.EnumerateFiles(output, "*", SearchOption.AllDirectories).Where(f => f != zipPath)) zip.CreateEntryFromFile(file, Path.GetRelativePath(output,file).Replace('\\','/'));
         using (var zip = ZipFile.OpenRead(zipPath)) foreach (var e in zip.Entries) { using var stream = e.Open(); if (Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream)).ToLowerInvariant() != JsonFiles.HashFile(Path.Combine(output,e.FullName.Replace('/',Path.DirectorySeparatorChar)))) throw new InvalidDataException("DLC ZIP readback mismatch."); }

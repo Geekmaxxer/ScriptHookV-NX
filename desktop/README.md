@@ -34,7 +34,8 @@ PC cheat-string natives are flagged for controller adaptation.
 ## Prepare assets
 
 In **Game assets > Prepare assets**, choose a folder, ZIP, OPEN RPF or loose Legacy resource. Select the
-asset type and texture cap, inspect, then prepare a new output ZIP. The defaults
+asset type and texture cap, inspect, then choose **Prepare assets** for a folder
+or **Prepare assets + ZIP** to also create an archive. The defaults
 are Auto and 1024 pixels; Off preserves texture sizes.
 
 - Convert supported `y` resource extensions to `n`, platform directory/archive
@@ -50,6 +51,8 @@ selected base definition from your current game's metadata. The base definitions
 are listed after selecting the containing archive. **Add several DLC packs**
 checks a collection and merges it with the current DLC list in one operation.
 Registration blockers and unresolved shader dependencies appear in the report.
+PED add-on builds and DLC registration packages also offer separate folder-only
+and **+ ZIP** buttons. Folder-only output includes the prepared files and reports.
 
 Use **Add to game** to select the prepared DLC/replacement
 and your current RPF from an SD drive or local game folder. **Build updated game files**

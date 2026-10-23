@@ -460,7 +460,10 @@
             </Grid>
             <TextBlock Text="Base PED name from that metadata" Style="{StaticResource FieldLabel}" Margin="0,10,0,0" />
             <ComboBox x:Name="PedBaseName" IsEditable="True" AutomationProperties.Name="Base PED definition name" />
-            <Button Content="Build PED add-on + ZIP" Click="BuildPedAddon_Click" HorizontalAlignment="Left" Margin="0,12,0,0" />
+            <WrapPanel Margin="0,12,0,0">
+             <Button x:Name="BuildPedAddonFolderButton" Content="Build PED add-on" Click="BuildPedAddonFolder_Click" />
+             <Button x:Name="BuildPedAddonZipButton" Content="Build PED add-on + ZIP" Click="BuildPedAddon_Click" />
+            </WrapPanel>
            </StackPanel>
           </Expander>
           <Expander Header="Supported formats and limitations">
@@ -469,7 +472,8 @@
          </StackPanel>
          <WrapPanel Margin="0,10,0,0" Grid.Row="1">
           <Button Content="Inspect assets" Click="AnalyzeAssets_Click" />
-          <Button x:Name="ConvertAssetsButton" Content="Prepare assets + ZIP" Style="{StaticResource Primary}" Click="ConvertAssets_Click" />
+          <Button x:Name="ConvertAssetsFolderButton" Content="Prepare assets" Style="{StaticResource Primary}" Click="ConvertAssetsFolder_Click" />
+          <Button x:Name="ConvertAssetsButton" Content="Prepare assets + ZIP" Click="ConvertAssets_Click" />
          </WrapPanel>
         </Grid>
        </TabItem>
@@ -512,10 +516,13 @@
              <TextBlock Text="DLC folder ID" Style="{StaticResource FieldLabel}" />
              <TextBox x:Name="DlcId" Text="my-addon" MaxWidth="240" HorizontalAlignment="Left" MinWidth="180" AutomationProperties.Name="DLC folder ID" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
              <TextBlock Text="Existing DLC registrations are retained. Originals stay unchanged." Style="{StaticResource Hint}" />
-             <Expander Header="Advanced: archive import files" Margin="0,14,0,0">
+             <Expander x:Name="DlcImportExpander" Header="Advanced: archive import files" Margin="0,14,0,0">
               <StackPanel Margin="0,10,0,0">
                <TextBlock Text="Already have an extracted dlclist.xml? Create a smaller archive-import package using the DLC ID above." Style="{StaticResource Hint}" Margin="0,0,0,10" />
-               <Button Content="Prepare DLC registration…" Click="PrepareDlc_Click" Style="{StaticResource Quiet}" HorizontalAlignment="Left" />
+               <WrapPanel>
+                <Button x:Name="PrepareDlcFolderButton" Content="Prepare DLC registration…" Click="PrepareDlcFolder_Click" Style="{StaticResource Quiet}" />
+                <Button x:Name="PrepareDlcZipButton" Content="Prepare DLC registration + ZIP…" Click="PrepareDlc_Click" Style="{StaticResource Quiet}" />
+               </WrapPanel>
               </StackPanel>
              </Expander>
             </StackPanel>

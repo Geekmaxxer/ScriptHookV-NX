@@ -100,6 +100,13 @@ static class AssetTests {
             Must(File.ReadAllBytes(Path.Combine(input, "dlc.rpf")).SequenceEqual(original) && conversion.Report.GraphicsBytesSaved > 0 && !conversion.Report.SwitchRuntimeVerified);
             using var zip = ZipFile.OpenRead(conversion.Archive); Must(zip.Entries.Count == 3 && zip.GetEntry("converted/dlc.rpf") != null);
         });
+        check("Folder-only asset preparation matches ZIP contents without creating ZIPs", () => {
+            var folder = AssetService.Convert(input, Path.Combine(scratch, "Asset folder only"), new(256), createZip: false);
+            Must(folder.Archive == "" && !Directory.EnumerateFiles(folder.Directory, "*.zip", SearchOption.AllDirectories).Any());
+            using var zip = ZipFile.OpenRead(Path.Combine(output, "Switch-assets-test.zip"));
+            foreach (var entry in zip.Entries) { using var stream = entry.Open(); Must(System.Security.Cryptography.SHA256.HashData(stream).SequenceEqual(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(Path.Combine(folder.Directory, entry.FullName))))); }
+            Must(File.Exists(Path.Combine(folder.Directory, "asset-report.json")) && folder.Report.GraphicsBytesSaved > 0);
+        });
         check("Assets never overwrite existing output", () => Reject(() => AssetService.Convert(input, output, new())));
         check("Assets cannot write inside input", () => Reject(() => AssetService.Convert(input, Path.Combine(input, "out"), new())));
         check("Scripts cannot become assets by renaming", () => { string p = Path.Combine(scratch, "scriptpack"); Directory.CreateDirectory(p); File.WriteAllBytes(Path.Combine(p, "test.ytd"), dictionary); File.WriteAllBytes(Path.Combine(p, "code.ysc"), [1]); Reject(() => AssetService.Analyze(p, new())); });

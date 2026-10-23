@@ -38,13 +38,15 @@ public partial class MainWindow {
             ShowAssetReport("DLC collection prepared · Switch gameplay testing required"); StatusText.Text = "Updated game files verified";
         });
     }
-    private async void BuildPedAddon_Click(object sender, RoutedEventArgs e) {
+    private async void BuildPedAddon_Click(object sender, RoutedEventArgs e) => await BuildPedAddonAsync(createZip: true);
+    private async void BuildPedAddonFolder_Click(object sender, RoutedEventArgs e) => await BuildPedAddonAsync(createZip: false);
+    private async Task BuildPedAddonAsync(bool createZip) {
         string path = AssetInputPath.Text.Trim(), output = AssetOutputPath.Text.Trim();
         var settings = new PedAddonOptions(PedPackId.Text.Trim(), PedModelName.Text.Trim(), PedTemplatePath.Text.Trim(), PedBaseName.Text.Trim(), AssetSettings.MaximumTextureDimension);
         await RunBusy("Building PED resources, registration and verified DLC…", async cancel => {
-            var result = await Task.Run(() => AddonBuilder.Ped(path, output, settings, cancel), cancel);
+            var result = await Task.Run(() => AddonBuilder.Ped(path, output, settings, cancel, createZip: createZip), cancel);
             assetDirectory = result.Directory; PreparedAssetPath.Text = result.DlcArchive; DlcId.Text = settings.Id;
-            AssetLog.Text = result.Audit.Text() + "\n\nSpawn model: " + settings.Model + "\nZIP: " + result.Archive;
+            AssetLog.Text = result.Audit.Text() + "\n\nSpawn model: " + settings.Model + "\nFolder: " + result.Directory + (createZip ? "\nZIP: " + result.Archive : "");
             AssetOutputLabel.Text = result.Directory; ShowAssetReport("PED add-on prepared · Add to game to register it");
             StatusText.Text = "PED DLC built · Appearance and gameplay testing required";
         });
@@ -56,15 +58,17 @@ public partial class MainWindow {
             AssetLog.Text = result.Text(); ShowAssetReport($"Inspected · {result.Files.Count} files · {result.Notes.Count} notes"); StatusText.Text = "Assets inspected · Review required metadata and texture limits";
         });
     }
-    private async void ConvertAssets_Click(object sender, RoutedEventArgs e) {
+    private async void ConvertAssets_Click(object sender, RoutedEventArgs e) => await ConvertAssetsAsync(createZip: true);
+    private async void ConvertAssetsFolder_Click(object sender, RoutedEventArgs e) => await ConvertAssetsAsync(createZip: false);
+    private async Task ConvertAssetsAsync(bool createZip) {
         string path = AssetInputPath.Text.Trim(), output = AssetOutputPath.Text.Trim(); var settings = AssetSettings;
         await RunBusy("Preparing copied Switch assets and textures…", async cancel => {
-            var result = await Task.Run(() => AssetService.Convert(path, output, settings, cancel), cancel);
+            var result = await Task.Run(() => AssetService.Convert(path, output, settings, cancel, createZip: createZip), cancel);
             assetDirectory = result.Directory;
             string prepared = Path.Combine(result.Directory,"converted","dlc.rpf");
             if(File.Exists(prepared)) PreparedAssetPath.Text=prepared;
             else { var files = Directory.EnumerateFiles(Path.Combine(result.Directory,"converted"),"*",SearchOption.AllDirectories).Take(2).ToArray(); if(files.Length==1)PreparedAssetPath.Text=files[0]; }
-            AssetLog.Text = result.Report.Text() + "\n\nZIP: " + result.Archive;
+            AssetLog.Text = result.Report.Text() + "\n\nFolder: " + result.Directory + (createZip ? "\nZIP: " + result.Archive : "");
             AssetOutputLabel.Text = result.Directory;
             ShowAssetReport($"Prepared · {result.Report.Files.Count} files · {result.Report.GraphicsBytesSaved / 1048576.0:N1} MiB of texture allocation removed");
             StatusText.Text = "Assets prepared · Switch gameplay testing required";
@@ -73,14 +77,19 @@ public partial class MainWindow {
     private void OpenAssets_Click(object sender, RoutedEventArgs e) => OpenFolder(assetDirectory);
     void ShowAssetReport(string summary) { AssetReportSummary.Text = summary; AssetTabs.SelectedIndex = 2; }
     private void UsePreparedAssets_Click(object sender, RoutedEventArgs e) => AssetTabs.SelectedIndex = 1;
-    private async void PrepareDlc_Click(object sender, RoutedEventArgs e) {
+    private async void PrepareDlc_Click(object sender, RoutedEventArgs e) => await PrepareDlcAsync(createZip: true);
+    private async void PrepareDlcFolder_Click(object sender, RoutedEventArgs e) => await PrepareDlcAsync(createZip: false);
+    private async Task PrepareDlcAsync(bool createZip) {
         var dlc = new OpenFileDialog { Title = "Choose the converted complete dlc.rpf", Filter = "DLC archive|*.rpf" }; if (dlc.ShowDialog(this) != true) return;
         var list = new OpenFileDialog { Title = "Choose dlclist.xml extracted from your actual installation", Filter = "DLC list|dlclist.xml|XML|*.xml" }; if (list.ShowDialog(this) != true) return;
         string? parent = PickFolder("Choose where to save the merged DLC import package"); if (parent == null) return;
         string id = DlcId.Text.Trim(), output = Path.Combine(parent, id + "-import-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+        await PrepareDlcFilesAsync(dlc.FileName, list.FileName, id, output, createZip);
+    }
+    private async Task PrepareDlcFilesAsync(string dlc, string list, string id, string output, bool createZip) {
         await RunBusy("Preparing DLC registration and import files…", async cancel => {
-            string zip = await Task.Run(() => DlcPackageService.Prepare(dlc.FileName, list.FileName, id, output, cancel), cancel);
-            assetDirectory = output; AssetLog.Text = "DLC import ZIP: " + zip + "\nThe selected list's existing registrations were retained. Import the files into the game archives and test on Switch.";
+            string result = await Task.Run(() => DlcPackageService.Prepare(dlc, list, id, output, cancel, createZip: createZip), cancel);
+            assetDirectory = output; AssetLog.Text = "DLC import folder: " + output + (createZip ? "\nZIP: " + result : "") + "\nThe selected list's existing registrations were retained. Import the files into the game archives and test on Switch.";
             AssetOutputLabel.Text = output; ShowAssetReport("DLC import package prepared");
             StatusText.Text = "DLC registration package prepared";
         });

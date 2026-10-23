@@ -6,7 +6,7 @@ folder or saved copy. Nothing is downloaded from the game or bundled with the to
 
 ## Add a complete DLC pack
 
-1. In **Game assets > Prepare assets**, inspect the mod and use **Prepare assets + ZIP**. Keep
+1. In **Game assets > Prepare assets**, inspect the mod and use **Prepare assets**. Keep
    its complete metadata and choose a texture cap suitable for the mod.
 2. Under **Add to game**, select the prepared `dlc.rpf` and
    the current `update.rpf`, or its mounted SD/game folder. Use the archive from
@@ -42,9 +42,13 @@ a separate DLC folder ID. Select your current game's `peds.meta` or its containi
 OPEN DLC archive, then choose the matching base PED from that metadata.
 For example, the supported installation's mpbiker pack contains the definitions
 used by the Misaki and Zoro preparation tests.
-Use **Build PED add-on + ZIP**. The tool creates a resource archive, peds.meta,
+Use **Build PED add-on**. The tool creates a resource archive, peds.meta,
 content.xml, setup2.xml and startup activation, then reads back the resulting
 DLC. **Add to game** registers that pack in the current game's DLC list.
+
+Asset preparation, PED add-on builds and **Prepare DLC registration** each have
+a folder-only button and a **+ ZIP** button. Both save prepared files and reports;
+**+ ZIP** also creates an archive. Their CLI commands accept `--no-zip` for folder-only output.
 
 Choose the base definition deliberately: a male/female/animal or special rig
 cannot be inferred safely from a filename. Geometry and variation data are
@@ -98,7 +102,9 @@ CLI equivalents:
 shvnx-port game-add-dlc prepared/dlc.rpf --game <SD-root-or-update.rpf> --id my-addon --output <new-folder>
 shvnx-port archive-list <current.rpf>
 shvnx-port addon-check prepared/dlc.rpf
-shvnx-port addon-ped source/ped --id nx_my_ped --model myped --template current/peds.meta --base-ped IG_Malc --output out/my-ped
+shvnx-port assets-convert source/assets --output out/assets --cap 1024 --no-zip
+shvnx-port addon-ped source/ped --id nx_my_ped --model myped --template current/peds.meta --base-ped IG_Malc --output out/my-ped --no-zip
+shvnx-port dlc-prepare prepared/dlc.rpf --list current/dlclist.xml --id my-addon --output out/import --no-zip
 shvnx-port addon-batch prepared/collection --game <current-update.rpf-or-SD-root> --output out/my-addons
 shvnx-port game-replace prepared/car.ntd --archive <current.rpf> --entry <exact/path/car.ntd> --output <new-folder>
 ```

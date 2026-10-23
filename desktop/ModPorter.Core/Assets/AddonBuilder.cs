@@ -24,7 +24,7 @@ public static class AddonBuilder {
         if (doc.Root?.Name.LocalName != "CPedModelInfo__InitDataList") throw new InvalidDataException("Choose target-game PED definition metadata.");
         return doc.Descendants().Where(e => e.Name.LocalName == "InitDatas").Elements().SelectMany(e => e.Elements().Where(n => n.Name.LocalName == "Name")).Select(e => e.Value).Distinct(StringComparer.OrdinalIgnoreCase).Order(StringComparer.OrdinalIgnoreCase).ToArray();
     }
-    public static AddonBuild Ped(string input, string output, PedAddonOptions options, CancellationToken cancel = default) {
+    public static AddonBuild Ped(string input, string output, PedAddonOptions options, CancellationToken cancel = default, bool createZip = true) {
         if (!PortProject.ValidId(options.Id) || options.Id != options.Id.ToLowerInvariant()) throw new ArgumentException("Use a lowercase DLC ID with 1-31 letters, digits, underscores or hyphens.");
         if (options.Model.Length is < 1 or > 63 || options.Model.Any(c => !(char.IsAsciiLetterOrDigit(c) || c == '_')) || options.Model != options.Model.ToLowerInvariant()) throw new ArgumentException("Use a lowercase model name with 1-63 letters, digits or underscores.");
         input = Path.GetFullPath(input); output = Path.GetFullPath(output);
@@ -39,7 +39,7 @@ public static class AddonBuilder {
         var peds = new XDocument(new XElement(template.Root.Name,
             template.Root.Elements().Where(e => e.Name.LocalName is not ("InitDatas" or "residentAnims")).Select(e => new XElement(e)),
             new XElement("residentAnims"), new XElement("InitDatas", definition)));
-        var conversion = AssetService.Convert(input, Path.Combine(output, "resource-preparation"), new(options.TextureCap, "Peds"), cancel);
+        var conversion = AssetService.Convert(input, Path.Combine(output, "resource-preparation"), new(options.TextureCap, "Peds"), cancel, createZip: false);
         var resources = Dir("");
         string converted = Path.Combine(conversion.Directory, "converted");
         var files = Directory.EnumerateFiles(converted, "*", SearchOption.AllDirectories).ToArray();
@@ -74,16 +74,18 @@ public static class AddonBuilder {
             template_sha256 = templateHash, dlc_sha256 = JsonFiles.HashFile(dlc), audit = readback, complete = true, switch_runtime_verified = false });
         string guide = "# Prepared PED add-on\n\nUse Add to game with addon/" + options.Id + "/dlc.rpf and the update.rpf from your current installation. This is a complete DLC wrapper; it still needs DLC-list registration.\n\nSpawn model: " + options.Model + ". Base PED: " + options.BasePed + ". Test appearance, animations, variations and persistence on Switch. Skeleton/texture compatibility is not established by registration checks.\n";
         System.IO.File.WriteAllText(Path.Combine(output, "READ-ME-FIRST.md"), guide, new UTF8Encoding(false));
-        string zipPath = Path.Combine(output, options.Id + "-addon-test.zip");
-        using (var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create)) {
-            zip.CreateEntryFromFile(dlc, "addon/" + options.Id + "/dlc.rpf");
-            foreach (string name in new[] { "READ-ME-FIRST.md", "addon-manifest.json" }) zip.CreateEntryFromFile(Path.Combine(output, name), name);
-            foreach (string notice in files.Where(p => InputLoader.IsLegalNotice(Path.GetFileName(p)))) zip.CreateEntryFromFile(notice, "notices/" + Path.GetRelativePath(converted, notice).Replace('\\', '/'));
-        }
-        using (var zip = ZipFile.OpenRead(zipPath)) foreach (var entry in zip.Entries) {
-            cancel.ThrowIfCancellationRequested(); using var stream = entry.Open(); string hash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream)).ToLowerInvariant();
-            string original = entry.FullName.StartsWith("notices/", StringComparison.Ordinal) ? Path.Combine(converted, entry.FullName[8..]) : Path.Combine(output, entry.FullName);
-            if (hash != JsonFiles.HashFile(original)) throw new IOException("Add-on ZIP readback mismatch.");
+        string zipPath = createZip ? Path.Combine(output, options.Id + "-addon-test.zip") : "";
+        if (createZip) {
+            using (var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create)) {
+                zip.CreateEntryFromFile(dlc, "addon/" + options.Id + "/dlc.rpf");
+                foreach (string name in new[] { "READ-ME-FIRST.md", "addon-manifest.json" }) zip.CreateEntryFromFile(Path.Combine(output, name), name);
+                foreach (string notice in files.Where(p => InputLoader.IsLegalNotice(Path.GetFileName(p)))) zip.CreateEntryFromFile(notice, "notices/" + Path.GetRelativePath(converted, notice).Replace('\\', '/'));
+            }
+            using (var zip = ZipFile.OpenRead(zipPath)) foreach (var entry in zip.Entries) {
+                cancel.ThrowIfCancellationRequested(); using var stream = entry.Open(); string hash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream)).ToLowerInvariant();
+                string original = entry.FullName.StartsWith("notices/", StringComparison.Ordinal) ? Path.Combine(converted, entry.FullName[8..]) : Path.Combine(output, entry.FullName);
+                if (hash != JsonFiles.HashFile(original)) throw new IOException("Add-on ZIP readback mismatch.");
+            }
         }
         return new(output, dlc, zipPath, readback);
     }

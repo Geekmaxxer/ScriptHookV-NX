@@ -39,6 +39,14 @@ static class AddonTests {
             var meta = tree.Children.Single(n => n.Name == "common").Children.Single().Children.Single().Data;
             var doc = XDocument.Parse(Encoding.UTF8.GetString(meta)); Must(doc.Descendants("Name").Single().Value == "sample" && doc.Descendants("Pedtype").Single().Value == "CIVMALE");
         });
+        check("Folder-only PED add-on matches the audited ZIP build without nested ZIPs", () => {
+            Must(built != null);
+            var folder = AddonBuilder.Ped(input, Path.Combine(scratch, "PED folder only"), new("nx_sample", "sample", template, "base_ped", 256), createZip: false);
+            Must(folder.Archive == "" && folder.Audit.ReadyForTest && !Directory.EnumerateFiles(folder.Directory, "*.zip", SearchOption.AllDirectories).Any());
+            Must(System.IO.File.ReadAllBytes(folder.DlcArchive).SequenceEqual(System.IO.File.ReadAllBytes(built!.DlcArchive)));
+            foreach (string name in new[] { "READ-ME-FIRST.md", "addon-manifest.json" }) Must(System.IO.File.ReadAllBytes(Path.Combine(folder.Directory, name)).SequenceEqual(System.IO.File.ReadAllBytes(Path.Combine(built.Directory, name))));
+            Must(Directory.EnumerateFiles(built.Directory, "*.zip", SearchOption.AllDirectories).SequenceEqual(new[] { built.Archive }));
+        });
         check("Loose PED builder rejects missing base and duplicate variants", () => {
             Reject(() => AddonBuilder.Ped(input, Path.Combine(scratch, "bad-base"), new("nx_bad", "sample", template, "unknown")));
             string extra = Path.Combine(input, "other.yft"); System.IO.File.WriteAllBytes(extra, Empty(162));

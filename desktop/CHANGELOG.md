@@ -1,5 +1,8 @@
 # Unreleased
 
+- Offer folder-only output alongside ZIP packaging for assets, PED add-ons and
+  DLC registration. CLI equivalents accept `--no-zip`.
+- Avoid creating a redundant intermediate ZIP when building PED add-ons.
 - Build complete loose-PED DLC wrappers using selected current-game metadata.
 - Check model resources, startup activation, numeric values and shader dependencies.
 - Prepare several add-ons together while preserving the current DLC list.

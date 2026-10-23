@@ -12,22 +12,23 @@ try {
             build <project.json> --sdk <SDK> --devkitpro <root> [--python <executable>] [--nro-only]
             doctor --sdk <SDK> --devkitpro <root> [--python <executable>]
             assets-analyze <folder|zip|rpf|resource> [--cap 1024] [--kind Vehicles]
-            assets-convert <folder|zip|rpf|resource> --output <new-folder> [--cap 1024] [--kind Vehicles]
+            assets-convert <folder|zip|rpf|resource> --output <new-folder> [--cap 1024] [--kind Vehicles] [--no-zip]
             check <project.json> --sdk <SDK> --devkitpro <root>
             install <plugin.nro> --id <plugin-id> --sd <SD-root> [--auto]
             restore <installation.json> --sd <SD-root>
             report <runtime-report.txt>
-            dlc-prepare <converted-dlc.rpf> --list <current-dlclist.xml> --id <pack-id> --output <new-folder>
+            dlc-prepare <converted-dlc.rpf> --list <current-dlclist.xml> --id <pack-id> --output <new-folder> [--no-zip]
             game-add-dlc <prepared-dlc.rpf> --game <update.rpf|SD-root|game-folder> --id <pack-id> --output <new-folder>
             game-replace <prepared-asset> --archive <current.rpf> --entry <path/in/archive> --output <new-folder>
             archive-list <current.rpf>
             addon-check <prepared-dlc.rpf>
             addon-batch <folder-with-pack-id-subfolders> --game <current-update.rpf|SD-root> --output <new-folder>
             addon-ped <source-folder|zip> --id <dlc-id> --model <model> --template <peds.meta|common.rpf>
-                      --base-ped <target-ped-name> --output <new-folder> [--cap 1024]
+                      --base-ped <target-ped-name> --output <new-folder> [--cap 1024] [--no-zip]
 
             ASI analysis does not execute or convert Windows binaries.
-            Builds produce a Switch test ZIP; console testing remains required.
+            Asset preparation also saves a ZIP unless --no-zip is set. NRO builds use --nro-only.
+            Console testing remains required for prepared mods.
             """);
         return 0;
     }
@@ -47,8 +48,9 @@ try {
         }
         case "addon-ped": {
             var options = new PedAddonOptions(Get("--id"), Get("--model"), Get("--template"), Get("--base-ped"), int.Parse(Get("--cap", "1024")));
-            var result = AddonBuilder.Ped(args[1], Get("--output"), options, cts.Token);
-            Console.WriteLine(result.DlcArchive); Console.WriteLine(result.Audit.Text()); return 0;
+            var result = AddonBuilder.Ped(args[1], Get("--output"), options, cts.Token, createZip: !args.Contains("--no-zip"));
+            Console.WriteLine(result.Audit.Text()); Console.WriteLine(result.DlcArchive);
+            Console.WriteLine(result.Archive.Length > 0 ? result.Archive : result.Directory); return 0;
         }
         case "check": {
             string result = await CompilerCheckService.CheckAsync(args[1], settings, Console.WriteLine, cts.Token);
@@ -57,7 +59,7 @@ try {
         case "install": Console.WriteLine(DeploymentService.InstallNro(args[1],Get("--id"),Get("--sd"),!args.Contains("--auto"))); return 0;
         case "restore": DeploymentService.Restore(args[1],Get("--sd")); Console.WriteLine("Previous plugin file restored."); return 0;
         case "report": Console.WriteLine(JsonSerializer.Serialize(RuntimeReportService.Read(args[1]),JsonFiles.Options)); return 0;
-        case "dlc-prepare": Console.WriteLine(DlcPackageService.Prepare(args[1],Get("--list"),Get("--id"),Get("--output"),cts.Token)); return 0;
+        case "dlc-prepare": Console.WriteLine(DlcPackageService.Prepare(args[1],Get("--list"),Get("--id"),Get("--output"),cts.Token,createZip: !args.Contains("--no-zip"))); return 0;
         case "game-add-dlc": Console.WriteLine(GameAssetUpdater.AddDlc(args[1],Get("--game"),Get("--id"),Get("--output"),cts.Token,Console.WriteLine).Directory); return 0;
         case "game-replace": Console.WriteLine(GameAssetUpdater.ReplaceAsset(args[1],Get("--archive"),Get("--entry"),Get("--output"),cts.Token,Console.WriteLine).UpdatedArchive); return 0;
         case "archive-list": foreach(var entry in RpfFileEditor.List(args[1],cts.Token))Console.WriteLine(entry.Path);return 0;
@@ -66,8 +68,8 @@ try {
             Console.WriteLine(result.Text()); return 0;
         }
         case "assets-convert": {
-            var result = AssetService.Convert(args[1], Get("--output"), new(int.Parse(Get("--cap", "1024")), Get("--kind", "Auto")), cts.Token);
-            Console.WriteLine(result.Report.Text()); Console.WriteLine(result.Archive); return 0;
+            var result = AssetService.Convert(args[1], Get("--output"), new(int.Parse(Get("--cap", "1024")), Get("--kind", "Auto")), cts.Token, createZip: !args.Contains("--no-zip"));
+            Console.WriteLine(result.Report.Text()); Console.WriteLine(result.Archive.Length > 0 ? result.Archive : result.Directory); return 0;
         }
         case "doctor": {
             var checks = await BuildService.DoctorAsync(settings, cts.Token);

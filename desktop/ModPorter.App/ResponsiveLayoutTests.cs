@@ -78,8 +78,8 @@ public partial class MainWindow {
                     break;
                 case 4:
                     Horizontal(OpenAssetOutputButton);
-                    if (AssetTabs.SelectedIndex == 0) { Horizontal(AssetInputPath); Horizontal(AssetOutputPath); Horizontal(TextureCapCombo); Horizontal(ConvertAssetsButton); if (PedAddonExpander.IsExpanded) { Horizontal(PedPackId); Horizontal(PedModelName); Horizontal(PedTemplatePath); Horizontal(PedBaseName); } }
-                    if (AssetTabs.SelectedIndex == 1) { Horizontal(CurrentGamePath); Horizontal(PreparedAssetPath); if (ReplaceAssetMode.IsChecked == true) Horizontal(ArchiveEntryPath); else Horizontal(DlcId); }
+                    if (AssetTabs.SelectedIndex == 0) { Horizontal(AssetInputPath); Horizontal(AssetOutputPath); Horizontal(TextureCapCombo); Horizontal(ConvertAssetsFolderButton); Horizontal(ConvertAssetsButton); if (PedAddonExpander.IsExpanded) { Horizontal(PedPackId); Horizontal(PedModelName); Horizontal(PedTemplatePath); Horizontal(PedBaseName); Horizontal(BuildPedAddonFolderButton); Horizontal(BuildPedAddonZipButton); } }
+                    if (AssetTabs.SelectedIndex == 1) { Horizontal(CurrentGamePath); Horizontal(PreparedAssetPath); if (ReplaceAssetMode.IsChecked == true) Horizontal(ArchiveEntryPath); else { Horizontal(DlcId); if (DlcImportExpander.IsExpanded) { Horizontal(PrepareDlcFolderButton); Horizontal(PrepareDlcZipButton); } } }
                     if (AssetTabs.SelectedIndex == 2) Horizontal(AssetLog);
                     break;
             }
