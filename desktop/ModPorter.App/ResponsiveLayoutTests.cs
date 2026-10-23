@@ -78,7 +78,7 @@ public partial class MainWindow {
                     break;
                 case 4:
                     Horizontal(OpenAssetOutputButton);
-                    if (AssetTabs.SelectedIndex == 0) { Horizontal(AssetInputPath); Horizontal(AssetOutputPath); Horizontal(TextureCapCombo); Horizontal(ConvertAssetsButton); }
+                    if (AssetTabs.SelectedIndex == 0) { Horizontal(AssetInputPath); Horizontal(AssetOutputPath); Horizontal(TextureCapCombo); Horizontal(ConvertAssetsButton); if (PedAddonExpander.IsExpanded) { Horizontal(PedPackId); Horizontal(PedModelName); Horizontal(PedTemplatePath); Horizontal(PedBaseName); } }
                     if (AssetTabs.SelectedIndex == 1) { Horizontal(CurrentGamePath); Horizontal(PreparedAssetPath); if (ReplaceAssetMode.IsChecked == true) Horizontal(ArchiveEntryPath); else Horizontal(DlcId); }
                     if (AssetTabs.SelectedIndex == 2) Horizontal(AssetLog);
                     break;
@@ -132,6 +132,7 @@ public partial class MainWindow {
             // invoking compilers, file dialogs, downloads or SD installation.
             string longPath = @"C:\Mods\" + string.Join("\\", Enumerable.Repeat("Very long source and project directory", 8)) + @"\plugin.cpp";
             foreach (TextBox box in new[] { InputPath, OutputPath, SdkPath, PythonPath, DevkitPath, AssetInputPath, AssetOutputPath, PreparedAssetPath, CurrentGamePath }) box.Text = longPath;
+            PedTemplatePath.Text = longPath;
             ReviewInput.Text = ReviewTitle.Text = ProjectLabel.Text = AssetOutputLabel.Text = AssetReportSummary.Text = longPath;
             StatusText.Text = "Building: " + longPath;
             ReviewSummary.Text = "Compatibility review for a project with several source files, long filenames, and detailed next steps.";

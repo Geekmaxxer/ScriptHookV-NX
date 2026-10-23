@@ -1,5 +1,8 @@
 # Optional helpers
 
+For controller menus, pages, selectors and measured text layout, use the
+[reusable UI framework](CONTROLLER-UI.md).
+
 These headers compile into the plugin. They add no core ABI, background thread,
 heap allocation or automatic disk polling. Include only what your mod needs.
 

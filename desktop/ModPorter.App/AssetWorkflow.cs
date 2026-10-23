@@ -16,6 +16,39 @@ public partial class MainWindow {
     }
     private void AssetFolder_Click(object sender, RoutedEventArgs e) { string? path = PickFolder("Choose the mod's asset/DLC folder"); if (path != null) AssetInputPath.Text = path; }
     private void AssetOutput_Click(object sender, RoutedEventArgs e) { string? path = PickFolder("Choose a parent folder for converted assets"); if (path != null) AssetOutputPath.Text = Path.Combine(path, "Switch-assets-" + DateTime.Now.ToString("yyyyMMdd-HHmmss")); }
+    private async void PedTemplate_Click(object sender, RoutedEventArgs e) {
+        var dialog = new OpenFileDialog { Title = "Choose current-game peds.meta or its containing OPEN RPF", Filter = "PED metadata or game archive|*.meta;*.rpf" };
+        if (dialog.ShowDialog(this) != true) return;
+        PedTemplatePath.Text = dialog.FileName;
+        await RunBusy("Reading target PED definitions…", async cancel => {
+            var names = await Task.Run(() => AddonBuilder.PedNames(dialog.FileName, cancel), cancel);
+            PedBaseName.ItemsSource = names; StatusText.Text = names.Count + " PED definitions available · Choose the matching base";
+        });
+    }
+    private async void UpdateGameBatch_Click(object sender, RoutedEventArgs e) {
+        string game = CurrentGamePath.Text.Trim();
+        if (game.Length == 0) { StatusText.Text = "Choose the current update.rpf or its SD/game folder first."; return; }
+        string? folder = PickFolder("Choose the collection containing pack-id/dlc.rpf subfolders"); if (folder == null) return;
+        string? parent = PickFolder("Choose where to save the updated game files"); if (parent == null) return;
+        string output = Path.Combine(parent, "Switch-addons-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+        await RunBusy("Checking all DLC packs and merging the current game list…", async cancel => {
+            var result = await Task.Run(() => AddonBatch.Prepare(AddonBatch.Discover(folder), game, output, cancel), cancel);
+            assetDirectory = result.Directory; AssetOutputLabel.Text = result.Directory;
+            AssetLog.Text = "All selected DLC packs were prepared together. Existing registrations were retained; the source game files were not changed.\nManifest: " + result.Manifest;
+            ShowAssetReport("DLC collection prepared · Switch gameplay testing required"); StatusText.Text = "Updated game files verified";
+        });
+    }
+    private async void BuildPedAddon_Click(object sender, RoutedEventArgs e) {
+        string path = AssetInputPath.Text.Trim(), output = AssetOutputPath.Text.Trim();
+        var settings = new PedAddonOptions(PedPackId.Text.Trim(), PedModelName.Text.Trim(), PedTemplatePath.Text.Trim(), PedBaseName.Text.Trim(), AssetSettings.MaximumTextureDimension);
+        await RunBusy("Building PED resources, registration and verified DLC…", async cancel => {
+            var result = await Task.Run(() => AddonBuilder.Ped(path, output, settings, cancel), cancel);
+            assetDirectory = result.Directory; PreparedAssetPath.Text = result.DlcArchive; DlcId.Text = settings.Id;
+            AssetLog.Text = result.Audit.Text() + "\n\nSpawn model: " + settings.Model + "\nZIP: " + result.Archive;
+            AssetOutputLabel.Text = result.Directory; ShowAssetReport("PED add-on prepared · Add to game to register it");
+            StatusText.Text = "PED DLC built · Appearance and gameplay testing required";
+        });
+    }
     private async void AnalyzeAssets_Click(object sender, RoutedEventArgs e) {
         string path = AssetInputPath.Text.Trim(); var settings = AssetSettings;
         await RunBusy("Inspecting asset resources…", async cancel => {

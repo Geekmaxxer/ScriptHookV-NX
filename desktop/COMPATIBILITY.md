@@ -49,7 +49,7 @@ queries/outputs, damage ordering, character/death gates and processing budgets.
 | Other mapped Legacy resources; PSO/RBF metadata | Check recognized container and preserve payload; no claim of target-specific semantic validation. |
 | OPEN RPF7, including nested archives | Validate table/bounds, convert supported entries, rebuild and read back. |
 | XML/meta | Convert explicit platform/resource references while preserving definitions. |
-| Embedded Legacy drawable/fragment dictionaries | Reduce typed root dictionaries; preserve shared geometry allocation. Physics-child graphs still need review. |
+| Embedded Legacy drawable/fragment dictionaries | Reduce typed root dictionaries; preserve shared geometry allocation. Supported Legacy physics-child drawables are traversed; arbitrary layouts remain unsupported. |
 | Incompatible rigs/collections | Report; no automatic rig or collection conversion. |
 
 Texture caps are maximum dimensions, not a guarantee of a memory or frame-rate

@@ -445,6 +445,24 @@
             <TextBlock Text="Original files stay intact. Compatible rigs and add-on metadata are still required." Style="{StaticResource Hint}" Margin="0,10,0,0" />
            </StackPanel>
           </Border>
+          <Expander x:Name="PedAddonExpander" Header="Build a loose PED add-on">
+           <StackPanel Margin="0,12,8,8">
+            <TextBlock Text="Use the four files for one PED variant. Choose a matching base PED definition from your current game's peds.meta or its containing OPEN RPF." Style="{StaticResource Hint}" Margin="0,0,0,12" />
+            <TextBlock Text="DLC folder ID" Style="{StaticResource FieldLabel}" />
+            <TextBox x:Name="PedPackId" Text="my-ped" MaxLength="31" AutomationProperties.Name="PED DLC folder ID" />
+            <TextBlock Text="Spawn model name" Style="{StaticResource FieldLabel}" Margin="0,10,0,0" />
+            <TextBox x:Name="PedModelName" AutomationProperties.Name="PED model name" />
+            <TextBlock Text="Target PED metadata" Style="{StaticResource FieldLabel}" Margin="0,10,0,0" />
+            <Grid>
+             <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+             <TextBox x:Name="PedTemplatePath" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="PED template metadata or archive" />
+             <Button Grid.Column="1" Content="Browse…" Click="PedTemplate_Click" Style="{StaticResource Quiet}" Margin="8,0,0,0" />
+            </Grid>
+            <TextBlock Text="Base PED name from that metadata" Style="{StaticResource FieldLabel}" Margin="0,10,0,0" />
+            <ComboBox x:Name="PedBaseName" IsEditable="True" AutomationProperties.Name="Base PED definition name" />
+            <Button Content="Build PED add-on + ZIP" Click="BuildPedAddon_Click" HorizontalAlignment="Left" Margin="0,12,0,0" />
+           </StackPanel>
+          </Expander>
           <Expander Header="Supported formats and limitations">
            <TextBlock Margin="0,10,8,0" Text="Legacy resource naming, explicit platform paths and supported texture reduction. It preserves mesh and rig data. Missing registration metadata, incompatible rigs, Enhanced formats and encrypted archives require further work." Style="{StaticResource Hint}" />
           </Expander>
@@ -519,6 +537,7 @@
          <WrapPanel Grid.Row="1" Margin="0,14,0,0">
           <WrapPanel Margin="0" x:Name="DlcFooterActions">
            <Button x:Name="UpdateGameDlcButton" Content="Build updated game files…" Style="{StaticResource Primary}" Click="UpdateGameDlc_Click" />
+           <Button Content="Add several DLC packs…" Click="UpdateGameBatch_Click" Style="{StaticResource Quiet}" />
           </WrapPanel>
           <WrapPanel Margin="0" x:Name="ReplacementFooterActions" Visibility="Collapsed">
            <Button Content="Build archive with replacement…" Style="{StaticResource Primary}" Click="ReplaceGameAsset_Click" />

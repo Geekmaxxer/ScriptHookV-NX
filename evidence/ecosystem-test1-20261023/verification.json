@@ -1,0 +1,175 @@
+{
+  "format": 1,
+  "milestone": "Ecosystem Test 1",
+  "date": "2026-10-23",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "accepted_runtime_unchanged": true,
+  "module_sha256": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+  "ui_demo_sha256": "544b700b7fc78360568f9c7eb196e831ad96f7859e0cb756a2a72f71f7d04cc3",
+  "ui_demo_bytes": 40960,
+  "desktop_assertions": 169,
+  "portable_tool_tests": 25,
+  "standalone_nro_examples": 9,
+  "ui_model": {
+    "passed": 38,
+    "failed": 0,
+    "scope": "Real ARM64 UI model; no game/native rendering calls",
+    "switch_runtime_verified": false
+  },
+  "ui_runtime": {
+    "passed": 8,
+    "checks": [
+      "UI demo loads on accepted runtime",
+      "Controller chord opens menu",
+      "Controller opens nested settings",
+      "Explicit Save persists selected toggle integer and units",
+      "Renderer issues bounded screen rectangles",
+      "Text measurement is cached across unchanged frames",
+      "Kill Process stops UI and control suppression",
+      "Load Now restores saved settings"
+    ],
+    "scope": "Production ARM64 runtime and UI NRO; game HUD, controller and OS/filesystem mocked",
+    "switch_runtime_verified": false
+  },
+  "desktop_layout": {
+    "passed": 1946,
+    "scenarios": 144,
+    "failed": 0
+  },
+  "ped_desktop_workflow": {
+    "passed": 1,
+    "target_metadata_dropdown_populated": true,
+    "selected_model": "zoro",
+    "generated_dlc_sha256": "5acdfb1941bdd84c556f0f0b5e7394672bd0072fe35e4fd797745be3e1e01a98",
+    "source_files_modified": false,
+    "switch_runtime_verified": false
+  },
+  "model_preservation": {
+    "passed": true,
+    "model_resources_checked": 11,
+    "changed_texture_descriptor_bytes": 0,
+    "records": [
+      {
+        "pack": "torachry300redeye",
+        "path": "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "torachry300redeye",
+        "path": "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye_1.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "torachry300redeye",
+        "path": "switch/levels/gta5/vehicles/vehicles.rpf::torachry300redeye_hi.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "mrrc",
+        "path": "switch/levels/gta5/vehicles/vehicles.rpf::mrrc.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "mrrc",
+        "path": "switch/levels/gta5/vehicles/vehicles.rpf::mrrc_hi.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "nx_misaki",
+        "path": "switch/models/cdimages/peds.rpf::misaki.ndd",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "nx_misaki",
+        "path": "switch/models/cdimages/peds.rpf::misaki.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "nx_zoro",
+        "path": "switch/models/cdimages/peds.rpf::zoro.ndd",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      },
+      {
+        "pack": "nx_zoro",
+        "path": "switch/models/cdimages/peds.rpf::zoro.nft",
+        "codewalker_texture_dictionaries": 0,
+        "changed_texture_descriptor_bytes": 0,
+        "geometry_physics_skeleton_bytes_unchanged": true
+      }
+    ],
+    "switch_runtime_verified": false
+  },
+  "real_addons": {
+    "packs": [
+      {
+        "id": "torachry300redeye",
+        "sha256": "6432bb9d345f7f6b3d33048cb483a3a4489f7b27053190938075e94028cd5f6a",
+        "bytes": 44569088
+      },
+      {
+        "id": "mrrc",
+        "sha256": "1f8948672d128c083f2c85bd0febba567a9aef7605dbdf47a6a5fee5ea53972c",
+        "bytes": 27940352
+      },
+      {
+        "id": "nx_misaki",
+        "sha256": "e65498dae315296485eeb7ed51613f7478604fafb022b06cc522f2f7d96898fd",
+        "bytes": 15832064
+      },
+      {
+        "id": "nx_zoro",
+        "sha256": "5acdfb1941bdd84c556f0f0b5e7394672bd0072fe35e4fd797745be3e1e01a98",
+        "bytes": 2570752
+      }
+    ],
+    "source_geometry_preserved": true,
+    "misaki_texture_fallbacks_retained_from_previous_preparation": true,
+    "switch_runtime_verified": false
+  },
+  "ui_native_count": 21,
+  "ui_natives_target_registered": true,
+  "source_ports_assessed": [
+    {
+      "name": "GTAVSpeedo",
+      "commit": "ea8898bd290897c1a76b1b6b070aa05c95cce363",
+      "cpp_files": 27,
+      "cpp_lines": 14161,
+      "png_files": 89
+    },
+    {
+      "name": "MenyooSP",
+      "commit": "b894e14f31490fbb91740dc554111bda5be39608",
+      "cpp_files": 106,
+      "cpp_lines": 82674,
+      "png_files": 26
+    }
+  ],
+  "console_acceptance_pending": [
+    "Controller UI appearance and controller feel",
+    "New asset installation, appearance, spawning, animations and collision behavior"
+  ],
+  "limitations": [
+    "No automatic reconstruction of missing textures or arbitrary rig/collection repair.",
+    "No mesh/collision simplification or proven collision-hitch fix.",
+    "New CI workflow has local command coverage; hosted GitHub execution is separate.",
+    "Menyoo and GTAVSpeedo are assessed source projects, not playable ports."
+  ],
+  "sd_modified": false,
+  "switch_runtime_verified": false
+}

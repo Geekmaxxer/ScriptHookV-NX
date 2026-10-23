@@ -45,6 +45,12 @@ are Auto and 1024 pixels; Off preserves texture sizes.
   roots. Shared graphics allocation and geometry remain intact.
 - Rebuild and validate standalone texture allocations and archive tables.
 
+**Build a loose PED add-on** creates a complete DLC from one PED variant and a
+selected base definition from your current game's metadata. The base definitions
+are listed after selecting the containing archive. **Add several DLC packs**
+checks a collection and merges it with the current DLC list in one operation.
+Registration blockers and unresolved shader dependencies appear in the report.
+
 Use **Add to game** to select the prepared DLC/replacement
 and your current RPF from an SD drive or local game folder. **Build updated game files**
 reads and merges the installed DLC list directly and prepares

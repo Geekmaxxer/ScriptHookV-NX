@@ -21,6 +21,10 @@ try {
             game-add-dlc <prepared-dlc.rpf> --game <update.rpf|SD-root|game-folder> --id <pack-id> --output <new-folder>
             game-replace <prepared-asset> --archive <current.rpf> --entry <path/in/archive> --output <new-folder>
             archive-list <current.rpf>
+            addon-check <prepared-dlc.rpf>
+            addon-batch <folder-with-pack-id-subfolders> --game <current-update.rpf|SD-root> --output <new-folder>
+            addon-ped <source-folder|zip> --id <dlc-id> --model <model> --template <peds.meta|common.rpf>
+                      --base-ped <target-ped-name> --output <new-folder> [--cap 1024]
 
             ASI analysis does not execute or convert Windows binaries.
             Builds produce a Switch test ZIP; console testing remains required.
@@ -33,6 +37,19 @@ try {
     using var cts = new CancellationTokenSource(); Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
     var settings = new ToolSettings(Get("--sdk", Path.Combine(AppContext.BaseDirectory, "SDK")), Get("--python", "python"), Get("--devkitpro", Environment.GetEnvironmentVariable("DEVKITPRO") ?? "C:/devkitPro"));
     switch (args[0]) {
+        case "addon-batch": {
+            var result = AddonBatch.Prepare(AddonBatch.Discover(args[1]), Get("--game"), Get("--output"), cts.Token, Console.WriteLine);
+            Console.WriteLine(result.Manifest); return 0;
+        }
+        case "addon-check": {
+            var report = AddonAudit.Inspect(File.ReadAllBytes(args[1]), cts.Token);
+            Console.WriteLine(report.Text()); return report.ReadyForTest ? 0 : 2;
+        }
+        case "addon-ped": {
+            var options = new PedAddonOptions(Get("--id"), Get("--model"), Get("--template"), Get("--base-ped"), int.Parse(Get("--cap", "1024")));
+            var result = AddonBuilder.Ped(args[1], Get("--output"), options, cts.Token);
+            Console.WriteLine(result.DlcArchive); Console.WriteLine(result.Audit.Text()); return 0;
+        }
         case "check": {
             string result = await CompilerCheckService.CheckAsync(args[1], settings, Console.WriteLine, cts.Token);
             return result.Contains("checks failed") ? 2 : 0;

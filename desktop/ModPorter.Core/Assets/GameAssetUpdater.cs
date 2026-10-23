@@ -35,6 +35,7 @@ public static class GameAssetUpdater {
         if(report.ConvertedNames!=0)throw new InvalidDataException("This DLC still needs Switch naming conversion. Use Prepare Switch assets first.");
         byte[] data=new byte[dlc.Length];dlc.ReadExactly(data);var tree=RpfArchive.Read(data,cancel);
         if(!new[]{"content.xml","setup2.xml"}.All(name=>tree.Children.Any(n=>!n.Directory&&n.Name.Equals(name,StringComparison.OrdinalIgnoreCase))))throw new InvalidDataException("Select a complete prepared DLC with content.xml and setup2.xml.");
+        var registration=AddonAudit.Inspect(tree,cancel);if(!registration.ReadyForTest)throw new InvalidDataException(registration.Text());
         byte[] originalList=RpfFileEditor.ReadBinary(archive,DlcList,cancel:cancel),merged=DlcPackageService.MergeList(originalList,id);
         cancel.ThrowIfCancellationRequested();Directory.CreateDirectory(output);
         string romfs=Path.Combine(output,"atmosphere","contents",TitleId,"romfs"),updated=Path.Combine(romfs,"update","update.rpf");

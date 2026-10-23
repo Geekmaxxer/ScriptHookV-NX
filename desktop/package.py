@@ -76,6 +76,9 @@ def package(output):
     shutil.copy2(ROOT/'docs/GAME-ASSETS.md', stage/'docs/GAME-ASSETS.md')
     public_guide('EXTENSIONS.md', stage/'docs/EXTENSIONS.md')
     public_guide('RUNTIME-COMPLETION.md', stage/'docs/RUNTIME-COMPLETION.md')
+    public_guide('CONTROLLER-UI.md', stage/'docs/CONTROLLER-UI.md')
+    (stage/'SDK/examples/tutorials/controller-ui').mkdir(parents=True)
+    shutil.copy2(ROOT/'examples/tutorials/controller-ui/main.cpp', stage/'SDK/examples/tutorials/controller-ui/main.cpp')
     (stage/'READ-ME-FIRST.md').write_text(
         '# ScriptHookV-NX Mod Porter 0.5.0 Public Preview\n\n'
         'Open ScriptHookV-NX-Mod-Porter.exe on Windows x64. Keep the SDK and examples '
@@ -119,6 +122,9 @@ def package(output):
     shutil.copy2(ROOT/'docs/GAME-ASSETS.md', source/'docs/GAME-ASSETS.md')
     public_guide('EXTENSIONS.md', source/'docs/EXTENSIONS.md')
     public_guide('RUNTIME-COMPLETION.md', source/'docs/RUNTIME-COMPLETION.md')
+    public_guide('CONTROLLER-UI.md', source/'docs/CONTROLLER-UI.md')
+    (source/'examples/tutorials/controller-ui').mkdir(parents=True)
+    shutil.copy2(ROOT/'examples/tutorials/controller-ui/main.cpp', source/'examples/tutorials/controller-ui/main.cpp')
     (source/'README.md').write_text((ROOT/'desktop/README.md').read_text(encoding='utf-8').replace('../docs/GAME-ASSETS.md','docs/GAME-ASSETS.md'),encoding='utf-8')
     shutil.copy2(ROOT/'desktop/COMPATIBILITY.md', source/'COMPATIBILITY.md')
     source_zip = output/f'ScriptHookV-NX-Mod-Porter-{VERSION}-Source.zip'

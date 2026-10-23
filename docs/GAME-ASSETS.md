@@ -36,12 +36,39 @@ with OpenIV, CodeWalker or the Switch Toolbox. Script injection uses separate to
 
 ## Loose add-on PEDs
 
-A four-file PED download (`ydd`, `yft`, `ymt`, `ytd`) still needs a complete DLC
-wrapper. Its `peds.meta` must register the model with a suitable target-game PED
-definition, and `content.xml` must mount both that metadata and the PED resource
-archive through `setup2.xml`'s startup change set. Preserve the model's component
-variation data, skeleton and texture bindings. The converter prepares resources;
-it does not generate these missing definitions automatically.
+Under **Prepare assets > Build a loose PED add-on**, choose one four-file PED
+variant (`ydd`, `yft`, `ymt`, `ytd`). Enter its lowercase spawn model name and
+a separate DLC folder ID. Select your current game's `peds.meta` or its containing
+OPEN DLC archive, then choose the matching base PED from that metadata.
+For example, the supported installation's mpbiker pack contains the definitions
+used by the Misaki and Zoro preparation tests.
+Use **Build PED add-on + ZIP**. The tool creates a resource archive, peds.meta,
+content.xml, setup2.xml and startup activation, then reads back the resulting
+DLC. **Add to game** registers that pack in the current game's DLC list.
+
+Choose the base definition deliberately: a male/female/animal or special rig
+cannot be inferred safely from a filename. Geometry and variation data are
+preserved. Missing shader textures are reported; the tool cannot reconstruct
+their original appearance or repair arbitrary rig incompatibilities.
+
+## Validate and combine packs
+
+Prepared DLC audits check registered files, device paths, startup change sets,
+model resources/hash collisions and malformed vector numbers. Typed Legacy
+model traversal includes physics-child drawables and identifies shader textures
+not supplied by the pack. Shared/base-game dependencies appear as warnings,
+not proof of a missing game asset. Registration blockers prevent game updates.
+
+For several add-ons, put the prepared archives in `collection/<pack-id>/dlc.rpf`
+and use **Add several DLC packs** in **Add to game**. All packs are checked before
+output; the selected current DLC list is merged once and update.rpf is copied
+once. Duplicate IDs and model collisions within the batch are rejected. This
+does not inspect every previously installed pack for conflicts.
+
+Texture reduction covers supported Legacy shader dictionaries reached through
+fragment roots and physics-child drawables. It preserves mesh, bounds and shared
+graphics allocation. It does not establish the cause of collision hitches or
+reduce collision/mesh complexity automatically.
 
 Check declared DLC paths, custom engine-audio dependencies, mod-kit IDs and shader
 texture dependencies before installation. A structurally valid PC pack can still
@@ -70,5 +97,8 @@ CLI equivalents:
 ```text
 shvnx-port game-add-dlc prepared/dlc.rpf --game <SD-root-or-update.rpf> --id my-addon --output <new-folder>
 shvnx-port archive-list <current.rpf>
+shvnx-port addon-check prepared/dlc.rpf
+shvnx-port addon-ped source/ped --id nx_my_ped --model myped --template current/peds.meta --base-ped IG_Malc --output out/my-ped
+shvnx-port addon-batch prepared/collection --game <current-update.rpf-or-SD-root> --output out/my-addons
 shvnx-port game-replace prepared/car.ntd --archive <current.rpf> --entry <exact/path/car.ntd> --output <new-folder>
 ```

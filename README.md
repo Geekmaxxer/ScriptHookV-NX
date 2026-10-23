@@ -28,6 +28,11 @@ runtime, developer SDK and clean source archives. See [release notes](docs/PUBLI
 **[Developer quickstart](docs/START-HERE.md)** | **[Install mods](docs/INSTALL.md)** |
 **[Tutorials](docs/TUTORIALS.md)** | **[Tools](docs/TOOLS.md)** | **[NSC modding](docs/NSC-MODDING.md)**
 
+Current development adds [reusable controller menus](docs/CONTROLLER-UI.md),
+[complete loose-PED DLC creation and batch add-on checks](docs/GAME-ASSETS.md),
+and [repeatable maintenance checks](docs/MAINTENANCE.md). These SDK/tool additions
+have their own test scope; published v1.3 downloads remain unchanged.
+
 ## For players
 
 The [Mod Porter desktop tool](desktop/README.md) builds supported C++ source ports,

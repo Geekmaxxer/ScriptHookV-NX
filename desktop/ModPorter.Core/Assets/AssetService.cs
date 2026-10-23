@@ -16,10 +16,11 @@ public sealed class AssetReport {
     public string Status { get; set; } = "Needs review";
     public List<AssetFileResult> Files { get; } = [];
     public List<string> Notes { get; } = [];
+    public List<AddonAudit> AddonChecks { get; } = [];
     public int ConvertedNames { get; set; }
     public bool SwitchRuntimeVerified { get; set; }
     public long GraphicsBytesSaved => Files.Sum(f => f.GraphicsBytesBefore - f.GraphicsBytesAfter);
-    public string Text() => $"{Status}\n\n{Files.Count} files inspected; {ConvertedNames} names/references changed; {GraphicsBytesSaved / 1048576.0:N2} MiB of texture resource allocation removed.\n\n" + string.Join("\n", Notes.Select(n => "• " + n)) + "\n\n" + string.Join("\n", Files.Select(f => $"{f.Input} → {f.Output}\n  {f.Operation}"));
+    public string Text() => $"{Status}\n\n{Files.Count} files inspected; {ConvertedNames} names/references changed; {GraphicsBytesSaved / 1048576.0:N2} MiB of texture resource allocation removed.\n\n" + string.Join("\n", AddonChecks.Select(a => a.Text())) + "\n" + string.Join("\n", Notes.Select(n => "• " + n)) + "\n\n" + string.Join("\n", Files.Select(f => $"{f.Input} → {f.Output}\n  {f.Operation}"));
 }
 public sealed record AssetConversion(string Directory, string Archive, AssetReport Report);
 public static class AssetService {
@@ -112,6 +113,7 @@ public static class AssetService {
                 if (ext == ".rpf") {
                     var nested = RpfArchive.Read(node.Data, cancel); Walk(nested, prefix + outputName + "::", archiveDepth + 1);
                     if (convert) { node.Data = RpfArchive.Write(nested, cancel); _ = RpfArchive.Read(node.Data, cancel); }
+                    if (nested.Children.Any(n => n.Name.Equals("setup2.xml", StringComparison.OrdinalIgnoreCase))) report.AddonChecks.Add(AddonAudit.Inspect(nested, cancel));
                     operation = convert ? "OPEN RPF tree converted, rebuilt and read back." : "OPEN RPF tree inspected; no output written.";
                 } else if (ext is ".ysc" or ".nsc" or ".asi" or ".dll" or ".exe") {
                     throw new InvalidDataException("Asset pack contains executable/script code: " + originalPath + ". Port scripts separately; changing a script extension is not a valid conversion.");
@@ -138,7 +140,7 @@ public static class AssetService {
                             node.Data = embedded.Data; textures = embedded.Changes;
                             if (textures.Count > 0) operation = $"{textures.Count} embedded textures reduced; model geometry and total graphics allocation preserved.";
                         }
-                        if (container.Graphics.Length > 0 && options.MaximumTextureDimension > 0) report.Notes.Add(originalPath + ": embedded reductions preserve the shared graphics allocation; physics-child graphs and unsupported layouts still need separate review.");
+                        if (container.Graphics.Length > 0 && options.MaximumTextureDimension > 0) report.Notes.Add(originalPath + ": embedded reductions include supported Legacy physics-child drawables and preserve shared graphics allocation; mesh and collision complexity are unchanged.");
                     }
                     paths.Add(prefix + outputName);
                 } else if (ext is ".xml" or ".meta") {
@@ -173,6 +175,7 @@ public static class AssetService {
         if (options.Kind == "Weapons" && !paths.Any(p => p.Contains("weapons", StringComparison.OrdinalIgnoreCase) && p.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))) report.Notes.Add("No weapon metadata found: use an existing compatible replacement slot or supply the add-on's definitions.");
         if (options.Kind is "Clothes" or "Peds") report.Notes.Add("Ped skeletons, component collections, IDs and clothing slots must match the target. A filename change does not fix incompatible rigging or collection metadata.");
         report.Status = convert ? "Assets prepared — Switch testing required" : "Assets inspected — review requirements before conversion";
+        if (report.AddonChecks.Any(a => !a.ReadyForTest)) report.Status = "Registration blockers found — inspect the add-on checks";
         return report;
     }
     public static AssetReport Analyze(string input, AssetOptions options, CancellationToken cancel = default) => Process(Load(input, cancel), input, options, false, cancel);

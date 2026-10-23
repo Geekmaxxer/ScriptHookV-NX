@@ -1,5 +1,8 @@
 # Examples you can build and change
 
+[Controller UI](CONTROLLER-UI.md) supplies a buildable menu with scrolling,
+subpages, settings selectors and explicit persistent saves.
+
 Generate each lesson with `tools/create_mod.py --template NAME --id YOUR-ID
 --output projects/YOUR-ID`, then build its `project.json` with `tools/build_mod.py`.
 Run `python tools/create_mod.py --list` for all templates. The original tutorial

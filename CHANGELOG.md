@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Complete loose-PED DLC wrappers from explicitly selected target metadata.
+- Add-on registration/model/shader dependency audits and multi-pack preparation.
+- Texture reduction through supported Legacy fragment physics-child drawables.
+- Header-only controller UI with measured layout, navigation and persistence demo.
+- Public verification command, UI model tests and pinned Windows/Linux CI workflow.
+
+
 ## v1.3 Public Preview - 2026-10-23
 
 - Per-plugin diagnostics: per-plugin elapsed-time diagnostics, callback

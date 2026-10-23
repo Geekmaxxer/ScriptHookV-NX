@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES = {
     'hello': ('nro', 'tutorial-hello', 'One-shot namespaced file; finishes normally'),
     'overlay': ('nro', 'tutorial-overlay', 'Frame drawing, pause guard and long UTF-8 HUD text'),
+    'controller-ui': ('nro', 'controller-ui-demo', 'Controller menus, pages, scrolling, selectors and explicit settings saves'),
     'sdk-parity': ('nro', 'sdk-parity-probe', 'Additional worker, four world pools, pointer checks, input/render callbacks and a PNG texture'),
     'saved-counter': ('nro', 'tutorial-counter', 'Versioned alternating settings and readback'),
     'vehicle-logger': ('nro', 'tutorial-vehicle', 'Read-only vehicle detection, timed sampling and change-only I/O'),

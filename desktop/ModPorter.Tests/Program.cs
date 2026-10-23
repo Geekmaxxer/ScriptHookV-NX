@@ -3,14 +3,16 @@ using System.IO.Compression;
 using System.Text;
 using ModPorter.Core;
 
-int passed = 0, failed = 0;
+int passed = 0, failed = 0, skipped = 0;
+bool withToolchain = !args.Contains("--no-toolchain");
 string scratch = Path.Combine(Path.GetTempPath(), "shvnx-porter-tests-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(scratch);
-string sdk = Path.GetFullPath(args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "../../../../.."));
+string sdk = Path.GetFullPath(args.FirstOrDefault(a => !a.StartsWith("--", StringComparison.Ordinal)) ?? Path.Combine(AppContext.BaseDirectory, "../../../../.."));
 var catalog = NativeCatalog.Load(sdk);
 string compilerName = OperatingSystem.IsWindows() ? "aarch64-none-elf-g++.exe" : "aarch64-none-elf-g++";
 string devkit = new[] { Environment.GetEnvironmentVariable("DEVKITPRO"), Path.GetFullPath(Path.Combine(sdk, "../devkitPro")), "C:/devkitPro", "/opt/devkitpro" }
     .FirstOrDefault(p => p != null && File.Exists(Path.Combine(p, "devkitA64", "bin", compilerName))) ?? "C:/devkitPro";
 void Check(string name, Action test) { try { test(); passed++; Console.WriteLine("PASS " + name); } catch (Exception ex) { failed++; Console.WriteLine("FAIL " + name + ": " + ex.Message); } }
+void CompilerCheck(string name, Action test) { if (withToolchain) Check(name, test); else { skipped++; Console.WriteLine("SKIP " + name + " (--no-toolchain)"); } }
 void Must(bool condition, string detail = "Assertion failed") { if (!condition) throw new Exception(detail); }
 void Reject(Action action) { try { action(); } catch (Exception ex) when (ex is InvalidDataException or IOException or ArgumentException or InvalidOperationException) { return; } throw new Exception("Expected rejection"); }
 string NewDir() { string p = Path.Combine(scratch, Guid.NewGuid().ToString("N")); Directory.CreateDirectory(p); return p; }
@@ -34,6 +36,7 @@ try {
     AssetTests.Run(scratch, Check);
     RefinementTests.Assets(scratch, Check);
     GameArchiveTests.Run(scratch, Check);
+    AddonTests.Run(scratch, Check);
     Check("Matched native index", () => Must(catalog.Entries.Count == 8540 && catalog.Entries["PLAYER::PLAYER_PED_ID"].Registered));
     Check("Native search by hash", () => Must(catalog.Search(catalog.Entries["PLAYER::PLAYER_PED_ID"].Hash).Single().Name == "PLAYER::PLAYER_PED_ID"));
     Check("Reject stale native index", () => { string p = NewDir(); Directory.CreateDirectory(Path.Combine(p, "include")); Directory.CreateDirectory(Path.Combine(p, "sdk")); File.Copy(Path.Combine(sdk, "include/natives.h"), Path.Combine(p, "include/natives.h")); File.WriteAllText(Path.Combine(p, "sdk/native-index.json"), "{\"format\":1,\"header_sha256\":\"bad\"}"); Reject(() => NativeCatalog.Load(p)); });
@@ -80,7 +83,7 @@ try {
     Check("Multi-script registration-only DllMain has an explicit lifecycle plan", () => { var d=SourceAnalyzer.DllEntries(new("main.cpp",multiRegistration,"")).Single(); Must(d.Standard&&d.Registration is {Extended:true} &&d.Registration.Initialize.Count==2&&d.Registration.Stop.Count==1); });
     foreach(string body in new[]{"if(FALSE)scriptRegister(m,ScriptMain);return TRUE;","if(r==DLL_PROCESS_ATTACH){counter=1;scriptRegister(m,ScriptMain);}return TRUE;","if(r==DLL_PROCESS_ATTACH){scriptRegister(m,ScriptMain);configureMod();}return TRUE;","if(r==DLL_THREAD_ATTACH)scriptRegister(m,ScriptMain);return TRUE;","if(r!=DLL_PROCESS_DETACH)scriptRegister(m,ScriptMain);return TRUE;"})
         Check("Unsafe DllMain is preserved: "+body,()=>Must(!SourceAnalyzer.DllEntries(new("main.cpp","BOOL DllMain(HMODULE m,DWORD r,LPVOID p){"+body+"}","")).Single().Standard));
-    Check("Multi-script PC lifecycle adaptation preserves worker and callback work", () => {
+    CompilerCheck("Multi-script PC lifecycle adaptation preserves worker and callback work", () => {
         var p=PortProject.Create(InputLoader.Load(Source(multiRegistration)),catalog,sdk,Path.Combine(scratch,"multi-lifecycle"),new("multi-lifecycle"));
         string text=File.ReadAllText(Path.Combine(p.Directory,"src/main.cpp"));
         Must(p.Report.Blockers==0&&text.Contains("SHV_NX_PLUGIN_WITH_LIFECYCLE")&&text.Contains("if (!scriptRegisterAdditionalThread(Worker)) return false;")&&text.Contains("presentCallbackRegisterChecked(Present)")&&text.Contains("retaining Load Now support")&&!text.Contains("\n    presentCallbackUnregister("));
@@ -144,6 +147,7 @@ try {
     Check("Invalid NRO header rejected", () => { string p = Path.Combine(scratch, "bad.nro"); File.WriteAllBytes(p, new byte[4096]); Reject(() => NroInspector.Inspect(p)); });
     Check("Cancellation before input read", () => { using var c = new CancellationTokenSource(); c.Cancel(); bool cancelled = false; try { InputLoader.Load(Source(Entry()), c.Token); } catch (OperationCanceledException) { cancelled = true; } Must(cancelled); });
     Check("Markdown and JSON keep testing status explicit", () => { var r = Analyze(Entry()); Must(!r.SwitchRuntimeVerified && r.ToMarkdown().Contains("do not establish Switch runtime compatibility")); });
+    if (withToolchain) {
     var checks = await BuildService.DoctorAsync(new(sdk, "python", devkit));
     Check("Toolchain doctor detects local prerequisites", () => Must(checks.All(c => c.Passed), string.Join("; ", checks.Where(c => !c.Passed).Select(c => c.Name + ": " + c.Detail))));
     string fixture = Source(Entry("(void)PLAYER::PLAYER_PED_ID();")); File.WriteAllText(Path.Combine(fixture,"config.ini"),"[Controls]\nToggleButton=Y\n"); string portOutput = Path.Combine(scratch, "Real compiler with spaces");
@@ -173,6 +177,7 @@ try {
         var built = await BuildService.BuildAsync(p.ProjectFile, new(sdk, "python", devkit), _ => { });
         Check("Multi-unit and nested include compiler integration", () => Must(built.Nro.QueryExportPresent));
     } catch (Exception ex) { failed++; Console.WriteLine("FAIL nested/multi-unit compiler integration: " + ex.Message); }
+    } else { skipped += 3; Console.WriteLine("SKIP toolchain doctor, real compiler and multi-unit integration (--no-toolchain)"); }
     using (var c = new CancellationTokenSource(TimeSpan.FromMilliseconds(200))) {
         bool cancelled = false;
         try { await BuildService.RunAsync("python", ["-c", "import time; time.sleep(30)"], scratch, _ => { }, c.Token); } catch (OperationCanceledException) { cancelled = true; }
@@ -182,5 +187,5 @@ try {
     if (failed == 0 && scratch.StartsWith(Path.Combine(Path.GetTempPath(), "shvnx-porter-tests-"), StringComparison.OrdinalIgnoreCase)) Directory.Delete(scratch, true);
     else Console.WriteLine("Failure artifacts: " + scratch);
 }
-Console.WriteLine($"\n{passed} passed; {failed} failed. Switch runtime testing was not performed.");
+Console.WriteLine($"\n{passed} passed; {failed} failed. {skipped} compiler groups skipped. Switch runtime testing was not performed.");
 return failed == 0 ? 0 : 1;

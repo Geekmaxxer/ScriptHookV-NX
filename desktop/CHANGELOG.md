@@ -1,3 +1,10 @@
+# Unreleased
+
+- Build complete loose-PED DLC wrappers using selected current-game metadata.
+- Check model resources, startup activation, numeric values and shader dependencies.
+- Prepare several add-ons together while preserving the current DLC list.
+- Traverse supported Legacy physics-child textures without changing geometry.
+
 # Mod Porter 0.5.0 Public Preview
 
 ## Source-port lifecycle and diagnostics

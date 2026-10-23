@@ -2,15 +2,18 @@
 
 Run from the SDK root or use absolute tool paths. These Python tools need only
 the standard library; compilation additionally needs the stated toolchain.
+The optional ARM64 UI-model runner also needs Unicorn; its host-compiler mode does not.
 They do not download compilers, modify your SD card or execute an inspected mod.
 
 | Tool | Purpose |
 | --- | --- |
 | `doctor.py` | Check SDK files, native-index hash and devkitA64/elf2nro availability |
-| `create_mod.py` | Generate one of seven projects without overwriting an existing directory |
+| `create_mod.py` | Generate an NRO or NSC project without overwriting an existing directory |
 | `build_mod.py` | Build a project.json, with matched binding generation for NSCs |
 | `build_plugin.py` | Direct multi-source NRO builder, explicit header snapshots and unresolved-import rejection |
-| `check_examples.py` | Build and preflight all seven standalone NRO examples in a fresh output folder |
+| `check_examples.py` | Build and preflight all standalone NRO examples in a fresh output folder |
+| `verify_repo.py` | Run full-source profile, portable-tool and optional desktop/NRO checks |
+| `run_ui_tests.py` | Test the bounded controller UI model with a host compiler or devkitA64/Unicorn |
 | `configure_runtime.py` | Generate an optional runtime.ini with independent resident, script and memory limits |
 | `native_query.py` | Search 8,540 target wrapper signatures and 6,419 static registrations offline |
 | `inspect_mod.py` | Check NRO segments/export/imports/initializers or binding CRC/identities/bounds |

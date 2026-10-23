@@ -54,8 +54,7 @@ python tools/compare_core.py --reference targets/6e3e9b3af5746e74b615bd981080c92
 ```
 
 This checks initialized code/data, BSS and memory layout against the accepted
-SDK Parity Test 1 runtime. Current completion-test changes correctly differ
-until they receive their own console acceptance. Only a structured 20-byte GNU build-ID note that
+v1.3 Runtime Completion Test 1 runtime. Only a structured 20-byte GNU build-ID note that
 matches the NSO header is normalized. Debug source paths are mapped to stable
 prefixes to make builds reproducible across output directories with the same
 toolchain. A modified core should fail the reference comparison; that is expected
@@ -64,7 +63,8 @@ console-tested. Runtime downloads retain the exact accepted binary.
 A different compiler version can also change code generation and fail that
 comparison. It is a strict reference check, not a diagnosis of every mismatch.
 
-`runtime-reference.json` identifies the console-accepted SDK Parity Test 1 runtime.
+`runtime-reference.json` identifies the console-accepted v1.3 completion runtime.
+`runtime-reference-sdk-parity-test1.json` preserves the preceding SDK Parity runtime.
 `runtime-reference-lifecycle.json` preserves the preceding lifecycle reference.
 `runtime-reference-public-preview1.json` preserves the earlier reference for
 historical comparisons. The target profile directory keeps its existing name;
@@ -75,7 +75,7 @@ the canonical 20-byte game build ID is the `build_id` value in profile.json.
 `test_portable.py` exercises LZ4/NSO verification, corrupted profiles, executable
 name resolution, project generation, path bounds and binding validation without
 private files. `check_examples.py --output out/example-check1 --devkitpro ...`
-builds all eight standalone NRO examples, including the combined SDK extension
+builds the standalone NRO examples, including the controller UI and combined SDK extension
 probe. Source mods build through build_plugin.
 See [tools](TOOLS.md), [contributing](CONTRIBUTING.md) and [NSC modding](NSC-MODDING.md).
 
@@ -91,3 +91,6 @@ compiler inputs or installed settings in a source/runtime release.
 Use the [project attribution license](../LICENSE). Preserve [NOTICE](../NOTICE),
 credit the original source visibly on distributions and identify material changes.
 Read [licensing](LICENSING.md) before copying SDK implementation/example code.
+
+Use [the maintenance checks](MAINTENANCE.md) for a single verification command,
+public CI coverage and the console regression checklist.

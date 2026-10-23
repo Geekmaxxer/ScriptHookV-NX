@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_TOOLS = ('build_plugin.py', 'native_bindings.py', 'create_mod.py', 'build_mod.py', 'doctor.py',
     'native_query.py', 'inspect_mod.py', 'report_summary.py', 'check_examples.py', 'build.py',
     'generate_bindings.py', 'engine_bindings.py', 'nso.py', 'compare_core.py', 'test_portable.py', 'package_runtime.py',
-    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py')
+    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py', 'run_ui_tests.py', 'verify_repo.py')
 ACCEPTANCES = (
     'native-caller-research/hardware-20261015/console-acceptance.json',
     'public-loader-test1-20261015/hardware-20261015/console-acceptance.json',
@@ -39,10 +39,11 @@ def export(output):
     stage = output/'repo/ScriptHookV-NX'; stage.mkdir(parents=True)
     selected = [ROOT/name for name in ('README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt', '.gitignore')]
     selected.extend((ROOT/'.github/ISSUE_TEMPLATE').glob('*.md'))
+    selected.extend((ROOT/'.github/workflows').glob('*.yml'))
     extensions = {
         'source': {'.cpp', '.hpp', '.h', '.s', '.ld'}, 'include': {'.h', '.hpp'},
         'sdk': {'.cpp', '.s', '.ld', '.sch', '.json', '.example'}, 'targets': {'.hpp', '.json', '.md'},
-        'examples': {'.cpp', '.sc'}, 'mods': {'.cpp', '.hpp', '.h', '.md'}, 'docs': {'.md'},
+        'examples': {'.cpp', '.sc'}, 'tests': {'.cpp'}, 'mods': {'.cpp', '.hpp', '.h', '.md'}, 'docs': {'.md'},
         'desktop': {'.cs', '.csproj', '.props', '.xaml', '.manifest', '.py', '.md', '.cpp', '.hpp', '.txt', '.json', '.ini'},
     }
     for folder, allowed in extensions.items():
@@ -54,6 +55,8 @@ def export(output):
     selected.extend(ROOT/'evidence'/name for name in ACCEPTANCES)
     # Compact prior regression evidence: source hashes/metrics, no dumps or binaries.
     for relative in ('sdk-refinement1-20261016/sdk-refinement-tests.json',
+                     'ecosystem-test1-20261023/verification.json',
+                     'ecosystem-test1-20261023/VERIFICATION.md',
                      'runtime-completion-test1-20261022/verification.json',
                      'runtime-completion-test1-20261022/VERIFICATION.md',
                      'sdk-parity-test1-20261022/hardware-20261022/coverage-addendum.json',

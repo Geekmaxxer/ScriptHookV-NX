@@ -41,7 +41,7 @@ static class GameArchiveTests {
         check("Encrypted archive table gives actionable rejection",()=>{string bad=Path.Combine(dir,"encrypted.rpf");var bytes=(byte[])original.Clone();BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(12),0x12345678);File.WriteAllBytes(bad,bytes);Reject(()=>RpfFileEditor.List(bad));});
         check("Truncated archive is rejected",()=>{string bad=Path.Combine(dir,"truncated.rpf");File.WriteAllBytes(bad,original[..30]);try{RpfFileEditor.List(bad);}catch(EndOfStreamException){return;}throw new Exception("Truncated table accepted");});
         string sd=Path.Combine(dir,"SD"),romfs=Path.Combine(sd,"atmosphere/contents",GameAssetUpdater.TitleId,"romfs");Directory.CreateDirectory(Path.Combine(romfs,"update"));File.WriteAllBytes(Path.Combine(romfs,"update/update.rpf"),original);
-        string dlc=Path.Combine(dir,"dlc.rpf");File.WriteAllBytes(dlc,RpfArchive.Write(Dir("",Data("content.xml",Encoding.UTF8.GetBytes("<root/>")),Data("setup2.xml",Encoding.UTF8.GetBytes("<root/>")),Data("test.ntd",texture,true))));
+        string dlc=Path.Combine(dir,"dlc.rpf");File.WriteAllBytes(dlc,RpfArchive.Write(AddonTests.ValidPack(texture)));
         check("SD root and local archive resolution",()=>Must(GameAssetUpdater.ResolveUpdate(sd)==Path.GetFullPath(Path.Combine(romfs,"update/update.rpf"))&&GameAssetUpdater.ResolveUpdate(archive)==archive));
         check("Ambiguous game folder requires an exact archive",()=>{File.WriteAllBytes(Path.Combine(sd,"update.rpf"),original);Reject(()=>GameAssetUpdater.ResolveUpdate(sd));File.Delete(Path.Combine(sd,"update.rpf"));});
         check("Add-on update preserves current list and prepares SD-root files",()=>{
@@ -54,6 +54,15 @@ static class GameArchiveTests {
         });
         check("Add-on updater refuses existing output",()=>Reject(()=>GameAssetUpdater.AddDlc(dlc,sd,"new-pack",Path.Combine(dir,"DLC output"))));
         check("Add-on updater rejects unsafe IDs",()=>Reject(()=>GameAssetUpdater.AddDlc(dlc,sd,"../bad",Path.Combine(dir,"bad"))));
+        check("Batch prepares multiple DLCs with one current-list merge",()=>{
+            string collection=Path.Combine(dir,"collection");Directory.CreateDirectory(Path.Combine(collection,"first"));Directory.CreateDirectory(Path.Combine(collection,"second"));
+            File.Copy(dlc,Path.Combine(collection,"first/dlc.rpf"));File.Copy(dlc,Path.Combine(collection,"second/dlc.rpf"));
+            var result=AddonBatch.Prepare(AddonBatch.Discover(collection),sd,Path.Combine(dir,"batch-output"));
+            var merged=XDocument.Parse(Encoding.UTF8.GetString(RpfFileEditor.ReadBinary(result.UpdatedArchive,"common/data/dlclist.xml")));
+            Must(merged.Descendants("Item").Count()==3&&File.ReadAllBytes(archive).SequenceEqual(original));
+        });
+        check("Batch rejects duplicate IDs before creating output",()=>{string output=Path.Combine(dir,"bad-batch");Reject(()=>AddonBatch.Prepare(new[]{new PreparedAddon("same",dlc),new PreparedAddon("same",dlc)},sd,output));Must(!Directory.Exists(output));});
+        check("Batch refuses invalid registration before copying game files",()=>{string bad=Path.Combine(dir,"bad-dlc.rpf");File.WriteAllBytes(bad,RpfArchive.Write(Dir("",Data("content.xml",Encoding.UTF8.GetBytes("<root/>")))));string output=Path.Combine(dir,"bad-batch-content");Reject(()=>AddonBatch.Prepare(new[]{new PreparedAddon("bad",bad)},sd,output));Must(!Directory.Exists(output));});
         check("Replacement workflow validates exact target and writes copied archive",()=>{string file=Path.Combine(dir,"test.ntd");File.WriteAllBytes(file,TextureDictionary.Downscale(texture,256).Data);var result=GameAssetUpdater.ReplaceAsset(file,archive,"test.ntd",Path.Combine(dir,"Replacement output"));Must(File.Exists(result.UpdatedArchive)&&File.ReadAllBytes(archive).SequenceEqual(original));});
         check("Executable replacement cannot enter the asset workflow",()=>{string file=Path.Combine(dir,"evil.nsc");File.WriteAllBytes(file,[1,2,3]);Reject(()=>GameAssetUpdater.ReplaceAsset(file,archive,"evil.nsc",Path.Combine(dir,"invalid output")));});
     }
