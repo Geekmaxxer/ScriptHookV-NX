@@ -1,6 +1,10 @@
 #include "plugin_loader.hpp"
 #include "../core/runtime_config.hpp"
+#include "../core/engine_api.hpp"
 #include "plugin.h"
+#include "extensions.h"
+#include "plugin_callbacks.hpp"
+#include "plugin_textures.hpp"
 #include "../../include/nativeCaller.h"
 #include "../core/storage.hpp"
 #include "../script/native_table.hpp"
@@ -17,13 +21,17 @@ struct alignas(8) Plugin {
     uint8_t module[0x140],registration[0x20];
     uintptr_t image,bss,nrr,base,tls;size_t image_bytes,bss_bytes,text_bytes;
     ShvNxApi api;
+    ShvNxExtensions extensions;
     ScriptFunction run,cleanup;
+    ScriptFunction additional[ScriptManager::MaxScripts];
+    uint32_t additional_count;
     uint32_t cleanup_calls,cleanup_failures;
+    struct Timing { uint64_t calls,total,worst; } timing[4];
     char filename[64],canonical[55],id[32];
     CustomNativeEntry pending[32];uint32_t pending_count;
     uint32_t step,error;
     uint32_t policy,loaded_policy;
-    bool loaded,registered,active,published,queued,present,conflict,kill_queued,stopped,stopping,cleanup_done;
+    bool loaded,registered,active,published,queued,present,conflict,kill_queued,stopped,stopping,cleanup_done,data_directory_ready;
 };
 struct Candidate { char filename[64],canonical[55]; uint32_t policy; bool conflict; };
 Plugin plugins[max_plugins];size_t count;
@@ -40,6 +48,7 @@ uint32_t policy_slot=UINT32_MAX,policy_requested=UINT32_MAX,policy_previous=UINT
 uint32_t policy_rename_result=UINT32_MAX,policy_postcheck;
 bool policy_rename_attempted;
 uint32_t reported_running_mask;
+size_t extra_memory;
 bool basename(const char* s,size_t maximum,bool dot) {
     if(!s)return false;
     for(size_t i=0;i<maximum;++i){char c=0;if(!Memory::Read(reinterpret_cast<uintptr_t>(s)+i,c))return false;if(!c)return i>0;
@@ -74,10 +83,21 @@ bool own_thread(){return owner_tls&&owner_tls==sh_get_thread_pointer();}
 bool reject(uint32_t reason){last_action_error=reason;reported=false;return false;}
 size_t resident_count(){size_t value=0;for(const auto& p:plugins)if(p.loaded)++value;return value;}
 size_t memory_cost(const Plugin& p){return (p.image?2*p.image_bytes:0)+(p.bss?2*p.bss_bytes:0)+(p.nrr?4096:0);}
-size_t memory_used(){size_t value=0;for(const auto& p:plugins)value+=memory_cost(p);return value;}
+size_t memory_used(){size_t value=extra_memory;for(const auto& p:plugins)value+=memory_cost(p);return value;}
+bool running(const Plugin& p){
+    if(PluginCallbacks::Active(const_cast<Plugin*>(&p)))return true;
+    if(PluginTextures::Active(const_cast<Plugin*>(&p)))return true;
+    if(ScriptManager::Contains(p.run))return true;
+    for(uint32_t i=0;i<p.additional_count;++i)if(ScriptManager::Contains(p.additional[i]))return true;
+    return false;
+}
+void stop_scripts(Plugin& p){
+    ScriptManager::Unregister(p.run);
+    for(uint32_t i=0;i<p.additional_count;++i)ScriptManager::Unregister(p.additional[i]);
+}
 uint32_t running_mask(){
     uint32_t value=0;
-    for(size_t i=0;i<count;++i)if(plugins[i].loaded&&plugins[i].active&&ScriptManager::Contains(plugins[i].run))value|=1u<<i;
+    for(size_t i=0;i<count;++i)if(plugins[i].loaded&&plugins[i].active&&running(plugins[i]))value|=1u<<i;
     return value;
 }
 const char* error_name(uint32_t value,uint32_t step){
@@ -132,6 +152,48 @@ void discard(Plugin& p){
 }
 bool own(Plugin* p){for(auto& candidate:plugins)if(p==&candidate)return candidate.loaded&&candidate.tls==sh_get_thread_pointer();return false;}
 bool code(Plugin& p,uintptr_t address){return address>=p.base+0x80&&address-p.base<p.text_bytes&&Memory::IsExecutable(address);}
+bool register_script(void* token,ScriptFunction function){
+    auto* p=static_cast<Plugin*>(token);
+    if(!own(p)||p->stopping||p->kill_queued||(p->active&&(p->stopped||p->cleanup_done))||!code(*p,reinterpret_cast<uintptr_t>(function)))return false;
+    if(function==p->run)return !p->active||ScriptManager::Register(function);
+    for(uint32_t i=0;i<p->additional_count;++i)if(p->additional[i]==function)
+        return !p->active||ScriptManager::Register(function);
+    if(p->additional_count==ScriptManager::MaxScripts)return false;
+    if(p->active&&!ScriptManager::Register(function))return false;
+    p->additional[p->additional_count++]=function;return true;
+}
+bool unregister_script(void* token,ScriptFunction function){
+    auto* p=static_cast<Plugin*>(token);
+    if(!own(p))return false;
+    if(!function){if(p->stopping)return false;p->kill_queued=true;reported=false;return true;}
+    if(function==p->run){ScriptManager::Unregister(function);return true;}
+    for(uint32_t i=0;i<p->additional_count;++i)if(p->additional[i]==function){
+        ScriptManager::Unregister(function);
+        for(uint32_t j=i+1;j<p->additional_count;++j)p->additional[j-1]=p->additional[j];
+        p->additional[--p->additional_count]=nullptr;return true;
+    }
+    return false;
+}
+int enumerate(void* token,uint32_t kind,int32_t* out,uint32_t capacity){
+    return own(static_cast<Plugin*>(token))?EngineApi::Enumerate(kind,out,capacity):0;
+}
+uint64_t* global_ptr(void* token,uint32_t index){return own(static_cast<Plugin*>(token))?EngineApi::Global(index):nullptr;}
+uintptr_t entity_ptr(void* token,int32_t handle){return own(static_cast<Plugin*>(token))?EngineApi::EntityAddress(handle):0;}
+bool callback(void* token,uint32_t kind,uintptr_t function,uint32_t group,uint32_t control,bool add){
+    auto* p=static_cast<Plugin*>(token);
+    if(!own(p)||!code(*p,function)||(add&&(p->stopping||p->kill_queued||(p->active&&(p->stopped||p->cleanup_done)))))return false;
+    const bool result=PluginCallbacks::Register(p,kind,function,group,control,add,last_frame);
+    if(result&&!p->active)PluginCallbacks::Enable(p,false);
+    return result;
+}
+int create_texture(void* token,const char* name){
+    auto* p=static_cast<Plugin*>(token);
+    return own(p)&&!p->stopping&&!p->kill_queued&&!(p->active&&(p->stopped||p->cleanup_done))&&basename(name,64,true)?PluginTextures::Create(p,p->id,name):0;
+}
+bool draw_texture(void* token,const ShvNxTextureDraw* draw){
+    auto* p=static_cast<Plugin*>(token);
+    return own(p)&&!p->stopping&&!p->kill_queued&&!(p->active&&(p->stopped||p->cleanup_done))&&PluginTextures::Draw(p,draw);
+}
 bool register_native(void* token,uint64_t hash,NativeHandler handler){
     auto* p=static_cast<Plugin*>(token);
     if(!own(p)||!hash||!code(*p,reinterpret_cast<uintptr_t>(handler)))return false;
@@ -145,23 +207,44 @@ bool data_path(Plugin* p,const char* name,char (&out)[128]){
     if(!own(p)||!basename(name,64,true))return false;
     size_t n=0;const char* prefix="settings/";while(*prefix)out[n++]=*prefix++;
     for(const char* s=p->id;*s;++s)out[n++]=*s;
-    out[n++]='-';for(const char* s=name;*s;++s)out[n++]=*s;out[n]=0;return true;
+    out[n++]='/';for(const char* s=name;*s;++s)out[n++]=*s;out[n]=0;return true;
 }
-bool write_data(void* token,const char* name,const void* data,size_t bytes){char path[128]{};if(!data_path(static_cast<Plugin*>(token),name,path))return false;Storage disk;return disk.Write(path,data,bytes);}
-bool read_data(void* token,const char* name,void* data,size_t bytes,size_t* got){char path[128]{};if(!Memory::IsWritable(reinterpret_cast<uintptr_t>(got),sizeof(*got))||!data_path(static_cast<Plugin*>(token),name,path))return false;Storage disk;return disk.Read(path,data,bytes,*got);}
-void fail(Plugin& p,uint32_t reason){p.error=reason;discard(p);}
+bool prepare_data(Plugin& p,Storage& disk,const char* current){
+    if(!disk.mounted)return false;
+    char directory_path[128]{};filename(directory_path,"settings/",p.id);
+    if(!p.data_directory_ready){if(!disk.Directory(directory_path))return false;p.data_directory_ready=true;}
+    char legacy[128]{};copy(legacy,current);legacy[length(directory_path)]='-';
+    return disk.MigrateFile(legacy,current);
+}
+bool write_data(void* token,const char* name,const void* data,size_t bytes){
+    auto* p=static_cast<Plugin*>(token);char path[128]{};
+    if(!data_path(p,name,path)||!bytes||bytes>65536||!Memory::IsReadable(reinterpret_cast<uintptr_t>(data),bytes))return false;
+    Storage disk;return prepare_data(*p,disk,path)&&disk.Write(path,data,bytes);
+}
+bool read_data(void* token,const char* name,void* data,size_t bytes,size_t* got){
+    auto* p=static_cast<Plugin*>(token);char path[128]{};
+    if(!Memory::IsWritable(reinterpret_cast<uintptr_t>(got),sizeof(*got))||!data_path(p,name,path))return false;
+    *got=0;if(!bytes||!Memory::IsWritable(reinterpret_cast<uintptr_t>(data),bytes))return false;
+    Storage disk;return prepare_data(*p,disk,path)&&disk.Read(path,data,bytes,*got);
+}
+void fail(Plugin& p,uint32_t reason){PluginCallbacks::Forget(&p);PluginTextures::Stop(&p);p.error=reason;discard(p);}
 void load(Plugin& p){
     if(p.loaded){
         if(!p.active||!p.run){p.error=0x1001a;return;}
-        if(ScriptManager::Contains(p.run))return;
+        if(running(p))return;
         if(!ScriptManager::Register(p.run)){p.error=0x10009;return;}
+        for(uint32_t i=0;i<p.additional_count;++i)if(!ScriptManager::Register(p.additional[i])){
+            stop_scripts(p);p.error=0x10009;return;
+        }
+        PluginCallbacks::Enable(&p,true);
         p.error=0;p.stopped=false;p.cleanup_done=false;p.step=7;return;
     }
-    p.error=0;p.pending_count=0;
+    p.error=0;p.pending_count=0;p.additional_count=0;
     if(resident_count()>=RuntimeConfig::Residents()){p.error=0x10015;return;}
     struct Reservation {
         uint32_t token=ScriptManager::ReserveSlot();
-        ~Reservation(){ScriptManager::ReleaseReserved(token);}
+        uint32_t extra[ScriptManager::MaxScripts]{};uint32_t count=0;
+        ~Reservation(){ScriptManager::ReleaseReserved(token);for(uint32_t i=0;i<count;++i)ScriptManager::ReleaseReserved(extra[i]);}
     } reservation;
     if(!reservation.token){p.error=0x10009;return;}
     p.step=1;Nro h{};
@@ -209,20 +292,39 @@ void load(Plugin& p){
         NativeInvoker::AbandonCalls();fail(p,0x1001b);return;
     }
     if(!Memory::IsReadable(reinterpret_cast<uintptr_t>(descriptor),sizeof(*descriptor))||descriptor->size!=sizeof(*descriptor)||descriptor->abi!=SHV_NX_PLUGIN_ABI_VERSION||descriptor->caller_abi!=SHV_NX_CALLER_ABI_VERSION||descriptor->runtime_abi!=SHV_NX_RUNTIME_ABI_VERSION||!basename(descriptor->id,32,false)||!code(p,reinterpret_cast<uintptr_t>(descriptor->initialize))||!code(p,reinterpret_cast<uintptr_t>(descriptor->run))){fail(p,0x10006);return;}
-    copy(p.id,descriptor->id);
+    copy(p.id,descriptor->id);p.run=descriptor->run;
     for(auto& other:plugins)if(&other!=&p&&other.loaded&&other.id[0]&&same_id(p.id,other.id)){fail(p,0x10007);return;}
     p.tls=sh_get_thread_pointer();
     p.api={sizeof(ShvNxApi),SHV_NX_PLUGIN_ABI_VERSION,SHV_NX_CALLER_ABI_VERSION,SHV_NX_RUNTIME_ABI_VERSION,&p,
         ::nativeInvokeContext,::getNativeCallStatus,::getLastNativeHash,::nativeIsAvailable,::scriptWait,register_native,write_data,read_data,
         ::nativeInit,::nativePush64,::nativeCall,::nativeGetCallContext,::nativeCallChecked,::getNativeHandler};
+    uint64_t capabilities=SHV_NX_CAP_MULTIPLE_SCRIPTS|SHV_NX_CAP_CONTROL_CALLBACKS|SHV_NX_CAP_RENDER_CALLBACKS;
+    if(EngineApi::Verified())capabilities|=SHV_NX_CAP_ENTITY_ENUMERATION|SHV_NX_CAP_SCRIPT_GLOBALS|SHV_NX_CAP_ENTITY_POINTERS|SHV_NX_CAP_CUSTOM_TEXTURES;
+    if(EngineApi::KeyboardSupported())capabilities|=SHV_NX_CAP_KEYBOARD_CALLBACKS;
+    p.extensions={sizeof(ShvNxExtensions),SHV_NX_EXTENSIONS_ABI_VERSION,capabilities,register_script,unregister_script,enumerate,global_ptr,entity_ptr,callback,create_texture,draw_texture};
+    uintptr_t bind_extensions=0;
+    const auto extensions_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&bind_extensions,p.module,"shvPluginBindExtensions");
+    if(!extensions_result&&bind_extensions){
+        if(!code(p,bind_extensions)||!reinterpret_cast<bool(*)(const ShvNxExtensions*)>(bind_extensions)(&p.extensions)){
+            fail(p,0x10006);return;
+        }
+        if(!NativeInvoker::CanYield()){NativeInvoker::AbandonCalls();fail(p,0x1001b);return;}
+    }
     p.step=5;
     // Stage custom handlers until initialization succeeds. A failed initializer
     // cannot publish a dangling callback into any script's native table.
+    const auto initialize_start=sh_get_tick();
     const bool initialized=descriptor->initialize(&p.api);
+    PluginLoader::RecordTime(&p,3,sh_get_tick()-initialize_start);
     if(!NativeInvoker::CanYield()){
         NativeInvoker::AbandonCalls();fail(p,0x1001b);return;
     }
     if(!initialized){fail(p,0x10008);return;}
+    for(uint32_t i=0;i<p.additional_count;++i){
+        const auto token=ScriptManager::ReserveSlot();
+        if(!token){fail(p,0x10009);return;}
+        reservation.extra[reservation.count++]=token;
+    }
     if(NativeTable::s_customNativeCount+p.pending_count>NativeTable::MaxCustomNatives){fail(p,0x1000e);return;}
     for(uint32_t i=0;i<p.pending_count;++i)if(NativeTable::GetHandler(p.pending[i].hash)){fail(p,0x1000e);return;}
     // Keep the image resident from the first published pointer onward, even
@@ -235,7 +337,10 @@ void load(Plugin& p){
     const auto stop_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&stop,p.module,"shvPluginStop");
     if(!stop_result&&stop){if(!code(p,stop)){fail(p,0x10006);return;}p.cleanup=reinterpret_cast<ScriptFunction>(stop);}
     p.step=6;if(!ScriptManager::CommitReserved(reservation.token,p.run)){p.error=0x10009;return;}
-    p.active=true;p.loaded_policy=p.policy;p.step=7;
+    for(uint32_t i=0;i<p.additional_count;++i)if(!ScriptManager::CommitReserved(reservation.extra[i],p.additional[i])){
+        stop_scripts(p);p.error=0x10009;return;
+    }
+    p.active=true;PluginCallbacks::Enable(&p,true);p.loaded_policy=p.policy;p.step=7;
 }
 bool better(const Candidate& a,const Candidate& b){
     if(a.policy!=b.policy)return a.policy>b.policy;
@@ -302,7 +407,7 @@ void scan(){
 }
 }
 uint32_t PluginLoader::Loaded(){return uint32_t(resident_count());}
-bool PluginLoader::Pending(){return stage!=3||!reported||rescan_requested||any_queued()||running_mask()!=reported_running_mask;}
+bool PluginLoader::Pending(){return stage!=3||!reported||rescan_requested||any_queued()||PluginCallbacks::Active()||PluginTextures::Active()||running_mask()!=reported_running_mask;}
 void PluginLoader::Tick(){
     if(!Memory::ResolveSdk())return;
     const auto tls=sh_get_thread_pointer();if(owner_tls&&owner_tls!=tls)return;owner_tls=tls;
@@ -313,10 +418,10 @@ void PluginLoader::Tick(){
     // This callback runs before scheduler dispatch, after the previous native
     // invocation has returned. Cancel only this plugin's cooperative entry;
     // its module, published handlers and other plugins remain untouched.
-    for(auto& p:plugins)if(p.kill_queued||(p.active&&!p.cleanup_done&&!ScriptManager::Contains(p.run))){
+    for(auto& p:plugins)if(p.kill_queued||(p.active&&!p.cleanup_done&&!running(p))){
         const bool killed=p.kill_queued;
-        p.kill_queued=false;p.stopping=true;ScriptManager::Unregister(p.run);p.stopped=killed;p.cleanup_done=true;
-        if(p.cleanup){++p.cleanup_calls;if(!ScriptManager::RunCleanup(p.cleanup))++p.cleanup_failures;}
+        p.kill_queued=false;p.stopping=true;stop_scripts(p);PluginCallbacks::Enable(&p,false);PluginTextures::Stop(&p);p.stopped=killed;p.cleanup_done=true;
+        if(p.cleanup){const auto started=sh_get_tick();++p.cleanup_calls;if(!ScriptManager::RunCleanup(p.cleanup))++p.cleanup_failures;RecordTime(&p,2,sh_get_tick()-started);}
         p.stopping=false;reported=false;
     }
     if(!stage||rescan_requested){
@@ -357,7 +462,9 @@ void PluginLoader::Report(){
     char report[8192]{};size_t n=0;bool clipped=false;
     auto append=[&](const char* s){while(*s){if(n+32>=sizeof(report)){clipped=true;return;}report[n++]=*s++;}};
     auto field=[&](const char* key,uint64_t v){append(key);append("=0x");char tmp[16];unsigned at=0;do{tmp[at++]="0123456789abcdef"[v&15];v>>=4;}while(v);while(at){char digit[2]={tmp[--at],0};append(digit);}append("\n");};
-    append("ScriptHookV-NX lifecycle test 1\n");field("loader_stage",stage);
+    append("ScriptHookV-NX runtime completion test 1\n");field("loader_stage",stage);
+    field("extension_abi",SHV_NX_EXTENSIONS_ABI_VERSION);field("engine_api_verified",EngineApi::Verified());
+    field("settings_layout",2);
     append("loader_stage_name=");append(stage==3?"complete":stage==2?"loading_plugins":stage==1?"initializing_loader":"discovering_plugins");append("\n");
     field("loader_error",error);append("loader_error_name=");append(error_name(error,0));append("\n");
     field("plugins_found",count);field("plugins_discovered",discovered);field("plugins_loaded",resident_count());field("plugins_skipped",skipped);field("plugins_disabled",disabled);
@@ -376,7 +483,9 @@ void PluginLoader::Report(){
     uint32_t running_count=0;for(size_t i=0;i<count;++i)if(IsRunning(uint32_t(i)))++running_count;
     field("plugins_running",running_count);
     for(size_t i=0;i<count;++i){const auto& p=plugins[i];append("plugin=");append(p.filename);append("\n");field("slot",i);field("policy",p.policy);field("resident",p.loaded);field("running",IsRunning(uint32_t(i)));field("kill_queued",p.kill_queued);field("stopped",p.stopped);field("queued",p.queued);field("present",p.present);
-        field("step",p.step);append("step_name=");append(step_name(p.step));append("\n");field("error",p.error);append("error_name=");append(error_name(p.error,p.step));append("\n");}
+        field("step",p.step);append("step_name=");append(step_name(p.step));append("\n");field("error",p.error);append("error_name=");append(error_name(p.error,p.step));append("\n");
+        field("additional_entries",p.additional_count);field("callbacks_active",PluginCallbacks::Active(const_cast<Plugin*>(&p)));
+        field("callback_failures",PluginCallbacks::Failures(const_cast<Plugin*>(&p)));field("texture_memory_bytes",PluginTextures::Bytes(const_cast<Plugin*>(&p)));}
     // Leave room for a complete clipping field even when the body reaches its cap.
     const char* tail=clipped?"report_clipped=1\n":"report_clipped=0\n";while(*tail&&n+1<sizeof(report))report[n++]=*tail++;
     // A persistent SD failure must not mount/write every game frame. A new
@@ -384,6 +493,28 @@ void PluginLoader::Report(){
     reported_running_mask=running_mask();reported=true;Storage disk;(void)disk.Write("loader-report.txt",report,n);
 }
 uint32_t PluginLoader::Count(){return uint32_t(count);}
+void PluginLoader::RecordTime(void* owner,uint32_t kind,uint64_t ticks){
+    if(kind>=4)return;
+    for(auto& p:plugins)if(owner==&p){
+        auto& t=p.timing[kind];if(t.calls!=UINT64_MAX)++t.calls;
+        t.total=ticks>UINT64_MAX-t.total?UINT64_MAX:t.total+ticks;
+        if(ticks>t.worst)t.worst=ticks;
+        return;
+    }
+}
+void PluginLoader::RecordScriptTime(ScriptFunction function,uint64_t ticks){
+    const auto address=reinterpret_cast<uintptr_t>(function);
+    for(auto& p:plugins)if(p.loaded&&address>=p.base+0x80&&address-p.base<p.text_bytes){RecordTime(&p,0,ticks);return;}
+}
+bool PluginLoader::GetTiming(uint32_t idx,uint32_t kind,uint64_t& calls,uint64_t& totalUs,uint64_t& worstUs){
+    if(!own_thread()||idx>=count||kind>=4)return false;
+    const auto& t=plugins[idx].timing[kind];calls=t.calls;
+    // 19.2 MHz Horizon counter; avoid overflow when converting saturated totals.
+    totalUs=(t.total/96)*5+((t.total%96)*5)/96;
+    worstUs=(t.worst/96)*5+((t.worst%96)*5)/96;
+    return true;
+}
+void PluginLoader::CallbackFailed(){reported=false;}
 const char* PluginLoader::GetFilename(uint32_t idx){return idx<count?plugins[idx].filename:"";}
 const char* PluginLoader::GetId(uint32_t idx){if(idx>=count)return "";return plugins[idx].id[0]?plugins[idx].id:plugins[idx].canonical;}
 bool PluginLoader::GetInfo(uint32_t idx,uint32_t& status,uint32_t& memKb,uint32_t& step,uint32_t& err){
@@ -396,7 +527,7 @@ bool PluginLoader::GetInfo(uint32_t idx,uint32_t& status,uint32_t& memKb,uint32_
     else if(p.loaded)status=5;
     else if(p.policy==Disabled)status=0;
     else status=4;
-    memKb=uint32_t(memory_cost(p)/1024);step=p.step;err=p.error;return true;
+    memKb=uint32_t((memory_cost(p)+PluginTextures::Bytes(const_cast<Plugin*>(&p)))/1024);step=p.step;err=p.error;return true;
 }
 const char* PluginLoader::GetStatusText(uint32_t idx){
     if(idx>=count)return "UNKNOWN";
@@ -464,7 +595,7 @@ bool PluginLoader::RequestLoad(uint32_t idx){
     p.queued=true;p.error=0;p.step=0;reported=false;last_action_error=0;return true;
 }
 bool PluginLoader::IsRunning(uint32_t idx){
-    return own_thread()&&idx<count&&plugins[idx].loaded&&plugins[idx].active&&ScriptManager::Contains(plugins[idx].run);
+    return own_thread()&&idx<count&&plugins[idx].loaded&&plugins[idx].active&&running(plugins[idx]);
 }
 bool PluginLoader::Kill(uint32_t idx){
     if(!own_thread())return reject(0x10013);
@@ -477,4 +608,9 @@ bool PluginLoader::RescanAndReload(){
     if(!own_thread())return reject(0x10013);
     rescan_requested=true;reported=false;last_action_error=0;return true;
 }
+bool PluginLoader::ReserveExtraMemory(size_t bytes){
+    if(!own_thread()||bytes>RuntimeConfig::MemoryBytes()||memory_used()>RuntimeConfig::MemoryBytes()-bytes)return false;
+    extra_memory+=bytes;reported=false;return true;
+}
+void PluginLoader::ReleaseExtraMemory(size_t bytes){if(own_thread()&&bytes<=extra_memory){extra_memory-=bytes;reported=false;}}
 }

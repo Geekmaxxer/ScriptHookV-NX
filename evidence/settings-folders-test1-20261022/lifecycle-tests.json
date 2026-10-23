@@ -1,0 +1,27 @@
+{
+  "passed": 19,
+  "checks": [
+    "ABI 1 plugin with optional stop export starts",
+    "cleanup does not run on load",
+    "stop request is queued",
+    "cleanup runs with namespaced storage and module retained",
+    "script stops after cleanup",
+    "cleanup succeeds exactly once",
+    "idle stopped plugin does not repeat cleanup",
+    "resident plugin can restart",
+    "restarted script runs",
+    "second stop cleans up once again",
+    "natural-return cleanup executes once",
+    "natural-return cleanup result is diagnosed",
+    "natural-return leaves native call stack usable",
+    "wait-rejected cleanup executes once",
+    "wait-rejected cleanup result is diagnosed",
+    "wait-rejected leaves native call stack usable",
+    "unfinished-native cleanup executes once",
+    "unfinished-native cleanup result is diagnosed",
+    "unfinished-native leaves native call stack usable"
+  ],
+  "module_sha256": "fee6cb157d5c3f72e275cc004923ecd09e17961b082f200d2d1f7c8b9b394f1a",
+  "scope": "Actual compiled ARM64 runtime/plugin in emulator; OS, game state and filesystem mocked",
+  "switch_runtime_verified": false
+}

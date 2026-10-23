@@ -1,0 +1,191 @@
+{
+  "format": 1,
+  "build_id": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "main_sha256": "6d4d4f670d2e7b3ef9a8ac33787859b2d4d80667148132b5d815997c2a196fd5",
+  "constants": {
+    "global_blocks": 64838616,
+    "global_sizes": 64839128,
+    "guid_pool": 65416976,
+    "guid_vtable": 49962360,
+    "create_guid": 41104160,
+    "ped_pool": 61284928,
+    "vehicle_pool": 61284832,
+    "object_pool": 61281848,
+    "pickup_pool": 61284936,
+    "keyboard_initialize": 4894240,
+    "keyboard_states": 4894912,
+    "texture_factory": 65916808,
+    "texture_factory_vtable": 49844112,
+    "texture_create": 36501240,
+    "texture_vtable": 49844416,
+    "draw_sprite": 16594432,
+    "rectangles": 56057120,
+    "rectangle_buffer": 64903272,
+    "texture_valid": 36508624,
+    "texture_delete": 36508368
+  },
+  "proofs": [
+    {
+      "offset": 40062264,
+      "bytes": "0bbd00b06b612f91681300912afd57d3",
+      "contract": "VM GLOBAL_U24 bank lookup"
+    },
+    {
+      "offset": 40056616,
+      "bytes": "08bd00d008613791f30300aa36fd52d3",
+      "contract": "global allocation stores size indexed by block"
+    },
+    {
+      "offset": 16515964,
+      "bytes": "087501d0497d0813088947f90b0540f9",
+      "contract": "GUID pool and eight-bit generation lookup"
+    },
+    {
+      "offset": 16515992,
+      "bytes": "0a0140f9081540b9087d091b480108ab",
+      "contract": "GUID entry stride and base at offset eight"
+    },
+    {
+      "offset": 41104176,
+      "bytes": "76b900f0f30300aad7264fb914400091",
+      "contract": "GUID creation extension lookup"
+    },
+    {
+      "offset": 41104400,
+      "bytes": "884300d008e13591e00314aa284c00a9",
+      "contract": "GUID extension vtable"
+    },
+    {
+      "offset": 17776908,
+      "bytes": "f54b01d0a82241f9091180b909070034",
+      "contract": "ped pool pointer and capacity"
+    },
+    {
+      "offset": 17777004,
+      "bytes": "090540f92969f63869ffff37090140f9",
+      "contract": "ped free flags and storage stride"
+    },
+    {
+      "offset": 18790120,
+      "bytes": "3a4401f048f340f9080140f91b0940b9",
+      "contract": "vehicle allocator pool indirection"
+    },
+    {
+      "offset": 18790196,
+      "bytes": "091940f9aa7f45d329796ab82925dc1a",
+      "contract": "vehicle occupancy bitmap"
+    },
+    {
+      "offset": 18790216,
+      "bytes": "090140f9080d40f908251c9b680800b4",
+      "contract": "vehicle pointer-slot stride"
+    },
+    {
+      "offset": 11006772,
+      "bytes": "887f01d0151d43f9b61240b9df060071",
+      "contract": "object pool pointer and capacity"
+    },
+    {
+      "offset": 11006844,
+      "bytes": "a80640f90869f73868ffff37a80240f9",
+      "contract": "object free flags and stride"
+    },
+    {
+      "offset": 17616848,
+      "bytes": "284d01d0092541f9281180b928040034",
+      "contract": "pickup pool pointer and capacity"
+    },
+    {
+      "offset": 17616924,
+      "bytes": "6c69e8388cffff3769ffffb42c3944b9",
+      "contract": "pickup free flags"
+    },
+    {
+      "offset": 36474020,
+      "bytes": "0866009008413e91080000f91ffc00a9",
+      "contract": "SGA factory vtable and singleton initialization"
+    },
+    {
+      "offset": 16577660,
+      "bytes": "687801b0f44f41a900c547f9a1d40090",
+      "contract": "texture factory singleton and filename virtual slot"
+    },
+    {
+      "offset": 36501240,
+      "bytes": "ffc301d1fe6703a9f85f04a9f65705a9",
+      "contract": "SGA raw 2D create entry"
+    },
+    {
+      "offset": 36501260,
+      "bytes": "68480051f803052af30304aa68048813",
+      "contract": "width/height/format/pixels/mips argument registers"
+    },
+    {
+      "offset": 36501796,
+      "bytes": "e10313aae20315aa85801c94e80240f9",
+      "contract": "caller pixels copied into owned staging allocation"
+    },
+    {
+      "offset": 36507380,
+      "bytes": "c86500b008010391680200f9a83d00f0",
+      "contract": "grcTextureSGA vtable and initial state"
+    },
+    {
+      "offset": 16594636,
+      "bytes": "887001d00a2d01d04a813491086988b9",
+      "contract": "HUD rectangle write-buffer index and stride"
+    },
+    {
+      "offset": 16594688,
+      "bytes": "080a80529b77a89b88070011280100b9",
+      "contract": "HUD rectangle capacity and record size"
+    },
+    {
+      "offset": 16594716,
+      "bytes": "e84340f9f3434239e0031baaf40307aa",
+      "contract": "sprite UV pointer and boolean stack arguments"
+    },
+    {
+      "offset": 16675064,
+      "bytes": "e00317aae103132ae00f00fd0041201e",
+      "contract": "native DRAW_SPRITE caller texture and integer args"
+    },
+    {
+      "offset": 16675104,
+      "bytes": "ff430039ff230039e80300f935b1ff97",
+      "contract": "native DRAW_SPRITE two boolean stack args"
+    },
+    {
+      "offset": 36508624,
+      "bytes": "082440f91f0100f1e0079f1ac0035fd6",
+      "contract": "SGA texture validity checks its device pointer"
+    },
+    {
+      "offset": 36508368,
+      "bytes": "fe4fbfa9f30300aaff02009448c600d0",
+      "contract": "unused SGA texture deleting destructor"
+    }
+  ],
+  "sdk_proofs": [
+    {
+      "offset": 4894240,
+      "bytes": "fd7bbea9f44f01a9fd030091943a00f0",
+      "contract": "nn::hid::detail::InitializeKeyboard returns nn::Result"
+    },
+    {
+      "offset": 4894912,
+      "bytes": "610d00b4fd7bbca9f70b00f9f65702a9",
+      "contract": "nn::hid::detail::GetKeyboardStates(count,state,capacity)"
+    },
+    {
+      "offset": 4895104,
+      "bytes": "0a0680522b0f8f520b0faf720c078052",
+      "contract": "KeyboardState output stride 0x30"
+    },
+    {
+      "offset": 4895208,
+      "bytes": "218a42a9e10900a9218a43a923c644a9",
+      "contract": "KeyboardState copies sampling/modifiers/256 key bits"
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "format": 1,
+  "milestone": "Runtime Completion Test 1",
+  "module_sha256": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "base_plugin_abi": 1,
+  "extension_abi": 1,
+  "core_checks": 569,
+  "core_reports": {
+    "bridge-tests.json": {
+      "passed": 38,
+      "sha256": "4d6924cc12131cc2e6f75add011d1d3691e740c15bd69f8e2860aee36710ca41"
+    },
+    "native-caller-tests.json": {
+      "passed": 70,
+      "sha256": "6e1b3759c949552be6947d9f905a909685f4cad3e3b69e9a1e8867dbbfd3a45f"
+    },
+    "native-sdk-tests.json": {
+      "passed": 16,
+      "sha256": "34bf04877726625cde065416dd32e1fe37ada12f2bd5f1e9a7cbfefa3ecd8979"
+    },
+    "runtime-tests.json": {
+      "passed": 75,
+      "sha256": "273ebc89edad78e007929cc9663b728e0efbca2ed5db100eed87c741de8847fd"
+    },
+    "plugin-tests.json": {
+      "passed": 51,
+      "sha256": "aca6b08d16ea88199c2a7a619fd4923eeda0c885f31147e3892740e28b7d52b7"
+    },
+    "settings-folder-tests.json": {
+      "passed": 26,
+      "sha256": "9fc769dcbae71a7ce480e74ffae6e8de6895d556ecbcf7efe1b55f1cf0c01ec6"
+    },
+    "engine-api-tests.json": {
+      "passed": 32,
+      "sha256": "8fff690ecc733ed2fcc673e948d8ce3af9c6c74584e47226174d7bd6904030b8"
+    },
+    "extensions-tests.json": {
+      "passed": 10,
+      "sha256": "82d5cb0d2d10222942982394c0096317105b9a890424ae787f56ebccc898b6e3"
+    },
+    "callback-tests.json": {
+      "passed": 18,
+      "sha256": "51c507a7d06d0d9bfa44172bd110c9ae06129bd8b5aa6d5cb8c802114ecd95f0"
+    },
+    "timing-tests.json": {
+      "passed": 13,
+      "sha256": "38470fbf292cfe08ec2090d82721ef6bafef45dba5511a4413c44a48eacb86b2"
+    },
+    "capacity-tests.json": {
+      "passed": 8,
+      "sha256": "e295c7d6864c234f5f2bf2ee02c1110c37b520d090f4840c02d6606cffc7e596"
+    },
+    "diagnostics-tests.json": {
+      "passed": 5,
+      "sha256": "49d465ad1b100bc6c3f5a05141dfb15030a696f519f1f77fef87381074f2549b"
+    },
+    "texture-tests.json": {
+      "passed": 15,
+      "sha256": "fb4f5fa3fbc2c2d297470deb3c0b54c235e7e36e65ef3bd15eaedaa16bc56a93"
+    },
+    "template-tests.json": {
+      "passed": 6,
+      "sha256": "26826b307299198ec00395a1a2c69c138358f6b391aa0bf9332d08386a5a03af"
+    },
+    "manager-tests.json": {
+      "passed": 118,
+      "sha256": "947aa763cd14d53d9b739dc271d15043796c1c21aa8723a130ef6470968ed426"
+    },
+    "runtime-config-tests.json": {
+      "passed": 54,
+      "sha256": "d1dec26a21586d684dd91c1d57b4d2066f5cebcc4fde0b6d76e3ca19f54b167a"
+    },
+    "manifest-tests.json": {
+      "passed": 14,
+      "sha256": "9677fe849a41f2335db1dd864b028fcde6432a27b19e50ca2acef8133ec48630"
+    }
+  },
+  "supplemental_reports": {
+    "lifecycle": {
+      "passed": 19,
+      "report_sha256": "50e2345b642391d46e58bc9210b91e99cc1d326dbf22cf4ac41e782bdde13c05",
+      "scope": "Actual compiled ARM64 runtime/plugin in emulator; OS, game state and filesystem mocked"
+    },
+    "showcase": {
+      "passed": 46,
+      "report_sha256": "b797e2ca581540bd9d47c1fb01cda24e16148218fe681ea482e17a6cd358c126",
+      "scope": "Production core loader/caller/SDK shim/fibers/storage plus four actual NROs; scripted game natives and mocked RO/filesystem/OS services"
+    },
+    "ported-lifecycle": {
+      "passed": 4,
+      "report_sha256": "d664d394f3c95b6347bacc4fe8a35b94c8a9268fc06a8e2c7f42f9a42fce9c83",
+      "scope": "Actual Mod Porter generated ARM64 NRO and runtime; mocked game/OS/filesystem"
+    }
+  },
+  "porter_checks": 152,
+  "porter_log_sha256": "65cda5d7476572f012051a3c58810756140f87a412eccddd522916a1f358f99b",
+  "portable_tests": 25,
+  "example_builds": 8,
+  "resource_audit": {
+    "module_sha256": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+    "file_bytes": 89832,
+    "segments": {
+      "text": {
+        "offset": 0,
+        "bytes": 107520,
+        "mapped_bytes": 110592
+      },
+      "rodata": {
+        "offset": 110592,
+        "bytes": 21664,
+        "mapped_bytes": 24576
+      },
+      "data": {
+        "offset": 135168,
+        "bytes": 680,
+        "mapped_bytes": 4096
+      }
+    },
+    "bss_bytes": 1280216,
+    "static_mapped_span_bytes": 1417216,
+    "largest_objects": [
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L6stacksE",
+        "bytes": 1048576
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L8manifestE",
+        "bytes": 65536
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L15manifest_bufferE",
+        "bytes": 65536
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7pluginsE",
+        "bytes": 27392
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L9directoryE",
+        "bytes": 12544
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L9instancesE",
+        "bytes": 11264
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L6framesE",
+        "bytes": 8064
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7scriptsE",
+        "bytes": 7680
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L8texturesE",
+        "bytes": 7680
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7entriesE",
+        "bytes": 7168
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L12lookup_cacheE",
+        "bytes": 5120
+      },
+      {
+        "symbol": "_ZN10ScriptHook11NativeTable15s_customNativesE",
+        "bytes": 4096
+      }
+    ],
+    "largest_individual_stack_frames": [
+      {
+        "function": ".\\source\\bridge\\public_natives.cpp:46:6:void ScriptHook::{anonymous}::save(void*)",
+        "bytes": 24880,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\persistence.cpp:197:6:static void ScriptHook::Persistence::Native_SaveMenuSettings(void*)",
+        "bytes": 24768,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\public_natives.cpp:57:6:void ScriptHook::{anonymous}::load(void*)",
+        "bytes": 16640,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\persistence.cpp:223:6:static void ScriptHook::Persistence::Native_LoadMenuSettings(void*)",
+        "bytes": 16544,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_loader.cpp:460:6:0()",
+        "bytes": 8384,
+        "kind": "static"
+      },
+      {
+        "function": "./source/third_party/stb_image.h:5078:12:int stbi__parse_png_file(stbi__png*, int, int)",
+        "bytes": 7920,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\core\\runtime_config.cpp:55:6:static void ScriptHook::RuntimeConfig::LoadOnce()",
+        "bytes": 4336,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_textures.cpp:142:6:static void ScriptHook::PluginTextures::Frame()",
+        "bytes": 2144,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\persistence.cpp:89:6:void ScriptHook::{anonymous}::write_report()",
+        "bytes": 1728,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\script\\script_manager.cpp:125:6:void ScriptHook::{anonymous}::write_test_report()",
+        "bytes": 1312,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_callbacks.cpp:68:6:static void ScriptHook::PluginCallbacks::TickInput(uint32_t)",
+        "bytes": 1248,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_callbacks.cpp:102:6:static void ScriptHook::PluginCallbacks::TickRender(uint32_t)",
+        "bytes": 1104,
+        "kind": "static"
+      }
+    ],
+    "scope": "Compiler/linker sizes only. Individual stack frames exclude callees, game natives and recursion. Core static span excludes SDK loader mappings, plugin images/BSS/backing pages and game memory. CPU time, frame pacing and console peak memory require on-device measurement.",
+    "baseline": {
+      "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+      "file_bytes": 88398,
+      "bss_bytes": 1278680,
+      "static_mapped_span_bytes": 1413120
+    },
+    "delta_bytes": {
+      "file_bytes": 1434,
+      "bss_bytes": 1536,
+      "static_mapped_span_bytes": 4096
+    }
+  },
+  "defaults": {
+    "resident_nros": 8,
+    "script_slots": 16,
+    "plugin_budget_mib": 8
+  },
+  "baseline_console_acceptance": "../sdk-parity-test1-20261022/hardware-20261022/console-acceptance.json",
+  "dynamic_enumeration_follow_up": "../sdk-parity-test1-20261022/hardware-20261022/coverage-addendum.json",
+  "usb_keyboard_release_requirement": false,
+  "switch_runtime_verified": false,
+  "game_files_included": false,
+  "scope": "Actual compiled ARM64 core/NRO regression tests with mocked OS/game/GPU; real compiler and desktop source-port tests. Latest runtime and diagnostic/sample mods need matched Switch confirmation."
+}

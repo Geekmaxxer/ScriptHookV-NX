@@ -1,0 +1,16 @@
+{
+  "module_sha256": "fee6cb157d5c3f72e275cc004923ecd09e17961b082f200d2d1f7c8b9b394f1a",
+  "core_checks": 467,
+  "settings_checks": 26,
+  "lifecycle_checks": 19,
+  "concurrent_plugin_checks": 46,
+  "portable_tests": 24,
+  "porter_tests": 138,
+  "porter_ui_tests": 40,
+  "sd_files_moved": 13,
+  "sd_plugin_folders": 8,
+  "static_mapped_span_delta_bytes": 0,
+  "plugin_abi": 1,
+  "settings_layout": 2,
+  "switch_runtime_verified": false
+}

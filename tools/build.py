@@ -12,6 +12,7 @@ from generate_bindings import generate, Image, DEFAULT_PROFILE
 from build_plugin import toolchain, tool
 from nso import decode_nso, segments
 from runtime_limits import build_defaults, definitions, validate
+from engine_bindings import generate_engine
 
 def main():
     parser = argparse.ArgumentParser(description="Build ScriptHookV-NX NSO")
@@ -57,11 +58,12 @@ def main():
         generated = Path(temporary)/'generated'
         generate(generated, args.menu.resolve() if args.menu else None,
                  args.target_main, args.target_sdk, args.target_profile)
+        generate_engine(generated,args.target_profile.resolve())
         build_dir.mkdir(parents=True)
         shutil.copytree(generated, build_dir/'generated')
     for folder in ('source', 'include', 'sdk', 'tools', 'targets'):
         shutil.copytree(project_root/folder, build_dir/folder, ignore=shutil.ignore_patterns('__pycache__'))
-    for name in ('LICENSE', 'NOTICE'):
+    for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(project_root/name, build_dir/name)
     limits = build_defaults(build_dir/'include/runtime_defaults.h', overrides)
 
@@ -90,6 +92,7 @@ def main():
         project_root / 'source/core/memory.cpp',
         project_root / 'source/core/storage.cpp',
         project_root / 'source/core/runtime_config.cpp',
+        project_root / 'source/core/engine_api.cpp',
         project_root / 'source/core/main.cpp',
         project_root / 'source/script/native_table.cpp',
         project_root / 'source/script/native_manifest.cpp',
@@ -99,6 +102,8 @@ def main():
         project_root / 'source/bridge/persistence.cpp',
         project_root / 'source/bridge/public_natives.cpp',
         project_root / 'source/plugins/plugin_loader.cpp',
+        project_root / 'source/plugins/plugin_callbacks.cpp',
+        project_root / 'source/plugins/plugin_textures.cpp',
     ]
 
     objects = []

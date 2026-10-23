@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-22",
+  "console_follow_up": {
+    "dynamic_world_pool_counts": true,
+    "observed_count_changes": "Entity counts change with location and gameplay activity."
+  },
+  "release_requirements": {
+    "controller_input_required": true,
+    "usb_keyboard_required": false
+  },
+  "scope": "Dynamic enumeration is accepted in gameplay. The saved pickup snapshot remains zero and is not evidence of a nonempty pickup pool."
+}

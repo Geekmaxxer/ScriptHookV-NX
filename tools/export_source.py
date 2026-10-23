@@ -10,14 +10,16 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_TOOLS = ('build_plugin.py', 'native_bindings.py', 'create_mod.py', 'build_mod.py', 'doctor.py',
     'native_query.py', 'inspect_mod.py', 'report_summary.py', 'check_examples.py', 'build.py',
-    'generate_bindings.py', 'nso.py', 'compare_core.py', 'test_portable.py', 'package_runtime.py',
-    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py')
+    'generate_bindings.py', 'engine_bindings.py', 'nso.py', 'compare_core.py', 'test_portable.py', 'package_runtime.py',
+    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py')
 ACCEPTANCES = (
     'native-caller-research/hardware-20261015/console-acceptance.json',
     'public-loader-test1-20261015/hardware-20261015/console-acceptance.json',
     'refinement-test2-20261015/hardware-20261015/console-acceptance.json',
     'safe-manager-test1-20261015/hardware-20261016/console-acceptance.json',
     'safe-manager-test2-20261016/hardware-restart-20261016/console-acceptance.json',
+    'sdk-parity-test1-20261022/hardware-20261022/console-acceptance.json',
+    'runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json',
 )
 
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -35,7 +37,7 @@ def documentation_links(stage):
 def export(output):
     if output.exists(): raise FileExistsError('Use a fresh export directory')
     stage = output/'repo/ScriptHookV-NX'; stage.mkdir(parents=True)
-    selected = [ROOT/name for name in ('README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE', '.gitignore')]
+    selected = [ROOT/name for name in ('README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt', '.gitignore')]
     selected.extend((ROOT/'.github/ISSUE_TEMPLATE').glob('*.md'))
     extensions = {
         'source': {'.cpp', '.hpp', '.h', '.s', '.ld'}, 'include': {'.h', '.hpp'},
@@ -48,9 +50,15 @@ def export(output):
             if path.is_file() and path.suffix.lower() in allowed and not any(part.startswith('.') or part in ('__pycache__', 'bin', 'obj') for part in path.relative_to(ROOT/folder).parts):
                 if path.name not in ('RESEARCH-WORKSPACE.md', 'native_caller_sample.cpp'): selected.append(path)
     selected.extend(ROOT/'tools'/name for name in PUBLIC_TOOLS)
+    selected.append(ROOT/'source/third_party/stb_image.provenance.json')
     selected.extend(ROOT/'evidence'/name for name in ACCEPTANCES)
     # Compact prior regression evidence: source hashes/metrics, no dumps or binaries.
     for relative in ('sdk-refinement1-20261016/sdk-refinement-tests.json',
+                     'runtime-completion-test1-20261022/verification.json',
+                     'runtime-completion-test1-20261022/VERIFICATION.md',
+                     'sdk-parity-test1-20261022/hardware-20261022/coverage-addendum.json',
+                     'sdk-parity-test1-20261022/verification.json',
+                     'sdk-parity-test1-20261022/VERIFICATION.md',
                      'sdk-refinement1-20261016/package-verification.json',
                      'mod-porter-20261021/verification.json',
                      'mod-porter-20261021/VERIFICATION.md',

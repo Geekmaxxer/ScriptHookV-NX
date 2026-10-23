@@ -1,7 +1,7 @@
 # Audited targets
 
 Each profile identifies a title/build and hashes its `bindings.hpp` and
-`bindings.json`. Profiles contain small compatibility constants and fingerprint
+`bindings.json`, plus guarded `engine-api.json` offsets. Profiles contain small compatibility constants and fingerprint
 guards derived from the verified executable/SDK. They contain no complete game
 image, game asset or proprietary compiler.
 

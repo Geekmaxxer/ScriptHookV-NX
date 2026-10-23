@@ -1,5 +1,21 @@
-# Pending fixes
+# Mod Porter 0.5.0 Public Preview
 
+## Source-port lifecycle and diagnostics
+
+- Preserve registration-only multi-script/callback DllMain initialization in
+  explicit NX lifecycle functions, including Load Now restart behavior.
+- Check required extension capabilities and registration results before commit.
+- Import per-plugin elapsed-time reports with accurate units and attribution.
+- Include a buildable multi-script PC source example and reproducible NRO builds.
+
+## SDK extensions and usability
+
+- Recognize owned multiple scripts, four entity enumeration APIs, validated
+  globals/entity pointers, PNG textures and input/render callbacks from the
+  matching SDK. Report PC layouts, USB keyboard and NX rendering differences
+  as review items. Actual DirectX and Windows dependencies remain blocked.
+
+- Place packaged INI defaults in `settings/<plugin-id>/` for the updated runtime.
 - Fix resizing throughout the app, including maximize and minimize/restore.
 - Keep output readable, scroll expanded forms, and stack Findings panels in narrow windows.
 - Keep long paths and status text within the layout; let the mouse wheel leave lists and logs at their scrolling limits.

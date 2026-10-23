@@ -24,5 +24,13 @@ public:
     static bool Kill(uint32_t idx);
     static bool IsRunning(uint32_t idx);
     static uint32_t LastActionError();
+    // Elapsed Horizon time: scripts=0, callbacks=1, cleanup=2, initialize=3.
+    static void RecordScriptTime(ScriptFunction function,uint64_t ticks);
+    static void RecordTime(void* owner,uint32_t kind,uint64_t ticks);
+    static bool GetTiming(uint32_t idx,uint32_t kind,uint64_t& calls,uint64_t& totalUs,uint64_t& worstUs);
+    static void CallbackFailed();
+    // Shared accounting for transient image decoding and retained GPU textures.
+    static bool ReserveExtraMemory(size_t bytes);
+    static void ReleaseExtraMemory(size_t bytes);
 };
 }

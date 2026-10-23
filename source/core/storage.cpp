@@ -86,6 +86,22 @@ bool Storage::Delete(const char* relative) {
     error = main_call<uint32_t(*)(const char*)>(binding::delete_file)(full);
     return error == 0;
 }
+bool Storage::Directory(const char* relative) {
+    char path[192]{};
+    if(!mounted||!full_path(path,relative))return false;
+    error=main_call<uint32_t(*)(const char*)>(binding::create_directory)(path);
+    if(error==0x402)error=0; // Already exists; subsequent I/O verifies the path.
+    return error==0;
+}
+bool Storage::MigrateFile(const char* legacy,const char* current) {
+    size_t bytes=0;
+    if(Size(current,bytes))return true;
+    if(error!=0x202)return false;
+    if(!Size(legacy,bytes))return error==0x202;
+    // nn::fs::RenameFile refuses an existing destination and preserves the
+    // source on failure. Rename also verifies size and source disappearance.
+    return Rename(legacy,current);
+}
 bool Storage::Plugins(DirectoryEntry* entries,size_t capacity,size_t& count) {
     return List("plugins",entries,capacity,count);
 }

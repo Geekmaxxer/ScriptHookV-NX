@@ -1,0 +1,88 @@
+{
+  "format": 1,
+  "date": "2026-10-22",
+  "milestone": "SDK Parity Test 1",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+  "probe_sha256": "5752d823227a0fa84c73c2de363208be29ad679a39a39c9385bd3b985207ebd0",
+  "console_acceptance": true,
+  "switch_runtime_verified": true,
+  "acceptance_scope": "Matched console gameplay and visual acceptance, with SD report and installed-file verification",
+  "installed_file_sha256": {
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk5": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+    "switch/gtav-scripthook/plugins/sdk-parity-probe.nro": "5752d823227a0fa84c73c2de363208be29ad679a39a39c9385bd3b985207ebd0",
+    "switch/gtav-scripthook/assets/sdk-parity-probe/palette.png": "6139992d6f572ea494f610ab62a16f43b746c66593528eabc0b7f87b5aea6869",
+    "switch/gtav-scripthook/plugins/asset-probe.nro": "ed6504529d61a8f8ed594caa10202197a6262170e357560c6ed9c711d24dbe29",
+    "switch/gtav-scripthook/plugins/disarm-nx.nro": "a4bd9c95f1f01ed2b9dbd987e4ea1332e835489c6baed11a43767c1f97a45308",
+    "switch/gtav-scripthook/plugins/footprints-nx.nro": "9fe13982083c9dfe8778e9133349285ccfd2d825c100df52278514f27ba9103f",
+    "switch/gtav-scripthook/plugins/plugin-manager.nro.disabled": "99724e75a618d1b5049e6016bf6d380e6f886ffb153c5d52409202ab81cf9621",
+    "switch/gtav-scripthook/bindings/ragemenu.snb": "249571fa59950685514c9be890e67a5bb7afae23d34fad8c322d9ca745badb51"
+  },
+  "report_confirmed": {
+    "loader_complete": true,
+    "loader_errors": 0,
+    "callback_failures": 0,
+    "scheduler_context_rejections": 0,
+    "plugins_loaded": 4,
+    "plugins_running": 4,
+    "plugin_memory_accounted_bytes": 274432,
+    "probe_texture_accounted_bytes": 36864,
+    "additional_script_entries": 1,
+    "worker_ticks": 93,
+    "render_frames": 1067,
+    "controller_presses": 25,
+    "enumerated_peds": 39,
+    "enumerated_vehicles": 36,
+    "enumerated_objects": 128,
+    "enumerated_pickups": 0,
+    "enumeration_capacity": 128,
+    "player_entity_pointer_available": true,
+    "script_global_bank_available": true,
+    "script_global_bank": 0
+  },
+  "console_observations": {
+    "png_rotation_smooth": true,
+    "png_colours_correct": true,
+    "controller_y_overlay_toggle": true,
+    "kill_and_reload_process": true,
+    "nsc_and_nro_coexistence": true,
+    "game_restart_successful": true,
+    "approximate_gameplay_minutes": 10,
+    "observed_fps_issues": false,
+    "observed_crashes": false
+  },
+  "verification_limits": [
+    "Console visual/gameplay observations establish these checks; they are not instrumented frame-time or physical peak-memory measurements.",
+    "The post-restart report is a single snapshot; starts=1 and cleanup_callbacks=0 do not retain the preceding kill/reload session or prove its duration.",
+    "USB keyboard delivery remains untested: keyboard_presses=0.",
+    "Live pickup enumeration remains untested: pickups=0; object results reached the 128-handle probe cap.",
+    "The probe checks pointer availability; it does not test arbitrary global indices, entity offsets or memory writes.",
+    "Alpha blending and timed texture expiry were not separately confirmed in this console test.",
+    "Full eight-resident saturation, custom-limit overrides and extended soak remain separate tests.",
+    "Caller/runtime self-tests were not invoked in the supplied bridge report."
+  ],
+  "reports": {
+    "loader-report.txt": {
+      "sd_path": "switch/gtav-scripthook/loader-report.txt",
+      "sha256": "deffb3df873f90d752ea208ad61f7d08cd0896109d2eab12381137a2e5f74982",
+      "bytes": 2508,
+      "sd_modified_local": "2026-10-22T19:46:52",
+      "text": "ScriptHookV-NX SDK parity test 1\nloader_stage=0x3\nextension_abi=0x1\nengine_api_verified=0x1\nsettings_layout=0x2\nloader_stage_name=complete\nloader_error=0x0\nloader_error_name=none\nplugins_found=0x5\nplugins_discovered=0x5\nplugins_loaded=0x4\nplugins_skipped=0x0\nplugins_disabled=0x1\nplugin_directory_entries=0x5\nbinding_directory_entries=0x1\ndirectory_entry_limit=0x1000\nnative_manifests=0x1\nresident_limit=0x8\nplugin_memory_budget=0x800000\nplugin_memory_accounted=0x43000\nlast_action_error=0x0\ncleanup_callbacks=0x0\ncleanup_failures=0x0\nscript_slot_limit=0x10\nscript_stack_bytes=0x10000\nruntime_config_state=0x1\nruntime_config_error=0x0\nruntime_config_applied_mask=0x0\nruntime_config_invalid_mask=0x0\nruntime_config_stack_error=0x0\nscript_stack_allocated_bytes=0x100000\ndefault_resident_limit=0x8\ndefault_script_slots=0x10\ndefault_plugin_memory_mib=0x8\nresident_limit_ceiling=0x10\nscript_slots_ceiling=0x20\nplugin_memory_mib_ceiling=0x40\npolicy_request_slot=0xffffffff\npolicy_requested=0xffffffff\npolicy_previous=0xffffffff\npolicy_effective=0xffffffff\npolicy_rename_attempted=0x0\npolicy_rename_result=0xffffffff\npolicy_readback_flags=0x0\nplugins_running=0x4\nplugin=asset-probe.nro\nslot=0x0\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=disarm-nx.nro\nslot=0x1\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=footprints-nx.nro\nslot=0x2\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=sdk-parity-probe.nro\nslot=0x3\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x1\ncallbacks_active=0x1\ncallback_failures=0x0\ntexture_memory_bytes=0x9000\nplugin=plugin-manager.nro.disabled\nslot=0x4\npolicy=0x0\nresident=0x0\nrunning=0x0\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x0\nstep_name=not_started\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nreport_clipped=0\n"
+    },
+    "probe-status.txt": {
+      "sd_path": "switch/gtav-scripthook/settings/sdk-parity-probe/status.txt",
+      "sha256": "0428a779f1c35ba90036bd3f493a6c666578a29216959e16b29f18693fb16fbb",
+      "bytes": 325,
+      "sd_modified_local": "2026-10-22T19:47:22",
+      "text": "ScriptHookV-NX SDK parity probe\nphase=running\nstarts=1\nworker_ticks=93\nworker_registered=1\nrender_registered=1\ncontrol_registered=1\nrender_frames=1067\ncontroller_presses=25\nkeyboard_presses=0\npeds=39\nvehicles=36\nobjects=128\npickups=0\nplayer_pointer_valid=1\nglobal_bank_found=1\nglobal_bank=0\ntexture_id=1\nkeyboard_supported=1\n"
+    },
+    "bridge-report.txt": {
+      "sd_path": "switch/gtav-megatard/bridge-report.txt",
+      "sha256": "15a818857ef0a1569a7a72b40ae4dfb9f3ce7332d1b619a6e10ca52dc6e3983e",
+      "bytes": 620,
+      "sd_modified_local": "2026-10-22T19:46:52",
+      "text": "ScriptHookV-NX cooperative runtime test 1\nmain_base=0x24dba05000\nsdk_base=0x24df8f5000\nvm_ticks=0x115\ncached_native_repairs=0x0\ncached_native_rejections=0x0\nsave_calls=0x0\nload_calls=0x2\nsave_successes=0x0\nload_successes=0x2\nlast_fs_result=0x0\nnative_caller_abi=0x1\nnative_caller_self_test_ran=0x0\nnative_caller_self_test_passed=0x0\nnative_caller_self_test_failed=0x0\nnative_caller_self_test_error=0x0\nnative_caller_self_test_error_hash=0x0\nruntime_abi=0x1\nruntime_active=0x5\nruntime_resumes=0x6b\nruntime_context_rejections=0x0\nruntime_test_runs=0x0\nruntime_test_done=0x0\nruntime_test_passed=0x0\nruntime_test_failed=0x0\n"
+    }
+  },
+  "sd_modified": false
+}

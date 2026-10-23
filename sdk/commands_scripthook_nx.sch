@@ -23,4 +23,7 @@ NATIVE FUNC INT SHVNX_GET_PLUGIN_ACTION_ERROR() = "0x5348564e58504531"
 // Cancels cooperative script execution; executable/native mappings remain resident.
 NATIVE FUNC BOOL SHVNX_KILL_PLUGIN(INT index) = "0x5348564e58504b31"
 NATIVE FUNC BOOL SHVNX_IS_PLUGIN_RUNNING(INT index) = "0x5348564e58505231"
+// Optional timing API. kind: 0=script, 1=callback, 2=cleanup, 3=initialize.
+// INT arithmetic uses the low 32 bits; C++ GetTiming preserves 64-bit totals.
+NATIVE FUNC BOOL SHVNX_GET_PLUGIN_TIMING(INT index, INT kind, INT &calls, INT &totalUs, INT &worstUs) = "0x5348564e58504d31"
 

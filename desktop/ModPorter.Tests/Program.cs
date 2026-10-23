@@ -5,7 +5,7 @@ using ModPorter.Core;
 
 int passed = 0, failed = 0;
 string scratch = Path.Combine(Path.GetTempPath(), "shvnx-porter-tests-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(scratch);
-string sdk = Path.GetFullPath(args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "../../../../../.."));
+string sdk = Path.GetFullPath(args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "../../../../.."));
 var catalog = NativeCatalog.Load(sdk);
 string compilerName = OperatingSystem.IsWindows() ? "aarch64-none-elf-g++.exe" : "aarch64-none-elf-g++";
 string devkit = new[] { Environment.GetEnvironmentVariable("DEVKITPRO"), Path.GetFullPath(Path.Combine(sdk, "../devkitPro")), "C:/devkitPro", "/opt/devkitpro" }
@@ -56,7 +56,11 @@ try {
     Check("Namespace alias verified per function", () => { var a = Analyze(Entry("GAMEPLAY::GET_GAME_TIMER();")); Must(a.Natives.Single().Name == "MISC::GET_GAME_TIMER" && a.Blockers == 0); });
     Check("PC cheat native needs controller adaptation", () => Must(Analyze(Entry("GAMEPLAY::_HAS_CHEAT_STRING_JUST_BEEN_ENTERED(0);")).Findings.Any(f => f.Code == "PC_CHEAT_INPUT")));
     Check("PC version guard is not faked", () => Must(Analyze(Entry("getGameVersion();")).Blockers > 0));
-    Check("PC world enumeration needs target implementation", () => Must(Analyze(Entry("worldGetAllPeds();")).Findings.Any(f => f.Code == "API_WORLDGETALLPEDS")));
+    Check("Full world enumeration uses the NX extension", () => Must(Analyze(Entry("int p[8]; worldGetAllPeds(p,8); worldGetAllVehicles(p,8); worldGetAllObjects(p,8); worldGetAllPickups(p,8);")).Blockers == 0));
+    Check("Additional scripts use the NX extension", () => Must(Analyze(Entry("scriptRegisterAdditionalThread(Worker); scriptUnregister(Worker);")).Blockers == 0));
+    Check("Global and entity pointers require layout review", () => { var r=Analyze(Entry("getGlobalPtr(10); getScriptHandleBaseAddress(1);")); Must(r.Blockers==0 && r.Findings.Count(f=>f.Code=="NX_MEMORY_LAYOUT")==2); });
+    Check("Rendering and texture support keep DirectX limitations explicit", () => { var r=Analyze(Entry("renderCallbackRegister(Render); presentCallbackRegister(Present); createTexture(\"test.png\");")); Must(r.Blockers==0 && r.Findings.Any(f=>f.Code=="NX_RENDER_CONTEXT") && r.Findings.Any(f=>f.Code=="NX_TEXTURE_ASSET")); Must(Analyze(Entry("IDXGISwapChain* p;")).Blockers>0); });
+    Check("USB keyboard callback no longer mistaken for Win32 polling", () => { var r=Analyze(Entry("keyboardHandlerRegister(Keys);")); Must(r.Blockers==0 && r.Findings.Any(f=>f.Code=="NX_KEYBOARD")); });
     Check("Legacy names use verified target declarations", () => { var a = Analyze(Entry("UI::_SET_TEXT_ENTRY_2(\"STRING\"); GRAPHICS::_0xBA3D194057C79A7B(\"\");")); Must(a.Blockers == 0 && a.Natives.All(n => n.Registered)); });
     Check("Custom registered entry is discovered and adapted", () => {
         var input = InputLoader.Load(Source("#include \"script.h\"\nvoid ScriptInit(){ WAIT(0); }\nBOOL DllMain(HMODULE m, DWORD r, LPVOID p) { if(r == DLL_PROCESS_ATTACH) scriptRegister(m, ScriptInit); return TRUE; }"));
@@ -72,6 +76,25 @@ try {
     Check("Custom DllMain initialization not removed", () => { var f = new SourceFile("main.cpp", "BOOL DllMain(HMODULE m, DWORD r, LPVOID p) { configureMod(); return TRUE; }", ""); Must(!SourceAnalyzer.DllEntries(f).Single().Standard); });
     Check("DllMain assignment not treated as boilerplate", () => { var f = new SourceFile("main.cpp", "BOOL DllMain(HMODULE m, DWORD r, LPVOID p) { counter = 5; return TRUE; }", ""); Must(!SourceAnalyzer.DllEntries(f).Single().Standard); });
     Check("Second PC script registration rejected", () => { var f = new SourceFile("main.cpp", "BOOL DllMain(HMODULE m, DWORD r, LPVOID p) { scriptRegister(m, OtherScript); return TRUE; }", ""); Must(!SourceAnalyzer.DllEntries(f).Single().Standard); });
+    string multiRegistration = "#include \"script.h\"\nvoid Worker(){for(;;)WAIT(0);}\nvoid Present(void*){}\nvoid ScriptMain(){for(;;)WAIT(0);}\nBOOL DllMain(HMODULE m,DWORD r,LPVOID p){switch(r){case DLL_PROCESS_ATTACH:scriptRegister(m,ScriptMain);scriptRegisterAdditionalThread(m,Worker);presentCallbackRegister(Present);break;case DLL_PROCESS_DETACH:scriptUnregister(m);presentCallbackUnregister(Present);break;}return TRUE;}";
+    Check("Multi-script registration-only DllMain has an explicit lifecycle plan", () => { var d=SourceAnalyzer.DllEntries(new("main.cpp",multiRegistration,"")).Single(); Must(d.Standard&&d.Registration is {Extended:true} &&d.Registration.Initialize.Count==2&&d.Registration.Stop.Count==1); });
+    foreach(string body in new[]{"if(FALSE)scriptRegister(m,ScriptMain);return TRUE;","if(r==DLL_PROCESS_ATTACH){counter=1;scriptRegister(m,ScriptMain);}return TRUE;","if(r==DLL_PROCESS_ATTACH){scriptRegister(m,ScriptMain);configureMod();}return TRUE;","if(r==DLL_THREAD_ATTACH)scriptRegister(m,ScriptMain);return TRUE;","if(r!=DLL_PROCESS_DETACH)scriptRegister(m,ScriptMain);return TRUE;"})
+        Check("Unsafe DllMain is preserved: "+body,()=>Must(!SourceAnalyzer.DllEntries(new("main.cpp","BOOL DllMain(HMODULE m,DWORD r,LPVOID p){"+body+"}","")).Single().Standard));
+    Check("Multi-script PC lifecycle adaptation preserves worker and callback work", () => {
+        var p=PortProject.Create(InputLoader.Load(Source(multiRegistration)),catalog,sdk,Path.Combine(scratch,"multi-lifecycle"),new("multi-lifecycle"));
+        string text=File.ReadAllText(Path.Combine(p.Directory,"src/main.cpp"));
+        Must(p.Report.Blockers==0&&text.Contains("SHV_NX_PLUGIN_WITH_LIFECYCLE")&&text.Contains("if (!scriptRegisterAdditionalThread(Worker)) return false;")&&text.Contains("presentCallbackRegisterChecked(Present)")&&text.Contains("retaining Load Now support")&&!text.Contains("\n    presentCallbackUnregister("));
+        var built=BuildService.BuildAsync(p.ProjectFile,new(sdk,"python",devkit),_=>{},createInstallZip:false).GetAwaiter().GetResult();Must(built.Nro.QueryExportPresent);
+    });
+    Check("Conditional callbacks are not silently lifted out of their conditions",()=>{
+        var f=new SourceFile("main.cpp",multiRegistration.Replace("presentCallbackRegister(Present);","if(enabled)presentCallbackRegister(Present);"),"");Must(!SourceAnalyzer.DllEntries(f).Single().Standard);
+    });
+    Check("Over-nested DllMain cannot overflow the lifecycle parser stack",()=>{
+        var f=new SourceFile("main.cpp","BOOL DllMain(HMODULE m,DWORD r,LPVOID p){if(r==DLL_PROCESS_ATTACH)"+new string('{',100)+"scriptRegister(m,ScriptMain);"+new string('}',100)+"return TRUE;}","");Must(!SourceAnalyzer.DllEntries(f).Single().Standard);
+    });
+    Check("Initialization macros preserve the descriptor plugin ID",()=>{
+        var files=new[]{new SourceFile("main.cpp","void Entry(){} SHV_NX_PLUGIN_WITH_INIT(\"my-id\",Entry,Initialize)","")};Must(SourceAnalyzer.DescriptorId(files)=="my-id"&&SourceAnalyzer.DiscoverEntry(files)=="Entry");
+    });
     Check("Plugin ID restrictions", () => { Must(PortProject.ValidId("hello-world_1")); Must(!PortProject.ValidId("hello.world") && !PortProject.ValidId("bad\"id") && !PortProject.ValidId(new string('a', 32))); });
     Check("Port transformations are recorded and isolated", () => {
         string p = Source(Entry("GAMEPLAY::GET_GAME_TIMER(); const char* text = \"GAMEPLAY::GET_GAME_TIMER()\"; (void)text;")); string original = File.ReadAllText(Path.Combine(p, "main.cpp"));
@@ -141,7 +164,7 @@ try {
         File.WriteAllText(unit,originalUnit);
         var nroOnly = await BuildService.BuildAsync(real.ProjectFile, new(sdk, "python", devkit), _ => { }, createInstallZip: false);
         Check("Standalone NRO build produces no install ZIP", () => Must(nroOnly.InstallZip.Length == 0 && File.Exists(nroOnly.NroPath) && !Directory.EnumerateFiles(nroOnly.Directory, "*.zip").Any()));
-        Check("Install ZIP contains mod, namespaced defaults, instructions and attribution", () => { using var z = ZipFile.OpenRead(built.InstallZip); Must(z.Entries.Count == 5 && z.Entries.Any(e => e.FullName == "switch/gtav-scripthook/plugins/real-compiler.nro") && z.Entries.Any(e => e.FullName == "LICENSE-ScriptHookV-NX.txt") && z.Entries.Any(e=>e.FullName=="switch/gtav-scripthook/settings/real-compiler-config.ini")); });
+        Check("Install ZIP contains mod, namespaced defaults, instructions and attribution", () => { using var z = ZipFile.OpenRead(built.InstallZip); Must(z.Entries.Count == 5 && z.Entries.Any(e => e.FullName == "switch/gtav-scripthook/plugins/real-compiler.nro") && z.Entries.Any(e => e.FullName == "LICENSE-ScriptHookV-NX.txt") && z.Entries.Any(e=>e.FullName=="switch/gtav-scripthook/settings/real-compiler/config.ini")); });
         Check("NRO tampering detected", () => { string p = Path.Combine(scratch, "tampered.nro"); var b = File.ReadAllBytes(built.NroPath); BinaryPrimitives.WriteUInt32LittleEndian(b.AsSpan(0x18), 0xffffffff); File.WriteAllBytes(p, b); Reject(() => NroInspector.Inspect(p)); });
     } catch (Exception ex) { failed++; Console.WriteLine("FAIL real compiler integration: " + ex.Message); }
     try {

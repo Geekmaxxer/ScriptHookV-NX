@@ -1,0 +1,19 @@
+ScriptHookV-NX SDK parity probe
+phase=running
+starts=1
+worker_ticks=93
+worker_registered=1
+render_registered=1
+control_registered=1
+render_frames=1067
+controller_presses=25
+keyboard_presses=0
+peds=39
+vehicles=36
+objects=128
+pickups=0
+player_pointer_valid=1
+global_bank_found=1
+global_bank=0
+texture_id=1
+keyboard_supported=1

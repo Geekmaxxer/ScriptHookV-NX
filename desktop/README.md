@@ -1,7 +1,7 @@
 # ScriptHookV-NX Mod Porter
 
 A Windows desktop tool for PC mod source ports, ASI dependency reports and Legacy
-asset preparation. **0.4.0 Public Preview**.
+asset preparation. **0.5.0 Public Preview**.
 
 Extract the complete Windows ZIP and open `ScriptHookV-NX-Mod-Porter.exe`. Its .NET
 runtime and matched SDK are included. No game files are bundled.
@@ -78,6 +78,9 @@ plugin bytes and a restore record are stored in `switch/gtav-scripthook/install-
 **Restore previous install** refuses to overwrite a plugin changed since that install.
 The NRO installer leaves settings intact. ZIPs may contain default INIs: preserve
 customized settings before extracting over an existing installation.
+INI defaults now use `settings/<plugin-id>/` and require the updated runtime.
+When upgrading from flat settings, run existing mods with that runtime first so
+their customized files migrate before installing a ZIP's default INIs.
 
 **Tools > Diagnostics** reads loader/runtime/mod reports and lists recorded
 failures. A clean report alone does not establish gameplay correctness.
@@ -96,7 +99,7 @@ dotnet build desktop/ModPorter.App -c Release
 dotnet run --project desktop/ModPorter.Tests -- .
 dotnet build desktop/ModPorter.Cli -c Release
 python desktop/verification/real_mods.py --output ../real-mod-checks --devkitpro <devkitPro-root>
-python desktop/package.py --output releases/mod-porter-0.4.0
+python desktop/package.py --output releases/mod-porter-0.5.0
 ```
 
 Run from the SDK/repository root. The CLI shares the desktop analysis/build/asset

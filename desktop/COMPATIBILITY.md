@@ -6,6 +6,13 @@ Release date alone is not a compatibility test: an old plugin can still require
 PC pointers and hooks, while a later native-only plugin may use available features.
 Do not bypass version guards by pretending the Switch executable is a PC build.
 
+SDK Parity Test 1 supplies multiple scripts, four world pools, globals/entity
+pointers, PNG textures and input/render callbacks. The analyzer recognizes them;
+PC indices, offsets, DirectX use and custom DllMain work still need adaptation.
+See [extension contracts](../docs/EXTENSIONS.md). These additions require the
+matched runtime. The combined probe has scoped Switch gameplay acceptance;
+new ports still need independent testing.
+
 ## Real mod source checks
 
 | Mod / pinned upstream revision | Result |

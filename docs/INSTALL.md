@@ -51,6 +51,9 @@ porting; copying them to this folder will not load them.
 Check `switch/gtav-scripthook/loader-report.txt`. It lists the plugin filename,
 loading step and readable error. Disable the failing plugin and restart GTA.
 Keep settings under `switch/gtav-scripthook/settings/` when upgrading.
+Each NRO stores files in `settings/<plugin-id>/`. The updated runtime moves old
+prefixed files there as the mod accesses them. No NRO rebuild is required. Keep
+custom INIs when installing mod ZIPs; files already in the new folder take priority.
 
 To remove ScriptHookV-NX, restore your backed-up `subsdk5`. Disable scripts that
 require its custom natives before launching GTA without it.

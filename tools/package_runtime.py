@@ -26,7 +26,7 @@ def package(module, output, acceptance=None, profile=DEFAULT_PROFILE):
     stage = output/'RUNTIME'
     relative = 'atmosphere/contents/'+target['title_id']+'/exefs/subsdk5'
     destination = stage/relative; destination.parent.mkdir(parents=True); shutil.copy2(module, destination)
-    for name in ('LICENSE', 'NOTICE'): shutil.copy2(ROOT/name, stage/name)
+    for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'): shutil.copy2(ROOT/name, stage/name)
     text = '''# ScriptHookV-NX - Runtime Public Preview
 
 Created by MEGATARD (@Geekmaxver).

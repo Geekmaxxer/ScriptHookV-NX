@@ -16,8 +16,19 @@ bool valid(const Record& r,size_t got) {return r.magic==0x584e4853&&r.version==1
 void names(char (&a)[40],char (&b)[40],uint32_t id) {
     constexpr char prefix[]="settings/nsc-";size_t n=0;for(char c:prefix){if(!c)break;a[n]=b[n]=c;++n;}
     for(int i=7;i>=0;--i)a[n]=b[n]="0123456789abcdef"[(id>>(i*4))&15],++n;
-    const char* tail="-a.bin";for(unsigned i=0;tail[i];++i){a[n]=b[n]=tail[i];++n;}
+    const char* tail="/a.bin";for(unsigned i=0;tail[i];++i){a[n]=b[n]=tail[i];++n;}
     a[n]=b[n]=0;b[n-5]='b';
+}
+bool prepare_names(Storage& disk,char (&a)[40],char (&b)[40]) {
+    if(!disk.mounted)return false;
+    char directory[40]{};size_t n=0;while(a[n]){directory[n]=a[n];++n;}
+    if(n<6)return false;
+    directory[n-6]=0;
+    if(!disk.Directory(directory))return false;
+    char old_a[40]{},old_b[40]{};
+    for(size_t i=0;i<=n;++i){old_a[i]=a[i];old_b[i]=b[i];}
+    old_a[n-6]=old_b[n-6]='-';
+    return disk.MigrateFile(old_a,a)&&disk.MigrateFile(old_b,b);
 }
 bool args(void* raw,uint64_t*& words,uint32_t& count,uint32_t& id) {
     auto p=reinterpret_cast<uintptr_t>(raw);if(!Memory::IsReadable(p,sizeof(Context)))return false;
@@ -34,7 +45,7 @@ bool args(void* raw,uint64_t*& words,uint32_t& count,uint32_t& id) {
 }
 void save(void* raw) {
     uint64_t* words=nullptr;uint32_t count=0,id=0;if(!args(raw,words,count,id)||!Memory::IsReadable(reinterpret_cast<uintptr_t>(words),size_t(count)*8))return;
-    char an[40]{},bn[40]{};names(an,bn,id);Storage disk;if(!disk.mounted)return;
+    char an[40]{},bn[40]{};names(an,bn,id);Storage disk;if(!prepare_names(disk,an,bn))return;
     Record a{},b{};size_t got=0;bool va=disk.Read(an,&a,sizeof(a),got)&&valid(a,got),vb=disk.Read(bn,&b,sizeof(b),got)&&valid(b,got);
     const Record* latest=va&&vb?(int32_t(b.generation-a.generation)>0?&b:&a):va?&a:vb?&b:nullptr;
     Record out{0x584e4853,1,latest?latest->generation+1:1,count*4,0,{}};
@@ -45,7 +56,7 @@ void save(void* raw) {
 }
 void load(void* raw) {
     uint64_t* words=nullptr;uint32_t count=0,id=0;if(!args(raw,words,count,id)||!Memory::IsWritable(reinterpret_cast<uintptr_t>(words),size_t(count)*8))return;
-    char an[40]{},bn[40]{};names(an,bn,id);Storage disk;if(!disk.mounted)return;
+    char an[40]{},bn[40]{};names(an,bn,id);Storage disk;if(!prepare_names(disk,an,bn))return;
     Record a{},b{};size_t got=0;bool va=disk.Read(an,&a,sizeof(a),got)&&valid(a,got),vb=disk.Read(bn,&b,sizeof(b),got)&&valid(b,got);
     const Record* chosen=va&&vb?(int32_t(b.generation-a.generation)>0?&b:&a):va?&a:vb?&b:nullptr;
     if(!chosen||chosen->bytes>count*4)return;
@@ -63,7 +74,7 @@ bool overlap(uintptr_t a,size_t an,uintptr_t b,size_t bn) {
     return an&&bn&&a<b+bn&&b<a+an;
 }
 struct ManagerCall {
-    Context context{}; uint64_t values[4]{}; uintptr_t address=0;
+    Context context{}; uint64_t values[5]{}; uintptr_t address=0;
     bool Read(void* raw,uint32_t expected) {
         address=reinterpret_cast<uintptr_t>(raw);
         if(!Memory::Read(address,context)||
@@ -71,7 +82,7 @@ struct ManagerCall {
            overlap(reinterpret_cast<uintptr_t>(context.result),8,address,sizeof(Context)))return false;
         // The VM may reuse argument storage for its return value. Snapshot
         // all arguments before writing any result or output parameter.
-        if(context.count!=expected||expected>4||
+        if(context.count!=expected||expected>5||
            (expected&&!Memory::Read(reinterpret_cast<uintptr_t>(context.args),values[0]))) {
             *context.result=0;return false;
         }
@@ -82,13 +93,13 @@ struct ManagerCall {
         *context.result=0;return true;
     }
     uint32_t Index() const {return uint32_t(values[0]);}
-    bool Outputs() const {
-        for(unsigned i=1;i<=3;++i) {
+    bool Outputs(unsigned first=1,unsigned last=3) const {
+        for(unsigned i=first;i<=last;++i) {
             const auto p=uintptr_t(values[i]);
             if((p&7)||!Memory::IsWritable(p,8)||overlap(p,8,address,sizeof(Context))||
                overlap(p,8,reinterpret_cast<uintptr_t>(context.result),8)||
                overlap(p,8,reinterpret_cast<uintptr_t>(context.args),context.count*8))return false;
-            for(unsigned j=1;j<i;++j)if(overlap(p,8,uintptr_t(values[j]),8))return false;
+            for(unsigned j=first;j<i;++j)if(overlap(p,8,uintptr_t(values[j]),8))return false;
         }
         return true;
     }
@@ -114,6 +125,15 @@ void plugin_set_policy(void* raw) {ManagerCall c;if(c.Read(raw,2))*c.context.res
 void plugin_action_error(void* raw) {ManagerCall c;if(c.Read(raw,0))*c.context.result=PluginLoader::LastActionError();}
 void plugin_kill(void* raw) {ManagerCall c;if(c.Read(raw,1))*c.context.result=PluginLoader::Kill(c.Index());}
 void plugin_running(void* raw) {ManagerCall c;if(c.Read(raw,1))*c.context.result=PluginLoader::IsRunning(c.Index());}
+void plugin_timing(void* raw) {
+    ManagerCall c;if(!c.Read(raw,5)||!c.Outputs(2,4))return;
+    uint64_t calls=0,total=0,worst=0;
+    if(!PluginLoader::GetTiming(c.Index(),uint32_t(c.values[1]),calls,total,worst))return;
+    *reinterpret_cast<uint64_t*>(c.values[2])=calls;
+    *reinterpret_cast<uint64_t*>(c.values[3])=total;
+    *reinterpret_cast<uint64_t*>(c.values[4])=worst;
+    *c.context.result=1;
+}
 void plugin_version(void* raw) {ManagerCall c;if(c.Read(raw,0))*c.context.result=3;}
 }
 bool RegisterPublicNatives() {
@@ -133,6 +153,7 @@ bool RegisterPublicNatives() {
            NativeTable::RegisterCustom(0x5348564e58504531ULL,plugin_action_error)&&
            NativeTable::RegisterCustom(0x5348564e58504b31ULL,plugin_kill)&&
            NativeTable::RegisterCustom(0x5348564e58505231ULL,plugin_running)&&
-           NativeTable::RegisterCustom(0x5348564e58505631ULL,plugin_version);
+           NativeTable::RegisterCustom(0x5348564e58505631ULL,plugin_version)&&
+           NativeTable::RegisterCustom(0x5348564e58504d31ULL,plugin_timing);
 }
 }

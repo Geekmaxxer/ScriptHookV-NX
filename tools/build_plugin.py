@@ -52,6 +52,7 @@ def toolchain(project, explicit=None):
 
 def build(sources,output,devkit=None,includes=None):
     project=Path(__file__).resolve().parents[1]
+    output=Path(output).resolve()
     if any(output.resolve().is_relative_to(project/folder) for folder in ('include','sdk')):
         raise ValueError('Output must be outside SDK include/sdk trees being snapshotted')
     sources=[Path(source).resolve() for source in sources]
@@ -66,15 +67,16 @@ def build(sources,output,devkit=None,includes=None):
     for relative,data in headers:
         path=output/relative;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
     flags=['-march=armv8-a+crc','-mtune=cortex-a57','-mtp=soft','-fPIC','-O2','-g','-ffreestanding','-fno-builtin','-fno-stack-protector','-fno-exceptions','-fno-rtti','-fno-threadsafe-statics','-fvisibility=hidden','-mno-outline-atomics','-std=c++17','-Wall','-Wextra','-Werror','-I'+str(output/'include')]
+    flags += ['-ffile-prefix-map='+str(output)+'=/shvnx-plugin', '-fdebug-prefix-map='+str(output)+'=/shvnx-plugin']
     flags += ['-I'+str(output/'headers'/f'include-{i}') for i in range(len(includes))]
     units=[output/'sdk/plugin_api.cpp',output/'sdk/plugin_start.s']
     for i,source in enumerate(sources):
         dest=output/(str(i)+'-'+source.name);shutil.copy2(source,dest);units.append(dest)
     objects=[]
     for i,source in enumerate(units):
-        obj=output/(str(i)+'.o');subprocess.run([str(compiler),*flags,'-c',str(source),'-o',str(obj)],check=True);objects.append(str(obj))
+        obj=output/(str(i)+'.o');subprocess.run([str(compiler),*flags,'-c',str(source),'-o',str(obj)],check=True,cwd=output);objects.append(str(obj))
     elf=output/'plugin.elf'
-    subprocess.run([str(compiler),*flags,'-nostdlib','-nostartfiles','-shared',*objects,'-Wl,-T,'+str(output/'sdk/plugin_link.ld'),'-Wl,-Bsymbolic,-z,defs,--build-id=sha1,--hash-style=both','-o',str(elf)],check=True)
+    subprocess.run([str(compiler),*flags,'-nostdlib','-nostartfiles','-shared',*objects,'-Wl,-T,'+str(output/'sdk/plugin_link.ld'),'-Wl,-Bsymbolic,-z,defs,--build-id=sha1,--hash-style=both','-o',str(elf)],check=True,cwd=output)
     nro=output/'plugin.nro';subprocess.run([str(elf2nro),str(elf),str(nro)],check=True)
     data=nro.read_bytes();assert data[0x10:0x14]==b'NRO0'
     size=struct.unpack_from('<I',data,0x18)[0];assert size==len(data) and size%4096==0

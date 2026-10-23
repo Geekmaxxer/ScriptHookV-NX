@@ -1,0 +1,147 @@
+{
+  "module_sha256": "fee6cb157d5c3f72e275cc004923ecd09e17961b082f200d2d1f7c8b9b394f1a",
+  "file_bytes": 62451,
+  "segments": {
+    "text": {
+      "offset": 0,
+      "bytes": 79184,
+      "mapped_bytes": 81920
+    },
+    "rodata": {
+      "offset": 81920,
+      "bytes": 16824,
+      "mapped_bytes": 20480
+    },
+    "data": {
+      "offset": 102400,
+      "bytes": 632,
+      "mapped_bytes": 4096
+    }
+  },
+  "bss_bytes": 1243928,
+  "static_mapped_span_bytes": 1347584,
+  "largest_objects": [
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L6stacksE",
+      "bytes": 1048576
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L8manifestE",
+      "bytes": 65536
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L15manifest_bufferE",
+      "bytes": 65536
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7pluginsE",
+      "bytes": 20352
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L9directoryE",
+      "bytes": 12544
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L6framesE",
+      "bytes": 8064
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7scriptsE",
+      "bytes": 7680
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L12lookup_cacheE",
+      "bytes": 5120
+    },
+    {
+      "symbol": "_ZN10ScriptHook11NativeTable15s_customNativesE",
+      "bytes": 4096
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L10candidatesE",
+      "bytes": 2048
+    },
+    {
+      "symbol": "_ZN7bindingL16sdk_fingerprintsE",
+      "bytes": 200
+    },
+    {
+      "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L9schedulerE",
+      "bytes": 192
+    }
+  ],
+  "largest_individual_stack_frames": [
+    {
+      "function": ".\\source\\bridge\\public_natives.cpp:46:6:void ScriptHook::{anonymous}::save(void*)",
+      "bytes": 24880,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\bridge\\persistence.cpp:197:6:static void ScriptHook::Persistence::Native_SaveMenuSettings(void*)",
+      "bytes": 24768,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\bridge\\public_natives.cpp:57:6:void ScriptHook::{anonymous}::load(void*)",
+      "bytes": 16640,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\bridge\\persistence.cpp:223:6:static void ScriptHook::Persistence::Native_LoadMenuSettings(void*)",
+      "bytes": 16544,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\plugins\\plugin_loader.cpp:371:6:0()",
+      "bytes": 8384,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\core\\runtime_config.cpp:55:6:static void ScriptHook::RuntimeConfig::LoadOnce()",
+      "bytes": 4336,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\bridge\\persistence.cpp:89:6:void ScriptHook::{anonymous}::write_report()",
+      "bytes": 1728,
+      "kind": "static"
+    },
+    {
+      "function": ".\\source\\script\\script_manager.cpp:123:6:void ScriptHook::{anonymous}::write_test_report()",
+      "bytes": 1312,
+      "kind": "static"
+    },
+    {
+      "function": "./include/nativeCaller.h:160:43:) [with R = Vector3; Args = {int, bool}]",
+      "bytes": 1088,
+      "kind": "static"
+    },
+    {
+      "function": "./include/nativeCaller.h:160:43:) [with R = int; Args = {const char*}]",
+      "bytes": 1056,
+      "kind": "static"
+    },
+    {
+      "function": "./include/nativeCaller.h:160:43:) [with R = int; Args = {const char*}]",
+      "bytes": 1056,
+      "kind": "static"
+    },
+    {
+      "function": "./include/nativeCaller.h:160:43:) [with R = float; Args = {}]",
+      "bytes": 1040,
+      "kind": "static"
+    }
+  ],
+  "scope": "Compiler/linker sizes only. Individual stack frames exclude callees, game natives and recursion. Core static span excludes SDK loader mappings, plugin images/BSS/backing pages and game memory. CPU time, frame pacing and console peak memory require on-device measurement.",
+  "baseline": {
+    "module_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95",
+    "file_bytes": 61290,
+    "bss_bytes": 1243928,
+    "static_mapped_span_bytes": 1347584
+  },
+  "delta_bytes": {
+    "file_bytes": 1161,
+    "bss_bytes": 0,
+    "static_mapped_span_bytes": 0
+  }
+}

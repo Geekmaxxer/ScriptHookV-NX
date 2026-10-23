@@ -1,0 +1,6 @@
+{
+  "upstream": "https://raw.githubusercontent.com/nothings/stb/master/stb_image.h",
+  "version": "2.30",
+  "sha256": "594c2fe35d49488b4382dbfaec8f98366defca819d916ac95becf3e75f4200b3",
+  "license": "MIT or Public Domain; original dual-license notice retained in header"
+}

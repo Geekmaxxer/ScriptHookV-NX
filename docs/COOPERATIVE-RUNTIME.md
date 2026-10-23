@@ -1,5 +1,9 @@
 # Cooperative runtime ABI 1
 
+External plugins can register multiple owned entries through [extensions ABI 1](EXTENSIONS.md).
+Callbacks run without a cooperative stack and must not yield. Main-entry completion
+leaves live child scripts and callbacks running; whole-plugin stop cancels them together.
+
 `scriptWait(ms)` suspends the current C++ stack and resumes after the delay on
 a later game frame. `scriptWait(0)` resumes on the next observed frame. Returning
 from a script ends it; its entry function is not called again automatically.
@@ -65,8 +69,10 @@ self-unregistration and `scriptStopAll` take effect by the next yield/return for
 the running script. Cancellation does not unwind C++ destructors. Release owned
 game resources before unregistering; module unloading is not supported yet.
 
-`scriptRegisterChecked`, `getScriptRuntimeStatus`, `getScriptRuntimeInfo` and
-`getScriptRuntimeAbiVersion` expose registration results and bounded diagnostics.
+In-core `scriptRegisterChecked`, `getScriptRuntimeStatus`, `getScriptRuntimeInfo`
+and `getScriptRuntimeAbiVersion` expose registration results and diagnostics.
+The external shim supplies owned `scriptRegisterChecked` through the optional
+extension table; it does not export scheduler-wide diagnostics.
 `scriptRegister`, `scriptUnregister` and `scriptWait` retain their existing C
 signatures. This is a source-port API, not PC ASI/DLL binary compatibility.
 

@@ -1,7 +1,7 @@
 #include "script.h"
 
 void ScriptMain() {
-    // Settings are isolated under switch/gtav-scripthook/settings/my-plugin-*.
+    // Settings are isolated under switch/gtav-scripthook/settings/my-plugin/*.
     const char started[] = "ScriptMain started successfully.\n";
     (void)scriptSaveFile("started.txt", started, sizeof(started) - 1);
 

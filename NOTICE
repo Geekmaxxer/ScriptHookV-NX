@@ -17,3 +17,6 @@ No rights to third-party material are granted by this project's license.
 
 GTA V, Nintendo Switch, ScriptHookV and other product names belong to their
 respective owners. This independent project is not endorsed by those owners.
+
+The runtime includes stb_image by Sean Barrett under the MIT License.
+See THIRD-PARTY-NOTICES.txt for its required notice.

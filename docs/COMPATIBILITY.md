@@ -15,7 +15,8 @@ verification, not speculative offset changes.
 | Memory limits | Image and BSS each at most 2 MiB; combined loader accounting defaults to 8 MiB (configurable) |
 | Scheduling | Sixteen 64 KiB stacks by default; startup override up to 32 |
 | CPU budget | Stops starting additional scripts after 2 ms; cannot preempt a runaway plugin |
-| Process control | Kill stops a cooperative script; Load Now can restart its run entry |
+| Process control | Kill stops all owned scripts/callbacks/draws; Load Now restarts retained registrations |
+| SDK extensions | Four entity pools, owned additional scripts, globals/entity pointers, PNG textures and controller/USB keyboard/HUD callbacks; combined probe and changing pool counts passed scoped Switch gameplay acceptance; controller input is required, USB keyboard is optional |
 | Replacement | Close GTA to replace mapped code or release a resident slot |
 
 The loader scans at most 4,096 directory entries; scans and initialization are
@@ -48,3 +49,8 @@ coverage with independent third-party ports. Expand platform APIs only for a
 concrete port with verified target behavior and a versioned contract. The current
 accepted runtime includes optional bounded stop callbacks. Desktop archive
 preparation and new assets have separate validation requirements.
+
+The completion test adds per-plugin elapsed timing and isolation of invalid-yield
+callbacks. These changes have their own test scope. Eight resident NROs with
+sixteen cooperative entries and eight render callbacks are exercised locally;
+this is not a console saturation or physical peak-memory measurement.

@@ -53,8 +53,9 @@ check. The exported source does not bundle hactool or devkitPro.
 python tools/compare_core.py --reference targets/6e3e9b3af5746e74b615bd981080c9271bc226620/runtime-reference.json --module out/core-test1/subsdk5
 ```
 
-For an unmodified core this checks initialized code/data, BSS and memory layout
-against the accepted runtime. Only a structured 20-byte GNU build-ID note that
+This checks initialized code/data, BSS and memory layout against the accepted
+SDK Parity Test 1 runtime. Current completion-test changes correctly differ
+until they receive their own console acceptance. Only a structured 20-byte GNU build-ID note that
 matches the NSO header is normalized. Debug source paths are mapped to stable
 prefixes to make builds reproducible across output directories with the same
 toolchain. A modified core should fail the reference comparison; that is expected
@@ -63,7 +64,8 @@ console-tested. Runtime downloads retain the exact accepted binary.
 A different compiler version can also change code generation and fail that
 comparison. It is a strict reference check, not a diagnosis of every mismatch.
 
-`runtime-reference.json` now identifies the console-accepted lifecycle runtime.
+`runtime-reference.json` identifies the console-accepted SDK Parity Test 1 runtime.
+`runtime-reference-lifecycle.json` preserves the preceding lifecycle reference.
 `runtime-reference-public-preview1.json` preserves the earlier reference for
 historical comparisons. The target profile directory keeps its existing name;
 the canonical 20-byte game build ID is the `build_id` value in profile.json.
@@ -73,7 +75,8 @@ the canonical 20-byte game build ID is the `build_id` value in profile.json.
 `test_portable.py` exercises LZ4/NSO verification, corrupted profiles, executable
 name resolution, project generation, path bounds and binding validation without
 private files. `check_examples.py --output out/example-check1 --devkitpro ...`
-builds all seven standalone NRO examples. Source mods build through build_plugin.
+builds all eight standalone NRO examples, including the combined SDK extension
+probe. Source mods build through build_plugin.
 See [tools](TOOLS.md), [contributing](CONTRIBUTING.md) and [NSC modding](NSC-MODDING.md).
 
 The original maintainer workspace also retains target-instruction emulator

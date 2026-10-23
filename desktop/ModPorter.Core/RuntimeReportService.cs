@@ -21,6 +21,8 @@ public static class RuntimeReportService {
             if ((key == "error" || key.EndsWith("_error") || key.EndsWith("_failures") || key.EndsWith("_failed")) && Nonzero(value)) findings.Add((currentPlugin.Length > 0 ? currentPlugin + ": " : "") + key + " = " + value);
             if (key == "error_name" && value != "none") findings.Add(currentPlugin + ": " + value);
             if (key == "disarms") findings.Add("Recorded disarms: " + value);
+            if (key.EndsWith("_worst_us",StringComparison.Ordinal)&&ulong.TryParse(value,out var us)&&us>=2000)
+                findings.Add(currentPlugin+": "+key+" = "+us+" us elapsed (includes native work, I/O and OS preemption; not an FPS measurement).");
         }
         if (!values.Any()) throw new InvalidDataException("No key=value runtime fields found.");
         if (findings.Count == 0) findings.Add("No nonzero failure fields found. This report alone does not prove gameplay correctness.");

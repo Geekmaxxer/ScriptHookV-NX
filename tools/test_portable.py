@@ -73,6 +73,12 @@ class PortableTests(unittest.TestCase):
                 report=Path(name)/'loader-report.txt'
                 report.write_text('ScriptHookV-NX old report\n'+field+'plugin=extra.nro\nerror=0x10015\n')
                 self.assertIn('resident module limit already reached',summarize(report)['notes'][0])
+    def test_timing_summary_preserves_plugin_attribution_and_units(self):
+        with tempfile.TemporaryDirectory() as name:
+            report=Path(name)/'timing.txt';report.write_text('ScriptHookV-NX plugin timing snapshot\nunits=microseconds\nplugin=slow.nro\nscript_calls=2\nscript_total_us=6000\nscript_worst_us=4000\nplugin=quick.nro\nscript_calls=100\nscript_total_us=10000\nscript_worst_us=150\n')
+            result=summarize(report)
+            self.assertIn('slow.nro, 4000 us elapsed',result['notes'][0]);self.assertIn('average 3000 us',result['notes'][0])
+            self.assertIn('not FPS or isolated CPU time',result['notes'][0])
     def test_lz4_literals(self):
         self.assertEqual(lz4_block(b'\x30abc', 3), b'abc')
     def test_lz4_overlapping_reference(self):

@@ -12,7 +12,8 @@ For nearby-ped gameplay, `include/shv/world.h` supplies
 `ScriptHook::World::NearbyPeds<32>`. Call `Refresh(playerPed)`, then read `Size()`
 and indexed handles. It owns the native's eight-byte VM array slots and validates
 the full writable buffer. Capacity is bounded to 1–64. This scanner is not a
-drop-in implementation of PC `worldGetAllPeds`.
+full world-pool enumeration. The optional [extension API](EXTENSIONS.md) supplies
+all four `worldGetAll*` functions with ordinary handle arrays.
 The [Disarm NX example](../desktop/examples/disarm-nx/README.md) demonstrates a
 rotating processing budget; hand/weapon disarming passed Switch gameplay testing.
 The extension to both arms also passed console gameplay testing.
@@ -33,8 +34,13 @@ custom native handlers.
 Replace Windows DLL initialization and `DllMain` with the entry macro. An advanced
 plugin can instead export a `ShvNxPlugin` descriptor to register custom natives
 in its explicit initialization callback. Each ABI 1 plugin supplies one scheduled
-entry function. The core's `scriptRegister`, `scriptStopAll`, runtime self-test and
-cache-management exports are not external plugin shim APIs.
+main entry function. [Extensions ABI 1](EXTENSIONS.md) adds owned
+`scriptRegisterAdditionalThread` and familiar registration overloads. Move custom
+DllMain work into explicit initialization or the main entry. The Porter adapts
+recognized registration-only if/switch bodies, preserving additional scripts
+and callbacks in a lifecycle initializer. Unsupported conditions and custom
+work remain explicit blockers. Scheduler-wide `scriptStopAll`, runtime
+self-tests and cache management remain core-only.
 
 ## Native calls and data
 
@@ -68,7 +74,7 @@ are compiled and hashed with the plugin. Build outputs go in a fresh directory.
 ## Settings and script providers
 
 `scriptSaveFile` / `scriptReadFile` use flat filenames and place files under
-`switch/gtav-scripthook/settings/<plugin-id>-<filename>`. Keep the ID stable across
+`switch/gtav-scripthook/settings/<plugin-id>/<filename>`. Keep the ID stable across
 updates. Writes are limited to 64 KiB and are raw single-file operations; a mod
 that needs crash recovery should maintain its own validated alternating records.
 

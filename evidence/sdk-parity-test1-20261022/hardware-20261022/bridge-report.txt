@@ -1,0 +1,25 @@
+ScriptHookV-NX cooperative runtime test 1
+main_base=0x24dba05000
+sdk_base=0x24df8f5000
+vm_ticks=0x115
+cached_native_repairs=0x0
+cached_native_rejections=0x0
+save_calls=0x0
+load_calls=0x2
+save_successes=0x0
+load_successes=0x2
+last_fs_result=0x0
+native_caller_abi=0x1
+native_caller_self_test_ran=0x0
+native_caller_self_test_passed=0x0
+native_caller_self_test_failed=0x0
+native_caller_self_test_error=0x0
+native_caller_self_test_error_hash=0x0
+runtime_abi=0x1
+runtime_active=0x5
+runtime_resumes=0x6b
+runtime_context_rejections=0x0
+runtime_test_runs=0x0
+runtime_test_done=0x0
+runtime_test_passed=0x0
+runtime_test_failed=0x0

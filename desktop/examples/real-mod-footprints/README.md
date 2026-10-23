@@ -7,7 +7,7 @@ The NX adaptation replaces PC text input with **L + R + Y** on Nintendo controll
 Import this folder into Mod Porter, create a project with ID `footprints-nx`, then build.
 The optional stop callback clears the owned effect when stopped on Lifecycle Test 1 or a later supporting runtime. On older runtimes, toggle it off before stopping. Character changes also clear the owned effect; coexistence with external particle mods requires testing.
 
-`config.ini` defaults to Y and disabled at startup. The install ZIP places it at `switch/gtav-scripthook/settings/footprints-nx-config.ini`; preserve any existing customized copy. Set `ToggleButton=X` or `EnableOnStart=true` if desired. SD installation of the NRO alone preserves existing settings.
+`config.ini` defaults to Y and disabled at startup. The install ZIP places it at `switch/gtav-scripthook/settings/footprints-nx/config.ini`; preserve any existing customized copy. Set `ToggleButton=X` or `EnableOnStart=true` if desired. SD installation of the NRO alone preserves existing settings.
 If the particle asset is absent, the effect stays disabled and a message appears.
 
 Switch gameplay testing confirmed plugin startup, shortcut activation and the flaming-footprint effect. The initial on-screen prompt incorrectly called the face button X; the corrected prompt says Y and uses the same control ID.

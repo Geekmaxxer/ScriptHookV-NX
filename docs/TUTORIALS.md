@@ -12,11 +12,12 @@ Changing startup policy or killing a script does not free its module slot.
 
 | Template | What it teaches | Expected result |
 | --- | --- | --- |
-| `hello` | Minimal entry, isolated files, returning normally | `<id>-hello.txt` |
+| `hello` | Minimal entry, isolated files, returning normally | `<id>/hello.txt` |
 | `overlay` | Frame rendering, pause guard, safe long text components | Top-left text below the game's main HUD; hidden while paused |
-| `saved-counter` | Defaults, schema, CRC, alternate slots and readback | `<id>-counter.txt` increases after Load Now or the next launch |
-| `vehicle-logger` | Read-only handles, 250 ms sampling, writes only on state changes | `<id>-vehicle.txt` changes between on_foot and in_vehicle |
-| `native-provider` | Explicit initialize, registration, signed INT ABI and completion | `<id>-provider.txt` says ready; custom handler remains available |
+| `sdk-parity` | Additional worker, four pools, borrowed pointers, input/render callbacks, PNG texture | Requires SDK Parity Test 1 and a generated PNG; see [setup and expected results](EXTENSIONS.md#buildable-combined-example) |
+| `saved-counter` | Defaults, schema, CRC, alternate slots and readback | `<id>/counter.txt` increases after Load Now or the next launch |
+| `vehicle-logger` | Read-only handles, 250 ms sampling, writes only on state changes | `<id>/vehicle.txt` changes between on_foot and in_vehicle |
+| `native-provider` | Explicit initialize, registration, signed INT ABI and completion | `<id>/provider.txt` says ready; custom handler remains available |
 | `nsc-settings` | Generic persistence independent of MEGATARD | NSC counter saved under its own script name |
 | `nsc-provider-client` | Calling an NRO-provided native from SanScript | Two saved results: 5 and -7 |
 

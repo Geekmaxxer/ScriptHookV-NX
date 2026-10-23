@@ -3,17 +3,31 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.4.0'
+VERSION = '0.5.0'
 
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def public_guide(name, destination):
+    # The lean desktop bundle does not contain the entire runtime repository.
+    # Keep developer-guide links valid without copying private/build directories.
+    source=ROOT/'docs'/name
+    def link(match):
+        value=match.group(2)
+        if '://' in value or value.startswith('#'):return match.group(0)
+        path,separator,anchor=value.partition('#');target=(source.parent/path).resolve()
+        if not target.is_relative_to(ROOT) or not target.is_file():raise ValueError('Invalid guide link: '+value)
+        url='https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/'+target.relative_to(ROOT).as_posix()
+        return '['+match.group(1)+']('+url+(separator+anchor if separator else '')+')'
+    destination.write_text(re.sub(r'\[([^\]]+)\]\(([^)]+)\)',link,source.read_text(encoding='utf-8')),encoding='utf-8')
 
 
 def run(*args):
@@ -48,9 +62,9 @@ def package(output):
     for name in ('include', 'sdk'):
         shutil.copytree(ROOT/name, stage/'SDK'/name)
     (stage/'SDK/tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py'):
         shutil.copy2(ROOT/'tools'/name, stage/'SDK/tools'/name)
-    for name in ('LICENSE', 'NOTICE'):
+    for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, stage/name)
         shutil.copy2(ROOT/name, stage/'SDK'/name)
     shutil.copytree(ROOT/'desktop/examples', stage/'examples')
@@ -60,8 +74,10 @@ def package(output):
     shutil.copy2(ROOT/'desktop/COMPATIBILITY.md', stage/'COMPATIBILITY.md')
     (stage/'docs').mkdir()
     shutil.copy2(ROOT/'docs/GAME-ASSETS.md', stage/'docs/GAME-ASSETS.md')
+    public_guide('EXTENSIONS.md', stage/'docs/EXTENSIONS.md')
+    public_guide('RUNTIME-COMPLETION.md', stage/'docs/RUNTIME-COMPLETION.md')
     (stage/'READ-ME-FIRST.md').write_text(
-        '# ScriptHookV-NX Mod Porter 0.4.0 Public Preview\n\n'
+        '# ScriptHookV-NX Mod Porter 0.5.0 Public Preview\n\n'
         'Open ScriptHookV-NX-Mod-Porter.exe on Windows x64. Keep the SDK and examples '
         'folders beside it. Import a mod or try the included example.\n\n'
         'To build NROs, install Python 3.10+, devkitA64 and switch-tools, then check '
@@ -93,14 +109,16 @@ def package(output):
     for name in ('include', 'sdk'):
         shutil.copytree(ROOT/name, source/name)
     (source/'tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py'):
         shutil.copy2(ROOT/'tools'/name, source/'tools'/name)
-    for name in ('LICENSE', 'NOTICE'):
+    for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, source/name)
     (source/'.gitignore').write_text('**/bin/\n**/obj/\n**/.vs/\n__pycache__/\n/releases/\n', encoding='utf-8')
     shutil.copy2(ROOT/'desktop/README.md', source/'README.md')
     (source/'docs').mkdir()
     shutil.copy2(ROOT/'docs/GAME-ASSETS.md', source/'docs/GAME-ASSETS.md')
+    public_guide('EXTENSIONS.md', source/'docs/EXTENSIONS.md')
+    public_guide('RUNTIME-COMPLETION.md', source/'docs/RUNTIME-COMPLETION.md')
     (source/'README.md').write_text((ROOT/'desktop/README.md').read_text(encoding='utf-8').replace('../docs/GAME-ASSETS.md','docs/GAME-ASSETS.md'),encoding='utf-8')
     shutil.copy2(ROOT/'desktop/COMPATIBILITY.md', source/'COMPATIBILITY.md')
     source_zip = output/f'ScriptHookV-NX-Mod-Porter-{VERSION}-Source.zip'

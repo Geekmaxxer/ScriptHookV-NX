@@ -6,10 +6,20 @@ Target: title `0100b00b51230000`, build `6e3e9b3af5746e74b615bd981080c9271bc2266
 The current source defaults to **eight resident NROs, sixteen cooperative script
 slots and an 8 MiB plugin budget**. Builders and mod authors can prepare custom
 limits; players can override each setting in an optional SD configuration file.
-See [runtime limits](docs/RUNTIME-LIMITS.md). The current runtime passed console
-plugin lifecycle tests with MEGATARD's NSC menu. Custom limit overrides and full
-capacity stress tests have their own validation requirements.
+See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.3 Public Preview** includes
+[matched console acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json). Earlier runtime revisions passed
+console plugin lifecycle tests with MEGATARD's NSC menu. The current SDK Parity
+Test 1 adds [world enumeration, multiple scripts, globals/entity pointers, PNG
+textures and input/render callbacks](docs/EXTENSIONS.md). These additions have
+local ARM64 coverage and [matched Switch gameplay acceptance](evidence/sdk-parity-test1-20261022/hardware-20261022/console-acceptance.json)
+for the combined probe, rendering, controller input and NSC/NRO coexistence.
+Dynamic entity counts are confirmed during gameplay. Controller input is the
+Switch release target; USB keyboard support is optional. Per-plugin timing,
+callback isolation and multi-script source-port lifecycle support complete this
+release. The tested runtime is shipped unchanged.
 
+Created by MEGATARD (@Geekmaxver; GitHub: Geekmaxxer).
+Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
 Use, editing, redistribution and sale require attribution; see [LICENSE](LICENSE)
 and [NOTICE](NOTICE). This is a Public Preview with the limits documented below.
 [Downloads](https://github.com/Geekmaxxer/ScriptHookV-NX/releases) are separate
@@ -32,6 +42,10 @@ Install a compatible runtime with GTA closed, then put native mods in
 waits for Load Now and `.nro.disabled` stays disabled. Use MEGATARD's plugin page,
 the optional standalone manager, or choose filenames yourself. No particular
 NSC menu is required. Keep saved settings when updating.
+
+Each native mod stores its files under `switch/gtav-scripthook/settings/<plugin-id>/`.
+The updated runtime migrates old prefixed filenames on access; existing files in
+the new folder take priority. ABI 1 plugins do not need rebuilding for this change.
 
 [Installation and troubleshooting](docs/INSTALL.md) covers startup modes, binding
 files, process controls and resident-module limits. Windows ASI/DLL mods
@@ -87,7 +101,9 @@ with NSC menu Kill Process/Load Now controls. Mod Porter 0.3.0 passed its deskto
 workflow. The newer 0.4.0 game-file updater has separate local validation and
 requires asset gameplay testing. Exact records are retained separately:
 
-- [Current runtime and mod acceptance](evidence/completion-test1-20261021/console-acceptance.json).
+- [Runtime Completion Test 1 gameplay, multi-script source port and diagnostics](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json).
+- [SDK Parity Test 1 gameplay and restart](evidence/sdk-parity-test1-20261022/hardware-20261022/console-acceptance.json).
+- [Earlier runtime and mod acceptance](evidence/completion-test1-20261021/console-acceptance.json).
 
 - [First public loader](evidence/public-loader-test1-20261015/hardware-20261015/console-acceptance.json).
 - [Refinement Test 2](evidence/refinement-test2-20261015/hardware-20261015/console-acceptance.json).
@@ -106,5 +122,6 @@ completion; process cancellation retains native-handler pointers. Direct
 NSC loading from SD, hot code replacement and Windows platform APIs are outside
 the current API. See the linked guides for the complete limits and workflows.
 
-#
+## Development disclosure
+
 AI was used throughout the entirety of this project; it was solely to get it to a working state and to even make this possible in any way.

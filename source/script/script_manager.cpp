@@ -4,6 +4,8 @@
 #include "../../include/natives.h"
 #include "bindings.hpp"
 #include "../plugins/plugin_loader.hpp"
+#include "../plugins/plugin_callbacks.hpp"
+#include "../plugins/plugin_textures.hpp"
 #include "../core/storage.hpp"
 
 namespace ScriptHook {
@@ -315,6 +317,7 @@ void ScriptManager::OnTick(void* host) {
     if (have_frame && frame_seen == frame) return;
     have_frame = true; frame_seen = frame;
     PluginLoader::Tick();
+    PluginCallbacks::TickInput(frame);
     if (test_pending) {
         test_pending = false; test_main_done = test_peer_done = test_reported = false;
         info.self_test_passed = info.self_test_failed = info.self_test_done = 0;
@@ -332,7 +335,9 @@ void ScriptManager::OnTick(void* host) {
         if (!guards_ok(i)) { ++info.stack_failures; set_status(ScriptRuntime_StackCorrupt); release(entry, true); continue; }
         current = i; entry.state = Running; ++info.resumes;
         NativeInvoker::RestoreStatus(entry.native_status, entry.native_hash);
+        const auto resume_start = sh_get_tick();
         sh_fiber_switch(&scheduler, &entry.context);
+        PluginLoader::RecordScriptTime(entry.function, sh_get_tick() - resume_start);
         current = none;
         if (!guards_ok(i)) { ++info.stack_failures; entry.cancel = true; set_status(ScriptRuntime_StackCorrupt); }
         if (entry.state == Finished || entry.cancel) release(entry, entry.cancel);
@@ -340,6 +345,8 @@ void ScriptManager::OnTick(void* host) {
         if (sh_get_tick() - started >= 2 * ticks_per_ms) { ++info.budget_overruns; break; }
     }
     dispatching = false;
+    PluginCallbacks::TickRender(frame);
+    PluginTextures::Frame();
     NativeInvoker::RestoreStatus(saved_status, saved_hash);
     if (test_running && test_main_done && test_peer_done) {
         test_running = false; info.self_test_done = 1;

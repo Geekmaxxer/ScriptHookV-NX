@@ -26,6 +26,17 @@ def summarize(path):
             report['notes'].append(plugin['filename']+': keep exactly one Auto/Manual/Disabled filename for this plugin')
         elif error:
             report['notes'].append(plugin['filename']+': '+plugin.get('error_name', plugin.get('error', 'unknown error')))
+    if report['global_values'].get('units')=='microseconds':
+        for kind in ('script','callback','cleanup','initialize'):
+            samples=[]
+            for plugin in report['plugins']:
+                try:
+                    calls=int(plugin.get(kind+'_calls','0'));total=int(plugin.get(kind+'_total_us','0'));worst=int(plugin.get(kind+'_worst_us','0'))
+                except ValueError:continue
+                if calls>0 and total>=worst>=0:samples.append((worst,plugin['filename'],total//calls))
+            if samples:
+                worst,name,average=max(samples)
+                report['notes'].append(f'Largest {kind} invocation: {name}, {worst} us elapsed (lifetime average {average} us). Includes native work, I/O and OS preemption; not FPS or isolated CPU time.')
     report['notes'].append('A report is a snapshot. Acceptance also needs the installed file hashes and an actual gameplay test.')
     return report
 

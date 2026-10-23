@@ -1,0 +1,99 @@
+{
+  "module_sha256": "fee6cb157d5c3f72e275cc004923ecd09e17961b082f200d2d1f7c8b9b394f1a",
+  "sample_sha256": "5340f848740ff3ed92155438341c5e0f9962f0b401b4ed79e255369bf3c7ed11",
+  "local_checks": 467,
+  "reports": {
+    "bridge-tests.json": {
+      "passed": 38,
+      "sha256": "79dc4f9c7a56999857a89baab1947a0b63bbbd212fe9dfe274747dda3bc24122"
+    },
+    "native-caller-tests.json": {
+      "passed": 70,
+      "sha256": "c098cfa82bb1cfaba2a21ae352f9ceecee670c2f1a64599d8ba0652dfb0fdc1b"
+    },
+    "native-sdk-tests.json": {
+      "passed": 15,
+      "sha256": "b4edb9ef04b3b6105a327f54f4c41c310880c852b78ef4049cdf5a56cdeea0bb"
+    },
+    "runtime-tests.json": {
+      "passed": 75,
+      "sha256": "5fffe3fcc93c463e32808e678545d150120458d357a5b15eba54c8b63e25efe7"
+    },
+    "plugin-tests.json": {
+      "passed": 51,
+      "sha256": "088bdde7976582625724a13c065c5a0faec176dfa0904658c349c98f2f3b88cc"
+    },
+    "settings-folder-tests.json": {
+      "passed": 26,
+      "sha256": "e86339d04e989b16c2530e0529a506ce1938f55601733605999179a698387b19"
+    },
+    "template-tests.json": {
+      "passed": 6,
+      "sha256": "52038ffd8353fa384b1a21554f43e8e397d88a60592ec027423355f462dc7898"
+    },
+    "manager-tests.json": {
+      "passed": 118,
+      "sha256": "808fbfbe50259e2920a336c7a4ef4466c0b5ac8907958c7ac81d6f09a9ca7ab7"
+    },
+    "runtime-config-tests.json": {
+      "passed": 54,
+      "sha256": "fcdff1775c1769601983c6b200e38cf0c711c7046afc1feadfc89147757d4e67"
+    },
+    "manifest-tests.json": {
+      "passed": 14,
+      "sha256": "75da630f1e0f5c38b12e87a2955b650d9757f69ed9d3e0bb17c36e938ad6ca4f"
+    }
+  },
+  "steps": [
+    {
+      "step": "native-fixture",
+      "log_sha256": "686132d336c362e92bb28eed626fd40380850d282c07f62da6b600b9bd80a167"
+    },
+    {
+      "step": "runtime-fixture",
+      "log_sha256": "15eea436d48be9905b975eb0b6d12f31f8c54fc7ec41095dac3c4294bc437e45"
+    },
+    {
+      "step": "bridge",
+      "log_sha256": "79dc4f9c7a56999857a89baab1947a0b63bbbd212fe9dfe274747dda3bc24122"
+    },
+    {
+      "step": "native-caller",
+      "log_sha256": "c098cfa82bb1cfaba2a21ae352f9ceecee670c2f1a64599d8ba0652dfb0fdc1b"
+    },
+    {
+      "step": "sdk",
+      "log_sha256": "2d66a8213d9b1fc31036e594e45cb0feb013fe3ec84d7f1e55532e20dccd4083"
+    },
+    {
+      "step": "runtime",
+      "log_sha256": "5fffe3fcc93c463e32808e678545d150120458d357a5b15eba54c8b63e25efe7"
+    },
+    {
+      "step": "plugins",
+      "log_sha256": "088bdde7976582625724a13c065c5a0faec176dfa0904658c349c98f2f3b88cc"
+    },
+    {
+      "step": "settings-folders",
+      "log_sha256": "e86339d04e989b16c2530e0529a506ce1938f55601733605999179a698387b19"
+    },
+    {
+      "step": "templates",
+      "log_sha256": "52038ffd8353fa384b1a21554f43e8e397d88a60592ec027423355f462dc7898"
+    },
+    {
+      "step": "manager",
+      "log_sha256": "93e8d040c77d865f565dafa9803f025aa4c94a21687340914787ab2d1c714a48"
+    },
+    {
+      "step": "runtime-config",
+      "log_sha256": "fcdff1775c1769601983c6b200e38cf0c711c7046afc1feadfc89147757d4e67"
+    },
+    {
+      "step": "manifests",
+      "log_sha256": "75da630f1e0f5c38b12e87a2955b650d9757f69ed9d3e0bb17c36e938ad6ca4f"
+    }
+  ],
+  "switch_runtime_verified": false,
+  "resource_audit_sha256": "f2ed913406a287db28e957bfc3a37f1988d35bdf9fb7543f14977a0a05fe2d86"
+}

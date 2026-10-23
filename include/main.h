@@ -94,7 +94,7 @@ SHV_NX_API NativeHandler getNativeHandler(uint64_t hash);
 SHV_NX_API bool registerCustomNative(uint64_t hash, NativeHandler handler);
 
 // External plugins: the shim isolates flat filenames under
-// sdmc:/switch/gtav-scripthook/settings/<plugin-id>-<filename> (64 KiB maximum).
+// sdmc:/switch/gtav-scripthook/settings/<plugin-id>/<filename> (64 KiB maximum).
 // In-core callers retain the legacy sdmc:/switch/gtav-megatard/ bridge.
 SHV_NX_API bool scriptSaveFile(const char* relativePath, const void* data, size_t size);
 SHV_NX_API bool scriptReadFile(const char* relativePath, void* buffer, size_t maxBytes, size_t* bytesRead);
@@ -104,3 +104,5 @@ SHV_NX_API uint32_t getScriptHookVersion(void);
 #ifdef __cplusplus
 }
 #endif
+
+#include "extensions.h"

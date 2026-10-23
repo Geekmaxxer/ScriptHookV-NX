@@ -31,7 +31,7 @@ SDK = {'mount_sd_debug': '_ZN2nn2fs19MountSdCardForDebugEPKc', 'unmount': '_ZN2n
 def profile_bindings(output, profile=DEFAULT_PROFILE):
     profile = Path(profile).resolve()
     descriptor = json.loads((profile/'profile.json').read_text())
-    if descriptor.get('format') != 1 or set(descriptor.get('files', {})) != {'bindings.hpp', 'bindings.json'}:
+    if descriptor.get('format') != 1 or set(descriptor.get('files', {})) != {'bindings.hpp', 'bindings.json', 'engine-api.json'}:
         raise ValueError('Unsupported target profile descriptor')
     for name, digest in descriptor['files'].items():
         if hashlib.sha256((profile/name).read_bytes()).hexdigest() != digest:

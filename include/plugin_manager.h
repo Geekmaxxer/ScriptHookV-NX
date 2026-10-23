@@ -38,4 +38,12 @@ inline bool KillProcess(uint32_t index) { return ProcessControlsAvailable() && i
 inline bool IsRunning(uint32_t index) { return ProcessControlsAvailable() && invoke<bool>(0x5348564e58505231ULL,index); }
 inline bool Rescan() { return invoke<bool>(0x5348564e5850524cULL); }
 inline uint32_t LastActionError() { return invoke<uint32_t>(0x5348564e58504531ULL); }
+enum class TimingKind : uint32_t { Script=0, Callback=1, Cleanup=2, Initialize=3 };
+struct Timing { uint64_t calls,totalMicroseconds,worstMicroseconds; };
+inline bool TimingAvailable(){return nativeIsAvailable(0x5348564e58504d31ULL);}
+inline bool GetTiming(uint32_t index,TimingKind kind,Timing& out){
+    Timing value{};
+    if(!TimingAvailable()||!invoke<bool>(0x5348564e58504d31ULL,index,uint32_t(kind),&value.calls,&value.totalMicroseconds,&value.worstMicroseconds))return false;
+    out=value;return true;
+}
 } }

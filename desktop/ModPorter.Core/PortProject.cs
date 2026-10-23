@@ -39,7 +39,16 @@ public static class PortProject {
             if (codeFile) {
                 var edits = new List<(int Start, int Length, string Text, string Operation)>();
                 var dlls = SourceAnalyzer.DllEntries(file, entryName);
-                foreach (var d in dlls.Where(d => d.Standard && options.AdaptDllMain)) edits.Add((d.Start, d.End - d.Start, "/* Windows registration replaced by the NX plugin descriptor. */", "Replace standard DllMain registration"));
+                foreach (var d in dlls.Where(d => d.Standard && options.AdaptDllMain)) {
+                    string replacement="/* Windows registration replaced by the NX plugin descriptor. */";
+                    if(d.Registration is {Extended:true} plan) {
+                        if(input.Files.Any(f=>CppLexer.Tokens(f.Text).Any(t=>t.Text is "ShvNxPortInitialize" or "ShvNxPortStop")))throw new InvalidDataException("Source conflicts with reserved lifecycle adapter names.");
+                        replacement="static bool ShvNxPortInitialize() {\n    if ((getScriptHookCapabilities() & "+plan.RequiredCapabilities+"ULL) != "+plan.RequiredCapabilities+"ULL) return false;\n    "+string.Join("\n    ",plan.Initialize)+"\n    return true;\n}\n"+
+                            "static void ShvNxPortStop() {\n    "+string.Join("\n    ",plan.Stop)+"\n}\n"+
+                            "SHV_NX_PLUGIN_WITH_LIFECYCLE(\""+options.PluginId+"\", "+entryName+", ShvNxPortInitialize, ShvNxPortStop)\n";
+                    }
+                    edits.Add((d.Start,d.End-d.Start,replacement,d.Registration?.Extended==true?"Preserve DllMain script/callback registration in NX lifecycle":"Replace standard DllMain registration"));
+                }
                 bool InRemovedDll(int at) => edits.Any(e => at >= e.Start && at < e.Start + e.Length);
                 string stripped = CppLexer.CodeOnly(text);
                 foreach (Match m in SourceAnalyzer.Includes().Matches(text)) {
@@ -120,7 +129,7 @@ public static class PortProject {
                 format = 1, kind = "nro", id = options.PluginId,
                 sources = chosen.Order().Select(s => "src/" + s).ToArray(),
                 includes = includeDirs.Select(s => ("src/" + s).TrimEnd('/').Replace('\\', '/')).ToArray(),
-                mod_porter = new { version = "0.4.0", target_build = catalog.TargetBuild, header_sha256 = catalog.HeaderSha256, original_input = input.Path, original_hashes = input.Files.ToDictionary(f => f.RelativePath, f => f.Sha256), options, switch_runtime_verified = false }
+                mod_porter = new { version = "0.5.0", target_build = catalog.TargetBuild, header_sha256 = catalog.HeaderSha256, original_input = input.Path, original_hashes = input.Files.ToDictionary(f => f.RelativePath, f => f.Sha256), options, switch_runtime_verified = false }
             };
             JsonFiles.Write(Path.Combine(output, "project.json"), manifest);
             JsonFiles.Write(Path.Combine(output, "changes.json"), changes);

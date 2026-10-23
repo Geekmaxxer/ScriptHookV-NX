@@ -1,0 +1,298 @@
+{
+  "format": 1,
+  "milestone": "SDK Parity Test 1",
+  "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "base_plugin_abi": 1,
+  "extensions_abi": 1,
+  "base_api_bytes": 136,
+  "base_descriptor_bytes": 40,
+  "core_checks": 539,
+  "core_reports": {
+    "bridge-tests.json": {
+      "passed": 38,
+      "sha256": "a2642913a05e98840e362b1816485d55affc4e4c1a65e5805abba3a086eaea8a"
+    },
+    "native-caller-tests.json": {
+      "passed": 70,
+      "sha256": "cd4c26ce13cf60039f7ec58214dc882727e09ccc7e5d6f94c301a6914eeaca1e"
+    },
+    "native-sdk-tests.json": {
+      "passed": 15,
+      "sha256": "92627b9e2b512a009cca85de7d685f682c41229d345fcb05d9c8ea177cd596d5"
+    },
+    "runtime-tests.json": {
+      "passed": 75,
+      "sha256": "03d3eb90ecfe0529120b133a9ff56d2b3e4d88342663825686f9cca885cb8532"
+    },
+    "plugin-tests.json": {
+      "passed": 51,
+      "sha256": "d63ddeda27415fe8aca97ae0cc9f0dcc5ab22f0f2108904b15c9066ac4a5a7e9"
+    },
+    "settings-folder-tests.json": {
+      "passed": 26,
+      "sha256": "6668bee374c838669f665295272b14fa60e8fcfbb4b15841ccaaef19a55d295b"
+    },
+    "engine-api-tests.json": {
+      "passed": 32,
+      "sha256": "40a343fb679bc59c120d30cad3309b697ad7fb12e2f84dd1445b2b0e8e00f62c"
+    },
+    "extensions-tests.json": {
+      "passed": 10,
+      "sha256": "9febe2ffd3c122f1294969a0d801d0778051ce457e8df0e49388d0afd2febd60"
+    },
+    "callback-tests.json": {
+      "passed": 15,
+      "sha256": "dc02b1525849c1226337f763973693ecdceb3df7a281878e241d05fff7e2761d"
+    },
+    "texture-tests.json": {
+      "passed": 15,
+      "sha256": "f7e7fb5ad8a8d0afde0df0968a9c09f88b8b528150e049fc4d11e11dac9a2ed8"
+    },
+    "template-tests.json": {
+      "passed": 6,
+      "sha256": "235409cd10b859820985e7b1cc81cd9c209953445d6daea3c27468acfeaf47cc"
+    },
+    "manager-tests.json": {
+      "passed": 118,
+      "sha256": "a7ec28035cb474cb08ef26f604bc1defe1710550bebd0f0ea2fff0a08dd17b43"
+    },
+    "runtime-config-tests.json": {
+      "passed": 54,
+      "sha256": "f0d188d08f7db8319257016c656886564ab801080cbf287976ba369a23f2c9db"
+    },
+    "manifest-tests.json": {
+      "passed": 14,
+      "sha256": "408edaf30d8158a7d644b39b04f8bf6edfad19b4fd242292af7eec0f0a991444"
+    }
+  },
+  "supplemental_checks": {
+    "lifecycle": {
+      "passed": 19,
+      "scope": "Actual compiled ARM64 runtime/plugin in emulator; OS, game state and filesystem mocked",
+      "report_sha256": "7c5872997c129ed69e7cdf4250a47343afd27d71fda27a0c936855b8329b845a"
+    },
+    "showcase": {
+      "passed": 46,
+      "scope": "Production core loader/caller/SDK shim/fibers/storage plus four actual NROs; scripted game natives and mocked RO/filesystem/OS services",
+      "report_sha256": "b52c26de1dd02d0a9baec4127cc8a80a509e8b5a2a1ded132d27c58af0a5d2e8"
+    }
+  },
+  "real_target_guid_allocation_check": {
+    "passed": 1,
+    "log_sha256": "dee4591af377e031b9506770dd4e51031e63223ab21c05c438f78720167f5c29",
+    "scope": "Production ARM64 enumeration plus target GUID allocator/generation/getter instructions; OS and extension-node allocation mocked"
+  },
+  "portable_tests": {
+    "passed": 24,
+    "log_sha256": "4a928c990400d796d6ff67a13c7f4c2b2cf02e896ee4abe4b43313bfe1abfce8"
+  },
+  "porter_tests": {
+    "passed": 142,
+    "log_sha256": "1d3123a129167f7d77a0dcf043da5cc6b42c6c7770e5cbcf71ecafc3fd723ef6"
+  },
+  "example_builds": 8,
+  "probe": {
+    "nro_sha256": "5752d823227a0fa84c73c2de363208be29ad679a39a39c9385bd3b985207ebd0",
+    "bytes": 36864,
+    "png_sha256": "6139992d6f572ea494f610ab62a16f43b746c66593528eabc0b7f87b5aea6869"
+  },
+  "defaults": {
+    "resident_nros": 8,
+    "script_slots": 16,
+    "plugin_memory_mib": 8
+  },
+  "resource_audit": {
+    "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+    "file_bytes": 88398,
+    "segments": {
+      "text": {
+        "offset": 0,
+        "bytes": 106080,
+        "mapped_bytes": 106496
+      },
+      "rodata": {
+        "offset": 106496,
+        "bytes": 21296,
+        "mapped_bytes": 24576
+      },
+      "data": {
+        "offset": 131072,
+        "bytes": 680,
+        "mapped_bytes": 4096
+      }
+    },
+    "bss_bytes": 1278680,
+    "static_mapped_span_bytes": 1413120,
+    "largest_objects": [
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L6stacksE",
+        "bytes": 1048576
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L8manifestE",
+        "bytes": 65536
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L15manifest_bufferE",
+        "bytes": 65536
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7pluginsE",
+        "bytes": 25856
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L9directoryE",
+        "bytes": 12544
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L9instancesE",
+        "bytes": 11264
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L6framesE",
+        "bytes": 8064
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7scriptsE",
+        "bytes": 7680
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L8texturesE",
+        "bytes": 7680
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L7entriesE",
+        "bytes": 7168
+      },
+      {
+        "symbol": "_ZN10ScriptHook12_GLOBAL__N_1L12lookup_cacheE",
+        "bytes": 5120
+      },
+      {
+        "symbol": "_ZN10ScriptHook11NativeTable15s_customNativesE",
+        "bytes": 4096
+      }
+    ],
+    "largest_individual_stack_frames": [
+      {
+        "function": ".\\source\\bridge\\public_natives.cpp:46:6:void ScriptHook::{anonymous}::save(void*)",
+        "bytes": 24880,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\persistence.cpp:197:6:static void ScriptHook::Persistence::Native_SaveMenuSettings(void*)",
+        "bytes": 24768,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\public_natives.cpp:57:6:void ScriptHook::{anonymous}::load(void*)",
+        "bytes": 16640,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\persistence.cpp:223:6:static void ScriptHook::Persistence::Native_LoadMenuSettings(void*)",
+        "bytes": 16544,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_loader.cpp:457:6:0()",
+        "bytes": 8384,
+        "kind": "static"
+      },
+      {
+        "function": "./source/third_party/stb_image.h:5078:12:int stbi__parse_png_file(stbi__png*, int, int)",
+        "bytes": 7920,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\core\\runtime_config.cpp:55:6:static void ScriptHook::RuntimeConfig::LoadOnce()",
+        "bytes": 4336,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_textures.cpp:142:6:static void ScriptHook::PluginTextures::Frame()",
+        "bytes": 2144,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\bridge\\persistence.cpp:89:6:void ScriptHook::{anonymous}::write_report()",
+        "bytes": 1728,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\script\\script_manager.cpp:125:6:void ScriptHook::{anonymous}::write_test_report()",
+        "bytes": 1312,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_callbacks.cpp:66:6:static void ScriptHook::PluginCallbacks::TickInput(uint32_t)",
+        "bytes": 1248,
+        "kind": "static"
+      },
+      {
+        "function": ".\\source\\plugins\\plugin_callbacks.cpp:100:6:static void ScriptHook::PluginCallbacks::TickRender(uint32_t)",
+        "bytes": 1104,
+        "kind": "static"
+      }
+    ],
+    "scope": "Compiler/linker sizes only. Individual stack frames exclude callees, game natives and recursion. Core static span excludes SDK loader mappings, plugin images/BSS/backing pages and game memory. CPU time, frame pacing and console peak memory require on-device measurement.",
+    "baseline": {
+      "module_sha256": "fee6cb157d5c3f72e275cc004923ecd09e17961b082f200d2d1f7c8b9b394f1a",
+      "file_bytes": 62451,
+      "bss_bytes": 1243928,
+      "static_mapped_span_bytes": 1347584
+    },
+    "delta_bytes": {
+      "file_bytes": 25947,
+      "bss_bytes": 34752,
+      "static_mapped_span_bytes": 65536
+    }
+  },
+  "sources": {
+    "source/core/engine_api.cpp": "e7dc7164a5d3a09eb3a77a73a7b97f9cc270475f3e4cfacb018946ef50d1fb6a",
+    "source/core/engine_api.hpp": "c277318834a31f2d3f0135b347eb95f5c214996c2ef1539279d6bdb51b6094f3",
+    "source/plugins/example_plugin.cpp": "0612f58d4e2cc5927794d237da4c67621b257f58da5c0f73cd0846dfd8b0cdd6",
+    "source/plugins/plugin_callbacks.cpp": "60af33477ce76e0cae64a0212e583041af7468fdebe49970b2db601f1d78729b",
+    "source/plugins/plugin_callbacks.hpp": "ac937f9bdf3363f02351fc65d1078ff0ebcfbc5b4e1080ebf87b2056e0d55cdd",
+    "source/plugins/plugin_loader.cpp": "ebc11bf464bbda88dd392ec02f13989bc49ba0ea650c96ff35888b298066b40a",
+    "source/plugins/plugin_loader.hpp": "8fdfdc9b7cc59671bd03f55b1a54879d0f8e9e5f3c9413951c05e17d450e79b5",
+    "source/plugins/plugin_textures.cpp": "6bb82f36f37e5d696b2d86246e21ce722170e123ee70b5194f589d32f386f53e",
+    "source/plugins/plugin_textures.hpp": "33b543fa13608fe29744d8a145522605e391b4936fc56a09c72371a50ce58bac",
+    "source/script/script_manager.cpp": "a624c17c02fbab41a4e6ba6a597c8792c372f34e7c910dfaff5987c9ad2b08e8",
+    "source/script/script_manager.hpp": "b93016a245eabb11e89230393edb7bef56d9c883da90585f9c4362e504556ca4",
+    "include/extensions.h": "a4989e73e06db2c89be822cdfec3e47b08d8fad37cf05e8537999c644cae8041",
+    "include/main.h": "39915a3ea0ec194e1ab5fd3c94a86f83eb0029a4a5509e3823749162a4f1f34e",
+    "include/types.h": "c509b1e7468148fed34413a4c7fc04ac6d9cc6e421d0dbffdc6d8304b3033bb5",
+    "sdk/plugin_api.cpp": "e91d20aaf2b7d097058f81608fb14e0cb2f8beba5d6c9ae6a1358e9ef9f87f50",
+    "targets/README.md": "66478e765009709b96e9a5273b112a3938a3ee8ee7987b257565f0dcffa59509",
+    "targets/6e3e9b3af5746e74b615bd981080c9271bc226620/bindings.hpp": "359e819c184885d271168936fb0bae1f96050f76ad6686cd3d86efaefac57150",
+    "targets/6e3e9b3af5746e74b615bd981080c9271bc226620/bindings.json": "6bd7c9f374cf053fe8b9b6bcbdbbb383bb8617aeb93c7d7df162866ebdd60ce3",
+    "targets/6e3e9b3af5746e74b615bd981080c9271bc226620/engine-api.json": "23b038398afb7a25898e3e675c52e82dad971dd2d843f71343cc929604c06b9f",
+    "targets/6e3e9b3af5746e74b615bd981080c9271bc226620/profile.json": "d6c101a60184b634a2aa066ff964f446a46493e85314879ee846abe6ef9f65ea",
+    "targets/6e3e9b3af5746e74b615bd981080c9271bc226620/runtime-reference-public-preview1.json": "57f64531bdea9a7577c3ff1204b5fb952041121e477b26d6311c8665fb3031aa",
+    "targets/6e3e9b3af5746e74b615bd981080c9271bc226620/runtime-reference.json": "5ee8d6e7bb424847abff9f75a90ce21ae31bd495cd946f8a869f2f3033bc2d0e"
+  },
+  "switch_runtime_verified": false,
+  "pending": [
+    "Pool/global/entity-pointer behavior in Story Mode and transitions",
+    "SGA texture creation, channel order, alpha, orientation and expiry on GPU",
+    "USB keyboard event delivery",
+    "Combined callback/worker stop and restart on Switch",
+    "Gameplay CPU, frame pacing and peak memory soak"
+  ],
+  "combined_probe_checks": {
+    "passed": 7,
+    "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+    "probe_sha256": "5752d823227a0fa84c73c2de363208be29ad679a39a39c9385bd3b985207ebd0",
+    "scope": "Actual ARM64 combined NRO and runtime, production PNG decoder; game/OS/GPU mocked",
+    "switch_runtime_verified": false
+  },
+  "clean_export_rebuild": {
+    "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+    "matches_tested_runtime": true,
+    "game_files_required": false,
+    "toolchain": "devkitA64 configured explicitly",
+    "relocated_path_with_spaces": true
+  }
+}

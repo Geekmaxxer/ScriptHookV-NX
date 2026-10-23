@@ -15,7 +15,7 @@ python tools/inspect_mod.py out/my-first-mod-test1/plugin.nro
 With GTA closed, copy `plugin.nro` to
 `switch/gtav-scripthook/plugins/my-first-mod.nro`. Launch Story Mode with a
 compatible ScriptHookV-NX runtime installed. The example writes
-`switch/gtav-scripthook/settings/my-first-mod-hello.txt` and finishes. Finishing
+`switch/gtav-scripthook/settings/my-first-mod/hello.txt` and finishes. Finishing
 is normal: the NRO remains mapped, but its script uses no scheduler stack.
 Build into `out/my-first-mod-test2` after editing; close GTA before replacing
 the installed file. See [installation](INSTALL.md) for the runtime and startup modes.
@@ -33,7 +33,7 @@ and the MG-SwitchMenu SDK. Neither is silently downloaded or bundled here.
 | `include/script.h` | ScriptMain, native namespaces, WAIT and entry macro |
 | `include/shv/` | Optional bounded text, timers, controller input, INI files, nearby-ped queries and journaled settings |
 | `include/plugin_manager.h` | Optional standalone manager interface |
-| `examples/tutorials/` | Five small NRO and two NSC lessons |
+| `examples/tutorials/` | Six NRO and two NSC lessons |
 | `examples/public_plugin.cpp` | Advanced provider and seven-check diagnostic sample |
 | `mods/showcase-test1/` | Drive HUD, Pit Stop and Stunt Journal sources |
 | `mods/plugin-manager/` | Standalone manager source; no NSC menu dependency |

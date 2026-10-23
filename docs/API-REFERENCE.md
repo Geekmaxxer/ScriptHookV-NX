@@ -3,12 +3,15 @@
 Include `script.h` for the common interface. Use `plugin.h` directly only when
 supplying an explicit descriptor and initialization callback. One NRO exports
 one `shvPluginQuery`, with a side-effect-free query, short initialize and one
-cooperative run entry. Global constructors/destructors and unresolved imports
+cooperative main entry, plus optional [additional entries and callbacks](EXTENSIONS.md).
+Global constructors/destructors and unresolved imports
 are rejected by the builder/loader.
 
 | API | Contract |
 | --- | --- |
 | `SHV_NX_PLUGIN("id", ScriptMain)` | Define an entry with a compile-time checked 1-31 character ID |
+| `SHV_NX_PLUGIN_WITH_INIT("id", ScriptMain, Initialize)` | Bind ABI 1, then run a bounded bool initializer that may stage child scripts/callbacks |
+| `SHV_NX_PLUGIN_WITH_LIFECYCLE("id", ScriptMain, Initialize, Stop)` | Explicit initializer and stop callback, retaining original ABI 1 |
 | `SHV_NX_PLUGIN_WITH_STOP("id", ScriptMain, Stop)` | Same ABI 1 descriptor with an optional `void Stop()` export; see lifecycle requirements below |
 | `WAIT(ms)` / `scriptWait(ms)` | Yield from the run entry/callees; zero means next game frame |
 | `ScriptHook::invoke<R>(hash, args...)` | Per-call typed context; zero result on failure, inspect status |
@@ -27,11 +30,12 @@ settings; names supplied to file APIs are flat ASCII filenames, at most 63
 characters, with no leading/repeated periods or directory separators.
 
 `main.h` also declares core-only APIs for in-core registration, scheduler control,
-self-tests and diagnostics. External ABI 1 does **not** supply `scriptRegister`,
-`scriptRegisterChecked`, `scriptUnregister`, `scriptStopAll`,
+self-tests and diagnostics. The optional [extensions table](EXTENSIONS.md) now
+supplies owned script registration, enumeration, pointers, textures and callbacks.
+External ABI 1 still does **not** supply `scriptStopAll`,
 `getScriptRuntimeInfo`, `getScriptRuntimeStatus`, `scriptRuntimeSelfTest`,
 `nativeCallerSelfTest`, `invalidateNativeLookupCache` or `getScriptHookVersion`.
-Use the one scheduled run entry and optional manager native helpers externally.
+Use owned extension registration and optional manager native helpers externally.
 Undefined imports fail at link time instead of becoming a promised API.
 
 ## Bounded nearby-ped queries
@@ -50,8 +54,8 @@ This is a header-only helper using existing ABI 1 calls; runtime installation is
 ## Optional cleanup and portable helpers
 
 Lifecycle Test 1 resolves `shvPluginStop` in the owning module's executable text.
-It runs once after the scheduled entry is stopped or returns, and once again if
-a restarted entry later stops. Run bounded cleanup that releases owned entities
+It runs once after the plugin is stopped or all its entries, callbacks and timed
+draws finish, and once again if a restarted plugin later stops. Run bounded cleanup that releases owned entities
 or effects; use ordinary native calls and namespaced file I/O. Do not call WAIT,
 run loading loops or leave an unfinished native call. The runtime diagnoses those
 last two call-state violations; it cannot preempt an infinite callback or recover
@@ -64,7 +68,7 @@ and is not guaranteed on a crash or process exit.
 `<shv/input.h>` provides Nintendo-labeled GTA frontend controls and
 `ScriptHook::Input::ShoulderChord`, defaulting to L + R + Y. Poll once per frame;
 the chord fires once per complete press. These are GTA control actions rather
-than raw Joy-Con button reads. Keyboard behavior needs explicit adaptation.
+than raw Joy-Con button reads. USB keyboard callbacks and their HID translation are described in [extensions](EXTENSIONS.md).
 
 `<shv/ini.h>` provides `ScriptHook::Util::Ini<Bytes, Entries>` with no heap allocation.
 Call `Load("config.ini")` once, then `Get(section,key,fallback)`,

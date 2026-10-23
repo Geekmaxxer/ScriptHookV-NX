@@ -34,6 +34,9 @@ or create an RPF resource entry for it.
 SHVNX_SAVE/LOAD counts are **INT words**, up to 256, not byte sizes. Namespace
 zero uses the calling script's name hash. A shared explicit namespace is an
 intentional API decision; otherwise distinct scripts keep separate settings.
+Generic NSC journals live at `settings/nsc-<eight-digit-hash>/a.bin` and `b.bin`.
+The updated runtime migrates the previous flat slot filenames on access, retaining
+their generation and CRC. MEGASAVE/MEGALOAD storage in `gtav-megatard` is unchanged.
 
 ## Connect an NRO provider
 

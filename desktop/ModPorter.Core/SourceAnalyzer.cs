@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 namespace ModPorter.Core;
 
 public sealed record EntryPoint(string File, int NameToken, int BodyStart, int BodyEnd);
-public sealed record DllEntry(string File, int Start, int End, bool Standard);
+public sealed record DllEntry(string File, int Start, int End, bool Standard, RegistrationPlan? Registration=null);
 public static partial class SourceAnalyzer {
-    public static bool IsDescriptorMacro(string name) => name is "SHV_NX_PLUGIN" or "SHV_NX_PLUGIN_WITH_STOP";
+    public static bool IsDescriptorMacro(string name) => name is "SHV_NX_PLUGIN" or "SHV_NX_PLUGIN_WITH_STOP" or "SHV_NX_PLUGIN_WITH_INIT" or "SHV_NX_PLUGIN_WITH_LIFECYCLE";
     // These are namespace spelling aliases only. Every used function is checked against the selected target index.
     public static readonly Dictionary<string, string> NamespaceAliases = new(StringComparer.Ordinal) { ["GAMEPLAY"] = "MISC", ["UI"] = "HUD", ["CONTROLS"] = "PAD", ["TIME"] = "CLOCK", ["_SYSTEM"] = "SYSTEM" };
     // Exact legacy PC symbol aliases: alloc8or native DB names/old_names checked
@@ -17,7 +17,7 @@ public static partial class SourceAnalyzer {
         ["MISC::_HAS_CHEAT_STRING_JUST_BEEN_ENTERED"] = "MISC::HAS_PC_CHEAT_WITH_HASH_BEEN_ACTIVATED",
         ["GRAPHICS::_0xBA3D194057C79A7B"] = "GRAPHICS::SET_PARTICLE_FX_FOOT_OVERRIDE_NAME"
     };
-    public static readonly HashSet<string> SdkHeaders = new(StringComparer.OrdinalIgnoreCase) { "script.h", "main.h", "types.h", "natives.h", "nativecaller.h", "enums.h" };
+    public static readonly HashSet<string> SdkHeaders = new(StringComparer.OrdinalIgnoreCase) { "script.h", "main.h", "types.h", "natives.h", "nativecaller.h", "enums.h", "extensions.h", "plugin.h" };
     static readonly HashSet<string> PortableSystemHeaders = new(StringComparer.OrdinalIgnoreCase) { "stdint.h", "stddef.h", "stdbool.h", "limits.h", "float.h", "stdarg.h", "stddef", "cstdint", "cstddef", "type_traits", "utility" };
     [GeneratedRegex(@"(?m)^\s*#\s*include\s*([<""])([^>""\r\n]+)[>""]")]
     public static partial Regex Includes();
@@ -29,16 +29,16 @@ public static partial class SourceAnalyzer {
             name.Equals("nativeCaller.h", StringComparison.OrdinalIgnoreCase) && f.Text.Contains("nativeCall"));
     }
     public static string DiscoverEntry(IEnumerable<SourceFile> files) {
-        var names = new HashSet<string>(StringComparer.Ordinal);
+        var names = new HashSet<string>(StringComparer.Ordinal);var descriptors=new HashSet<string>(StringComparer.Ordinal);
         foreach (var file in files.Where(f => f.IsTranslationUnit)) {
             string code = CppLexer.CodeOnly(file.Text);
             foreach (Match m in Regex.Matches(code, @"\bscriptRegister\s*\(\s*[a-zA-Z_]\w*\s*,\s*([a-zA-Z_]\w*)\s*\)")) names.Add(m.Groups[1].Value);
             foreach (var t in CppLexer.Tokens(file.Text).Where(t => IsDescriptorMacro(t.Text))) {
-                var m = Regex.Match(file.Text[t.Start..], "^SHV_NX_PLUGIN(?:_WITH_STOP)?\\s*\\(\\s*\"[A-Za-z0-9_-]+\"\\s*,\\s*([a-zA-Z_]\\w*)\\s*[,)]");
-                if (m.Success) names.Add(m.Groups[1].Value);
+                var m = Regex.Match(file.Text[t.Start..], "^SHV_NX_PLUGIN(?:_WITH_(?:STOP|INIT|LIFECYCLE))?\\s*\\(\\s*\"[A-Za-z0-9_-]+\"\\s*,\\s*([a-zA-Z_]\\w*)\\s*[,)]");
+                if (m.Success) descriptors.Add(m.Groups[1].Value);
             }
         }
-        return names.Count == 1 ? names.Single() : "ScriptMain";
+        return descriptors.Count==1?descriptors.Single():names.Contains("ScriptMain")?"ScriptMain":names.Order(StringComparer.Ordinal).FirstOrDefault()??"ScriptMain";
     }
     public static List<EntryPoint> Entries(SourceFile file, string entryName = "ScriptMain") {
         var t = CppLexer.Tokens(file.Text); var entries = new List<EntryPoint>();
@@ -61,18 +61,8 @@ public static partial class SourceAnalyzer {
             while (start > 0 && t[start - 1].Text is not ";" and not "}" and not "{" && t[start - 1].Line >= t[i].Line - 2) start--;
             // Never include preprocessor directives in a function edit.
             while (start < i && t[start].Text == "#") { int line = t[start].Line; while (start < i && t[start].Line == line) start++; }
-            var calls = new List<string>();
-            for (int k = p + 2; k < end - 1; k++) if (t[k + 1].Text == "(" && char.IsAsciiLetter(t[k].Text[0])) calls.Add(t[k].Text);
-            bool standard = calls.All(c => c is "if" or "switch" or "scriptRegister" or "scriptUnregister" or "DisableThreadLibraryCalls");
-            // Remove only registration boilerplate, never hidden assignments or a second script entry.
-            var allowed = new HashSet<string>(StringComparer.Ordinal) { "if", "else", "switch", "case", "break", "return", "TRUE", "FALSE", "true", "false", "DLL_PROCESS_ATTACH", "DLL_PROCESS_DETACH", "DLL_THREAD_ATTACH", "DLL_THREAD_DETACH", "scriptRegister", "scriptUnregister", "DisableThreadLibraryCalls", "ScriptMain" };
-            allowed.Add(entryName);
-            foreach (var token in t.Skip(i + 2).Take(p - i - 2)) if (char.IsAsciiLetter(token.Text[0])) allowed.Add(token.Text);
-            foreach (var token in t.Skip(p + 2).Take(end - p - 2)) {
-                if (char.IsAsciiLetter(token.Text[0]) && !allowed.Contains(token.Text)) standard = false;
-                if (token.Text is "=" or "+" or "-" or "*" or "[" or "]") standard = false;
-            }
-            result.Add(new(file.RelativePath, t[start].Start, t[end].Start + 1, standard));
+            var plan=DllRegistration.Parse(t,i+1,p,end,entryName);
+            result.Add(new(file.RelativePath,t[start].Start,t[end].Start+1,plan!=null,plan));
         }
         return result;
     }
@@ -87,7 +77,7 @@ public static partial class SourceAnalyzer {
     }
     public static string? DescriptorId(IEnumerable<SourceFile> files) {
         foreach (var file in files.Where(f => !IsVendorHeader(f))) foreach (var t in CppLexer.Tokens(file.Text).Where(t => IsDescriptorMacro(t.Text))) {
-            var m = Regex.Match(file.Text[t.Start..], "^SHV_NX_PLUGIN(?:_WITH_STOP)?\\s*\\(\\s*\"([A-Za-z0-9_-]{1,31})\"");
+            var m = Regex.Match(file.Text[t.Start..], "^SHV_NX_PLUGIN(?:_WITH_(?:STOP|INIT|LIFECYCLE))?\\s*\\(\\s*\"([A-Za-z0-9_-]{1,31})\"");
             if (m.Success) return m.Groups[1].Value;
         }
         return null;
@@ -123,7 +113,7 @@ public static partial class SourceAnalyzer {
             if (!file.IsTranslationUnit && !new[] { ".h", ".hpp", ".hh", ".hxx", ".inc", ".inl", ".ipp", ".tpp" }.Contains(Path.GetExtension(file.RelativePath).ToLowerInvariant())) continue;
             var dlls = DllEntries(file, entryName); string code = CppLexer.CodeOnly(file.Text);
             foreach (var dll in dlls) {
-                Add(dll.Standard ? Severity.Review : Severity.Blocker, dll.Standard ? "DLL_ENTRY" : "DLL_CUSTOM_INIT", file.RelativePath, Line(file.Text, dll.Start), dll.Standard ? "Windows DllMain registration must be replaced with an NX descriptor." : "DllMain contains custom initialization or cleanup.", dll.Standard ? "Enable standard Windows entry-point adaptation. Keyboard callbacks still require controller adaptation." : "Move required initialization into ScriptMain and provide a Switch cleanup strategy before building.");
+                Add(dll.Standard ? Severity.Review : Severity.Blocker, dll.Standard ? "DLL_ENTRY" : "DLL_CUSTOM_INIT", file.RelativePath, Line(file.Text, dll.Start), dll.Standard ? "Windows DllMain registration must be replaced with an NX lifecycle descriptor." : "DllMain contains custom initialization or cleanup.", dll.Standard ? "Enable standard entry-point adaptation to preserve additional scripts and callbacks. Review callback bodies for Switch platform dependencies." : "Move required initialization into an explicit NX initializer and provide a Switch cleanup strategy before building.");
                 code = code[..dll.Start] + new string(' ', dll.End - dll.Start) + code[dll.End..];
             }
             foreach (Match match in Includes().Matches(file.Text)) {
@@ -143,20 +133,22 @@ public static partial class SourceAnalyzer {
             foreach (var (id, tok) in ids) {
                 string? reason = id switch {
                     "CreateThread" or "_beginthreadex" or "std::thread" or "CreateFiber" or "SwitchToFiber" or "ConvertThreadToFiber" => "Windows threads/fibers cannot be imported into the cooperative Switch runtime.",
-                    "GetAsyncKeyState" or "GetKeyState" or "keyboardHandlerRegister" or "keyboardHandlerUnregister" or "IsKeyJustUp" or "IsKeyDown" or "IsKeyJustDown" => "Keyboard handling needs an explicit controller binding.",
+                    "GetAsyncKeyState" or "GetKeyState" or "IsKeyJustUp" or "IsKeyDown" or "IsKeyJustDown" => "Windows keyboard polling needs a Switch input callback or controller binding.",
                     "VirtualProtect" or "VirtualAlloc" or "GetModuleHandle" or "GetModuleHandleA" or "GetProcAddress" or "LoadLibraryA" or "LoadLibrary" or "ReadProcessMemory" or "WriteProcessMemory" or "MH_CreateHook" or "MH_EnableHook" or "FindPattern" or "pattern" => "PC addresses, module lookup or memory hooks require a target-specific port.",
-                    "Present" or "D3D11CreateDevice" or "Direct3DCreate9" or "ImGui" or "IDXGISwapChain" or "ID3D11Device" => "PC rendering dependencies need a GTA HUD/graphics implementation.",
+                    "D3D11CreateDevice" or "Direct3DCreate9" or "ImGui" or "IDXGISwapChain" or "ID3D11Device" => "PC rendering dependencies need a GTA HUD/graphics implementation.",
                     "fopen" or "ofstream" or "ifstream" or "filesystem" or "GetPrivateProfileIntA" or "GetPrivateProfileStringA" or "WritePrivateProfileStringA" or "CSimpleIniA" => "File/settings code needs the SDK's namespaced storage helpers.",
                     "vector" or "map" or "unordered_map" or "string" or "thread" or "mutex" or "malloc" or "free" or "new" or "delete" or "throw" or "try" => "Hosted library, heap allocation or exception dependency requires review for the freestanding SDK.",
                     "nativeInit" or "nativePush64" or "nativeCall" or "invoke" => "Raw native calls need verified Switch hashes and argument contracts.",
-                    "scriptRegister" or "scriptUnregister" or "scriptRegisterAdditionalThread" => "External plugins use one descriptor entry; PC script registration requires adaptation.",
                     "getGameVersion" or "GetGameVersion" => "PC executable-version guards cannot use a fabricated PC build number on Switch.",
-                    "getScriptHandleBaseAddress" or "getGlobalPtr" or "BytePattern" or "HookManager" => "PC script/entity pointers and executable signatures require a separate Switch implementation.",
-                    "worldGetAllPeds" or "worldGetAllVehicles" or "worldGetAllObjects" or "worldGetAllPickups" => "PC world-pool enumeration is not supplied by the Switch SDK; provide a bounded, target-verified query implementation.",
+                    "BytePattern" or "HookManager" => "Executable signatures require a separate Switch implementation.",
                     "Sleep" => "Windows Sleep must be replaced by cooperative WAIT inside ScriptMain.",
                     _ => null
                 };
                 if (reason != null) Add(Severity.Blocker, "API_" + id.ToUpperInvariant(), file.RelativePath, tok.Line, reason, id == "Sleep" ? "Enable the cooperative Sleep adapter, then review its call context." : "Adapt this dependency in the copied project and analyze again.");
+                if (id is "getGlobalPtr" or "getScriptHandleBaseAddress") Add(Severity.Review, "NX_MEMORY_LAYOUT", file.RelativePath, tok.Line, "The SDK exposes validated Switch pointers, but PC global indices and entity offsets are not portable.", "Verify every index and offset for the selected Switch build. Reacquire entity pointers after waits or deletion.");
+                if (id is "keyboardHandlerRegister" or "keyboardHandlerUnregister") Add(Severity.Review, "NX_KEYBOARD", file.RelativePath, tok.Line, "USB keyboard callbacks are supported; scan codes use HID usages and no Windows message queue exists.", "Add a controller binding for handheld play and review virtual-key assumptions.");
+                if (id is "presentCallbackRegister" or "renderCallbackRegister") Add(Severity.Review, "NX_RENDER_CONTEXT", file.RelativePath, tok.Line, "Callbacks run in the game script frame and receive an NX frame descriptor.", "Use GTA HUD natives or drawTexture. Do not cast the argument to a DirectX object or call WAIT from callbacks.");
+                if (id == "createTexture") Add(Severity.Review, "NX_TEXTURE_ASSET", file.RelativePath, tok.Line, "Custom textures use PNG files from assets/<plugin-id>/.", "Supply PNG assets up to 1024x1024 and account for the shared plugin memory budget. PC filesystem paths are not converted.");
                 if (id is "while" or "for" && !ids.ContainsKey("WAIT") && !ids.ContainsKey("scriptWait")) Add(Severity.Review, "YIELD_REVIEW", file.RelativePath, tok.Line, "This file contains loops without an obvious cooperative wait.", "Check reachable loops. A non-yielding script can stall the game; static analysis cannot prove yield safety.");
             }
             for (int i = 0; i + 3 < tokens.Count; i++) {

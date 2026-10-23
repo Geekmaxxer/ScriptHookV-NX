@@ -1,5 +1,6 @@
 #pragma once
 #include "plugin.h"
+#include "extensions.h"
 #include "natives.h"
 
 // Familiar source syntax, using this Switch build's native declarations.
@@ -40,4 +41,21 @@ template <size_t N> constexpr bool ValidId(const char (&id)[N]) {
 // WAIT, loops waiting for assets, C++ unwinding or reliance on entry-stack locals.
 #define SHV_NX_PLUGIN_WITH_STOP(plugin_id, entry_function, stop_function) \
     SHV_NX_PLUGIN(plugin_id, entry_function) \
+    extern "C" SHV_NX_API void shvPluginStop() { stop_function(); }
+
+// Initialize returns bool and must not yield. Register children/callbacks there;
+// the loader commits them only after initialization succeeds.
+#define SHV_NX_PLUGIN_WITH_INIT(plugin_id, entry_function, init_function) \
+    static bool shvNxPluginInitialize(const ShvNxApi* api) { \
+        return shvBindApi(api) && init_function(); \
+    } \
+    static_assert(::ScriptHook::PluginDetail::ValidId(plugin_id), "Invalid plugin ID"); \
+    extern "C" SHV_NX_API const ShvNxPlugin* shvPluginQuery() { \
+        static constexpr ShvNxPlugin descriptor = { sizeof(ShvNxPlugin), \
+            SHV_NX_PLUGIN_ABI_VERSION, SHV_NX_CALLER_ABI_VERSION, \
+            SHV_NX_RUNTIME_ABI_VERSION, plugin_id, shvNxPluginInitialize, entry_function }; \
+        return &descriptor; \
+    }
+#define SHV_NX_PLUGIN_WITH_LIFECYCLE(plugin_id, entry_function, init_function, stop_function) \
+    SHV_NX_PLUGIN_WITH_INIT(plugin_id, entry_function, init_function) \
     extern "C" SHV_NX_API void shvPluginStop() { stop_function(); }

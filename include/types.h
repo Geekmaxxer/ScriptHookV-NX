@@ -8,6 +8,7 @@ typedef int32_t BOOL; // Native BOOL outputs occupy four bytes.
 typedef uint32_t DWORD;
 typedef uint16_t WORD;
 typedef uint8_t BYTE;
+typedef void* HMODULE;
 typedef uint32_t uint;
 typedef uint32_t Hash;
 typedef int32_t Entity;

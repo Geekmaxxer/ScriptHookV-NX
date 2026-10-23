@@ -1,0 +1,25 @@
+{
+  "format": 1,
+  "module_sha256": "e4ff003ddf6d2cdd2ac7ac8c2f6598e10e4444e5acfc139d573b06fea122f9b6",
+  "bss_bytes": 1278680,
+  "segments": {
+    "text": {
+      "memory_offset": 0,
+      "bytes": 106080,
+      "normalized_sha256": "e3800bbf7fbf6fc788776acfd049167198d1f2cd7ec35e89770a7aa318dc0321",
+      "ignored_gnu_build_id_bytes": 0
+    },
+    "rodata": {
+      "memory_offset": 106496,
+      "bytes": 21296,
+      "normalized_sha256": "7d72964053176edc8500775407253f819bd5a3ca43913b6582ad5aae50b34ce9",
+      "ignored_gnu_build_id_bytes": 20
+    },
+    "data": {
+      "memory_offset": 131072,
+      "bytes": 680,
+      "normalized_sha256": "743450b7bf85da000445620f0d2996e7cc9a877d23083ad1588fad1b00c56eea",
+      "ignored_gnu_build_id_bytes": 0
+    }
+  }
+}

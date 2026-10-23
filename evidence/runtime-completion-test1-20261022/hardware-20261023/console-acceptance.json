@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "date": "2026-10-23",
+  "milestone": "Runtime Completion Test 1",
+  "release": "v1.3 Public Preview",
+  "target_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "module_sha256": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+  "console_acceptance": true,
+  "switch_runtime_verified": true,
+  "acceptance_scope": "Matched console gameplay acceptance with installed artifact hashes and SD report snapshots",
+  "installed_file_sha256": {
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk5": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+    "switch/gtav-scripthook/plugins/plugin-manager.nro.disabled": "99724e75a618d1b5049e6016bf6d380e6f886ffb153c5d52409202ab81cf9621",
+    "switch/gtav-scripthook/plugins/disarm-nx.nro": "a4bd9c95f1f01ed2b9dbd987e4ea1332e835489c6baed11a43767c1f97a45308",
+    "switch/gtav-scripthook/plugins/footprints-nx.nro": "9fe13982083c9dfe8778e9133349285ccfd2d825c100df52278514f27ba9103f",
+    "switch/gtav-scripthook/plugins/asset-probe.nro": "ed6504529d61a8f8ed594caa10202197a6262170e357560c6ed9c711d24dbe29",
+    "switch/gtav-scripthook/plugins/sdk-parity-probe.nro": "869e2f0e86ef0d5ada8b8dba94d607d2b1c8cf7e578721991d8f38e0d30a28c5",
+    "switch/gtav-scripthook/plugins/multi-script-port.nro.manual": "514ad7cbca265cd23d6d03efb5b4218ebf6a238aa4faa8ef2368df7e03014bc4",
+    "switch/gtav-scripthook/plugins/runtime-diagnostics.nro.manual": "fbd386bebeafc2cef9d73bf478910d2d3b5ff61e4748b05b4bcd75f72836c23c",
+    "switch/gtav-scripthook/assets/sdk-parity-probe/palette.png": "6139992d6f572ea494f610ab62a16f43b746c66593528eabc0b7f87b5aea6869",
+    "switch/gtav-scripthook/bindings/ragemenu.snb": "249571fa59950685514c9be890e67a5bb7afae23d34fad8c322d9ca745badb51"
+  },
+  "report_confirmed": {
+    "loader_complete": true,
+    "loader_errors": 0,
+    "cleanup_failures": 0,
+    "callback_failures": 0,
+    "plugins_discovered": 7,
+    "plugins_resident": 6,
+    "plugins_running": 5,
+    "plugin_memory_accounted_bytes": 413696,
+    "plugin_memory_budget_bytes": 8388608,
+    "probe_texture_bytes": 36864,
+    "additional_script_entries": 2,
+    "render_callbacks_active": 2,
+    "timing_available": true
+  },
+  "console_observations": {
+    "multi_script_worker_and_render_active": true,
+    "previous_gameplay_features_preserved": true,
+    "diagnostics_loaded_during_gameplay": true,
+    "simultaneous_mods_stable": true,
+    "observed_regressions": false
+  },
+  "verification_limits": [
+    "Gameplay observations and dispatch timing snapshots do not establish instrumented game-wide FPS, isolated CPU usage or physical peak RAM.",
+    "This session used six resident NROs; eight-resident and sixteen-script capacity checks have local ARM64 coverage, separate from this console session.",
+    "USB keyboard compatibility is optional and is not a Switch release requirement.",
+    "Asset conversion outputs and unrelated third-party mods require their own gameplay tests.",
+    "Earlier SDK Parity acceptance retains its separate restart, pointer, enumeration and controller coverage."
+  ],
+  "reports": {
+    "loader-report.txt": {
+      "sha256": "19bd7e13d376ee3608f5cf91485a6d03082221260b505e27ffbaf04089a467ee",
+      "text": "ScriptHookV-NX runtime completion test 1\nloader_stage=0x3\nextension_abi=0x1\nengine_api_verified=0x1\nsettings_layout=0x2\nloader_stage_name=complete\nloader_error=0x0\nloader_error_name=none\nplugins_found=0x7\nplugins_discovered=0x7\nplugins_loaded=0x6\nplugins_skipped=0x0\nplugins_disabled=0x1\nplugin_directory_entries=0x7\nbinding_directory_entries=0x1\ndirectory_entry_limit=0x1000\nnative_manifests=0x1\nresident_limit=0x8\nplugin_memory_budget=0x800000\nplugin_memory_accounted=0x65000\nlast_action_error=0x0\ncleanup_callbacks=0x1\ncleanup_failures=0x0\nscript_slot_limit=0x10\nscript_stack_bytes=0x10000\nruntime_config_state=0x1\nruntime_config_error=0x0\nruntime_config_applied_mask=0x0\nruntime_config_invalid_mask=0x0\nruntime_config_stack_error=0x0\nscript_stack_allocated_bytes=0x100000\ndefault_resident_limit=0x8\ndefault_script_slots=0x10\ndefault_plugin_memory_mib=0x8\nresident_limit_ceiling=0x10\nscript_slots_ceiling=0x20\nplugin_memory_mib_ceiling=0x40\npolicy_request_slot=0xffffffff\npolicy_requested=0xffffffff\npolicy_previous=0xffffffff\npolicy_effective=0xffffffff\npolicy_rename_attempted=0x0\npolicy_rename_result=0xffffffff\npolicy_readback_flags=0x0\nplugins_running=0x5\nplugin=asset-probe.nro\nslot=0x0\npolicy=0x2\nresident=0x1\nrunning=0x0\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=disarm-nx.nro\nslot=0x1\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=footprints-nx.nro\nslot=0x2\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=sdk-parity-probe.nro\nslot=0x3\npolicy=0x2\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x1\ncallbacks_active=0x1\ncallback_failures=0x0\ntexture_memory_bytes=0x9000\nplugin=multi-script-port.nro.manual\nslot=0x4\npolicy=0x1\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x1\ncallbacks_active=0x1\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=runtime-diagnostics.nro.manual\nslot=0x5\npolicy=0x1\nresident=0x1\nrunning=0x1\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x7\nstep_name=loaded\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nplugin=plugin-manager.nro.disabled\nslot=0x6\npolicy=0x0\nresident=0x0\nrunning=0x0\nkill_queued=0x0\nstopped=0x0\nqueued=0x0\npresent=0x1\nstep=0x0\nstep_name=not_started\nerror=0x0\nerror_name=none\nadditional_entries=0x0\ncallbacks_active=0x0\ncallback_failures=0x0\ntexture_memory_bytes=0x0\nreport_clipped=0\n"
+    },
+    "probe-status.txt": {
+      "sha256": "e7f832998e5181a05dc40f8e65527fe577a657b55c3cdb7bb44aa1a77c477cda",
+      "text": "ScriptHookV-NX SDK parity probe\nphase=running\nstarts=1\nworker_ticks=449\nworker_registered=1\nrender_registered=1\ncontrol_registered=1\nrender_frames=4519\ncontroller_presses=4\npeds=38\nvehicles=30\nobjects=128\npickups=0\nplayer_pointer_valid=1\nglobal_bank_found=1\nglobal_bank=0\ntexture_id=1\n"
+    },
+    "performance-report.txt": {
+      "sha256": "dbc3799077218a4afc9eac8edaa6de20c25720fbe57a3768ce67c91fd3272c72",
+      "text": "ScriptHookV-NX plugin timing snapshot\nunits=microseconds\nmeasurement=elapsed_dispatch_time_including_native_calls_io_and_os_preemption\ntiming_available=1\nplugin=asset-probe.nro\nmapped_accounted_kib=44\nscript_calls=242\nscript_total_us=226222\nscript_worst_us=79341\ncallback_calls=0\ncallback_total_us=0\ncallback_worst_us=0\ncleanup_calls=1\ncleanup_total_us=10780\ncleanup_worst_us=10780\ninitialize_calls=1\ninitialize_total_us=0\ninitialize_worst_us=0\nplugin=disarm-nx.nro\nmapped_accounted_kib=52\nscript_calls=3143\nscript_total_us=529948\nscript_worst_us=40933\ncallback_calls=0\ncallback_total_us=0\ncallback_worst_us=0\ncleanup_calls=0\ncleanup_total_us=0\ncleanup_worst_us=0\ninitialize_calls=1\ninitialize_total_us=0\ninitialize_worst_us=0\nplugin=footprints-nx.nro\nmapped_accounted_kib=52\nscript_calls=3143\nscript_total_us=44690\nscript_worst_us=7265\ncallback_calls=0\ncallback_total_us=0\ncallback_worst_us=0\ncleanup_calls=0\ncleanup_total_us=0\ncleanup_worst_us=0\ninitialize_calls=1\ninitialize_total_us=0\ninitialize_worst_us=0\nplugin=sdk-parity-probe.nro\nmapped_accounted_kib=120\nscript_calls=392\nscript_total_us=461915\nscript_worst_us=72628\ncallback_calls=3163\ncallback_total_us=1066484\ncallback_worst_us=765\ncleanup_calls=0\ncleanup_total_us=0\ncleanup_worst_us=0\ninitialize_calls=1\ninitialize_total_us=0\ninitialize_worst_us=0\nplugin=multi-script-port.nro.manual\nmapped_accounted_kib=44\nscript_calls=427\nscript_total_us=1292\nscript_worst_us=12\ncallback_calls=387\ncallback_total_us=41640\ncallback_worst_us=250\ncleanup_calls=0\ncleanup_total_us=0\ncleanup_worst_us=0\ninitialize_calls=1\ninitialize_total_us=3\ninitialize_worst_us=3\nplugin=runtime-diagnostics.nro.manual\nmapped_accounted_kib=92\nscript_calls=1\nscript_total_us=2\nscript_worst_us=2\ncallback_calls=0\ncallback_total_us=0\ncallback_worst_us=0\ncleanup_calls=0\ncleanup_total_us=0\ncleanup_worst_us=0\ninitialize_calls=1\ninitialize_total_us=0\ninitialize_worst_us=0\nplugin=plugin-manager.nro.disabled\nmapped_accounted_kib=0\nscript_calls=0\nscript_total_us=0\nscript_worst_us=0\ncallback_calls=0\ncallback_total_us=0\ncallback_worst_us=0\ncleanup_calls=0\ncleanup_total_us=0\ncleanup_worst_us=0\ninitialize_calls=0\ninitialize_total_us=0\ninitialize_worst_us=0\n"
+    },
+    "bridge-report.txt": {
+      "sha256": "2527e065f5d1b70762cf36d2761ecdc57f2a789d3bdc95e9e464b057cf62ae4d",
+      "text": "ScriptHookV-NX cooperative runtime test 1\nmain_base=0x3d30405000\nsdk_base=0x3d342f5000\nvm_ticks=0x119\ncached_native_repairs=0x0\ncached_native_rejections=0x0\nsave_calls=0x0\nload_calls=0x2\nsave_successes=0x0\nload_successes=0x2\nlast_fs_result=0x0\nnative_caller_abi=0x1\nnative_caller_self_test_ran=0x0\nnative_caller_self_test_passed=0x0\nnative_caller_self_test_failed=0x0\nnative_caller_self_test_error=0x0\nnative_caller_self_test_error_hash=0x0\nruntime_abi=0x1\nruntime_active=0x5\nruntime_resumes=0x6f\nruntime_context_rejections=0x0\nruntime_test_runs=0x0\nruntime_test_done=0x0\nruntime_test_passed=0x0\nruntime_test_failed=0x0\n"
+    }
+  }
+}

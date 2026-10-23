@@ -8,6 +8,8 @@ checks passed. Refinement Test 2 retains ABI 1 and also passed those seven conso
 sample checks with zero loader errors. Later console tests cover simultaneous
 showcase mods and startup-policy restoration after restart; exact scope is linked
 from the repository README. Actual peak memory/FPS measurements remain pending.
+SDK Parity Test 1 also passed its [scoped console checks](EXTENSIONS.md) for the
+combined probe, PNG rendering, controller input, coexistence and restart.
 Start with [the quickstart](START-HERE.md) and [tutorials](TUTORIALS.md), or see [porting guide](PORTING.md) for familiar ScriptMain/WAIT
 syntax and efficient plugin design.
 
@@ -69,13 +71,19 @@ registers custom hash `0x5348564558414d31`, checks real game natives and waits,
 and writes a seven-check result. A different NSC can call that custom hash.
 
 Use `scriptSaveFile` / `scriptReadFile` with flat filenames of at most 63
-characters. The SDK places them under `settings/<plugin-id>-<filename>` in
+characters. The SDK places them under `settings/<plugin-id>/<filename>` in
 `switch/gtav-scripthook`. IDs are unique ASCII letters/digits/underscore/hyphen,
 at most 31 characters. File writes are limited to 64 KiB. These raw file APIs
 are single-file writes; use your own journaling if needed. The SDK prevents
 crossing directories through these filenames. Native invocation and I/O belong
 to the game script thread. Initialize game/player-dependent state only when the
 corresponding game objects are ready.
+
+Existing ABI 1 NROs use this layout without rebuilding when run on the updated
+runtime. On first access, a legacy `<plugin-id>-<filename>` is moved into that
+plugin's folder if the destination is absent. Existing files in the new folder
+take priority; conflicting legacy copies are retained. A failed migration leaves
+the original intact and fails the file operation so defaults cannot overwrite it.
 
 Modules remain mapped until game exit because NSCs can retain their native
 handler addresses. Hot unloading/reloading is deliberately unavailable. Images
@@ -89,10 +97,12 @@ Compatible PC plugin sources need rebuilding and adapting their entry point.
 Windows DLL/ASI binaries, Windows/DirectX APIs, arbitrary PC hashes and a hosted
 PC C++ standard library are not supported. The provided shim supports typed/raw
 native calls, availability/handler queries, `scriptWait`, custom registration,
-and namespaced file I/O. The core-only registration/control/self-test functions
-declared in main.h are not external ABI 1 shim functions. Each external plugin
-provides one scheduled run entry. Other APIs need an explicit port; unresolved imports
-fail at link time. The SDK versions its caller, runtime and plugin interfaces.
+and namespaced file I/O. [Extensions ABI 1](EXTENSIONS.md) adds owned additional
+scripts, all four entity pools, globals/entity pointers, custom PNG textures and
+controller/keyboard/rendering callbacks. The base API and plugin descriptor
+stay unchanged. Core-only scheduler-wide control/self-tests and cache management
+are not external shim functions. Other APIs need an explicit port; unresolved
+imports fail at link time. The SDK versions its caller, runtime and plugin interfaces.
 
 ## SanScript / NSC scripts
 
@@ -189,7 +199,7 @@ The earlier Refinement Test 2 EASY package contains subsdk5, the sample NRO, the
 file and a short guide. Boot GTA and check `switch/gtav-scripthook/loader-report.txt`:
 `plugins_loaded=0x1`, `loader_error=0x0`. Readable step/error names accompany the
 raw result codes in the refinement test. The sample writes
-`settings/public-sample-sample-result.txt` with `passed=7` / `failed=0`.
+`settings/public-sample/sample-result.txt` with `passed=7` / `failed=0`.
 The existing menu's Storage Self-Test can still check its own bridge/runtime.
 
 Local tests execute the production ARM64 loader, real NRO instructions, native

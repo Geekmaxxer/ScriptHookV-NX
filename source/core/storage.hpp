@@ -26,6 +26,10 @@ public:
     bool Size(const char* relative, size_t& bytes);
     bool Rename(const char* fromRelative, const char* toRelative);
     bool Delete(const char* relative);
+    bool Directory(const char* relative);
+    // Move a legacy file only when its new path is absent. Existing new files
+    // take priority; I/O errors preserve both paths and are not "missing".
+    bool MigrateFile(const char* legacy, const char* current);
     bool Plugins(DirectoryEntry* entries, size_t capacity, size_t& count);
     bool Bindings(DirectoryEntry* entries, size_t capacity, size_t& count);
     bool List(const char* relative,DirectoryEntry* entries,size_t capacity,size_t& count);
