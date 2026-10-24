@@ -49,6 +49,17 @@ static class RefinementTests {
     public static void Deployment(string scratch, string nro, Action<string,Action> check) {
         string sd=Path.Combine(scratch,"mock-sd");Directory.CreateDirectory(sd); string plugin=Path.Combine(sd,"switch/gtav-scripthook/plugins/deploy-test.nro.manual");
         check("SD install defaults Manual and restore removes new install",()=>{string record=DeploymentService.InstallNro(nro,"deploy-test",sd);Must(File.Exists(plugin));DeploymentService.Restore(record,sd);Must(!File.Exists(plugin));});
+        check("SD install supplies shared process metadata",()=>Must(File.Exists(Path.Combine(sd,SharedSdAccess.NpdmPath))));
+        check("Custom NPDM settings and unrelated rights survive SD patching",()=>{
+            string file=Path.Combine(sd,SharedSdAccess.NpdmPath);byte[] before=File.ReadAllBytes(file);before[0x20]^=0x10;
+            int aci=BitConverter.ToInt32(before,0x70),acid=BitConverter.ToInt32(before,0x78);
+            int[] offsets=[aci+BitConverter.ToInt32(before,aci+0x20)+4,acid+BitConverter.ToInt32(before,acid+0x220)+4];
+            foreach(int offset in offsets)BitConverter.GetBytes((BitConverter.ToUInt64(before,offset)&~(1UL<<21))|(1UL<<8)).CopyTo(before,offset);
+            File.WriteAllBytes(file,before);SharedSdAccess.EnsureForNro(nro,sd);
+            Must(File.ReadAllBytes(file).SequenceEqual(SharedSdAccess.WithSdAccess(before)));
+            Must(Directory.EnumerateFiles(Path.Combine(sd,"switch/gtav-scripthook/npdm-backups"),"*.npdm").Any());
+            DateTime stamp=File.GetLastWriteTimeUtc(file);SharedSdAccess.EnsureForNro(nro,sd);Must(File.GetLastWriteTimeUtc(file)==stamp);
+        });
         Directory.CreateDirectory(Path.GetDirectoryName(plugin)!);string disabled=plugin.Replace(".manual",".disabled");File.WriteAllBytes(disabled,[1,2,3]);
         check("SD update preserves policy and restores original bytes",()=>{string record=DeploymentService.InstallNro(nro,"deploy-test",sd);Must(File.Exists(disabled)&&!File.Exists(plugin));DeploymentService.Restore(record,sd);Must(File.ReadAllBytes(disabled).SequenceEqual(new byte[]{1,2,3}));});
         check("Restore protects later local changes",()=>{string record=DeploymentService.InstallNro(nro,"deploy-test",sd);File.AppendAllText(disabled,"changed");Reject(()=>DeploymentService.Restore(record,sd));});

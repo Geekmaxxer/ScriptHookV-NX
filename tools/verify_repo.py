@@ -21,6 +21,7 @@ def verify(output,desktop=False,cxx=None,devkit=None):
     profile_bindings(output/'target-bindings')
     checks.append('native-index-and-target-profile')
     run('portable-tools',[sys.executable,ROOT/'tools/test_portable.py'])
+    run('sd-access-packaging',[sys.executable,ROOT/'tools/test_sd_permissions.py'])
     if desktop:
         run('desktop-tests',['dotnet','run','--project',ROOT/'desktop/ModPorter.Tests/ModPorter.Tests.csproj','-c','Release','--',ROOT,*([] if devkit else ['--no-toolchain'])])
         if sys.platform=='win32':run('desktop-ui-build',['dotnet','build',ROOT/'desktop/ModPorter.App/ModPorter.App.csproj','-c','Release','-v','quiet'])

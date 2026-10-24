@@ -3,10 +3,16 @@
 Optional [runtime limits](RUNTIME-LIMITS.md) let you change resident NRO count,
 script slots and plugin memory budget. No configuration file is required.
 
-1. Close GTA. Back up any existing `exefs/subsdk5`.
+1. Close GTA. Back up existing `exefs/subsdk5` and `exefs/main.npdm`.
 2. Copy `atmosphere` from the runtime ZIP to your SD root. Install plugin files
    separately under `switch/gtav-scripthook/plugins/`.
 3. Launch Story Mode. Keep your existing menu and Self Radio files installed.
+
+The included `main.npdm` grants SD read/write access for loading plugins and
+saving settings. It is shared by ScriptHookV-NX, Self Radio and the menu. For a
+customized NPDM, run **Install-SD-Access.cmd** first; it backs up and patches only
+the SD permission bits. Then install the remaining files without overwriting
+that patched NPDM. Every runtime/test/mod package must include this dependency.
 
 This build supports title `0100b00b51230000`, game build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`.

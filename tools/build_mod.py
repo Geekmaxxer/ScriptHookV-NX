@@ -9,6 +9,7 @@ import subprocess
 from build_plugin import build
 from native_bindings import generate
 from runtime_limits import render, validate
+from sd_permissions import stage as stage_sd_access
 
 def inputs(project):
     data = json.loads(project.read_text(encoding='utf-8'))
@@ -80,6 +81,7 @@ def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, refe
                               for p in snapshot.rglob('*') if p.is_file()}
     proof['switch_runtime_verified'] = False
     (output/'project-build.json').write_text(json.dumps(proof, indent=2)+'\n')
+    stage_sd_access(output)
     shutil.copy2(project, output/'project.json')
     if 'runtime_limits' in data:
         (output/'runtime.ini').write_text(render(data['runtime_limits']), encoding='utf-8')

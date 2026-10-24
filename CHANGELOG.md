@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.1 Public Preview - 2026-10-23
+
+- Include the required shared SD-access `main.npdm` in runtime downloads,
+  developer builds and Mod Porter 0.6.0 packaging.
+- Provide an installer that backs up customized NPDM files and preserves their
+  other permissions and settings.
+- Runtime binary, plugin ABI and default limits remain unchanged.
+
 ## v1.4 Public Preview - 2026-10-23
 
 - Complete loose-PED DLC wrappers from explicitly selected target metadata.

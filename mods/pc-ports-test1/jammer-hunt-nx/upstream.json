@@ -1,0 +1,17 @@
+{
+  "repo": "https://github.com/root-cause/v-spjammerhunt",
+  "commit": "28a0148a74ac205c3a0817f5eea2ba4ca833cd5c",
+  "license": "MIT",
+  "source_files": {
+    "JammerHunt/Constants.cs": "3cd4b50a480bb059bfaf50512af4a48ea16348c9c959128311ade9b8d8999271",
+    "JammerHunt/Main.cs": "4ada153e01cbe28de1a0302cbf07e58349e14776657c77f6b1a0840cfd118889",
+    "JammerHunt/Classes/Jammer.cs": "0ea001453022e4b8dd6ae1f02860cbfa6b02e6f50352ab8af308075b46d4c3e0",
+    "JammerHunt/Classes/StageBase.cs": "bb10b1eef863db8ba3fcb12aa31d9698232dda860252caef548974858a916d16",
+    "JammerHunt/Enums/JammerHuntStage.cs": "1e17c3797dc45c90d85f422bf1df70e0e57e4931baec33c222b7df7da13db5a5",
+    "JammerHunt/Managers/SaveManager.cs": "3ee024040427be95f311181c3cfab5c08461511c964af5786d29df836248c5d2",
+    "JammerHunt/Stages/CompleteStage.cs": "f87fed4d1010209f10ad6697c89ba6eab1606cc448869482b5376f1d9a717034",
+    "JammerHunt/Stages/HuntingStage.cs": "ea5e8f5b653e54fcee72b6f714f66cfcf58db1c6adf6a5c76e71f1e3a2fc8499"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

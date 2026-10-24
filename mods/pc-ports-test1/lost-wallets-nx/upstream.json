@@ -1,0 +1,10 @@
+{
+  "repo": "https://github.com/root-cause/v-lost-wallets",
+  "commit": "05f2aafe1eb28f1c9c47ba279a574d68e09ddbd5",
+  "license": "MIT",
+  "source_files": {
+    "Main.cs": "ef40621ac255a7b04119647d3b79f4d3b12de715d296fe503f677ba56f466136"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

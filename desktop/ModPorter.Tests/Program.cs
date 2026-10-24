@@ -167,8 +167,8 @@ try {
         Check("Compiler respects inactive conditional code",()=>Must(syntax.Contains("checks passed")));
         File.WriteAllText(unit,originalUnit);
         var nroOnly = await BuildService.BuildAsync(real.ProjectFile, new(sdk, "python", devkit), _ => { }, createInstallZip: false);
-        Check("Standalone NRO build produces no install ZIP", () => Must(nroOnly.InstallZip.Length == 0 && File.Exists(nroOnly.NroPath) && !Directory.EnumerateFiles(nroOnly.Directory, "*.zip").Any()));
-        Check("Install ZIP contains mod, namespaced defaults, instructions and attribution", () => { using var z = ZipFile.OpenRead(built.InstallZip); Must(z.Entries.Count == 5 && z.Entries.Any(e => e.FullName == "switch/gtav-scripthook/plugins/real-compiler.nro") && z.Entries.Any(e => e.FullName == "LICENSE-ScriptHookV-NX.txt") && z.Entries.Any(e=>e.FullName=="switch/gtav-scripthook/settings/real-compiler/config.ini")); });
+        Check("Standalone NRO build includes SD permissions and no install ZIP", () => Must(nroOnly.InstallZip.Length == 0 && File.Exists(nroOnly.NroPath) && File.Exists(Path.Combine(nroOnly.Directory,SharedSdAccess.NpdmPath)) && !Directory.EnumerateFiles(nroOnly.Directory, "*.zip").Any()));
+        Check("Install ZIP contains mod, SD permissions, defaults, instructions and attribution", () => { using var z = ZipFile.OpenRead(built.InstallZip); Must(z.Entries.Count == 9 && z.GetEntry(SharedSdAccess.NpdmPath) != null && z.GetEntry("Install-SD-Access.ps1") != null && z.Entries.Any(e => e.FullName == "switch/gtav-scripthook/plugins/real-compiler.nro") && z.Entries.Any(e => e.FullName == "LICENSE-ScriptHookV-NX.txt") && z.Entries.Any(e=>e.FullName=="switch/gtav-scripthook/settings/real-compiler/config.ini")); });
         Check("NRO tampering detected", () => { string p = Path.Combine(scratch, "tampered.nro"); var b = File.ReadAllBytes(built.NroPath); BinaryPrimitives.WriteUInt32LittleEndian(b.AsSpan(0x18), 0xffffffff); File.WriteAllBytes(p, b); Reject(() => NroInspector.Inspect(p)); });
     } catch (Exception ex) { failed++; Console.WriteLine("FAIL real compiler integration: " + ex.Message); }
     try {

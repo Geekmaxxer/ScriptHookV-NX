@@ -94,3 +94,12 @@ Read [licensing](LICENSING.md) before copying SDK implementation/example code.
 
 Use [the maintenance checks](MAINTENANCE.md) for a single verification command,
 public CI coverage and the console regression checklist.
+# Shared SD-access packaging
+
+`distribution/` contains the audited SD-enabled process metadata and installer.
+Keep it in source exports, SDKs, runtime builds/tests and SD-using mod packages.
+`tools/sd_permissions.py` validates/stages it; build tools fail if it is absent
+or changed. It grants SdCard in both FS masks for the supported title, preserving
+other metadata. This is the shared dependency for Self Radio and NSC/NRO mods.
+Installers must preserve custom NPDM settings with the supplied patcher.
+

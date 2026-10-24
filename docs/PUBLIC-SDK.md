@@ -43,7 +43,10 @@ including the policy suffix. The canonical filename including `.nro` is limited
 to 54 characters so policy suffixes fit; do not use leading/repeated periods.
 It uses the target SDK's NRO/NRR interfaces. Existing RO initialization is reused;
 the current game permissions already include `ldr:ro`. It changes no executable
-text, NPDM permissions or game archives. NRR acceptance depends on the console's
+text or game archives. Install packages include the shared SD-access `main.npdm`
+and a preserving installer; these permissions are required for plugin discovery
+and file storage. An already-enabled Self Radio NPDM covers the same process.
+NRR acceptance depends on the console's
 CFW environment. It passed in the reported first-loader console test.
 
 Each plugin exports `shvPluginQuery`, returning a `ShvNxPlugin` descriptor:

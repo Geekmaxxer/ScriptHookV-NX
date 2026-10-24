@@ -1,0 +1,24 @@
+{
+  "repo": "https://github.com/root-cause/v-spkiller",
+  "commit": "604fcc435a88d06816954939d5ffb18015b94eda",
+  "license": "MIT",
+  "source_files": {
+    "SPKiller/Main.cs": "93ed0cf889d0a162ec2a91e8ec144573a9a20a3c5ee74e8ce1b134528433ba4f",
+    "SPKiller/Util.cs": "9da053b2ea2ac55fa350fd6080c6b77541f3d69c965085e6dd3c43460ffc7b28",
+    "SPKiller/Classes/CameraData.cs": "6f65a6b5fe8813cf591e252c577d72aef2ff182cd43445cdbc5c763cdbefb25a",
+    "SPKiller/Classes/Location.cs": "c12ae8c096fd6dadb65d6fd10d2b05387cecd9d27b18313e268483fc0c6fc7d0",
+    "SPKiller/Classes/StageBase.cs": "c9db8db3bae1021478b3dce80ef68df2efd487e0c5c33b3bf893834ce325a7df",
+    "SPKiller/Enums/KillerFightState.cs": "fdda3449c77f06a95176d37add3eebf2562acaa2ce904b08644842bf8a1edc0b",
+    "SPKiller/Enums/KillerFlags.cs": "88086578e3a92afc2746ae716e9cf4583a53e034e9b4423104133e0099246741",
+    "SPKiller/Enums/KillerStage.cs": "58d066329a57086cdee497b3ec3fd9d83acbac75f72517661935bdc6848521ad",
+    "SPKiller/Managers/CameraManager.cs": "43c76df0f9060a49f215d5259cb2e5efe4be9adf4fa8359d0152143c2b4f3447",
+    "SPKiller/Managers/LocationManager.cs": "62e672649908a3bcb3657b18b0a9abb49cc5a600c6451d3d3b8ca34c3a3dcc7b",
+    "SPKiller/Managers/SaveManager.cs": "29b1a8054eab6b90445592412cfa415cd9436e3b2699d7c79be84e1f0b5b3c61",
+    "SPKiller/Stages/CompleteStage.cs": "b9e8ba565bbae2d9388e4a16e5d3b13936ef040602e30ad001f1af7a6b8c1e62",
+    "SPKiller/Stages/SearchingCluesStage.cs": "aea82175d4b26d4b591a9b31e719a0d4d68cb2c324bd4384d75a2642c36d65f7",
+    "SPKiller/Stages/SearchingKillerStage.cs": "26cbe39d45ec7eaf6169573375b3232773df4df446467948572c5fb9b96cc4c8",
+    "SPKiller/Stages/SearchingVanStage.cs": "7bf6fc89f0f48fbcc105c6931922db8fa6fe4d670ab63fc9b3f3c8250602f64e"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

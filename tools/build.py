@@ -13,6 +13,7 @@ from build_plugin import toolchain, tool
 from nso import decode_nso, segments
 from runtime_limits import build_defaults, definitions, validate
 from engine_bindings import generate_engine
+from sd_permissions import bundle, copy_distribution, stage as stage_sd_access
 
 def main():
     parser = argparse.ArgumentParser(description="Build ScriptHookV-NX NSO")
@@ -31,6 +32,7 @@ def main():
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parents[1]
+    bundle(project_root)
     overrides = {key: getattr(args, key) for key in ('resident_limit', 'script_slots', 'plugin_memory_mib')
                  if getattr(args, key) is not None}
     validate(overrides, definitions(project_root/'include/runtime_defaults.h'))
@@ -65,6 +67,7 @@ def main():
         shutil.copytree(project_root/folder, build_dir/folder, ignore=shutil.ignore_patterns('__pycache__'))
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(project_root/name, build_dir/name)
+    copy_distribution(build_dir, project_root)
     limits = build_defaults(build_dir/'include/runtime_defaults.h', overrides)
 
     print("========================================")
@@ -179,10 +182,12 @@ def main():
         raise RuntimeError('Unresolved dynamic module imports')
     listing = subprocess.run([str(readelf), '-aW', str(elf_file)], capture_output=True, text=True, check=True)
     (build_dir / 'elf-verification.txt').write_text(listing.stdout, encoding='utf-8')
-    report = dict(compiled=True, packaged=False, switch_runtime_verified=False,
+    sd_access = stage_sd_access(build_dir/'package', build_dir)
+    shutil.copy2(nso_slot_file, build_dir/'package/atmosphere/contents/0100b00b51230000/exefs'/args.slot)
+    report = dict(compiled=True, packaged=True, switch_runtime_verified=False, sd_access=sd_access,
                   module_sha256=hashlib.sha256(nso_slot_file.read_bytes()).hexdigest(),
                   source_sha256={p.relative_to(build_dir).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-                                 for folder in ('source', 'include', 'sdk', 'tools', 'generated', 'targets')
+                                 for folder in ('source', 'include', 'sdk', 'tools', 'generated', 'targets', 'distribution')
                                  for p in (build_dir / folder).rglob('*') if p.is_file()},
                   segment_hashes_verified=True, unresolved_imports=[], plugin_execution_enabled=True,
                   target_build=json.loads((build_dir/'generated/bindings.json').read_text())['main_build_id'][:40],

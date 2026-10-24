@@ -1,12 +1,13 @@
-# v1.4 Preview + Mod Porter 0.6.0
+# v1.4.1 Preview + Mod Porter 0.6.0
 
 Native plugins, developer tools and compatible Legacy asset preparation for
 GTA V on Nintendo Switch.
 
 ## Downloads
 
-- **Runtime**: installation files for players. Close GTA, copy `atmosphere` to
-  the SD root and keep existing mods and settings.
+- **Runtime**: installation files for players, including the shared SD-access
+  `main.npdm`. Close GTA and keep existing mods and settings. For customized
+  NPDM files, use the included `Install-SD-Access.cmd` to preserve other changes.
 - **Developer SDK**: headers, shim, templates, examples and developer tools,
   including the reusable controller UI framework.
 - **Mod Porter 0.6.0 for Windows x64**: source-porting and asset tools, with
@@ -14,17 +15,11 @@ GTA V on Nintendo Switch.
 
 ## What's new
 
-- Controller menus with scrolling, subpages, toggles, selectors, descriptions
-  and a settings-persistence example. See [controller UI](CONTROLLER-UI.md).
-- Complete loose-PED DLC wrappers using explicitly selected current-game metadata.
-- Add-on checks for registration, startup activation, model/mod-kit conflicts,
-  malformed numeric metadata and unresolved shader dependencies.
-- Multi-pack preparation that preserves the current installation's DLC list.
-- Expanded supported Legacy embedded-texture traversal while retaining geometry,
-  skeleton and physics data.
-- Separate folder-only and **+ ZIP** actions for assets, PED builds and DLC
-  registration. CLI equivalents accept `--no-zip`.
-- Updated examples, maintenance checks, documentation and desktop layout validation.
+- Required SD-access metadata is included in runtime downloads, developer builds
+  and Mod Porter packaging for plugin loading and saved settings.
+- The SD-access installer backs up customized NPDM files and preserves other changes.
+- Runtime binary, plugin ABI and default limits remain unchanged. Mod Porter
+  remains at version 0.6.0.
 
 The runtime is byte-identical to the console-accepted v1.3 binary. Defaults remain
 **8 resident NROs, 16 cooperative script slots and an 8 MiB plugin budget**.

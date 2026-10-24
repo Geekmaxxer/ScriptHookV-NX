@@ -1,0 +1,15 @@
+{
+  "repo": "https://github.com/root-cause/v-pizzaboy",
+  "commit": "a4a706e7fb4077386c64d1504648b5307eac79e7",
+  "license": "MIT",
+  "source_files": {
+    "Pizzaboy/Constants.cs": "9771706e33cb466d5394707e31aee5ba029876189d511d2a069203889f0004af",
+    "Pizzaboy/HelpTextKeys.cs": "6fb1b47a195d95ccc12611edb183c6ef4c555c2b5a1d696736e4ad02afeb25eb",
+    "Pizzaboy/Localization.cs": "6c7b865c5a380aaa7c4445f53b56b2df4b0824ea34fa5a35097bab408036a40f",
+    "Pizzaboy/Main.cs": "d6eafe0def2299b5312bd74f93bf3c5ed2939eba76b9cdf0bb6d522de273ab96",
+    "Pizzaboy/Methods.cs": "028438a570710be5105eb7214d547c5a9360d4ba86fa07eafef62cac389b6a06",
+    "Pizzaboy/Mission.cs": "33e2cb6a4343a33c7b898630a14b9ee2b4b7eae2f6884436ae6c7eaff846376d"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

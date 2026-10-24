@@ -1,0 +1,12 @@
+{
+  "repo": "https://github.com/root-cause/v-rcbomb",
+  "commit": "2c06c46e1344e069e26c086c3eed2fe46753677e",
+  "license": "MIT",
+  "source_files": {
+    "RCBomb/Constants.cs": "d361bb670d16887389f6384d8d425f87a56f3c894a6513df277d76aa1af92111",
+    "RCBomb/HelpTextKeys.cs": "71e5a4ffa14964d48fd9da90accbf76578e99b3fcec8c0babaafbde3a9703bd9",
+    "RCBomb/Main.cs": "1216a75ac0198bcad370041dbc58367cf26725978d520a3e50b62c02fee027ff"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

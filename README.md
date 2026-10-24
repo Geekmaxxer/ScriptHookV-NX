@@ -6,7 +6,8 @@ Target: title `0100b00b51230000`, build `6e3e9b3af5746e74b615bd981080c9271bc2266
 The current source defaults to **eight resident NROs, sixteen cooperative script
 slots and an 8 MiB plugin budget**. Builders and mod authors can prepare custom
 limits; players can override each setting in an optional SD configuration file.
-See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.4 Public Preview** ships the unchanged v1.3 runtime with
+See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.4.1 Public Preview** includes the required
+SD-access `main.npdm` and ships the unchanged v1.3 runtime with
 [matched console acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json). Earlier runtime revisions passed
 console plugin lifecycle tests with MEGATARD's NSC menu. The current SDK Parity
 Test 1 adds [world enumeration, multiple scripts, globals/entity pointers, PNG
@@ -35,6 +36,17 @@ have their own test scope. Mod Porter **0.6.0** adds folder-only asset, PED and
 DLC registration outputs alongside ZIP packaging.
 
 ## For players
+
+Runtime and SD-using mod packages include the shared SD-access `main.npdm`.
+Use the included `Install-SD-Access.cmd` for customized metadata; it preserves
+other changes. The source/SDK keeps this required dependency in `distribution/`.
+
+Experimental [PC gameplay ports](mods/pc-ports-test1/README.md) include a speedometer,
+remote vehicle controls, ambient wallets and multi-stage world missions. Their
+test scope and differences from the PC originals are documented per mod;
+Switch gameplay validation is pending. See the [larger-port audit](docs/PC-PORTS.md).
+Test 2 adds simpler controller shortcuts, visible mod states, objective guidance
+and an installer that preserves existing startup modes and settings.
 
 The [Mod Porter desktop tool](desktop/README.md) builds supported C++ source ports,
 checks compiler signatures, prepares Legacy assets and merges DLC registration.

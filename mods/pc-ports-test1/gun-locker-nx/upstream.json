@@ -1,0 +1,23 @@
+{
+  "repo": "https://github.com/root-cause/v-spgunlocker",
+  "commit": "746fca5e9371afc4f4882dd203342e7a54b6dc5b",
+  "license": "MIT",
+  "source_files": {
+    "AddonExamples/AP Pistol.xml": "1b3155622b34d7432fb0070bbac9e6d57f5ac89c314fd24792d766d92b08f3bc",
+    "AddonExamples/Multiple Weapons.xml": "c080483d79b445a5c94936a4d20d2af8938e184c486cab1c2cffc8fd87005573",
+    "SPGunLocker/Constants.cs": "8dccdc91d52a8cb0325402fbcbf7eb90fd5b0877eb7525adba77691d82882ea1",
+    "SPGunLocker/Enums.cs": "9bd07f7ee037e415e1831f1e8fa608fb5e87c281e22a133372de224687350617",
+    "SPGunLocker/HelpTextKeys.cs": "ae11eca979537bc7106290d4a95888cab088f57dea0176430eea99003c2ba238",
+    "SPGunLocker/Main.cs": "9c69fb2baa033148e9e765e1313d09117ea8a6f455110b14da650e5f9a5748cc",
+    "SPGunLocker/Methods.cs": "598a4b2d3de8077af3de003da7f9790ea878daed0ddb080591c3c29241c09d0e",
+    "SPGunLocker/Weapons.cs": "677b3838ed1baa27d96197e2c0ea7afddb78dad1c76e209f9ded0d62202a6827",
+    "SPGunLocker/XmlUtil.cs": "54f73c4215965f53523bed87494fe13ef7427e613b8df0324943bdc30a6edc16",
+    "SPGunLocker/Classes/Addon.cs": "2efc50ae6c37dd7baa920c7f8fe0522a97a19553d719ba9dee63b923141e8c51",
+    "SPGunLocker/Classes/AddonWeapon.cs": "65825e902322c1a8adc84f73eb0e2f3f09dbe09a444e9b82b219fdb80f0649b3",
+    "SPGunLocker/Classes/AllowedWeapon.cs": "cdf6f3692e231ecfefcea1eb37055fba1b6271ecbb1de327ac8e3e8ed2b0e108",
+    "SPGunLocker/Classes/Locker.cs": "b61d5e2cef919ce00cff1d507d52aa2b45e34d4919eb1bb0706fd13a9a262ddc",
+    "SPGunLocker/Classes/LockerWeapon.cs": "735d4b9b0a0c5e6b8e7204c90a527fb7261bd58172188b971efa85970693b739"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

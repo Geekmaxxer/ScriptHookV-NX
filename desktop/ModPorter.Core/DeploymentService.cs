@@ -18,6 +18,7 @@ public static class DeploymentService {
         string[] candidates = [Path.Combine(directory, pluginId + ".nro"), Path.Combine(directory, pluginId + ".nro.manual"), Path.Combine(directory, pluginId + ".nro.disabled")];
         var existing = Directory.EnumerateFiles(directory).Where(f => candidates.Any(c => c.Equals(f, StringComparison.OrdinalIgnoreCase))).ToList();
         if (existing.Count > 1) throw new IOException("Conflicting Auto/Manual/Disabled copies exist. Resolve them before installing.");
+        SharedSdAccess.EnsureForNro(nro,sdRoot);
         // Preserve an existing startup policy. The selected default only affects a new install.
         string destination = existing.SingleOrDefault() ?? candidates[manual ? 1 : 0];
         if (File.Exists(destination) && (File.GetAttributes(destination) & FileAttributes.ReparsePoint) != 0) throw new IOException("Plugin destination is a link.");

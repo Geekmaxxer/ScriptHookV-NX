@@ -6,12 +6,13 @@ from pathlib import Path
 import re
 import shutil
 import zipfile
+from sd_permissions import bundle, copy_distribution
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_TOOLS = ('build_plugin.py', 'native_bindings.py', 'create_mod.py', 'build_mod.py', 'doctor.py',
     'native_query.py', 'inspect_mod.py', 'report_summary.py', 'check_examples.py', 'build.py',
     'generate_bindings.py', 'engine_bindings.py', 'nso.py', 'compare_core.py', 'test_portable.py', 'package_runtime.py',
-    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py', 'run_ui_tests.py', 'verify_repo.py')
+    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py', 'run_ui_tests.py', 'verify_repo.py', 'sd_permissions.py', 'test_sd_permissions.py')
 ACCEPTANCES = (
     'native-caller-research/hardware-20261015/console-acceptance.json',
     'public-loader-test1-20261015/hardware-20261015/console-acceptance.json',
@@ -36,6 +37,7 @@ def documentation_links(stage):
 
 def export(output):
     if output.exists(): raise FileExistsError('Use a fresh export directory')
+    bundle(ROOT)
     stage = output/'repo/ScriptHookV-NX'; stage.mkdir(parents=True)
     selected = [ROOT/name for name in ('README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt', '.gitignore')]
     selected.extend((ROOT/'.github/ISSUE_TEMPLATE').glob('*.md'))
@@ -43,7 +45,8 @@ def export(output):
     extensions = {
         'source': {'.cpp', '.hpp', '.h', '.s', '.ld'}, 'include': {'.h', '.hpp'},
         'sdk': {'.cpp', '.s', '.ld', '.sch', '.json', '.example'}, 'targets': {'.hpp', '.json', '.md'},
-        'examples': {'.cpp', '.sc'}, 'tests': {'.cpp'}, 'mods': {'.cpp', '.hpp', '.h', '.md'}, 'docs': {'.md'},
+        'examples': {'.cpp', '.sc'}, 'tests': {'.cpp'},
+        'mods': {'.cpp', '.hpp', '.h', '.md', '.py', '.ps1', '.cmd', '.json', '.txt'}, 'docs': {'.md'},
         'desktop': {'.cs', '.csproj', '.props', '.xaml', '.manifest', '.py', '.md', '.cpp', '.hpp', '.txt', '.json', '.ini'},
     }
     for folder, allowed in extensions.items():
@@ -88,6 +91,7 @@ def export(output):
             raise ValueError('Machine-specific path in public source: '+str(path))
         destination = stage/path.relative_to(ROOT); destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, destination)
+    copy_distribution(stage,ROOT)
     links = documentation_links(stage)
     files = {p.relative_to(stage).as_posix(): sha(p) for p in stage.rglob('*') if p.is_file()}
     archive = output/'ScriptHookV-NX-Source-Public-Preview.zip'
@@ -98,7 +102,7 @@ def export(output):
         for name, digest in files.items():
             if hashlib.sha256(z.read('ScriptHookV-NX/'+name)).hexdigest() != digest: raise ValueError('ZIP readback mismatch')
     result = dict(files=files, zip_bytes=archive.stat().st_size, zip_sha256=sha(archive),
-                  documentation_links=links, game_or_runtime_binaries_included=False,
+                  documentation_links=links, game_or_runtime_binaries_included=False, sd_access_metadata_included=True,
                   private_logs_or_settings_included=False, zip_readback_verified=True,
                   public_tool_count=len(PUBLIC_TOOLS), switch_runtime_verified=False)
     (output/'export-verification.json').write_text(json.dumps(result, indent=2)+'\n')

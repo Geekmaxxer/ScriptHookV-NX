@@ -1,0 +1,23 @@
+{
+  "repo": "https://github.com/rikkamus/yasm",
+  "commit": "229f6810b2dc764346c529085ad23d26016dcd72",
+  "license": "MIT",
+  "source_files": {
+    "resource.h": "cb428a83951229c5a380408040441e6091a1fdd5dcf351a753543cad0fab1fac",
+    "src/config.cpp": "eae913962c96085c3a775d10ec0342767d45c11388bf16bd168aa0f742b476fd",
+    "src/config.h": "90635ec1098979e9972aa666d950e61fb80d9ea4bb7777d0a7bed379692f2767",
+    "src/dllmain.cpp": "04bf1e9132589c1c084efbccfd54e0fee3b3747e51cb2820ccb8db8e90bdc6af",
+    "src/length.cpp": "9401115d049660d0e8fe4b8914fa7e24f48fa252aaadbad691695eea9a04857e",
+    "src/length.h": "d185b3791e750528dc6b1f897c07f26cd16f8cc689d4e676a54661450f8910ec",
+    "src/speed.cpp": "24bfb484d94a36250da3b1f8c878481a282e5bab07baea457d43a99c406cc80f",
+    "src/speed.h": "a819b9d98cf2bf50200e7ea0e8423f55e8a6f5e410d36745d004dc641e3cba94",
+    "src/strings.cpp": "d5e722efffdac95c68a90c91fa2838295d0beead4a0cbf987a5d41f1929cfbb1",
+    "src/strings.h": "72067be18cb1f03f7bcf5a30f95aff7d386053158b607669c46f655d0b97200d",
+    "src/text.cpp": "befe398a9525588ae9f9487edadff69441202d90703148c43bf047026cfda2c5",
+    "src/text.h": "5a977ab47479e12a9f88de603ac473a947df8bc838d8638dd8935f8886b8c5ae",
+    "src/utils.cpp": "32548b62807c8f00e2759699addae3768adcd3e428bd4124368d10970918054c",
+    "src/utils.h": "70584bb9ce8928b54360d373fcef8efca8b96f0e1244ad11ad7643c840781fd6"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

@@ -7,6 +7,7 @@ import shutil
 import zipfile
 from nso import Image
 from generate_bindings import DEFAULT_PROFILE
+from sd_permissions import stage as stage_sd_access
 
 ROOT = Path(__file__).resolve().parents[1]
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -26,20 +27,23 @@ def package(module, output, acceptance=None, profile=DEFAULT_PROFILE):
     stage = output/'RUNTIME'
     relative = 'atmosphere/contents/'+target['title_id']+'/exefs/subsdk5'
     destination = stage/relative; destination.parent.mkdir(parents=True); shutil.copy2(module, destination)
+    sd_access = stage_sd_access(stage)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'): shutil.copy2(ROOT/name, stage/name)
     text = '''# ScriptHookV-NX - Runtime Public Preview
 
 Created by MEGATARD (@Geekmaxver).
 Original source: https://github.com/Geekmaxxer/ScriptHookV-NX
 
-Close GTA. Back up any existing exefs/subsdk5, then copy **atmosphere** to the
+Close GTA. Back up any existing exefs/subsdk5 and main.npdm, then copy **atmosphere** to the
 SD root. Launch Story Mode. Keep your existing mod bindings and saved settings.
 Put compatible mods in switch/gtav-scripthook/plugins/ (.nro=Auto,
 .nro.manual=Manual, .nro.disabled=Disabled). Restart GTA after replacing code.
 
 Target title: {title}. Game build: {build}.
 {status}
-This download contains only the runtime, this guide and required license/credit.
+The included main.npdm supplies shared SD access. For a customized NPDM, run
+Install-SD-Access.cmd to preserve it, then copy subsdk5 separately. See SD-ACCESS.md.
+This download contains the runtime, SD-access metadata/tools and required attribution.
 No menu, NRO mods, game archive or saved settings are included. An NSC menu is
 optional; Auto plugins work independently. The standalone manager source is in
 the SDK/repository. Check resident_limit in loader-report.txt for this runtime's
@@ -59,7 +63,7 @@ removing the runtime. See the repository's install guide for details.
         for name, digest in files.items():
             if hashlib.sha256(z.read(name)).hexdigest() != digest: raise ValueError('ZIP readback mismatch')
     result = dict(module_sha256=sha(module), console_acceptance_matched=accepted,
-                  target_build=target['build_id'], game_files_included=False,
+                  target_build=target['build_id'], game_files_included=True, executable_or_game_assets_included=False, sd_access=sd_access,
                   plugins_or_bindings_or_settings_included=False, files=files,
                   zip_sha256=sha(archive), zip_bytes=archive.stat().st_size, zip_readback_verified=True)
     (output/'package-verification.json').write_text(json.dumps(result, indent=2)+'\n')

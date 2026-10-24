@@ -1,0 +1,23 @@
+{
+  "repo": "https://github.com/root-cause/v-sptreasurehunt",
+  "commit": "abcfcf93d1841eac8a4dff814032035f0a0bd33c",
+  "license": "MIT",
+  "source_files": {
+    "TreasureHunt/Main.cs": "f4090d218daecb665a28f5246107a223987d34ab73c7e956a7b9fa59fc215be3",
+    "TreasureHunt/Util.cs": "5e8a8d242ca5d918a5694e10f001f74d84ad4bef2600da8549cccb18ca940c2c",
+    "TreasureHunt/Classes/CameraData.cs": "e63c76db5a696df1012a0da997a4694296383cb59c5823577fc874c7d8e49365",
+    "TreasureHunt/Classes/Location.cs": "65f451e279e7794aab312abb82f1b0837d6de8f9b0d13b5bb643031ceb009e67",
+    "TreasureHunt/Classes/StageBase.cs": "83641fdac7dd6177f3c3e38fe942593172004fc785881aed2691aae01df9b0ba",
+    "TreasureHunt/Enums/TreasureFlags.cs": "18698f5fb16ca3fbdcd816c1700aca58133c568029a3418eb3727e1d8c9f3660",
+    "TreasureHunt/Enums/TreasureStage.cs": "293c8c0ad412196a566a998c76cf33d0adeccfd064caa261d64c992409a5577a",
+    "TreasureHunt/Managers/CameraManager.cs": "31873008faa1fbafa335042a3f10468f38708d26f84b5d2ac27c8e779b406ad4",
+    "TreasureHunt/Managers/LocationManager.cs": "0b37eb7c627ca543a856157d46f0f677499f9899b2d798449b896e4ae6987111",
+    "TreasureHunt/Managers/SaveManager.cs": "2fddc5cb80f0f382b97d7955817b4680ffd75e1bd85c6095db53a4f7c6ef3cb1",
+    "TreasureHunt/Stages/FoundStage.cs": "65b11f3ec9977c73c74329cd8257f4c81e4bbaf36b789e802baa9e7fb7d7eb0b",
+    "TreasureHunt/Stages/SearchingChestStage.cs": "b2bb1ee09cb078d206bebf46bc24540d959e8e0add40a32fc96b457f6b33ea47",
+    "TreasureHunt/Stages/SearchingCluesStage.cs": "178407457a3d4db982fc5032e639736b697ea5654ca481be93c96bfe897eefb6",
+    "TreasureHunt/Stages/SearchingNoteStage.cs": "79c108bd839437e46d373a0c9d85ba1a020c8d6531af8a4011e23d432dabed7c"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}

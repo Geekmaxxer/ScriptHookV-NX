@@ -8,6 +8,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import zipfile
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
+from sd_permissions import copy_distribution
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = '0.6.0'
@@ -61,8 +64,9 @@ def package(output):
         '-p:DebugSymbols=false', '-o', stage/'developer-cli')
     for name in ('include', 'sdk'):
         shutil.copytree(ROOT/name, stage/'SDK'/name)
+    copy_distribution(stage/'SDK')
     (stage/'SDK/tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
         shutil.copy2(ROOT/'tools'/name, stage/'SDK/tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, stage/name)
@@ -88,7 +92,7 @@ def package(output):
         'folders beside it. Import a mod or try the included example.\n\n'
         'To build NROs, install Python 3.10+, devkitA64 and switch-tools, then check '
         'their paths in Tools > Build tools. The desktop app includes its .NET runtime.\n\n'
-        'Use Build NRO for a plugin alone, or Build NRO + Install ZIP to package it. '
+        'Use Build NRO for unpacked output, or Build NRO + Install ZIP to package it. Both include shared SD-access metadata. For a customized main.npdm, run Install-SD-Access.cmd from the build output before copying other files. '
         'Game assets offers folder-only and + ZIP actions for assets, PED add-ons and DLC registration. '
         'Add to game builds updated copies from your current archives. See docs/GAME-ASSETS.md. Use Check C++ for compiler diagnostics, or expand SD installation to install with a verified backup and restore it later.\n\n'
         'This release ports supported C++ source and analyzes ASI dependencies. '
@@ -115,8 +119,9 @@ def package(output):
         shutil.copy2(path, dest)
     for name in ('include', 'sdk'):
         shutil.copytree(ROOT/name, source/name)
+    copy_distribution(source)
     (source/'tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
         shutil.copy2(ROOT/'tools'/name, source/'tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, source/name)

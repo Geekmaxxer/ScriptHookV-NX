@@ -1,6 +1,7 @@
 """Build a freestanding ScriptHookV-NX NRO plugin from compatible C++ sources."""
 import argparse,hashlib,json,shutil,subprocess,struct,os
 from pathlib import Path
+from sd_permissions import bundle, copy_distribution, stage as stage_sd_access
 
 HEADER_SUFFIXES={'.h','.hh','.hpp','.hxx','.inl','.inc','.ipp','.tpp'}
 
@@ -61,8 +62,10 @@ def build(sources,output,devkit=None,includes=None):
         if not source.is_file():raise FileNotFoundError(f'Source file does not exist: {source}')
     includes=[] if includes is None else list(includes)
     headers=include_snapshot(includes)
+    bundle(project)
     compiler,elf2nro=toolchain(project,devkit)
     output.mkdir(parents=True,exist_ok=False)
+    copy_distribution(output,project)
     shutil.copytree(project/'include',output/'include');shutil.copytree(project/'sdk',output/'sdk')
     for relative,data in headers:
         path=output/relative;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
@@ -86,9 +89,11 @@ def build(sources,output,devkit=None,includes=None):
         tag,value=struct.unpack_from('<QQ',data,dynamic);dynamic+=16
         if not tag:break
         if tag in (12,13,25,26,32) and value:raise ValueError('Use explicit plugin initialization instead of global constructors/destructors')
-    report={'nro_sha256':hashlib.sha256(data).hexdigest(),'bytes':size,'plugin_abi':1,'caller_abi':1,'runtime_abi':1,'switch_runtime_verified':False}
+    report={'nro_sha256':hashlib.sha256(data).hexdigest(),'bytes':size,'plugin_abi':1,'caller_abi':1,'runtime_abi':1,'switch_runtime_verified':False,
+            'sd_access':stage_sd_access(output,project)}
     report['source_sha256']={p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in output.rglob('*') if p.is_file() and p.suffix.lower() in HEADER_SUFFIXES|{'.cpp','.cc','.cxx','.c','.s','.ld','.sch'}}
     report['include_snapshots']=[f'headers/include-{i}' for i in range(len(includes))]
+    report['deployment_sha256']={p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (output/'distribution').rglob('*') if p.is_file()}
     (output/'plugin-build.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True,nargs='+');p.add_argument('--output',required=True,type=Path);p.add_argument('--devkitpro',type=Path)

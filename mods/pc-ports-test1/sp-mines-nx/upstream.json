@@ -1,0 +1,18 @@
+{
+  "repo": "https://github.com/root-cause/v-spmines",
+  "commit": "d62decaf0bafd540067159078de6d509dffae221",
+  "license": "MIT",
+  "source_files": {
+    "default_data.xml": "6243a0f28496084db217b8cf52e0e709b2cc5a89bf7a91a106b60ff833468964",
+    "v-spmines/joaat.h": "76d49ed355934f9ae636aca90f01f3b0cdb17dfaebbc1b9f9fe8125e9421e773",
+    "v-spmines/Logger.cpp": "cf57803d1e9c6dc25a7756f967e2d9c6cedaa87d4909a9055d512f02f80f21b0",
+    "v-spmines/Logger.h": "f0207a59cf7a29ddce82c5e85b5840fb0ea79f06d5b52f9cffb32409f20df5e8",
+    "v-spmines/Main.cpp": "1690372b5ad86bc02d70ff190326b260a26ad0bcb2231103497acbbdc94dd897",
+    "v-spmines/pch.cpp": "767c147b79a2d6c6488f245d364e406bf927d83e92475247ce92792f71f0bb2d",
+    "v-spmines/pch.h": "59df46d2c14072cc1b2a6f000c8ba9ff70489da6fb33f8f23fa301abfe931184",
+    "v-spmines/Script.cpp": "26025a21330914e4ff30b6b052e7f035765aaa9dd2c90eb2962ef0dc1f9bb9fe",
+    "v-spmines/Script.h": "a92c2b934c341c39de71ac27fcb2ac9724283841e4091bcaa53dce032017a2d5"
+  },
+  "port_kind": "Native C++ Switch adaptation; PC UI and platform dependencies replaced",
+  "switch_gameplay_verified": false
+}
