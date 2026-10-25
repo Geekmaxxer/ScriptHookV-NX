@@ -58,6 +58,10 @@ def export(output):
     selected.extend(ROOT/'evidence'/name for name in ACCEPTANCES)
     # Compact prior regression evidence: source hashes/metrics, no dumps or binaries.
     for relative in ('sdk-refinement1-20261016/sdk-refinement-tests.json',
+                     'mod-porter-0.7.0-20261025/verification.json',
+                     'mod-porter-0.8.0-20261025/verification.json',
+                     'mod-porter-0.9.0-20261025/verification.json',
+                     'stability-audit-20261025/verification.json',
                      'ecosystem-test1-20261023/verification.json',
                      'ecosystem-test1-20261023/VERIFICATION.md',
                      'runtime-completion-test1-20261022/verification.json',

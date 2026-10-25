@@ -1,4 +1,42 @@
-# Mod Porter 0.6.0 Public Preview - 2026-10-23
+# Mod Porter 0.9.1 Preview - 2026-10-25
+
+- Guide the DLC workflow through separate choose, add/review and save sections with more spacing.
+- Keep optional definition, metadata, import and first-installation controls collapsed initially.
+- Add a direct route from resource preparation to complete DLC creation and a separate batch movement selector.
+- Reject broken model/registration metadata transactionally and recover unapplied definition edits.
+- Track unsaved DLC IDs, keep metadata access after removing every model, and select the correct nested asset archive.
+- Skip update.rpf output for batches whose DLCs are already registered; use consistent 512 MiB DLC limits.
+- Report incomplete SDKs in the tool doctor without skipping the remaining checks.
+- Expand runtime, desktop workflow, failure-recovery, compiler and layout regression coverage.
+
+## Mod Porter 0.9.0 Preview - 2026-10-25
+
+- Find and filter installed DLCs directly from the current game/SD folder.
+- Distinguish registered packs, unregistered local packs and registrations absent from that folder without opening every archive.
+- Replace all four PED assets from a folder, ZIP or file selection while retaining identity and metadata, with one-step Undo.
+- Apply a human movement profile to the filtered PED list in one transaction.
+- Preserve nested asset locations, reject incomplete replacements before changes, and retain unsaved-state prompts after removing every model.
+
+## Mod Porter 0.8.0 Preview - 2026-10-25
+
+- Bundle many PEDs and vehicles into one DLC, or expand an existing pack.
+- Built-in model list, full PED field/XML editor, asset management and Undo/Redo.
+- Coordinate model renames with resource filenames and metadata references.
+- Skip update.rpf output for already registered DLCs.
+- Automatically bundle multi-PED input in the standard PED workflow.
+- Retain vehicle handling/tuning and unknown source data; validate collisions before export.
+- Accept supporting JSON/previews without manual deletion and clear stale installation selections.
+
+## Mod Porter 0.7.0 Preview - 2026-10-25
+
+- Build a human PED DLC from four assets without supplying game metadata.
+- Infer model/folder names and output paths; accept a folder, ZIP or four-file drop.
+- Built-in male/female movement profiles and automatic reuse of mod-supplied metadata.
+- Optional advanced metadata overrides with useful validation messages.
+- Build the PED and register it in copied game files with one action, as a folder or ZIP.
+- Remember the selected game path and preserve existing DLC registrations.
+
+## Mod Porter 0.6.0 Public Preview - 2026-10-23
 
 - Offer folder-only output alongside ZIP packaging for assets, PED add-ons and
   DLC registration. CLI equivalents accept `--no-zip`.

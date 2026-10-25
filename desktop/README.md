@@ -1,7 +1,10 @@
 # ScriptHookV-NX Mod Porter
 
 A Windows desktop tool for PC mod source ports, ASI dependency reports and Legacy
-asset preparation. **0.6.0 Public Preview**.
+asset preparation. **0.9.1 Public Preview**.
+
+Choose a starting point in the [workflow guide](../docs/MOD-PORTER-WORKFLOWS.md).
+The [quality audit](../docs/QUALITY-AUDIT.md) records tested behavior and limits.
 
 Extract the complete Windows ZIP and open `ScriptHookV-NX-Mod-Porter.exe`. Its .NET
 runtime and matched SDK are included. No game files are bundled.
@@ -33,6 +36,29 @@ PC cheat-string natives are flagged for controller adaptation.
 
 ## Prepare assets
 
+For multiple models, use **Game assets > DLC collection**. Drop folders, ZIPs or
+complete vehicle/PED DLCs into one collection. Open an existing dlc.rpf to expand
+it. The built-in PED editor lists all models and exposes names, types, every field,
+full metadata XML and asset management, with Undo/Redo. Existing pack data is retained.
+
+**Find installed DLCs** reads the selected game's DLC list and local folders, then
+lets you filter and open an existing pack. Registrations absent from the selected
+folder may be stored inside the base game. Discovery never edits game files.
+
+Under **Asset files**, replace all four PED resources from a folder, ZIP or file
+selection in one operation. The selected PED keeps its name and metadata. Filter
+the model list, expand **Change movement for shown PEDs**, and use **Apply movement to shown PEDs**
+for a batch profile change. One Undo restores either complete operation.
+
+The collection page separates choosing a pack, adding/reviewing models and saving
+a new revision. Optional editors start collapsed. **Revert unapplied edits**
+recovers a definition draft; invalid structural metadata changes leave the working
+collection intact. Names and import defaults are under **Names and import options**.
+
+**Save DLC** updates only that pack. **Build with game files** checks the selected
+installation and prepares update.rpf only when its DLC ID is not registered yet.
+Keep the same ID for later additions. Both actions offer folder and ZIP output.
+
 In **Game assets > Prepare assets**, choose a folder, ZIP, OPEN RPF or loose Legacy resource. Select the
 asset type and texture cap, inspect, then choose **Prepare assets** for a folder
 or **Prepare assets + ZIP** to also create an archive. The defaults
@@ -46,10 +72,14 @@ are Auto and 1024 pixels; Off preserves texture sizes.
   roots. Shared graphics allocation and geometry remain intact.
 - Rebuild and validate standalone texture allocations and archive tables.
 
-**Build a loose PED add-on** creates a complete DLC from one PED variant and a
-selected base definition from your current game's metadata. The base definitions
-are listed after selecting the containing archive. **Add several DLC packs**
+**Build a loose PED add-on** creates a complete DLC directly from four matching
+PED assets. Drop the folder, ZIP or four files; names and human metadata are
+generated automatically. Choose Female for female movement; custom metadata
+and base definitions are optional advanced controls. **Build with game files**
+also registers the DLC using your current SD/game folder and creates a copied
+installation package in one operation. **Add several DLC packs**
 checks a collection and merges it with the current DLC list in one operation.
+Multiple complete PED sets in the single-PED workflow are bundled automatically.
 Registration blockers and unresolved shader dependencies appear in the report.
 PED add-on builds and DLC registration packages also offer separate folder-only
 and **+ ZIP** buttons. Folder-only output includes the prepared files and reports.
@@ -108,7 +138,7 @@ dotnet build desktop/ModPorter.App -c Release
 dotnet run --project desktop/ModPorter.Tests -- .
 dotnet build desktop/ModPorter.Cli -c Release
 python desktop/verification/real_mods.py --output ../real-mod-checks --devkitpro <devkitPro-root>
-python desktop/package.py --output releases/mod-porter-0.6.0
+python desktop/package.py --output releases/mod-porter-0.9.1
 ```
 
 Run from the SDK/repository root. The CLI shares the desktop analysis/build/asset

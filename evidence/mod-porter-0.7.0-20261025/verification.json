@@ -1,0 +1,125 @@
+{
+  "version": "0.7.0 Preview",
+  "desktop_tests": {
+    "passed": 181,
+    "failed": 0,
+    "compiler_groups_skipped": 0
+  },
+  "packaged_ped_ui": {
+    "passed": 42,
+    "failed": 0,
+    "real_asset": "Misaki 3.0",
+    "checks": [
+      "Default PED form requires no names or custom metadata",
+      "Dropping four files selects their folder and opens the PED builder",
+      "Incomplete drops explain the requirement and preserve selected assets",
+      "Automatic folder button builds from four files without game metadata",
+      "Automatic folder DLC passes registration audit",
+      "Automatic folder respects ZIP selection",
+      "Automatic zip button builds from four files without game metadata",
+      "Automatic zip DLC passes registration audit",
+      "Automatic zip respects ZIP selection",
+      "Blank output path automatically creates a usable new output folder",
+      "Missing assets produce a useful inline message",
+      "Build with game files False creates an SD-root package",
+      "Game build False retains existing DLC registrations",
+      "Game build False preserves original game files",
+      "Game build False creates only the requested install ZIP",
+      "Build with game files True creates an SD-root package",
+      "Game build True retains existing DLC registrations",
+      "Game build True preserves original game files",
+      "Game build True creates only the requested install ZIP",
+      "Target PED metadata populates the selector",
+      "Prepare assets folder produces files and reports",
+      "Prepare assets folder respects ZIP choice",
+      "Asset report identifies the selected output type",
+      "PED folder produces a DLC",
+      "PED folder retains model and registration",
+      "PED folder creates only requested ZIPs",
+      "Registration folder produces its manifest",
+      "Registration folder respects ZIP choice",
+      "Registration folder retains existing entries",
+      "Registration report identifies the selected output type",
+      "Prepare assets zip produces files and reports",
+      "Prepare assets zip respects ZIP choice",
+      "Asset report identifies the selected output type",
+      "PED zip produces a DLC",
+      "PED zip retains model and registration",
+      "PED zip creates only requested ZIPs",
+      "Folder and ZIP buttons produce identical DLC bytes",
+      "Registration zip produces its manifest",
+      "Registration zip respects ZIP choice",
+      "Registration zip retains existing entries",
+      "Registration report identifies the selected output type",
+      "Asset inputs and target metadata remain unchanged"
+    ]
+  },
+  "layout": {
+    "passed": 2036,
+    "failed": 0,
+    "scenarios": 144,
+    "window_states": [
+      "normal",
+      "maximized",
+      "minimized",
+      "restored"
+    ],
+    "dpi": [
+      100,
+      125,
+      150,
+      200
+    ]
+  },
+  "real_asset_builds": [
+    {
+      "model": "misaki",
+      "profile": "female",
+      "external_metadata_required": false
+    },
+    {
+      "model": "zoro",
+      "profile": "male",
+      "external_metadata_required": false
+    }
+  ],
+  "source_game_files_modified": false,
+  "core_runtime_modified": false,
+  "new_human_presets_switch_runtime_verified": false,
+  "packages": {
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.7.0-Windows-x64.zip",
+      "bytes": 60726730,
+      "sha256": "c689a58a4e3b8312fe9b5f4b45bf110b7c64b20adfdbbf5b1858b2c5e0065755"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.7.0-Source.zip",
+      "bytes": 839688,
+      "sha256": "3bb73ad7c77ba7081cc7271c0c2ef373023c38d2a152c3f39fc40d2b99d4bb4b"
+    }
+  },
+  "source_sha256": {
+    "desktop/CHANGELOG.md": "b42caf962eb2428b586d15369b7b0556eed49515561df33853f9542f39b7ba17",
+    "desktop/Directory.Build.props": "f94607711e17e2861b6e1bf0551c007b61dea6db2d5ee1014dd8cff3d80782f9",
+    "desktop/ModPorter.App/AssetWorkflow.cs": "1295b3b9a38153c09951f954e0293db8aef82adb07e5d3d59740e5de30fd7a8f",
+    "desktop/ModPorter.App/MainWindow.xaml": "3da395fa0ce88bb6c020c08d32a2cdfd8d3e84848096cb9dd665973d7b50ece7",
+    "desktop/ModPorter.App/MainWindow.xaml.cs": "2061367dd756e27189b0f3845016d583e80fdd12edd8eb000b11c2d7ebceb60d",
+    "desktop/ModPorter.App/PedWorkflowTest.cs": "ba040cd64fb6316ae7b775986c0a96fb1806e0b8fa92b96d0c1398f6e57d6ecf",
+    "desktop/ModPorter.App/ResponsiveLayoutTests.cs": "4fb10edfd10b94fb120dec79f4bd6abd6ee2c1d45b307d84a70e84d2ffb39118",
+    "desktop/ModPorter.Cli/Program.cs": "d94955c0cabced90f6c201aed6b131612094a2d5ee8dbf39df074b60109302bc",
+    "desktop/ModPorter.Core/Assets/AddonBuilder.cs": "1f48a4a60ae6840e58fc9a085d2db65742e92af7a98f76fbc850c78aa643d253",
+    "desktop/ModPorter.Core/Assets/AssetService.cs": "251045acb3a4d75a8d74861e2afac45841e8659cd646c22ebcc5fdc87070dcb8",
+    "desktop/ModPorter.Core/Assets/GameAssetUpdater.cs": "a754afc746fef7c33e39b1d67d994f088cd2d7694a23f84012d83be164fa1b07",
+    "desktop/ModPorter.Core/BuildService.cs": "0fbbc92326fb6a3677e0668090425f3035d661648acaf7b14c0391384da52161",
+    "desktop/ModPorter.Core/PortProject.cs": "71a3724a860432ae6e6a80d12bd5a4130aea29b0dac848e3ddce8aa2ddaecdcf",
+    "desktop/ModPorter.Tests/AddonTests.cs": "51b937e20839e1831e3dbbd19b8f1650cf03a5f0d223da002d3fce9669ab3711",
+    "desktop/package.py": "28a799f977c277ae918dfed6def5483f1f2b23b3350c4ac3272e434d720add07",
+    "desktop/README.md": "dda9978e404353dc790ec64c2e170ffd30c75c6d867bf4d6489c969d1ffaf8c8",
+    "docs/GAME-ASSETS.md": "98ff489ad0a3418c6d78c7d01cb3b5f019bf86dff700f2ca803583496b11f3a2",
+    "desktop/ModPorter.Core/Assets/PedMetadata.cs": "131494a20101cfe256bcd75776b7b3e6701505e7f6f87622513f2dbe2254f45c",
+    "README.md": "d4ad9f49835b4848466c06257f894b90af93c850715bfa2e475f64635e986ded",
+    "CHANGELOG.md": "9b9d84572c2039060c0c3bebaaa25f9f22e0a60728c4d31bcce5e8922234cd95",
+    "tools/export_source.py": "6b148aed62173d8464fff19795f98256b803e211ee955acef28a3534c6dbb7c2"
+  },
+  "commit_or_push_performed": false
+}

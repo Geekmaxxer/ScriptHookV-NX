@@ -21,6 +21,7 @@ public sealed class Preferences {
     public string Python { get; set; } = "python";
     public string Devkit { get; set; } = "";
     public string ProjectParent { get; set; } = "";
+    public string GamePath { get; set; } = "";
 }
 public partial class MainWindow : Window {
     ModInput? input;
@@ -32,10 +33,10 @@ public partial class MainWindow : Window {
     readonly string preferencesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ScriptHookV-NX", "ModPorter", "settings.json");
     string projectParent = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ScriptHookV-NX Projects");
     bool Busy => operation != null;
-    bool TestMode => Environment.GetCommandLineArgs().Any(a => a is "--ui-test" or "--layout-test");
+    bool TestMode => Environment.GetCommandLineArgs().Any(a => a is "--ui-test" or "--layout-test" or "--ped-ui-test" or "--collection-ui-test");
     ToolSettings Settings => new(SdkPath.Text.Trim(), PythonPath.Text.Trim(), DevkitPath.Text.Trim());
     public MainWindow() {
-        InitializeComponent(); InitializeResponsiveLayout(); SourceList.ItemsSource = choices;
+        InitializeComponent(); CollectionEditor.Attach(this); InitializeResponsiveLayout(); SourceList.ItemsSource = choices;
         SdkPath.Text = FindSdk(); PythonPath.Text = FindPython(); DevkitPath.Text = FindDevkit();
         try {
             if (!TestMode && File.Exists(preferencesPath)) {
@@ -45,6 +46,7 @@ public partial class MainWindow : Window {
                     if (!string.IsNullOrWhiteSpace(p.Python)) PythonPath.Text = p.Python;
                     if (!string.IsNullOrWhiteSpace(p.Devkit)) DevkitPath.Text = p.Devkit;
                     if (!string.IsNullOrWhiteSpace(p.ProjectParent)) projectParent = p.ProjectParent;
+                    if (File.Exists(p.GamePath) || Directory.Exists(p.GamePath)) CurrentGamePath.Text = p.GamePath;
                 }
             }
         } catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException) { StatusText.Text = "Saved paths could not be read; using detected paths."; }
@@ -77,7 +79,7 @@ public partial class MainWindow : Window {
     void SavePreferences() {
         if (TestMode) return;
         Directory.CreateDirectory(Path.GetDirectoryName(preferencesPath)!);
-        JsonFiles.Write(preferencesPath, new Preferences { Sdk = SdkPath.Text.Trim(), Python = PythonPath.Text.Trim(), Devkit = DevkitPath.Text.Trim(), ProjectParent = projectParent });
+        JsonFiles.Write(preferencesPath, new Preferences { Sdk = SdkPath.Text.Trim(), Python = PythonPath.Text.Trim(), Devkit = DevkitPath.Text.Trim(), ProjectParent = projectParent, GamePath = CurrentGamePath.Text.Trim() });
     }
     void SuggestOutput() => OutputPath.Text = Path.Combine(projectParent, PortProject.SuggestId(PluginId.Text) + "-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"));
     async Task RunBusy(string status, Func<CancellationToken, Task> work) {
@@ -309,18 +311,22 @@ public partial class MainWindow : Window {
     private void Cancel_Click(object sender, RoutedEventArgs e) { operation?.Cancel(); StatusText.Text = "Cancelling…"; }
     private void Window_DragOver(object sender, DragEventArgs e) {
         e.Handled = true;
-        e.Effects = !Busy && e.Data.GetData(DataFormats.FileDrop) is string[] { Length: 1 } ? DragDropEffects.Copy : DragDropEffects.None;
+        e.Effects = !Busy && e.Data.GetData(DataFormats.FileDrop) is string[] paths && (paths.Length is 1 or 4 || Tabs.SelectedIndex==4&&AssetTabs.SelectedIndex==3&&paths.Length is >=1 and <=256) ? DragDropEffects.Copy : DragDropEffects.None;
     }
     private async void Window_Drop(object sender, DragEventArgs e) {
         e.Handled = true;
         if (Busy || !e.Data.GetDataPresent(DataFormats.FileDrop)) return;
-        if (e.Data.GetData(DataFormats.FileDrop) is not string[] paths || paths.Length != 1) { StatusText.Text = "Drop one mod or project at a time."; return; }
+        if (e.Data.GetData(DataFormats.FileDrop) is not string[] paths) return;
+        if(Tabs.SelectedIndex==4&&AssetTabs.SelectedIndex==3){await CollectionEditor.ImportPathsAsync(paths);return;}
+        if (paths.Length == 4) { Tabs.SelectedIndex = 4; AssetTabs.SelectedIndex = 0; SelectDroppedAssets(paths); return; }
+        if (paths.Length != 1) { StatusText.Text = "Drop one mod/project, or four matching PED assets together."; return; }
         if (Path.GetFileName(paths[0]).Equals("project.json", StringComparison.OrdinalIgnoreCase)) await OpenProjectAsync(paths[0]);
         else if (Tabs.SelectedIndex == 4 || Path.GetExtension(paths[0]).Equals(".rpf", StringComparison.OrdinalIgnoreCase) || ModPorter.Core.Assets.AssetService.ResourceExtensions.Contains(Path.GetExtension(paths[0]))) { AssetInputPath.Text = paths[0]; Tabs.SelectedIndex = 4; AssetTabs.SelectedIndex = 0; }
         else { InputPath.Text = paths[0]; await AnalyzeAsync(); }
     }
     private void Window_Closing(object? sender, CancelEventArgs e) {
         if (Busy) { operation?.Cancel(); e.Cancel = true; StatusText.Text = "Cancelling · Close again after the operation stops"; return; }
+        if(!CollectionEditor.ConfirmClose()){e.Cancel=true;return;}
         try { SavePreferences(); } catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { /* Closing does not depend on preference storage. */ }
     }
 }

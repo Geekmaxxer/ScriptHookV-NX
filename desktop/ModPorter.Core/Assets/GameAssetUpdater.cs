@@ -3,11 +3,12 @@ using System.Xml;
 
 namespace ModPorter.Core.Assets;
 
-public sealed record GameAssetUpdate(string Directory,string UpdatedArchive,string Manifest,ArchiveEdit Edit);
+public sealed record GameAssetUpdate(string Directory,string UpdatedArchive,string Manifest,ArchiveEdit Edit, bool UpdateArchiveWritten = true);
 public static class GameAssetUpdater {
     public const string TitleId="0100b00b51230000";
     const string DlcList="common/data/dlclist.xml";
     public static string ResolveUpdate(string selected) {
+        if (string.IsNullOrWhiteSpace(selected)) throw new ArgumentException("Choose the current SD/game folder or update.rpf so existing DLC registrations can be preserved.");
         selected=Path.GetFullPath(selected);Regular(selected);
         if(File.Exists(selected))return selected;
         if(!Directory.Exists(selected))throw new DirectoryNotFoundException("Select a mounted SD drive, game folder or local update.rpf copy.");
@@ -29,7 +30,7 @@ public static class GameAssetUpdater {
         convertedDlc=Path.GetFullPath(convertedDlc);Regular(convertedDlc);string archive=ResolveUpdate(selectedGame);output=NewOutput(output);
         // Keep both source identities stable throughout preparation/copying.
         using var dlc=new FileStream(convertedDlc,FileMode.Open,FileAccess.Read,FileShare.Read);
-        if(dlc.Length>ResourceContainer.MaxBytes)throw new InvalidDataException("Prepared DLC exceeds 256 MiB. Reduce or split the asset pack first.");
+        if(dlc.Length>RpfArchive.MaxBytes)throw new InvalidDataException("Prepared DLC exceeds 512 MiB. Reduce textures or split the collection first.");
         progress?.Invoke("Checking prepared DLC and current game list");
         var report=AssetService.Analyze(convertedDlc,new(0),cancel);
         if(report.ConvertedNames!=0)throw new InvalidDataException("This DLC still needs Switch naming conversion. Use Prepare Switch assets first.");
@@ -37,16 +38,23 @@ public static class GameAssetUpdater {
         if(!new[]{"content.xml","setup2.xml"}.All(name=>tree.Children.Any(n=>!n.Directory&&n.Name.Equals(name,StringComparison.OrdinalIgnoreCase))))throw new InvalidDataException("Select a complete prepared DLC with content.xml and setup2.xml.");
         var registration=AddonAudit.Inspect(tree,cancel);if(!registration.ReadyForTest)throw new InvalidDataException(registration.Text());
         byte[] originalList=RpfFileEditor.ReadBinary(archive,DlcList,cancel:cancel),merged=DlcPackageService.MergeList(originalList,id);
+        bool registered = DlcPackageService.Contains(originalList, id);
         cancel.ThrowIfCancellationRequested();Directory.CreateDirectory(output);
         string romfs=Path.Combine(output,"atmosphere","contents",TitleId,"romfs"),updated=Path.Combine(romfs,"update","update.rpf");
-        var edit=RpfFileEditor.WriteCopy(archive,updated,new Dictionary<string,byte[]>{{DlcList,merged}},cancel,progress,new Dictionary<string,byte[]>{{DlcList,originalList}});
+        ArchiveEdit edit;
+        if (registered) {
+            progress?.Invoke("DLC already registered · Only the DLC archive needs updating");
+            string unchanged = RpfFileEditor.HashFile(archive,cancel);
+            edit = new(unchanged,unchanged,new FileInfo(archive).Length,new FileInfo(archive).Length,Array.Empty<string>());
+            updated = "";
+        } else edit=RpfFileEditor.WriteCopy(archive,updated,new Dictionary<string,byte[]>{{DlcList,merged}},cancel,progress,new Dictionary<string,byte[]>{{DlcList,originalList}});
         string target=Path.Combine(romfs,"update","switch","dlcpacks",id,"dlc.rpf");Directory.CreateDirectory(Path.GetDirectoryName(target)!);
         progress?.Invoke("Copying prepared DLC");
         using(var dest=new FileStream(target,FileMode.CreateNew,FileAccess.Write,FileShare.None)){dlc.Position=0;byte[] buffer=new byte[128*1024];int n;while((n=dlc.Read(buffer))>0){cancel.ThrowIfCancellationRequested();dest.Write(buffer,0,n);}dest.Flush(true);}
         string dlcHash=RpfFileEditor.HashFile(convertedDlc,cancel),copyHash=RpfFileEditor.HashFile(target,cancel);if(dlcHash!=copyHash)throw new IOException("Prepared DLC copy failed verification.");
-        string manifest=Path.Combine(output,"game-update.json");JsonFiles.Write(manifest,new{operation="add_dlc",id,source_archive=archive,source_archive_sha256=edit.SourceSha256,updated_archive=Path.GetRelativePath(output,updated),updated_archive_sha256=edit.OutputSha256,dlc_sha256=copyHash,changed_entries=edit.Entries,source_files_modified=false,complete=true,switch_runtime_verified=false});
-        File.WriteAllText(Path.Combine(output,"READ-ME-FIRST.md"),"# Prepared game files\n\nClose GTA. Keep your existing update.rpf and any dlcpacks/"+id+" folder backed up, then copy atmosphere to the SD root. The updated archive is based on the current game file selected during preparation and retains its other entries. Restart GTA and test the asset.\n\nUse this result with that same game installation. To undo it, restore the original update.rpf and original DLC folder, or remove the newly added DLC folder. No ScriptHookV-NX runtime update is required for asset files.\n",new UTF8Encoding(false));
-        progress?.Invoke("Updated game files verified");return new(output,updated,manifest,edit);
+        string manifest=Path.Combine(output,"game-update.json");JsonFiles.Write(manifest,new{operation=registered?"update_registered_dlc":"add_dlc",id,source_archive=archive,source_archive_sha256=edit.SourceSha256,updated_archive=registered?null:Path.GetRelativePath(output,updated),updated_archive_sha256=registered?null:edit.OutputSha256,update_rpf_written=!registered,dlc_sha256=copyHash,changed_entries=edit.Entries,source_files_modified=false,complete=true,switch_runtime_verified=false});
+        File.WriteAllText(Path.Combine(output,"READ-ME-FIRST.md"),"# Prepared game files\n\nClose GTA and back up the affected DLC folder"+(registered?"":" and update.rpf")+", then copy atmosphere to the SD root. "+(registered?"This DLC is already registered. Only dlcpacks/"+id+"/dlc.rpf is included; update.rpf stays unchanged.":"This new DLC is registered in a copy of the selected update.rpf, retaining existing entries.")+"\n\nUse this output with the same installation used to prepare it. Restart GTA and test the models.\n",new UTF8Encoding(false));
+        progress?.Invoke("Updated game files verified");return new(output,updated,manifest,edit,!registered);
     }
     public static GameAssetUpdate ReplaceAsset(string convertedAsset,string selectedArchive,string entry,string output,CancellationToken cancel=default,Action<string>? progress=null) {
         convertedAsset=Path.GetFullPath(convertedAsset);Regular(convertedAsset);string archive=Path.GetFullPath(selectedArchive);Regular(archive);output=NewOutput(output);

@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.4.1 Preview + Mod Porter 0.9.1 - 2026-10-25
+
+- Audited the runtime and desktop tool; the rebuilt runtime remains identical to the accepted reference.
+- Separate DLC workflow steps and collapse optional controls; add clearer navigation from resources to DLC creation.
+- Reject structural metadata errors without damaging editor state; add definition recovery and unsaved-ID protection.
+- Correct nested asset selection, incomplete-SDK diagnostics and already-registered batch output.
+- Expand compiler, asset, workflow, runtime and resize/DPI checks; document scope in docs/QUALITY-AUDIT.md.
+
+## Mod Porter 0.9.0 Preview - 2026-10-25
+
+- Installed-DLC discovery and filtering from the current game/SD folder.
+- Complete PED asset-set replacement with preserved metadata and transaction-level Undo.
+- Filter-scoped PED movement profile changes and clearer unavailable-pack handling.
+
+## Mod Porter 0.8.0 Preview - 2026-10-25
+
+- Editable DLC collections combine multiple PEDs and vehicles while retaining source data.
+- Full PED field/XML editing, resource management, coordinated renames and Undo/Redo.
+- Existing registered collections export only their DLC; first installs update registration once.
+- Automatic multi-PED bundling, supporting-file handling and safer prepared-asset selection.
+
+## Mod Porter 0.7.0 Preview - 2026-10-25
+
+- Four-file human PED DLC creation without external game metadata or a manual base name.
+- Automatic names/output folders, male/female movement profiles and optional custom metadata.
+- One-step PED creation and registration in copied game files, with folder or ZIP output.
+- Four-file drag and drop, remembered game paths and clearer asset validation errors.
+
 ## v1.4.1 Public Preview - 2026-10-23
 
 - Include the required shared SD-access `main.npdm` in runtime downloads,

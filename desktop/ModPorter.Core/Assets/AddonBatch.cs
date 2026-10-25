@@ -35,7 +35,7 @@ public static class AddonBatch {
                 if (Directory.Exists(path) || (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0) throw new IOException("Choose ordinary prepared DLC files.");
                 var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 sources.Add((new(item.Id, path), stream, ""));
-                if (stream.Length > ResourceContainer.MaxBytes) throw new InvalidDataException("A prepared DLC exceeds 256 MiB.");
+                if (stream.Length > RpfArchive.MaxBytes) throw new InvalidDataException("A prepared DLC exceeds 512 MiB.");
                 byte[] data = new byte[stream.Length]; stream.ReadExactly(data);
                 var audit = AddonAudit.Inspect(data, cancel); if (!audit.ReadyForTest) throw new InvalidDataException(item.Id + ": " + audit.Text());
                 foreach (string model in audit.Models) {
@@ -48,12 +48,22 @@ public static class AddonBatch {
             }
             string current = GameAssetUpdater.ResolveUpdate(selectedGame), entry = "common/data/dlclist.xml";
             byte[] original = RpfFileEditor.ReadBinary(current, entry, cancel: cancel), merged = original;
-            foreach (var item in sources) merged = DlcPackageService.MergeList(merged, item.Addon.Id);
+            bool registrationNeeded=false;
+            foreach (var item in sources) {
+                if(DlcPackageService.Contains(original,item.Addon.Id))continue;
+                merged = DlcPackageService.MergeList(merged, item.Addon.Id);registrationNeeded=true;
+            }
             cancel.ThrowIfCancellationRequested();
             string romfs = Path.Combine(output, "atmosphere/contents", GameAssetUpdater.TitleId, "romfs");
             string updated = Path.Combine(romfs, "update/update.rpf");
-            var edit = RpfFileEditor.WriteCopy(current, updated, new Dictionary<string, byte[]> { { entry, merged } }, cancel, progress,
+            ArchiveEdit edit;
+            if(registrationNeeded)edit = RpfFileEditor.WriteCopy(current, updated, new Dictionary<string, byte[]> { { entry, merged } }, cancel, progress,
                 expected: new Dictionary<string, byte[]> { { entry, original } });
+            else {
+                progress?.Invoke("All DLCs already registered · Copying only the selected packs");
+                string hash=RpfFileEditor.HashFile(current,cancel);long bytes=new FileInfo(current).Length;
+                edit=new(hash,hash,bytes,bytes,Array.Empty<string>());updated="";
+            }
             foreach (var item in sources) {
                 progress?.Invoke("Copying add-on " + item.Addon.Id); cancel.ThrowIfCancellationRequested();
                 string target = Path.Combine(romfs, "update/switch/dlcpacks", item.Addon.Id, "dlc.rpf"); Directory.CreateDirectory(Path.GetDirectoryName(target)!);
@@ -66,10 +76,10 @@ public static class AddonBatch {
             }
             string manifest = Path.Combine(output, "game-update.json");
             JsonFiles.Write(manifest, new { format = 1, operation = "add_dlc_batch", source_archive = current, source_archive_sha256 = edit.SourceSha256,
-                updated_archive = Path.GetRelativePath(output, updated), updated_archive_sha256 = edit.OutputSha256,
+                updated_archive = registrationNeeded?Path.GetRelativePath(output, updated):null, updated_archive_sha256 = registrationNeeded?edit.OutputSha256:null,update_rpf_written=registrationNeeded,
                 addons = sources.Select(s => new { id = s.Addon.Id, dlc_sha256 = s.Hash }), source_files_modified = false, complete = true, switch_runtime_verified = false });
-            File.WriteAllText(Path.Combine(output, "READ-ME-FIRST.md"), "# Prepared add-ons\n\nClose GTA. Back up update.rpf and the affected DLC folders, then copy atmosphere to the SD root. These files were prepared together from your selected installation. Keep unrelated mods and settings.\n\nTest models: " + string.Join(", ", addons.Select(a => a.Id)) + ". Check each pack's model manifest for spawn names. Restore the original archive and DLC folders to undo installation. Do not install a partial output without a complete game-update.json.\n", new UTF8Encoding(false));
-            return new(output, updated, manifest, edit);
+            File.WriteAllText(Path.Combine(output, "READ-ME-FIRST.md"), "# Prepared add-ons\n\nClose GTA. Back up "+(registrationNeeded?"update.rpf and ":"")+"the affected DLC folders, then copy atmosphere to the SD root. "+(registrationNeeded?"New registrations are included in a copied update.rpf. ":"Every pack is already registered; update.rpf was not written. ")+"These files were prepared together from your selected installation. Keep unrelated mods and settings.\n\nTest packs: " + string.Join(", ", addons.Select(a => a.Id)) + ". Check each pack's model manifest for spawn names. Restore the affected originals to undo installation. Do not install a partial output without a complete game-update.json.\n", new UTF8Encoding(false));
+            return new(output, updated, manifest, edit,registrationNeeded);
         } finally { foreach (var item in sources) item.Stream.Dispose(); }
     }
 }

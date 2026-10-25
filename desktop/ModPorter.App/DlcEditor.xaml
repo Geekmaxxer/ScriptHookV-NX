@@ -1,0 +1,113 @@
+<UserControl x:Class="ModPorter.App.DlcEditor" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+ <StackPanel Margin="0,4,0,12">
+  <TextBlock Text="Build or expand a DLC" Style="{StaticResource SectionTitle}" />
+  <TextBlock Text="Choose a collection, add models, then save a new revision. Optional editing tools stay out of the way until you need them." Style="{StaticResource Hint}" Margin="0,0,0,18" />
+  <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,18"><StackPanel>
+  <TextBlock Text="1. Choose a collection" Style="{StaticResource SectionTitle}" />
+  <TextBlock Text="Start fresh, open a DLC archive, or find a pack in your current game folder." Style="{StaticResource Hint}" Margin="0,0,0,12" />
+  <WrapPanel>
+   <Button x:Name="NewButton" Content="New collection" Click="New_Click" />
+   <Button x:Name="OpenButton" Content="Open DLC…" Click="Open_Click" />
+   <Button x:Name="FindInstalledButton" Content="Find installed DLCs…" Click="FindInstalled_Click" />
+  </WrapPanel>
+  <Expander x:Name="InstalledExpander" Header="Installed DLCs" Margin="0,6,0,8">
+   <StackPanel Margin="0,8,0,0">
+    <TextBlock x:Name="InstalledLocation" Text="Choose the current game or SD folder to list its registered and local DLC packs." Style="{StaticResource Hint}" />
+    <TextBox x:Name="InstalledFilter" Tag="Filter installed DLCs" TextChanged="InstalledFilter_Changed" Margin="0,8,0,8" />
+    <ListBox x:Name="InstalledList" Height="130" SelectionChanged="Installed_Changed" MouseDoubleClick="Installed_DoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Disabled"><ListBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap" /></DataTemplate></ListBox.ItemTemplate></ListBox>
+    <WrapPanel Margin="0,8,0,0"><Button x:Name="OpenInstalledButton" Content="Open selected DLC" Click="OpenInstalled_Click" IsEnabled="False" Style="{StaticResource Quiet}" /><Button x:Name="ChooseInstalledGameButton" Content="Choose game folder…" Click="ChooseInstalledGame_Click" Style="{StaticResource Quiet}" /></WrapPanel>
+    <TextBlock Text="Packs absent from this folder may be inside the base game. Scanning and opening do not change installed files." Style="{StaticResource Hint}" />
+   </StackPanel>
+  </Expander>
+  </StackPanel></Border>
+  <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,18"><StackPanel>
+  <TextBlock Text="2. Add and review models" Style="{StaticResource SectionTitle}" />
+  <TextBlock Text="Drop mod folders, ZIPs or complete DLCs here. Four-file PED sets need no extra metadata. Vehicles use the definitions supplied by their author." Style="{StaticResource Hint}" Margin="0,0,0,12" />
+  <WrapPanel>
+   <Button x:Name="AddFoldersButton" Content="Add folders…" Click="AddFolders_Click" />
+   <Button x:Name="AddFilesButton" Content="Add files / ZIPs / DLCs…" Click="AddFiles_Click" />
+  </WrapPanel>
+  <Expander x:Name="ImportOptions" Header="Names and import options" Margin="0,6,0,12">
+  <WrapPanel Margin="0,10,0,4">
+   <StackPanel Width="220" Margin="0,0,12,8">
+    <TextBlock Text="DLC folder ID" Style="{StaticResource FieldLabel}" />
+    <TextBox x:Name="CollectionId" Text="my-mods" TextChanged="CollectionId_Changed" MaxLength="31" ToolTip="Keep this ID when updating a registered collection." />
+   </StackPanel>
+   <StackPanel Width="170" Margin="0,0,12,8">
+    <TextBlock Text="PED movement" Style="{StaticResource FieldLabel}" />
+    <ComboBox x:Name="ImportProfile" SelectedIndex="0"><ComboBoxItem Content="Male (default)" Tag="male" /><ComboBoxItem Content="Female" Tag="female" /></ComboBox>
+   </StackPanel>
+   <StackPanel Width="150" Margin="0,0,0,8">
+    <TextBlock Text="Import texture cap" Style="{StaticResource FieldLabel}" />
+    <ComboBox x:Name="ImportCap" SelectedIndex="3"><ComboBoxItem Content="Off" Tag="0" /><ComboBoxItem Content="256" Tag="256" /><ComboBoxItem Content="512" Tag="512" /><ComboBoxItem Content="1024" Tag="1024" /><ComboBoxItem Content="2048" Tag="2048" /><ComboBoxItem Content="4096" Tag="4096" /></ComboBox>
+   </StackPanel>
+  </WrapPanel>
+  </Expander>
+  <TextBlock x:Name="Summary" Text="Drop models here to start. Four-file PEDs need no extra metadata. Vehicles retain the definitions supplied with their mod." Style="{StaticResource Hint}" Margin="0,4,0,12" />
+  <TextBox x:Name="ModelFilter" Tag="Find a PED or vehicle" TextChanged="Filter_Changed" Margin="0,0,0,8" />
+  <ListBox x:Name="ModelList" Height="170" SelectionChanged="Model_Changed" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+   <ListBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" TextWrapping="Wrap" /></DataTemplate></ListBox.ItemTemplate>
+  </ListBox>
+  <WrapPanel Margin="0,10,0,10">
+   <Button x:Name="UndoButton" Content="Undo" Click="Undo_Click" IsEnabled="False" Style="{StaticResource Quiet}" />
+   <Button x:Name="RedoButton" Content="Redo" Click="Redo_Click" IsEnabled="False" Style="{StaticResource Quiet}" />
+   <Button x:Name="DeleteModelButton" Content="Remove selected model" Click="RemoveModel_Click" IsEnabled="False" Style="{StaticResource Quiet}" />
+   <Button x:Name="AuditButton" Content="Check collection" Click="Audit_Click" IsEnabled="False" Style="{StaticResource Quiet}" />
+  </WrapPanel>
+  <Expander x:Name="BatchOptions" Header="Change movement for shown PEDs" Margin="0,0,0,10"><StackPanel Margin="0,12,0,0">
+   <TextBlock Text="Filter the list first to choose which PEDs change. Vehicles and custom fields are retained, and one Undo restores the batch." Style="{StaticResource Hint}" Margin="0,0,0,10" />
+   <ComboBox x:Name="BatchProfile" SelectedIndex="0" MaxWidth="220" HorizontalAlignment="Left" MinWidth="170"><ComboBoxItem Content="Human male movement" Tag="male" /><ComboBoxItem Content="Human female movement" Tag="female" /></ComboBox>
+   <Button x:Name="BatchProfileButton" Content="Apply movement to shown PEDs" Click="BatchProfile_Click" IsEnabled="False" Style="{StaticResource Quiet}" HorizontalAlignment="Left" Margin="0,12,0,0" />
+  </StackPanel></Expander>
+  <Expander x:Name="DefinitionExpander" Header="Edit selected model (optional)" IsExpanded="False">
+   <StackPanel Margin="0,10,0,10" x:Name="DefinitionPanel" IsEnabled="False">
+    <TextBlock x:Name="DefinitionLocation" Style="{StaticResource Hint}" TextWrapping="Wrap" />
+    <WrapPanel Margin="0,10,0,8">
+     <StackPanel Width="240" Margin="0,0,12,8"><TextBlock Text="Model name" Style="{StaticResource FieldLabel}" /><TextBox x:Name="ModelName" TextChanged="Simple_Changed" /></StackPanel>
+     <StackPanel Width="220" Margin="0,0,0,8"><TextBlock Text="PED / vehicle type" Style="{StaticResource FieldLabel}" /><TextBox x:Name="ModelType" TextChanged="Simple_Changed" /></StackPanel>
+    </WrapPanel>
+    <WrapPanel><Button x:Name="MaleButton" Content="Human male profile" Click="Male_Click" Style="{StaticResource Quiet}" /><Button x:Name="FemaleButton" Content="Human female profile" Click="Female_Click" Style="{StaticResource Quiet}" /></WrapPanel>
+    <TabControl Margin="0,12,0,0">
+     <TabItem Header="All fields">
+      <DataGrid x:Name="FieldGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Height="250" Background="#10151F" Foreground="#E1E7F0" RowBackground="#151D29" AlternatingRowBackground="#192332" BorderBrush="#334052" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#293344" HeadersVisibility="Column" Margin="0,8,0,8">
+       <DataGrid.Resources><Style TargetType="DataGridColumnHeader"><Setter Property="Background" Value="#202C3D" /><Setter Property="Foreground" Value="#C1CEDE" /><Setter Property="Padding" Value="8" /></Style><Style TargetType="DataGridCell"><Setter Property="BorderThickness" Value="0" /><Setter Property="Padding" Value="3" /></Style></DataGrid.Resources>
+       <DataGrid.Columns><DataGridTextColumn Header="Field / attribute" Binding="{Binding Path}" IsReadOnly="True" Width="2*" /><DataGridTextColumn Header="Value" Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Width="*" /></DataGrid.Columns>
+      </DataGrid>
+     </TabItem>
+     <TabItem Header="Definition XML"><TextBox x:Name="DefinitionXml" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas" FontSize="12" Height="250" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextChanged="DefinitionXml_Changed" Margin="0,8,0,8" /></TabItem>
+    </TabControl>
+    <WrapPanel><Button x:Name="ApplyDefinitionButton" Content="Apply definition" Click="ApplyDefinition_Click" /><Button x:Name="RevertDefinitionButton" Content="Revert unapplied edits" Click="RevertDefinition_Click" Style="{StaticResource Quiet}" /></WrapPanel>
+    <TextBlock Text="All fields, attributes and custom XML are retained. Applying a model rename also renames its resources and matching metadata references." Style="{StaticResource Hint}" Margin="0,6,0,0" />
+   </StackPanel>
+  </Expander>
+  <Expander x:Name="AssetsExpander" Header="Asset files">
+   <StackPanel Margin="0,10,0,10">
+    <CheckBox x:Name="ShowAllAssets" Content="Show every resource in this DLC" Checked="AssetsView_Changed" Unchecked="AssetsView_Changed" Margin="0,0,0,8" />
+    <ListBox x:Name="AssetList" Height="160" ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+    <WrapPanel Margin="0,10,0,0"><Button x:Name="ReplaceAssetButton" Content="Replace…" Click="ReplaceAsset_Click" Style="{StaticResource Quiet}" /><Button x:Name="ExportAssetButton" Content="Export…" Click="ExportAsset_Click" Style="{StaticResource Quiet}" /><Button x:Name="DeleteAssetButton" Content="Remove asset" Click="RemoveAsset_Click" Style="{StaticResource Quiet}" /></WrapPanel>
+    <WrapPanel Margin="0,8,0,0"><Button x:Name="ReplacePedSetButton" Content="Replace four PED assets…" Click="ReplacePedSet_Click" Style="{StaticResource Quiet}" IsEnabled="False" /><Button x:Name="ReplacePedFolderButton" Content="Use replacement folder…" Click="ReplacePedFolder_Click" Style="{StaticResource Quiet}" IsEnabled="False" /></WrapPanel>
+    <TextBlock Text="Choose a folder/ZIP or four files. The selected PED keeps its model name and metadata; a complete, validated replacement is applied in one step." Style="{StaticResource Hint}" />
+    <TextBlock Text="Resource archive for added files" Style="{StaticResource FieldLabel}" Margin="0,10,0,6" />
+    <ComboBox x:Name="ResourceArchive" />
+    <Button x:Name="AddAssetButton" Content="Add resource file…" Click="AddAsset_Click" HorizontalAlignment="Left" Style="{StaticResource Quiet}" Margin="0,8,0,0" />
+   </StackPanel>
+  </Expander>
+  <Expander x:Name="FullMetadataExpander" Header="Advanced: complete metadata files" Margin="0,10,0,0"><StackPanel Margin="0,12,0,0">
+   <TextBlock Text="Edit complete peds.meta, vehicle and registration files. Invalid structural changes are rejected while the working collection stays intact." Style="{StaticResource Hint}" Margin="0,0,0,8" />
+   <Button x:Name="FullMetadataButton" Content="Edit full peds.meta / metadata…" Click="FullMetadata_Click" Style="{StaticResource Quiet}" HorizontalAlignment="Left" IsEnabled="False" />
+  </StackPanel></Expander>
+  </StackPanel></Border>
+  <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,18"><StackPanel>
+  <TextBlock Text="3. Save a new revision" Style="{StaticResource SectionTitle}" />
+  <TextBlock Text="Save DLC creates a ready-to-copy folder and preserves your source archive. Add ZIP makes the same output easier to share." Style="{StaticResource Hint}" Margin="0,0,0,12" />
+  <TextBox x:Name="OutputParent" Tag="Output folder (automatic if blank)" ToolTip="Use a new folder for each saved revision." />
+  <WrapPanel Margin="0,12,0,0"><Button x:Name="SaveFolderButton" Content="Save DLC" Click="SaveFolder_Click" Style="{StaticResource Primary}" /><Button x:Name="SaveZipButton" Content="Save DLC + ZIP" Click="SaveZip_Click" /></WrapPanel>
+  <Expander x:Name="GameRegistrationExpander" Header="First installation: include game registration" Margin="0,8,0,0"><StackPanel Margin="0,12,0,0">
+   <TextBlock Text="Choose your current game files to register a new DLC. For an existing registration, only the DLC is exported." Style="{StaticResource Hint}" Margin="0,0,0,10" />
+   <WrapPanel><Button x:Name="GameFolderButton" Content="Build with game files…" Click="GameFolder_Click" Style="{StaticResource Quiet}" /><Button x:Name="GameZipButton" Content="Build with game files + ZIP…" Click="GameZip_Click" Style="{StaticResource Quiet}" /></WrapPanel>
+  </StackPanel></Expander>
+  <TextBlock Text="Already registered? Only the DLC archive is exported. A new DLC needs registration once; Build with game files preserves the current DLC list and handles this automatically." Style="{StaticResource Hint}" Margin="0,8,0,10" />
+  </StackPanel></Border>
+  <TextBlock x:Name="CollectionStatus" Text="No collection open." TextWrapping="Wrap" Foreground="{StaticResource Accent}" />
+ </StackPanel>
+</UserControl>

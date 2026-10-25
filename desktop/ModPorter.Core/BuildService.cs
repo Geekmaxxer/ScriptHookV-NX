@@ -25,7 +25,7 @@ public static class BuildService {
         var checks = new List<CheckResult>();
         foreach (var relative in new[] { "tools/build_plugin.py", "include/script.h", "sdk/plugin_api.cpp", "sdk/plugin_start.s", "sdk/plugin_link.ld", "distribution/" + SharedSdAccess.NpdmPath, "tools/sd_permissions.py" }) checks.Add(new(relative, File.Exists(Path.Combine(settings.SdkPath, relative)), Path.Combine(settings.SdkPath, relative)));
         try { var c = NativeCatalog.Load(settings.SdkPath); checks.Add(new("Native index", true, $"{c.Entries.Count:N0} declarations; target {c.TargetBuild}")); }
-        catch (Exception ex) when (ex is IOException or JsonException or InvalidOperationException or KeyNotFoundException) { checks.Add(new("Native index", false, ex.Message)); }
+        catch (Exception ex) when (ex is IOException or InvalidDataException or JsonException or InvalidOperationException or KeyNotFoundException) { checks.Add(new("Native index", false, ex.Message)); }
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel); timeout.CancelAfter(TimeSpan.FromSeconds(20));
         var output = new StringBuilder();
         try {
@@ -110,7 +110,7 @@ public static class BuildService {
                 writer.Write($"# {manifest.Id} — Switch test build\n\nRequires ScriptHookV-NX for GTA V build {catalog.TargetBuild}. Close GTA, then copy atmosphere and switch to the SD root. For a customized main.npdm, run Install-SD-Access.cmd first and preserve its patched file. Restart GTA to load the plugin.\n\nSettings use settings/{manifest.Id}/ with the updated runtime. Upgrade the runtime and run existing mods once to migrate older flat settings before extracting default INIs. Preserve customized files.\n\nThis source port passed local compilation and NRO structural checks. Switch gameplay testing is required.\n\nTo disable: close GTA and rename {manifest.Id}.nro to {manifest.Id}.nro.disabled.\n\nBuilt with ScriptHookV-NX by MEGATARD (@Geekmaxver). Source: https://github.com/Geekmaxxer/ScriptHookV-NX\n");
               }
             }
-            JsonFiles.Write(Path.Combine(output, "port-build.json"), new { tool_version = "0.6.0", plugin_id = manifest.Id, target_build = catalog.TargetBuild, header_sha256 = catalog.HeaderSha256, nro = info, install_zip_created = createInstallZip, source_hashes = sourceFiles.ToDictionary(x => x.Key, x => x.Value.Sha256), switch_runtime_verified = false });
+            JsonFiles.Write(Path.Combine(output, "port-build.json"), new { tool_version = "0.9.1", plugin_id = manifest.Id, target_build = catalog.TargetBuild, header_sha256 = catalog.HeaderSha256, nro = info, install_zip_created = createInstallZip, source_hashes = sourceFiles.ToDictionary(x => x.Key, x => x.Value.Sha256), switch_runtime_verified = false });
             Record("NRO structural checks passed. " + (createInstallZip ? "Install ZIP: " + package : "NRO: " + nro));
             return new(output, nro, package, info);
         } finally {

@@ -37,9 +37,14 @@ try {
     RefinementTests.Assets(scratch, Check);
     GameArchiveTests.Run(scratch, Check);
     AddonTests.Run(scratch, Check);
+    DlcWorkspaceTests.Run(scratch, Check);
     Check("Matched native index", () => Must(catalog.Entries.Count == 8540 && catalog.Entries["PLAYER::PLAYER_PED_ID"].Registered));
     Check("Native search by hash", () => Must(catalog.Search(catalog.Entries["PLAYER::PLAYER_PED_ID"].Hash).Single().Name == "PLAYER::PLAYER_PED_ID"));
     Check("Reject stale native index", () => { string p = NewDir(); Directory.CreateDirectory(Path.Combine(p, "include")); Directory.CreateDirectory(Path.Combine(p, "sdk")); File.Copy(Path.Combine(sdk, "include/natives.h"), Path.Combine(p, "include/natives.h")); File.WriteAllText(Path.Combine(p, "sdk/native-index.json"), "{\"format\":1,\"header_sha256\":\"bad\"}"); Reject(() => NativeCatalog.Load(p)); });
+    Check("Tool doctor reports an incomplete SDK and continues checking the build tools",()=>{
+        string p=NewDir();var results=BuildService.DoctorAsync(new(p,"python",devkit)).GetAwaiter().GetResult();
+        Must(results.Any(c=>c.Name=="Native index"&&!c.Passed)&&results.Any(c=>c.Name=="Python 3.10+")&&results.Any(c=>c.Name=="devkitA64"));
+    });
     foreach (string bad in new[] { "../escape.cpp", "/root.cpp", "C:/evil.cpp", "a/../../evil.cpp", "a:stream.cpp", "a/CON.cpp", "x/NUL", "x./a.cpp", "x /a.cpp", "a//b.cpp" }) Check("Reject unsafe path " + bad, () => Reject(() => InputLoader.SafeRelative(bad)));
     Check("Preserve nested header paths", () => { var i = InputLoader.Load(Zip(("mod/main.cpp", Entry()), ("mod/inc/common.h", "#pragma once"))); Must(i.Files.Count == 2); });
     Check("Reject ZIP traversal before extraction", () => Reject(() => InputLoader.Load(Zip(("../evil.cpp", Entry())))));

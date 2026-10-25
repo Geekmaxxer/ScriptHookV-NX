@@ -6,6 +6,14 @@ using System.Xml.Linq;
 namespace ModPorter.Core.Assets;
 
 public static class DlcPackageService {
+    public static bool Contains(byte[] current, string id) {
+        // The same validated parser is used for both the membership check and merge.
+        _ = MergeList(current, id);
+        var doc = AddonAudit.Xml(current);
+        string expected = "dlcpacks:/" + id + "/";
+        return doc.Root!.Elements().Single(n => n.Name.LocalName == "Paths").Elements()
+            .Any(n => n.Name.LocalName == "Item" && n.Value.Trim().Replace('\\', '/').Equals(expected, StringComparison.OrdinalIgnoreCase));
+    }
     public static byte[] MergeList(byte[] current,string id) {
         if(!PortProject.ValidId(id)||id!=id.ToLowerInvariant())throw new ArgumentException("DLC ID requires 1-31 lowercase letters, digits, underscores or hyphens.");
         if(current.Length>4*1024*1024)throw new InvalidDataException("DLC list exceeds 4 MiB.");
@@ -24,7 +32,7 @@ public static class DlcPackageService {
         output = Path.GetFullPath(output);
         if (!PortProject.ValidId(id) || id != id.ToLowerInvariant()) throw new ArgumentException("DLC ID requires 1–31 lowercase letters, digits, underscores or hyphens.");
         if (Directory.Exists(output) || File.Exists(output)) throw new IOException("Choose a new DLC package output directory.");
-        if (new FileInfo(dlcArchive).Length > 256 * 1024 * 1024 || new FileInfo(currentDlcList).Length > 4 * 1024 * 1024) throw new InvalidDataException("DLC/list exceeds preparation limits.");
+        if (new FileInfo(dlcArchive).Length > RpfArchive.MaxBytes || new FileInfo(currentDlcList).Length > 4 * 1024 * 1024) throw new InvalidDataException("DLC/list exceeds preparation limits (512 MiB archive, 4 MiB list).");
         var archive = RpfArchive.Read(File.ReadAllBytes(dlcArchive), cancel);
         if (!archive.Children.Any(n => n.Name.Equals("content.xml", StringComparison.OrdinalIgnoreCase)) || !archive.Children.Any(n => n.Name.Equals("setup2.xml", StringComparison.OrdinalIgnoreCase))) throw new InvalidDataException("Choose a complete converted DLC archive with content.xml and setup2.xml.");
         byte[] mergedList=MergeList(File.ReadAllBytes(currentDlcList),id);

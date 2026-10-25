@@ -5,7 +5,7 @@ using System.Text.Json;
 try {
     if (args.Length == 0 || args[0] is "--help" or "help") {
         Console.WriteLine("""
-            ScriptHookV-NX Mod Porter 0.6.0
+            ScriptHookV-NX Mod Porter 0.9.1
             analyze <source-folder|zip|asi|dll|nro> --sdk <SDK> [--report <new-folder>]
             port <source-folder|zip> --sdk <SDK> --output <new-folder> --id <plugin-id>
                  [--source <relative.cpp> ...] [--keep-dllmain] [--adapt-sleep]
@@ -23,8 +23,15 @@ try {
             archive-list <current.rpf>
             addon-check <prepared-dlc.rpf>
             addon-batch <folder-with-pack-id-subfolders> --game <current-update.rpf|SD-root> --output <new-folder>
-            addon-ped <source-folder|zip> --id <dlc-id> --model <model> --template <peds.meta|common.rpf>
-                      --base-ped <target-ped-name> --output <new-folder> [--cap 1024] [--no-zip]
+            addon-ped <source-folder|zip|ped-file> [--output <new-folder>] [--profile male|female]
+                      [--game <SD-root|update.rpf>] [--id <dlc-id>] [--model <model>]
+                      [--template <peds.meta|OPEN.rpf>] [--base-ped <name>] [--cap 1024] [--no-zip]
+            dlc-bundle <folders|zips|dlcs>... [--existing <dlc.rpf>] [--id <folder-id>]
+                       [--game <SD-root|update.rpf>] [--output <new-folder>] [--cap 1024] [--profile male|female] [--no-zip]
+            dlc-models <dlc.rpf>
+            dlc-library --game <SD-root|game-folder|update.rpf>
+            dlc-edit <dlc.rpf> --model <name> [--name <new-name>] [--profile male|female]
+                     [--definition <Item.xml>] [--replace-ped-assets <folder|zip>] [--output <new-folder>] [--no-zip]
 
             ASI analysis does not execute or convert Windows binaries.
             Asset preparation also saves a ZIP unless --no-zip is set. NRO builds use --nro-only.
@@ -38,6 +45,31 @@ try {
     using var cts = new CancellationTokenSource(); Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
     var settings = new ToolSettings(Get("--sdk", Path.Combine(AppContext.BaseDirectory, "SDK")), Get("--python", "python"), Get("--devkitpro", Environment.GetEnvironmentVariable("DEVKITPRO") ?? "C:/devkitPro"));
     switch (args[0]) {
+        case "dlc-library": {
+            var library=DlcLibrary.Scan(Get("--game"),cts.Token);
+            Console.WriteLine("DLC folder: "+library.PacksDirectory);foreach(var pack in library.Packs)Console.WriteLine(pack);return 0;
+        }
+        case "dlc-models": {
+            var workspace=DlcWorkspace.Open(args[1],cts.Token);
+            foreach(var model in workspace.Models())Console.WriteLine(model+" | "+workspace.Assets(model).Count+" resources | "+model.MetadataPath);
+            return 0;
+        }
+        case "dlc-bundle": {
+            string existing=Get("--existing","");var workspace=existing.Length>0?DlcWorkspace.Open(existing,cts.Token):DlcWorkspace.Create(Get("--id","my-mods"));
+            if(args.Contains("--id"))workspace.SetId(Get("--id"));
+            var paths=args.Skip(1).TakeWhile(a=>!a.StartsWith("--",StringComparison.Ordinal)).ToArray();
+            if(paths.Length>0){var imported=workspace.Import(paths,int.Parse(Get("--cap","1024")),Get("--profile","male"),cts.Token);Console.WriteLine("Added "+imported.Peds+" PEDs and "+imported.Vehicles+" vehicles.");}
+            var result=args.Contains("--game")?workspace.PrepareGame(Get("--game"),Get("--output",""),!args.Contains("--no-zip"),cts.Token,Console.WriteLine):workspace.Export(Get("--output",""),!args.Contains("--no-zip"),cts.Token);
+            Console.WriteLine("DLC: "+result.DlcArchive);Console.WriteLine(result.Archive.Length>0?result.Archive:result.Directory);Console.WriteLine("update.rpf written: "+result.UpdateArchiveWritten);return 0;
+        }
+        case "dlc-edit": {
+            var workspace=DlcWorkspace.Open(args[1],cts.Token);var selected=workspace.Models().Single(m=>m.Name.Equals(Get("--model"),StringComparison.OrdinalIgnoreCase));
+            if(args.Contains("--definition")){string xml=File.ReadAllText(Get("--definition"));workspace.SetDefinition(selected,xml);string name=System.Xml.Linq.XDocument.Parse(xml).Root!.Elements().Single(e=>e.Name.LocalName==(selected.Kind=="PED"?"Name":"modelName")).Value.Trim().ToLowerInvariant();selected=workspace.Models().Single(m=>m.MetadataPath==selected.MetadataPath&&m.Name==name);}
+            if(args.Contains("--profile"))workspace.SetHumanProfile(selected,Get("--profile"));
+            if(args.Contains("--replace-ped-assets"))workspace.ReplacePedAssets(selected,new[]{Get("--replace-ped-assets")},int.Parse(Get("--cap","1024")),cts.Token);
+            if(args.Contains("--name"))workspace.RenameModel(selected,Get("--name"));
+            var result=workspace.Export(Get("--output",""),!args.Contains("--no-zip"),cts.Token);Console.WriteLine(result.DlcArchive);return 0;
+        }
         case "addon-batch": {
             var result = AddonBatch.Prepare(AddonBatch.Discover(args[1]), Get("--game"), Get("--output"), cts.Token, Console.WriteLine);
             Console.WriteLine(result.Manifest); return 0;
@@ -47,9 +79,15 @@ try {
             Console.WriteLine(report.Text()); return report.ReadyForTest ? 0 : 2;
         }
         case "addon-ped": {
-            var options = new PedAddonOptions(Get("--id"), Get("--model"), Get("--template"), Get("--base-ped"), int.Parse(Get("--cap", "1024")));
-            var result = AddonBuilder.Ped(args[1], Get("--output"), options, cts.Token, createZip: !args.Contains("--no-zip"));
+            var options = new PedAddonOptions(Get("--id", ""), Get("--model", ""), Get("--template", ""), Get("--base-ped", ""), int.Parse(Get("--cap", "1024")), Get("--profile", "male"));
+            if (args.Contains("--game")) {
+                var install = AddonBuilder.PedForGame(args[1], Get("--output", ""), options, Get("--game"), cts.Token, !args.Contains("--no-zip"), Console.WriteLine);
+                Console.WriteLine("Spawn model: " + install.Ped.Model + " · " + install.Ped.MetadataSource);
+                Console.WriteLine(install.Archive.Length > 0 ? install.Archive : install.GameFiles.Directory); return 0;
+            }
+            var result = AddonBuilder.Ped(args[1], Get("--output", ""), options, cts.Token, createZip: !args.Contains("--no-zip"));
             Console.WriteLine(result.Audit.Text()); Console.WriteLine(result.DlcArchive);
+            Console.WriteLine("Spawn model: " + result.Model + " · " + result.MetadataSource);
             Console.WriteLine(result.Archive.Length > 0 ? result.Archive : result.Directory); return 0;
         }
         case "check": {

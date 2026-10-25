@@ -78,16 +78,17 @@ public partial class MainWindow {
                     break;
                 case 4:
                     Horizontal(OpenAssetOutputButton);
-                    if (AssetTabs.SelectedIndex == 0) { Horizontal(AssetInputPath); Horizontal(AssetOutputPath); Horizontal(TextureCapCombo); Horizontal(ConvertAssetsFolderButton); Horizontal(ConvertAssetsButton); if (PedAddonExpander.IsExpanded) { Horizontal(PedPackId); Horizontal(PedModelName); Horizontal(PedTemplatePath); Horizontal(PedBaseName); Horizontal(BuildPedAddonFolderButton); Horizontal(BuildPedAddonZipButton); } }
+                    if (AssetTabs.SelectedIndex == 0) { Horizontal(AssetInputPath); Horizontal(AssetOutputPath); Horizontal(TextureCapCombo); Horizontal(ConvertAssetsFolderButton); Horizontal(ConvertAssetsButton); if (PedAddonExpander.IsExpanded) { Horizontal(PedProfile); Horizontal(BuildPedAddonFolderButton); Horizontal(BuildPedAddonZipButton); Horizontal(BuildPedGameFolderButton); Horizontal(BuildPedGameZipButton); if (PedAdvancedExpander.IsExpanded) { Horizontal(PedPackId); Horizontal(PedModelName); Horizontal(PedTemplatePath); Horizontal(PedBaseName); } } }
                     if (AssetTabs.SelectedIndex == 1) { Horizontal(CurrentGamePath); Horizontal(PreparedAssetPath); if (ReplaceAssetMode.IsChecked == true) Horizontal(ArchiveEntryPath); else { Horizontal(DlcId); if (DlcImportExpander.IsExpanded) { Horizontal(PrepareDlcFolderButton); Horizontal(PrepareDlcZipButton); } } }
                     if (AssetTabs.SelectedIndex == 2) Horizontal(AssetLog);
+                    if(AssetTabs.SelectedIndex==3){foreach(var control in new FrameworkElement[]{CollectionEditor.CollectionId,CollectionEditor.ImportProfile,CollectionEditor.ImportCap,CollectionEditor.ModelFilter,CollectionEditor.ModelList,CollectionEditor.FieldGrid,CollectionEditor.FindInstalledButton,CollectionEditor.BatchProfileButton,CollectionEditor.SaveFolderButton,CollectionEditor.SaveZipButton,CollectionEditor.GameFolderButton,CollectionEditor.GameZipButton}.Where(c=>c.IsVisible))Horizontal(control);if(CollectionEditor.InstalledExpander.IsExpanded){Horizontal(CollectionEditor.InstalledList);Horizontal(CollectionEditor.InstalledFilter);Horizontal(CollectionEditor.ChooseInstalledGameButton);}if(CollectionEditor.AssetsExpander.IsExpanded){Horizontal(CollectionEditor.AssetList);Horizontal(CollectionEditor.ResourceArchive);Horizontal(CollectionEditor.ReplacePedSetButton);Horizontal(CollectionEditor.ReplacePedFolderButton);}}
                     break;
             }
         }
         void Page(int page) {
             Tabs.SelectedIndex = page switch { >= 0 and <= 2 => page, >= 3 and <= 5 => 3, _ => 4 };
             if (page is >= 3 and <= 5) ToolTabs.SelectedIndex = page - 3;
-            if (page >= 6) AssetTabs.SelectedIndex = page == 6 ? 0 : page == 9 ? 2 : 1;
+            if (page >= 6) AssetTabs.SelectedIndex = page == 6 ? 0 : page == 9 ? 2 : page == 10 ? 3 : 1;
             ReplaceAssetMode.IsChecked = page == 8; AddDlcMode.IsChecked = page != 8;
         }
         IEnumerable<T> Descendants<T>(DependencyObject p) where T : DependencyObject {
@@ -101,6 +102,7 @@ public partial class MainWindow {
             var host = (FrameworkElement)Tabs.Template.FindName("PART_SelectedContentHost", Tabs);
             foreach (var expander in Descendants<Expander>(host).ToArray()) expander.IsExpanded = true;
             await Settle();
+            Audit();
             foreach (var button in Descendants<Button>(host).Where(b => b.IsVisible).ToArray()) {
                 button.BringIntoView(); await Settle();
                 var r = Box(button); var label = button.Content?.ToString() ?? button.Name;
@@ -119,7 +121,7 @@ public partial class MainWindow {
             // non-client frame omitted by earlier screenshot-only checks.
             foreach (var size in new[] { (800d, 500d), (920d, 680d), (1200d, 850d) }) {
                 WindowState = WindowState.Normal; Width = size.Item1; Height = size.Item2;
-                for (int page = 0; page < 10; page++) { context = $"native-{size.Item1}x{size.Item2}-page-{page}"; Page(page); await Settle(); Check(Math.Abs(ActualWidth-size.Item1)<2 && Math.Abs(ActualHeight-size.Item2)<2,"native window has the requested size"); Audit(); scenarios++; }
+                for (int page = 0; page < 11; page++) { context = $"native-{size.Item1}x{size.Item2}-page-{page}"; Page(page); await Settle(); Check(Math.Abs(ActualWidth-size.Item1)<2 && Math.Abs(ActualHeight-size.Item2)<2,"native window has the requested size"); Audit(); scenarios++; }
             }
             Page(2); ProjectSetup.IsExpanded = true; SdInstallation.IsExpanded = true; await Settle();
             string originalInput = OutputPath.Text; int originalTab = Tabs.SelectedIndex;
@@ -153,7 +155,7 @@ public partial class MainWindow {
             Content = new ScrollViewer { Content = root, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
             await Settle();
             foreach (var size in new[] { (900d, 672d, 1d), (1280d, 720d, 1d), (1920d, 1080d, 1d), (2560d, 1440d, 1d), (1920d, 1080d, 1.25d), (1920d, 1080d, 1.5d), (1920d, 1080d, 2d), (1280d, 720d, 1.5d), (1280d, 720d, 2d) }) {
-                for (int page = 0; page < 10; page++) {
+                for (int page = 0; page < 11; page++) {
                     context = $"{size.Item1}x{size.Item2}-dpi{size.Item3 * 100}-page-{page}"; Page(page);
                     ProjectSetup.IsExpanded = true; SdInstallation.IsExpanded = true;
                     await Settle(); Measure(size.Item1 / size.Item3, size.Item2 / size.Item3); Audit(); scenarios++;

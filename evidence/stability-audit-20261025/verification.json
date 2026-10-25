@@ -1,0 +1,461 @@
+{
+  "version": "Mod Porter 0.9.1 Preview",
+  "date": "2026-10-25",
+  "status": "passed",
+  "runtime": {
+    "production_arm64_suites": [
+      {
+        "suite": "callback-tests",
+        "passed": 18,
+        "scope": "Compiled NRO and runtime; game input/render dimensions and SDK keyboard state mocked"
+      },
+      {
+        "suite": "capacity-tests",
+        "passed": 8,
+        "scope": "Production ARM64 runtime, eight distinct real NRO images, sixteen script stacks and eight callbacks; game/OS/filesystem mocked"
+      },
+      {
+        "suite": "engine-api-tests",
+        "passed": 32,
+        "scope": "Production ARM64 API and actual target guards; synthetic pool/global contents"
+      },
+      {
+        "suite": "extensions-tests",
+        "passed": 10,
+        "scope": "Compiled ARM64 runtime and real NRO; game, OS and filesystems mocked"
+      },
+      {
+        "suite": "lifecycle-tests",
+        "passed": 19,
+        "scope": "Actual compiled ARM64 runtime/plugin in emulator; OS, game state and filesystem mocked"
+      },
+      {
+        "suite": "manager-tests",
+        "passed": 118,
+        "scope": "Production ARM64 public manager natives, native caller, scheduler and real NROs; pinned target directory ABI; mocked FS/RO/OS"
+      },
+      {
+        "suite": "native-caller-tests",
+        "passed": 70,
+        "scope": "Production ARM64 module with C++ adapter forwarding to production APIs; actual target handler instructions; emulated OS/TLS/game state"
+      },
+      {
+        "suite": "plugin-tests",
+        "passed": 51,
+        "scope": "Production loader and real NRO instructions; real target native handlers and VM dispatch; mocked SDK RO/filesystem/OS calls"
+      },
+      {
+        "suite": "runtime-config-tests",
+        "passed": 54,
+        "scope": "Production ARM64 config/loader/scheduler and real NROs; mocked OS/RO/filesystem"
+      },
+      {
+        "suite": "runtime-tests",
+        "passed": 75,
+        "scope": "Production ARM64 scheduler and fiber switch; real target natives and VM entry; emulated OS, outer VM tick and game state"
+      },
+      {
+        "suite": "settings-folder-tests",
+        "passed": 26,
+        "scope": "Production ARM64 runtime and unchanged ABI 1 sample; OS/RO/filesystem are mocked"
+      },
+      {
+        "suite": "texture-tests",
+        "passed": 15,
+        "scope": "Actual ARM64 PNG decode, storage, memory accounting and sprite call ABI; GPU allocation/upload/render mocked"
+      },
+      {
+        "suite": "timing-tests",
+        "passed": 13,
+        "scope": "Production ARM64 timing/bridge and real NRO; controlled Horizon ticks, mocked game/OS"
+      }
+    ],
+    "passed": 509,
+    "failed": 0,
+    "runtime_reference_comparison": {
+      "equivalent_initialized_runtime": true,
+      "expected_module_sha256": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+      "actual_module_sha256": "850f35c15ac093267e9258ce9f0c555e6dd3e693218426a56c62348886f51880",
+      "exact_file_match": true,
+      "ignored": "Only a valid 20-byte GNU build-ID note matching the NSO header",
+      "switch_runtime_verified": false
+    },
+    "runtime_source_changed": false,
+    "fresh_switch_test_performed": false
+  },
+  "desktop_backend": {
+    "passed": 216,
+    "failed": 0,
+    "compiler_groups_skipped": 0
+  },
+  "packaged_ui": {
+    "main": {
+      "passed": 43,
+      "failed": 0,
+      "checks": [
+        "Unavailable project actions disabled on startup",
+        "Import and analyze through the UI",
+        "Source-file selection populated",
+        "Finding action updates on selection",
+        "Review action remains visible at minimum window size",
+        "Finding filter",
+        "Review severity filter",
+        "Empty search state is visible",
+        "Generate project through the UI",
+        "Project setup collapses after creation and navigation title follows selection",
+        "Build becomes available after project generation",
+        "Compiler-only checks through the UI",
+        "Build and install ZIP through the UI",
+        "Build output and install actions become available after a successful build",
+        "Compiler log and NRO validation shown",
+        "Build output summarizes machine metadata and retains the complete log",
+        "Full compiler output is available on demand",
+        "SD installation backend used by UI",
+        "Restore backend used by UI",
+        "Build ZIP action fits the minimum window size",
+        "Standalone NRO action fits the minimum window size",
+        "Both NRO build actions stay on the same row",
+        "Standalone Build NRO through the UI",
+        "Pinned real Footprints mod imported through the UI",
+        "Real Footprints AArch64 NRO built through the UI",
+        "Toolchain doctor through the UI",
+        "Native lookup through the UI",
+        "Asset workflow defaults to Auto and 1024",
+        "Asset preparation and game update workflows start with separate views",
+        "Resource preparation offers a direct route to the complete DLC workflow",
+        "Actual asset inspection through the UI",
+        "Actual asset conversion and ZIP through the UI",
+        "Asset conversion action can be reached without clipping at minimum window size",
+        "Add-on registration is the default game update mode",
+        "DLC update action stays visible without scrolling",
+        "Replacement mode reveals only replacement controls",
+        "Current RPF entry discovery through UI",
+        "Editable archive path template displays the selected entry",
+        "Archive update backend used by UI",
+        "Import action remains visible at minimum window size",
+        "Long paths do not push import actions outside the window",
+        "Long operations disable editing and expose cancellation",
+        "Cancelled operations restore navigation and action state"
+      ],
+      "original_input_modified": false,
+      "switch_runtime_verified": false
+    },
+    "ped": {
+      "passed": 42,
+      "failed": 0,
+      "checks": [
+        "Default PED form requires no names or custom metadata",
+        "Dropping four files selects their folder and opens the PED builder",
+        "Incomplete drops explain the requirement and preserve selected assets",
+        "Automatic folder button builds from four files without game metadata",
+        "Automatic folder DLC passes registration audit",
+        "Automatic folder respects ZIP selection",
+        "Automatic zip button builds from four files without game metadata",
+        "Automatic zip DLC passes registration audit",
+        "Automatic zip respects ZIP selection",
+        "Blank output path automatically creates a usable new output folder",
+        "Missing assets produce a useful inline message",
+        "Build with game files False creates an SD-root package",
+        "Game build False retains existing DLC registrations",
+        "Game build False preserves original game files",
+        "Game build False creates only the requested install ZIP",
+        "Build with game files True creates an SD-root package",
+        "Game build True retains existing DLC registrations",
+        "Game build True preserves original game files",
+        "Game build True creates only the requested install ZIP",
+        "Target PED metadata populates the selector",
+        "Prepare assets folder produces files and reports",
+        "Prepare assets folder respects ZIP choice",
+        "Asset report identifies the selected output type",
+        "PED folder produces a DLC",
+        "PED folder retains model and registration",
+        "PED folder creates only requested ZIPs",
+        "Registration folder produces its manifest",
+        "Registration folder respects ZIP choice",
+        "Registration folder retains existing entries",
+        "Registration report identifies the selected output type",
+        "Prepare assets zip produces files and reports",
+        "Prepare assets zip respects ZIP choice",
+        "Asset report identifies the selected output type",
+        "PED zip produces a DLC",
+        "PED zip retains model and registration",
+        "PED zip creates only requested ZIPs",
+        "Folder and ZIP buttons produce identical DLC bytes",
+        "Registration zip produces its manifest",
+        "Registration zip respects ZIP choice",
+        "Registration zip retains existing entries",
+        "Registration report identifies the selected output type",
+        "Asset inputs and target metadata remain unchanged"
+      ],
+      "target_metadata_dropdown_populated": true,
+      "selected_model": "misaki",
+      "generated_dlc_sha256": "cc049a901ef8e6a6722b07c4072df31c89487357653fdc667b47cd13b5134c0f",
+      "source_files_modified": false,
+      "switch_runtime_verified": false
+    },
+    "collection": {
+      "passed": 40,
+      "failed": 0,
+      "checks": [
+        "Collection workflow starts with optional editors collapsed and three clear steps",
+        "Real PED and vehicle sources are bundled into one collection",
+        "Mixed collection passes asset and registration audit",
+        "Existing mixed-case vehicle definitions remain selectable after editing",
+        "Duplicate XML identity fields do not crash simple-field editing",
+        "Revert unapplied edits restores a usable definition after invalid XML",
+        "UI model rename updates all four assets and metadata",
+        "Female profile updates PED movement and type",
+        "Batch profile action changes only the PEDs shown by the filter",
+        "One Undo restores the profile batch",
+        "Complete replacement folder retains model name, metadata and valid registration",
+        "One Undo restores all four original PED resources",
+        "Incomplete replacement produces a useful message and leaves the PED intact",
+        "Definition XML editor retains added fields and attributes",
+        "Field grid applies arbitrary XML attributes",
+        "Metadata editor retains its XML area and visible actions at minimum size",
+        "Built-in full peds.meta editor changes the working DLC",
+        "Invalid metadata structure is rejected while every working model remains available",
+        "Undo restores an entire metadata-file edit",
+        "Redo restores metadata changes",
+        "Every DLC resource and resource archive is available in the asset editor",
+        "Save DLC writes one verified archive and clears the unsaved state",
+        "Changing only the DLC ID is tracked before Save and prevents silent discard",
+        "Save DLC never generates update.rpf",
+        "An exported mixed DLC reopens with all editor changes",
+        "Remove model updates the PED list and owned assets",
+        "Undo restores removed models and resources",
+        "Save DLC + ZIP creates exactly one ZIP",
+        "First installation registers the collection once",
+        "Already registered collection exports only its DLC",
+        "Registered update creates only the requested install ZIP",
+        "Game-file builds preserve the original and selected current archives",
+        "Installed DLC browser discovers local and registered packs without loading every archive",
+        "Unavailable base-game packs cannot be opened as loose files",
+        "Installed DLC filter finds the editable registered collection",
+        "Opening an installed collection retains its identity and saved state",
+        "Installed DLC discovery and opening preserve the selected game archive",
+        "An emptied collection retains metadata access, Undo and unsaved-change protection",
+        "Undo restores every removed model and the saved collection state",
+        "All real source assets and original DLC files remain unchanged"
+      ],
+      "models": [
+        {
+          "name": "nx_misaki",
+          "kind": "PED",
+          "metadata_path": "imports/part0001/common/data/peds.meta",
+          "type": "CIVFEMALE",
+          "key": "imports/part0001/common/data/peds.meta|nx_misaki"
+        },
+        {
+          "name": "zoro",
+          "kind": "PED",
+          "metadata_path": "imports/part0002/common/data/peds.meta",
+          "type": "CIVMALE",
+          "key": "imports/part0002/common/data/peds.meta|zoro"
+        },
+        {
+          "name": "mrrc",
+          "kind": "Vehicle",
+          "metadata_path": "imports/part0004/common/data/levels/gta5/vehicles.meta",
+          "type": "VEHICLE_TYPE_CAR",
+          "key": "imports/part0004/common/data/levels/gta5/vehicles.meta|mrrc"
+        },
+        {
+          "name": "torachry300redeye",
+          "kind": "Vehicle",
+          "metadata_path": "imports/part0003/common/data/levels/gta5/vehicles.meta",
+          "type": "VEHICLE_TYPE_CAR",
+          "key": "imports/part0003/common/data/levels/gta5/vehicles.meta|torachry300redeye"
+        }
+      ],
+      "source_files_modified": false,
+      "installed_game_files_modified": false,
+      "switch_runtime_verified": false
+    }
+  },
+  "packaged_ui_passed": 125,
+  "layout": {
+    "passed": 2970,
+    "failed": 0,
+    "scenarios": 158,
+    "native_window_states": [
+      "normal",
+      "maximized",
+      "minimized",
+      "restored"
+    ],
+    "simulated_dpi": [
+      100,
+      125,
+      150,
+      200
+    ]
+  },
+  "controller_ui_arm64_model": {
+    "passed": 38,
+    "failed": 0,
+    "scope": "Real ARM64 UI model; no game/native rendering calls",
+    "switch_runtime_verified": false
+  },
+  "public_repository_checks": {
+    "checks": [
+      "native-index-and-target-profile",
+      "portable-tools",
+      "sd-access-packaging",
+      "desktop-tests",
+      "desktop-ui-build",
+      "nro-examples"
+    ],
+    "passed": true,
+    "scope": "Local source, profile, desktop and requested compiler checks",
+    "native_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "skipped": [
+      "host-ui-model"
+    ],
+    "switch_runtime_verified": false
+  },
+  "independent_model_preservation": {
+    "passed": true,
+    "resources": 11,
+    "records": [
+      {
+        "name": "nx_misaki.ndd",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "nx_misaki.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "nx_misaki.nmt",
+        "variation_bytes_preserved": true
+      },
+      {
+        "name": "zoro.ndd",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "zoro.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "zoro.nmt",
+        "variation_bytes_preserved": true
+      },
+      {
+        "name": "torachry300redeye.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "torachry300redeye_1.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "torachry300redeye_hi.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "mrrc.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "mrrc_hi.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      }
+    ],
+    "switch_runtime_verified": false
+  },
+  "package": {
+    "version": "0.9.1",
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.9.1-Windows-x64.zip",
+      "bytes": 60820516,
+      "sha256": "1e965953aa0ca82cc1194af092148c0b680feed5eb659285fe7120b57ed4414c"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.9.1-Source.zip",
+      "bytes": 894790,
+      "sha256": "7b27d5eb728e061ac109cbc3bf0cdf0610e61ec4dc2a0561c7a295ae3660a3d0"
+    },
+    "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "game_files_included": false,
+    "core_runtime_included": false,
+    "zip_readback_verified": true,
+    "windows_documentation_links": 5,
+    "source_documentation_links": 10
+  },
+  "package_content": {
+    "zip_crc_and_hashes_verified": true,
+    "no_game_or_mod_assets": true,
+    "source_matches_workspace": true,
+    "sd_access_npdm_sha256": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+    "documentation_links_validated": true,
+    "windows_documentation_links": 5,
+    "source_documentation_links": 10
+  },
+  "source_sha256": {
+    "CHANGELOG.md": "404f73a6540b852b3124b37a130dbfcd9972f36126c2ec1a188c399076c471de",
+    "README.md": "253c7badc2116ad95da28d9f102d8827b0aa2b79f304bb7e7611709f762e8fab",
+    "desktop/CHANGELOG.md": "967650907d9fc14e641bfd9eb229a05fe8d7ed86d1db1d378bb8cd29450759da",
+    "desktop/Directory.Build.props": "1db92f71a9cbead3328474d17707891141eaf383c52e4755f441d9e3095500a3",
+    "desktop/ModPorter.App/AssetWorkflow.cs": "e34aed8c83cb880b2f0c3a6431a7124467dc3385d58a3575e2ca9274e7babdcf",
+    "desktop/ModPorter.App/CollectionWorkflowTest.cs": "643dfaf110018dbca2d1c00ab15ab844800948716369fd0a2447197fae198696",
+    "desktop/ModPorter.App/DlcEditor.xaml": "e9464e21c6dc57d21d31b6bf48011b716109edf3d6703a48bd2f9c35f845edc2",
+    "desktop/ModPorter.App/DlcEditor.xaml.cs": "c698723494a99f17fec0fa0ac999d90575b6b65a98ce19e74696783fac148291",
+    "desktop/ModPorter.App/MainWindow.xaml": "4997f09317c08572ba0922ed5960f8699606a2afb1f524f8c3620bcbea19b798",
+    "desktop/ModPorter.App/ResponsiveLayoutTests.cs": "61ee1d24c80836f9737dc5df84e7313e2b22445c2f467078d109be594b1513f2",
+    "desktop/ModPorter.App/UiSmokeTest.cs": "122b105deaa21a903bda2e3044e92a00878e4a0fef6bd03b31301b5dbb5077e0",
+    "desktop/ModPorter.Cli/Program.cs": "6b9e32ae3ad2045aedbe761c58864edf3e8b474b9f2478e25a00973245e77066",
+    "desktop/ModPorter.Core/Assets/AddonBatch.cs": "3ee1b4eb1ce0fb555ac7d2eb582a91572b90cf235c4eed0ee7d64e35f11a5b2c",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.Edit.cs": "8ac062dee59c5096d25f9a33c966c45644d27f040ef295d31903a9927d39d7fa",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.cs": "f260a4189fe36d8b002c0dffb736e11c7b5ee89aec94ff73aa753a66481a0ada",
+    "desktop/ModPorter.Core/BuildService.cs": "ddf0f6149ae2f761d1216e43654a628c8bbc4aed5bc18144b1ac0da24976dd4a",
+    "desktop/ModPorter.Core/PortProject.cs": "b20d02e11f0f7a332c3fccdebb708b5196d1f22b1755f5578acc61280bc67251",
+    "desktop/ModPorter.Tests/AddonTests.cs": "a75da34364706786dd8e58e8c3f2733d150cb4f167cefa61937c9b054bc0dcc9",
+    "desktop/ModPorter.Tests/DlcWorkspaceTests.cs": "42ba85d955ba259ae5d05dc1b416a846c2c80b61324d96a12d3c2e54387a5127",
+    "desktop/ModPorter.Tests/Program.cs": "0b7f8efde699942f81c6a95310a32512d8cc7d4941149c82d5ab21186b76574f",
+    "desktop/README.md": "72442a23a742f94341ac8dc0489ac17a054e442a85d6344a336ca38f999619a3",
+    "desktop/package.py": "06aa68b501d69ed5b9499bd1b1d0d91bce31075fb482f04628582cb236d17aba",
+    "docs/AUTOMATION-AUDIT.md": "bd16a6f9563e9a0129ae8cb8f75da63d7003e700b3a4b5591c8f24e2c86d121f",
+    "docs/GAME-ASSETS.md": "14d9a71d888df37d5cd0282e4a7d136d59af9887284616f8524f0f2b7cbafc87",
+    "docs/MAINTENANCE.md": "4140bf16f593892216b6e208cc0683ecd3203e73e1c29516277847ad1a09f5fe",
+    "docs/MOD-PORTER-WORKFLOWS.md": "e48b0f53162b9e151a208103d8f4c22973774212ae6ef92a34ab16f07659525e",
+    "docs/QUALITY-AUDIT.md": "f8f5f6a30514ab6e38b65f6787c924d1201d5aecc95204e640247fcb5656a350",
+    "tools/export_source.py": "2f41bd047417369f464e525526cd4a5eb14465b36ab358196b7fb58572ba9b2e"
+  },
+  "source_assets_modified": false,
+  "installed_game_files_modified": false,
+  "runtime_binary_updated": false,
+  "switch_runtime_verified": false,
+  "reviewed_areas": [
+    "Target fingerprints and native/context validation",
+    "Plugin discovery, policies, lifecycle, limits and memory accounting",
+    "Callbacks, textures, timing, globals and entity access",
+    "Source import, adaptation, compiler preflight and NRO packaging",
+    "SD deployment, backups and restore using temporary fixtures",
+    "DLC/asset conversion, XML edits, identity, undo and registered output",
+    "Desktop navigation, validation messages, small windows, scrolling and simulated DPI",
+    "Documentation, source export and artifact readback"
+  ],
+  "remaining_limits": [
+    "Cooperative NROs share the game process; scripts must yield and callbacks must return.",
+    "Raw pointers and third-party native code cannot be isolated from arbitrary plugin faults.",
+    "New or renamed assets still require Switch appearance, animation, LOD and collision tests.",
+    "Native multi-monitor DPI changes were not tested; effective DPI layouts were simulated."
+  ],
+  "audit_notes": [
+    "Initial manager/config invocations used the returning sample instead of the documented looping template; final runs use the correct fixture and pass.",
+    "A mixed-batch regression initially supplied a model name that disagreed with its fixture filenames; corrected matching files pass.",
+    "The old smoke assertion required a button at its original scroll offset; revised checks verify clipped and scrolled bounds. Primary preparation actions were subsequently moved before advanced tools.",
+    "New packaging link validation caught old relative guide links; both root guides are normalized and final package links pass."
+  ]
+}

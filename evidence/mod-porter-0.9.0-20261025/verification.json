@@ -1,0 +1,215 @@
+{
+  "version": "0.9.0 Preview",
+  "date": "2026-10-25",
+  "desktop_tests": {
+    "passed": 212,
+    "failed": 0,
+    "compiler_groups_skipped": 0
+  },
+  "packaged_collection_ui": {
+    "passed": 33,
+    "failed": 0,
+    "checks": [
+      "Real PED and vehicle sources are bundled into one collection",
+      "Mixed collection passes asset and registration audit",
+      "Existing mixed-case vehicle definitions remain selectable after editing",
+      "UI model rename updates all four assets and metadata",
+      "Female profile updates PED movement and type",
+      "Batch profile action changes only the PEDs shown by the filter",
+      "One Undo restores the profile batch",
+      "Complete replacement folder retains model name, metadata and valid registration",
+      "One Undo restores all four original PED resources",
+      "Incomplete replacement produces a useful message and leaves the PED intact",
+      "Definition XML editor retains added fields and attributes",
+      "Field grid applies arbitrary XML attributes",
+      "Metadata editor retains its XML area and visible actions at minimum size",
+      "Built-in full peds.meta editor changes the working DLC",
+      "Undo restores an entire metadata-file edit",
+      "Redo restores metadata changes",
+      "Every DLC resource and resource archive is available in the asset editor",
+      "Save DLC writes one verified archive and clears the unsaved state",
+      "Save DLC never generates update.rpf",
+      "An exported mixed DLC reopens with all editor changes",
+      "Remove model updates the PED list and owned assets",
+      "Undo restores removed models and resources",
+      "Save DLC + ZIP creates exactly one ZIP",
+      "First installation registers the collection once",
+      "Already registered collection exports only its DLC",
+      "Registered update creates only the requested install ZIP",
+      "Game-file builds preserve the original and selected current archives",
+      "Installed DLC browser discovers local and registered packs without loading every archive",
+      "Unavailable base-game packs cannot be opened as loose files",
+      "Installed DLC filter finds the editable registered collection",
+      "Opening an installed collection retains its identity and saved state",
+      "Installed DLC discovery and opening preserve the selected game archive",
+      "All real source assets and original DLC files remain unchanged"
+    ],
+    "models": [
+      {
+        "name": "nx_misaki",
+        "kind": "PED",
+        "metadata_path": "imports/part0001/common/data/peds.meta",
+        "type": "CIVFEMALE",
+        "key": "imports/part0001/common/data/peds.meta|nx_misaki"
+      },
+      {
+        "name": "zoro",
+        "kind": "PED",
+        "metadata_path": "imports/part0002/common/data/peds.meta",
+        "type": "CIVMALE",
+        "key": "imports/part0002/common/data/peds.meta|zoro"
+      },
+      {
+        "name": "mrrc",
+        "kind": "Vehicle",
+        "metadata_path": "imports/part0004/common/data/levels/gta5/vehicles.meta",
+        "type": "VEHICLE_TYPE_CAR",
+        "key": "imports/part0004/common/data/levels/gta5/vehicles.meta|mrrc"
+      },
+      {
+        "name": "torachry300redeye",
+        "kind": "Vehicle",
+        "metadata_path": "imports/part0003/common/data/levels/gta5/vehicles.meta",
+        "type": "VEHICLE_TYPE_CAR",
+        "key": "imports/part0003/common/data/levels/gta5/vehicles.meta|torachry300redeye"
+      }
+    ],
+    "source_files_modified": false,
+    "installed_game_files_modified": false,
+    "switch_runtime_verified": false
+  },
+  "layout": {
+    "passed": 2640,
+    "failed": 0,
+    "scenarios": 158,
+    "window_states": [
+      "normal",
+      "maximized",
+      "minimized",
+      "restored"
+    ],
+    "dpi": [
+      100,
+      125,
+      150,
+      200
+    ]
+  },
+  "independent_model_preservation": {
+    "passed": true,
+    "resources": 11,
+    "records": [
+      {
+        "name": "nx_misaki.ndd",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "nx_misaki.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "nx_misaki.nmt",
+        "variation_bytes_preserved": true
+      },
+      {
+        "name": "zoro.ndd",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "zoro.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "zoro.nmt",
+        "variation_bytes_preserved": true
+      },
+      {
+        "name": "torachry300redeye.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "torachry300redeye_1.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "torachry300redeye_hi.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "mrrc.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "mrrc_hi.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      }
+    ],
+    "switch_runtime_verified": false
+  },
+  "package": {
+    "version": "0.9.0",
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.9.0-Windows-x64.zip",
+      "bytes": 60813126,
+      "sha256": "a290e875b51a64b12464df3e086d18eb874f903dce0086e4b6a09a69687678d4"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.9.0-Source.zip",
+      "bytes": 886229,
+      "sha256": "b490ff09194991ec3d67a16770b8a3a5f9d12a35676692e69618230b24e92902"
+    },
+    "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "game_files_included": false,
+    "core_runtime_included": false,
+    "zip_readback_verified": true
+  },
+  "source_sha256": {
+    "CHANGELOG.md": "a9b6922e2b7e92a42de4fd33504e0e5d4eeac7b984e34d85e2ecba98cadbda6e",
+    "README.md": "d5787b53a2906256c10d1320188b0ba847530fd4d3a8fd810b88a853e55d1713",
+    "desktop/CHANGELOG.md": "7ead82b8c24840166ec79c078489060eefd97852312bbfdad8734474310bcab9",
+    "desktop/Directory.Build.props": "b084c0e69ef2f26ce97fba19cfd6a19230e98cf1d2e7999b1b80d89e75cb98ac",
+    "desktop/ModPorter.App/CollectionWorkflowTest.cs": "b851d1793fe099a0957cbabfbc479c403e411dbcf6afbd534f6d46484fb9c6ba",
+    "desktop/ModPorter.App/DlcEditor.xaml": "c4e999c580023b75e4cb18201921d0d69bd49aaf87fce43ec4009f2ce89a9c61",
+    "desktop/ModPorter.App/DlcEditor.xaml.cs": "b463513ccb53ef71eb0e546fbb5a1e63cf2418e272d3f2c8b7f0f7fbb8fe8bb9",
+    "desktop/ModPorter.App/MainWindow.xaml": "f8ab3880b112c85c8582755e480e42ac7f70cbc3b7e5682248ba531563cd34ba",
+    "desktop/ModPorter.App/ResponsiveLayoutTests.cs": "34563b20c942ac258b91420a64e1206c036c9a0560f51f668d156e004c2a6326",
+    "desktop/ModPorter.Cli/Program.cs": "86edac1fc77394539854b2291317f99a870279c00c08423323730fc1c1d19e48",
+    "desktop/ModPorter.Core/Assets/DlcLibrary.cs": "cacb8caf94636695d2d9a69090503e6f4cf5089b6fd83302154c98d07f657ba9",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.Batch.cs": "aed61ea91a733e92d88c87f24a603ec88820743994cfb5d73afbef76537f7ff8",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.Edit.cs": "42914b188cdaeab3ab7854b5368bc9aebd90e05fc721adc9e2bfc21580827df3",
+    "desktop/ModPorter.Core/BuildService.cs": "25786f38bafbd4f58f4a22e5fd9970bf7b46779b7affc20ae3125bb04bd5088e",
+    "desktop/ModPorter.Core/PortProject.cs": "a87f5039c071464f447a58296cabb429c8c6eab9e5c87f2a30babcc97b018fe9",
+    "desktop/ModPorter.Tests/DlcWorkspaceTests.cs": "9d4847fe4b9a18093f390aaea45fa85a3d4fcf5aaeae3304d9e576164972e5a1",
+    "desktop/README.md": "338b7b405c217c648adaac52675d960066bdfa1919b5ecd4e469fdd2190a2fe1",
+    "desktop/package.py": "5e10b2fed67540f5a200ad46c0956ff7437e959e74d4475664324958797e9756",
+    "docs/AUTOMATION-AUDIT.md": "02dcaaf6ef87c8890cc381791153cd4968a4ee794e643ada836cfcdd6a17a406",
+    "docs/GAME-ASSETS.md": "d310de3644c988683b7daf757a12647e3c7337941d796be022eef034e0c3a372",
+    "tools/export_source.py": "52dbae647b92199594276f469623cbc0091cbf18c3fe1758601f8640947c760a"
+  },
+  "packaged_content": {
+    "crc_and_readback": true,
+    "no_game_or_mod_assets": true,
+    "sd_access_metadata_hash": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+    "source_matches_workspace": true,
+    "packaged_cli_library_passed": true
+  },
+  "input_asset_files_modified": false,
+  "installed_game_files_modified": false,
+  "runtime_modified": false,
+  "switch_runtime_verified": false,
+  "limitations": [
+    "New or edited collections require Switch appearance, animation and gameplay testing.",
+    "Complete four-file replacement applies to PEDs; vehicle resources retain individual replacement controls.",
+    "Registered packs absent from the selected folder may be inside the base game.",
+    "Human movement profiles do not infer rig compatibility or gender from filenames."
+  ]
+}

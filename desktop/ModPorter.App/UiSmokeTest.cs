@@ -90,6 +90,7 @@ public partial class MainWindow {
         Tabs.SelectedIndex = 4;
         Check(TextureCapCombo.SelectedIndex == 3 && AssetKindCombo.SelectedIndex == 0, "Asset workflow defaults to Auto and 1024");
         Check(AssetTabs.SelectedIndex==0&&DlcGameControls.Visibility==Visibility.Visible&&ReplacementControls.Visibility==Visibility.Collapsed,"Asset preparation and game update workflows start with separate views");
+        GoToCollectionButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));Check(AssetTabs.SelectedIndex==3,"Resource preparation offers a direct route to the complete DLC workflow");AssetTabs.SelectedIndex=0;
         if (assetInput.Length > 0) {
             AssetInputPath.Text = assetInput; AssetOutputPath.Text = Path.Combine(output, "Asset output"); TextureCapCombo.SelectedIndex = 1;
             AnalyzeAssets_Click(this, new RoutedEventArgs()); await Idle();
@@ -100,7 +101,8 @@ public partial class MainWindow {
         Screenshot("08-assets"); Screenshot("09-assets-small", 920, 680);
         AssetTabs.SelectedIndex=0;
         Screenshot("13-assets-setup-small",920,680);
-        Inside(ConvertAssetsButton,"Asset conversion action stays visible without scrolling");
+        ConvertAssetsButton.BringIntoView();((FrameworkElement)Content).UpdateLayout();
+        Inside(ConvertAssetsButton,"Asset conversion action can be reached without clipping at minimum window size");
         var archiveTest=Path.Combine(output,"Current game test");Directory.CreateDirectory(archiveTest);
         var root=new ModPorter.Core.Assets.AssetNode{Directory=true};
         var common=new ModPorter.Core.Assets.AssetNode{Name="common",Directory=true};var data=new ModPorter.Core.Assets.AssetNode{Name="data",Directory=true};root.Children.Add(common);common.Children.Add(data);

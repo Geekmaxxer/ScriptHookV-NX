@@ -119,13 +119,24 @@ public sealed class AddonAudit {
             bool disabled = item?.Elements().FirstOrDefault(e => e.Name.LocalName == "disabled")?.Attribute("value")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true;
             if (disabled && !enabled.Contains(entry.Key)) Issue("error", "inactive-file", entry.Key, "Disabled registration is never enabled by GROUP_STARTUP.");
         }
-        var mountedResources = files.Where(f => AssetService.ResourceExtensions.Contains(System.IO.Path.GetExtension(f.Key)))
+        var mountedFiles = files.Where(f => AssetService.ResourceExtensions.Contains(System.IO.Path.GetExtension(f.Key)))
             .Where(f => registered.Any(r => r.Value == "RPF_FILE" && (!IsDisabled(r.Key) || enabled.Contains(r.Key)) && f.Key.StartsWith(r.Key + "::", StringComparison.OrdinalIgnoreCase)))
-            .Select(f => System.IO.Path.GetFileName(f.Key.Split("::").Last())).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            .ToArray();
+        var mountedResources=mountedFiles.Select(f => System.IO.Path.GetFileName(f.Key.Split("::").Last())).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        foreach(var group in mountedFiles.GroupBy(f=>System.IO.Path.GetExtension(f.Value.Name).ToLowerInvariant()+":"+ModelHash(System.IO.Path.GetFileNameWithoutExtension(f.Value.Name))).Where(g=>g.Count()>1)){
+            var first=group.First();foreach(var other in group.Skip(1))if(!first.Value.Name.Equals(other.Value.Name,StringComparison.OrdinalIgnoreCase)||!first.Value.Data.SequenceEqual(other.Value.Data))
+                Issue("error","conflicting-streamed-resource",other.Key,"Resource name/hash conflicts with "+first.Key+". Keep one definition or give the resources and their references unique names before bundling.");
+        }
         bool IsDisabled(string path) => content.Descendants().FirstOrDefault(e => e.Name.LocalName == "filename" && Local(e.Value)?.Equals(path, StringComparison.OrdinalIgnoreCase) == true)?.Parent?
             .Elements().FirstOrDefault(e => e.Name.LocalName == "disabled")?.Attribute("value")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true;
         var modelHashes = new Dictionary<uint, string>();
         var handling = xmls.Values.SelectMany(d => d.Descendants().Where(e => e.Name.LocalName == "handlingName")).Select(e => e.Value.Trim()).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var handlingDefinitions=new Dictionary<string,(string Path,XElement Definition)>(StringComparer.OrdinalIgnoreCase);
+        foreach(var pair in xmls)foreach(var field in pair.Value.Descendants().Where(e=>e.Name.LocalName=="handlingName")){
+            string name=field.Value.Trim();if(field.Parent==null)continue;
+            if(handlingDefinitions.TryGetValue(name,out var old)&&!XNode.DeepEquals(old.Definition,field.Parent))Issue("error","conflicting-handling",pair.Key,"Handling '"+name+"' differs from "+old.Path+". Physics settings must be resolved explicitly before bundling.");
+            else handlingDefinitions.TryAdd(name,(pair.Key,field.Parent));
+        }
         var modKitIds = new HashSet<uint>();
         foreach (var pair in xmls) foreach (var kit in pair.Value.Descendants().Where(e => e.Name.LocalName == "Kits").Elements()) {
             string name = Value(kit, "kitName"); if (name.Length == 0) continue;

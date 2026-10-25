@@ -1,0 +1,218 @@
+{
+  "version": "0.8.0 Preview",
+  "date": "2026-10-25",
+  "desktop_tests": {
+    "passed": 203,
+    "failed": 0,
+    "compiler_groups_skipped": 0,
+    "custom_ped_headers_preserved": true
+  },
+  "packaged_collection_ui": {
+    "passed": 23,
+    "failed": 0,
+    "checks": [
+      "Real PED and vehicle sources are bundled into one collection",
+      "Mixed collection passes asset and registration audit",
+      "Existing mixed-case vehicle definitions remain selectable after editing",
+      "UI model rename updates all four assets and metadata",
+      "Female profile updates PED movement and type",
+      "Definition XML editor retains added fields and attributes",
+      "Field grid applies arbitrary XML attributes",
+      "Metadata editor retains its XML area and visible actions at minimum size",
+      "Built-in full peds.meta editor changes the working DLC",
+      "Undo restores an entire metadata-file edit",
+      "Redo restores metadata changes",
+      "Every DLC resource and resource archive is available in the asset editor",
+      "Save DLC writes one verified archive and clears the unsaved state",
+      "Save DLC never generates update.rpf",
+      "An exported mixed DLC reopens with all editor changes",
+      "Remove model updates the PED list and owned assets",
+      "Undo restores removed models and resources",
+      "Save DLC + ZIP creates exactly one ZIP",
+      "First installation registers the collection once",
+      "Already registered collection exports only its DLC",
+      "Registered update creates only the requested install ZIP",
+      "Game-file builds preserve the original and selected current archives",
+      "All real source assets and original DLC files remain unchanged"
+    ],
+    "models": [
+      {
+        "name": "nx_misaki",
+        "kind": "PED",
+        "metadata_path": "imports/part0001/common/data/peds.meta",
+        "type": "CIVFEMALE",
+        "key": "imports/part0001/common/data/peds.meta|nx_misaki"
+      },
+      {
+        "name": "zoro",
+        "kind": "PED",
+        "metadata_path": "imports/part0002/common/data/peds.meta",
+        "type": "CIVMALE",
+        "key": "imports/part0002/common/data/peds.meta|zoro"
+      },
+      {
+        "name": "mrrc",
+        "kind": "Vehicle",
+        "metadata_path": "imports/part0004/common/data/levels/gta5/vehicles.meta",
+        "type": "VEHICLE_TYPE_CAR",
+        "key": "imports/part0004/common/data/levels/gta5/vehicles.meta|mrrc"
+      },
+      {
+        "name": "torachry300redeye",
+        "kind": "Vehicle",
+        "metadata_path": "imports/part0003/common/data/levels/gta5/vehicles.meta",
+        "type": "VEHICLE_TYPE_CAR",
+        "key": "imports/part0003/common/data/levels/gta5/vehicles.meta|torachry300redeye"
+      }
+    ],
+    "source_files_modified": false,
+    "installed_game_files_modified": false,
+    "switch_runtime_verified": false
+  },
+  "layout": {
+    "passed": 2488,
+    "failed": 0,
+    "scenarios": 158,
+    "window_states": [
+      "normal",
+      "maximized",
+      "minimized",
+      "restored"
+    ],
+    "dpi": [
+      100,
+      125,
+      150,
+      200
+    ]
+  },
+  "independent_model_preservation": {
+    "passed": true,
+    "resources": 11,
+    "records": [
+      {
+        "name": "nx_misaki.ndd",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "nx_misaki.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "nx_misaki.nmt",
+        "variation_bytes_preserved": true
+      },
+      {
+        "name": "zoro.ndd",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "zoro.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "zoro.nmt",
+        "variation_bytes_preserved": true
+      },
+      {
+        "name": "torachry300redeye.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "torachry300redeye_1.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "torachry300redeye_hi.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "mrrc.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      },
+      {
+        "name": "mrrc_hi.nft",
+        "codewalker_readback": true,
+        "geometry_skeleton_physics_preserved": true
+      }
+    ],
+    "switch_runtime_verified": false
+  },
+  "package": {
+    "version": "0.8.0",
+    "windows_x64": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.8.0-Windows-x64.zip",
+      "bytes": 60799004,
+      "sha256": "846d2b38e22a1d2b8fda27403b0d864ae0b3fffeb4f69af85e55437707e77810"
+    },
+    "source": {
+      "file": "ScriptHookV-NX-Mod-Porter-0.8.0-Source.zip",
+      "bytes": 877859,
+      "sha256": "133c63077172b4cf41e557e01fef00527f306cc9cabfe150fa18f745c2a93a43"
+    },
+    "sdk_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "game_files_included": false,
+    "core_runtime_included": false,
+    "zip_readback_verified": true
+  },
+  "source_sha256": {
+    "CHANGELOG.md": "6b43eb1fb564cfea2948c313aecbb932d7fd262752521fe80b6c6d9a4834c8e8",
+    "README.md": "fb1850455c4395386fdd2945c2cedef01a7303032f8034d706ccedb729904d50",
+    "desktop/CHANGELOG.md": "51271f182892145177eefeb441622ceb22f2ff31359eca910617e604c54a1e68",
+    "desktop/Directory.Build.props": "d0e3b65d39d43c5b1a8ee9699965af2e26c500146579635d1b130956613b32b2",
+    "desktop/ModPorter.App/App.xaml.cs": "c204c3819835469e3fce5d9a8ab2dd2be17e27ce40bfe12618f31d3a2206cd7d",
+    "desktop/ModPorter.App/AssetWorkflow.cs": "c038346f369486b9abf834116e63913bb66a001d984ada65b6bbba193edab319",
+    "desktop/ModPorter.App/CollectionWorkflowTest.cs": "c024c9f98ccc9e4a28cc9970ca87b3153d66d129d6aab6dd917a4c5448c3643a",
+    "desktop/ModPorter.App/DlcEditor.xaml": "8ae52bb7d49b45179ef206d97b263c90d08bbaaebde923d9056fa66cf5396161",
+    "desktop/ModPorter.App/DlcEditor.xaml.cs": "662a388e2af13e251a2e0ef26e4c387f534620c1ca5b130c297cae66ae5baaf5",
+    "desktop/ModPorter.App/DlcIntegration.cs": "27ff88951de435e273cd385871ead852f5d73a49e968673e8d3d471c6563fb1c",
+    "desktop/ModPorter.App/MainWindow.xaml": "240f7039713f75e28bd1045f07feb1090aa9431b553f976953b210d94824f980",
+    "desktop/ModPorter.App/MainWindow.xaml.cs": "183a583a8a33f1f8ed1f965ab1975269c940c6ee3f9075bb99110ce0f0512318",
+    "desktop/ModPorter.App/MetadataEditorWindow.xaml": "202590cb8a2f7a2cdd2f5d749870166e08af58cafea4768970c853a2443f071c",
+    "desktop/ModPorter.App/MetadataEditorWindow.xaml.cs": "37937816ca56a1a2c0efe5f03a559dd9750c42812a5600840dadcaf1e1d4bc12",
+    "desktop/ModPorter.App/ResponsiveLayoutTests.cs": "930c46471f1c95cebb37d7e8b161daf8c223f4a4eca9a31e07f72cc1ffa91d62",
+    "desktop/ModPorter.Cli/Program.cs": "ecc68d5ed6d32ed66df5a2829550b6aaf52fda8ad750bb0517cc93a5a9a52059",
+    "desktop/ModPorter.Core/Assets/AddonAudit.cs": "c68e9a72ed5a09f99322a4346e9eb2f2be0f318f78faea254c7e3d0ec185e699",
+    "desktop/ModPorter.Core/Assets/AddonBuilder.cs": "354347b3c9a0b689d0331b3391b4263603f0e9c5f1defff51b873d8e34f3968f",
+    "desktop/ModPorter.Core/Assets/AssetService.cs": "e469894a25de1fd799113883253109c102a50b1fe0af9ffdd4ad53928a20ea70",
+    "desktop/ModPorter.Core/Assets/DlcPackageService.cs": "5d947193bab237435e6ab0695afb501b3ebe8cf417f056b2d9077a8468d7467c",
+    "desktop/ModPorter.Core/Assets/DlcTree.cs": "b0d984b9ba9093a4ac359b3d4861235e60a8941f13cc3cbff7cae9acf68d3b2c",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.Edit.cs": "6b70c39587190188d309006aee6438a37120625c885c473458fa767bfa7f4c8f",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.Import.cs": "155d111d209ce2ad8fbcf9fb06f1ca9ab63039eccc2fc43a7ee0ce003a571e54",
+    "desktop/ModPorter.Core/Assets/DlcWorkspace.cs": "47e9e83ed46b7b761d33fc939e87899c0588354d564cf20e32d1e420c8709142",
+    "desktop/ModPorter.Core/Assets/GameAssetUpdater.cs": "f875a5275633882dfcf262a2d40c207c965d43bc349862a16cd54fdeaa3195e8",
+    "desktop/ModPorter.Core/BuildService.cs": "3b8e7c6ad4afce1e7ac268ad074199b364c4c7d31cb3e8f0697fab26b248c989",
+    "desktop/ModPorter.Core/PortProject.cs": "ebcc711492fd0e2887c015405c03559da2a67a1661006926923525723b750cda",
+    "desktop/ModPorter.Tests/AddonTests.cs": "5d6af628dbf394ac1a1ae4b87b15c3e59e613fb5feef5704f572b6e4325137a1",
+    "desktop/ModPorter.Tests/DlcWorkspaceTests.cs": "8d6c8315a8365d6d83645ffc5fa4d2e6fa9feda1c60aaefe8568e58788d184ea",
+    "desktop/ModPorter.Tests/Program.cs": "be5da49edef5470ff11adfce4891140f1fe40cb860d0269459f53a632f392a45",
+    "desktop/README.md": "579a9abb26881ae81f35ad02f6d684a34b5f00617691f254ce20b9d0916f5b07",
+    "desktop/package.py": "3752cd0a3252c15e91b70716a368b65d4e006ed71edf08ad90acf0aef6bfdb3c",
+    "docs/AUTOMATION-AUDIT.md": "90820e1e9146ed8b8fd4fbfd06a80260a0a28cb1bef5e0b4dd03cfa69b671862",
+    "docs/GAME-ASSETS.md": "407078257d8ea660cdd25815e01e1fcd8bd9aa81724fdb4fe0814118bcab1aed",
+    "tools/export_source.py": "211447e6ebae7cf13f83543bd0fd24fa1ed4beba2c4bf6ed255b5d07e4cdf2cd"
+  },
+  "input_asset_files_modified": false,
+  "installed_game_files_modified": false,
+  "runtime_modified": false,
+  "switch_runtime_verified": false,
+  "limitations": [
+    "New collections and edited models require Switch appearance, animation and gameplay tests.",
+    "Loose vehicles require supplied vehicles.meta and related physics/tuning definitions.",
+    "Unsupported rigs, encrypted or Enhanced formats and binary device-path dependencies require separate handling."
+  ],
+  "packaged_content": {
+    "crc_and_readback": true,
+    "no_game_or_mod_runtime_assets": true,
+    "sd_access_metadata_hash": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+    "source_matches_current_workspace": true
+  }
+}

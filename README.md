@@ -6,7 +6,7 @@ Target: title `0100b00b51230000`, build `6e3e9b3af5746e74b615bd981080c9271bc2266
 The current source defaults to **eight resident NROs, sixteen cooperative script
 slots and an 8 MiB plugin budget**. Builders and mod authors can prepare custom
 limits; players can override each setting in an optional SD configuration file.
-See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.4.1 Public Preview** includes the required
+See [runtime limits](docs/RUNTIME-LIMITS.md). **v1.4.1 Preview + Mod Porter 0.9.1** includes the required
 SD-access `main.npdm` and ships the unchanged v1.3 runtime with
 [matched console acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json). Earlier runtime revisions passed
 console plugin lifecycle tests with MEGATARD's NSC menu. The current SDK Parity
@@ -32,8 +32,15 @@ runtime, developer SDK and clean source archives. See [release notes](docs/PUBLI
 This release adds [reusable controller menus](docs/CONTROLLER-UI.md),
 [complete loose-PED DLC creation and batch add-on checks](docs/GAME-ASSETS.md),
 and [repeatable maintenance checks](docs/MAINTENANCE.md). These SDK/tool additions
-have their own test scope. Mod Porter **0.6.0** adds folder-only asset, PED and
-DLC registration outputs alongside ZIP packaging.
+have their own test scope. Mod Porter **0.9.1** offers folder-only asset, PED and
+DLC registration outputs alongside ZIP packaging, editable DLC collections for many PEDs and vehicles, a
+full PED metadata/asset editor, installed-pack discovery, complete PED asset-set
+replacement and filter-scoped movement profiles. Game-file output checks existing registration. Human
+PED definitions can still be generated directly from four assets.
+See the [automation audit](docs/AUTOMATION-AUDIT.md) for completed improvements
+and decisions that still require model-specific information.
+The [quality audit](docs/QUALITY-AUDIT.md) records stability fixes, tested workflows
+and the limits of local validation.
 
 ## For players
 

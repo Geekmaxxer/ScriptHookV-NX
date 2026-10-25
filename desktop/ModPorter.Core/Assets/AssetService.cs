@@ -25,7 +25,7 @@ public sealed class AssetReport {
 public sealed record AssetConversion(string Directory, string Archive, AssetReport Report);
 public static class AssetService {
     public static readonly HashSet<string> ResourceExtensions = new(StringComparer.OrdinalIgnoreCase) { ".ytd", ".ntd", ".yft", ".nft", ".ydr", ".ndr", ".ydd", ".ndd", ".ybn", ".nbn", ".ymt", ".nmt", ".ycd", ".ncd", ".ymap", ".nmap", ".ytyp", ".ntyp", ".yld", ".nld", ".ypt", ".npt", ".yed", ".ned", ".ymf", ".nmf" };
-    static readonly HashSet<string> DataExtensions = new(StringComparer.OrdinalIgnoreCase) { ".xml", ".meta", ".dat", ".awc", ".rel", ".rpf" };
+    static readonly HashSet<string> DataExtensions = new(StringComparer.OrdinalIgnoreCase) { ".xml", ".meta", ".dat", ".bin", ".awc", ".rel", ".rpf", ".json", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf" };
     public static string SwitchName(string name) {
         string ext = Path.GetExtension(name);
         if (ResourceExtensions.Contains(ext) && ext[1] is 'y' or 'Y') name = name[..^ext.Length] + ".n" + ext[2..].ToLowerInvariant();
@@ -49,12 +49,14 @@ public static class AssetService {
             return (text, encoding);
         } catch (DecoderFallbackException e) { throw new InvalidDataException("Metadata is not valid UTF-8/UTF-16; save it as UTF-8 before conversion.", e); }
     }
-    static AssetNode Load(string path, CancellationToken cancel) {
+    internal static AssetNode Load(string path, CancellationToken cancel) {
+        if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("Choose or drop an asset folder, ZIP or resource first.");
         path = Path.GetFullPath(path); long total = 0; int count = 0;
         var root = new AssetNode { Name = "root", Directory = true }; var files = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         void Add(string name, byte[] bytes) {
             cancel.ThrowIfCancellationRequested(); name = InputLoader.SafeRelative(name);
-            if (++count > 8192 || bytes.Length > ResourceContainer.MaxBytes || (total += bytes.Length) > RpfArchive.MaxBytes) throw new InvalidDataException("Asset input exceeds 8,192 files / 256 MiB per file / 512 MiB total.");
+            int maximum = Path.GetExtension(name).Equals(".rpf",StringComparison.OrdinalIgnoreCase) ? RpfArchive.MaxBytes : ResourceContainer.MaxBytes;
+            if (++count > 8192 || bytes.Length > maximum || (total += bytes.Length) > RpfArchive.MaxBytes) throw new InvalidDataException("Asset input exceeds 8,192 files / 256 MiB per resource / 512 MiB per archive or input.");
             if (!files.Add(name)) throw new InvalidDataException("Duplicate/case-colliding asset path: " + name);
             string[] parts = name.Split('/'); var directory = root;
             foreach (string segment in parts[..^1]) {
@@ -65,8 +67,9 @@ public static class AssetService {
             }
             directory.Children.Add(new AssetNode { Name = parts[^1], Data = bytes, Resource = bytes.Length >= 16 && BinaryPrimitives.ReadUInt32LittleEndian(bytes) == 0x37435352 });
         }
-        byte[] ReadBounded(Stream input, long length) {
-            if (length > ResourceContainer.MaxBytes || total + length > RpfArchive.MaxBytes) throw new InvalidDataException("Asset file is too large.");
+        byte[] ReadBounded(Stream input, long length, string name) {
+            int maximum = Path.GetExtension(name).Equals(".rpf",StringComparison.OrdinalIgnoreCase) ? RpfArchive.MaxBytes : ResourceContainer.MaxBytes;
+            if (length > maximum || total + length > RpfArchive.MaxBytes) throw new InvalidDataException("Asset file is too large (256 MiB per resource, 512 MiB per archive/input).");
             using var m = new MemoryStream(); var b = new byte[65536]; int n;
             while ((n = input.Read(b)) != 0) { cancel.ThrowIfCancellationRequested(); if (m.Length + n > length) throw new InvalidDataException("Asset exceeds its declared size."); m.Write(b, 0, n); }
             if (m.Length != length) throw new InvalidDataException("Asset changed while reading."); return m.ToArray();
@@ -79,7 +82,7 @@ public static class AssetService {
                     cancel.ThrowIfCancellationRequested(); if (++entries > 16384) throw new InvalidDataException("Too many asset directory entries.");
                     var attr = File.GetAttributes(p); if ((attr & FileAttributes.ReparsePoint) != 0) throw new InvalidDataException("Asset symbolic links are unsupported.");
                     if ((attr & FileAttributes.Directory) != 0) { if (Path.GetFileName(p) is not ".git" and not "build" and not "releases") Walk(p); }
-                    else { using var input = File.OpenRead(p); Add(Path.GetRelativePath(path, p), ReadBounded(input, input.Length)); }
+                    else { using var input = File.OpenRead(p); Add(Path.GetRelativePath(path, p), ReadBounded(input, input.Length,p)); }
                 }
             }
             Walk(path);
@@ -88,13 +91,13 @@ public static class AssetService {
             foreach (var e in zip.Entries) {
                 if (((e.ExternalAttributes >> 16) & 0xf000) == 0xa000 || (e.ExternalAttributes & 0x400) != 0) throw new InvalidDataException("Asset ZIP links are unsupported.");
                 if (e.FullName.EndsWith('/')) { InputLoader.SafeRelative(e.FullName.TrimEnd('/')); continue; }
-                using var input = e.Open(); Add(e.FullName, ReadBounded(input, e.Length));
+                using var input = e.Open(); Add(e.FullName, ReadBounded(input, e.Length,e.FullName));
             }
-        } else if (File.Exists(path)) { using var input = File.OpenRead(path); Add(Path.GetFileName(path), ReadBounded(input, input.Length)); }
+        } else if (File.Exists(path)) { using var input = File.OpenRead(path); Add(Path.GetFileName(path), ReadBounded(input, input.Length,path)); }
         else throw new FileNotFoundException("Choose a mod asset folder, ZIP, OPEN RPF or loose resource.", path);
         return root;
     }
-    static AssetReport Process(AssetNode root, string input, AssetOptions options, bool convert, CancellationToken cancel) {
+    internal static AssetReport Process(AssetNode root, string input, AssetOptions options, bool convert, CancellationToken cancel) {
         if (options.MaximumTextureDimension is not (0 or 256 or 512 or 1024 or 2048 or 4096)) throw new ArgumentException("Unsupported texture cap.");
         var report = new AssetReport { Input = input, Kind = options.Kind }; int processed = 0; long total = 0; var paths = new List<string>();
         var definitions = new List<(string File,string Kind,string Name)>();
@@ -180,9 +183,13 @@ public static class AssetService {
     }
     public static AssetReport Analyze(string input, AssetOptions options, CancellationToken cancel = default) => Process(Load(input, cancel), input, options, false, cancel);
     public static AssetConversion Convert(string input, string output, AssetOptions options, CancellationToken cancel = default, bool createZip = true) {
+        return ConvertLoaded(Load(input, cancel), input, output, options, cancel, createZip);
+    }
+    internal static AssetConversion ConvertLoaded(AssetNode root, string input, string output, AssetOptions options, CancellationToken cancel = default, bool createZip = true) {
+        if (string.IsNullOrWhiteSpace(output)) output = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ScriptHookV-NX Projects", "Switch-assets-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-" + Guid.NewGuid().ToString("N")[..6]);
         input = Path.GetFullPath(input); output = Path.GetFullPath(output);
         if (Directory.Exists(output) || File.Exists(output) || Directory.Exists(input) && InputLoader.Inside(output, input)) throw new IOException("Choose a new output folder outside the input assets.");
-        var root = Load(input, cancel); var report = Process(root, input, options, true, cancel); report.Output = output;
+        var report = Process(root, input, options, true, cancel); report.Output = output;
         Directory.CreateDirectory(output); string converted = Path.Combine(output, "converted"); Directory.CreateDirectory(converted);
         void Save(AssetNode directory, string target) {
             foreach (var node in directory.Children) { cancel.ThrowIfCancellationRequested(); string dest = Path.Combine(target, node.Name); if (node.Directory) { Directory.CreateDirectory(dest); Save(node, dest); } else File.WriteAllBytes(dest, node.Data); }

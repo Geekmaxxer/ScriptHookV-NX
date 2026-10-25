@@ -17,6 +17,11 @@ Each run needs a new output directory. verification.json lists completed and
 skipped checks; logs remain beside it. These checks require no game files.
 They do not assign console acceptance to new assets or plugins.
 
+The [quality audit](QUALITY-AUDIT.md) records the current runtime and desktop
+review. The [workflow guide](MOD-PORTER-WORKFLOWS.md) maps common tasks to their
+starting pages. Desktop workflow tests additionally exercise the packaged app;
+backend compilation alone does not establish usable controls or correct layout.
+
 The GitHub workflow runs portable checks on Windows/Linux, the UI model on
 Linux, and desktop checks on Windows. It uses read-only repository permissions
 and pinned action revisions. GitHub execution is distinct from local validation.
