@@ -5,8 +5,10 @@
   "files": {
     "bindings.hpp": "359e819c184885d271168936fb0bae1f96050f76ad6686cd3d86efaefac57150",
     "bindings.json": "6bd7c9f374cf053fe8b9b6bcbdbbb383bb8617aeb93c7d7df162866ebdd60ce3",
-    "engine-api.json": "23b038398afb7a25898e3e675c52e82dad971dd2d843f71343cc929604c06b9f"
+    "engine-api.json": "23b038398afb7a25898e3e675c52e82dad971dd2d843f71343cc929604c06b9f",
+    "profile-api.json": "8c3692690943b464d9dd9c2676ee43ce343a87ddb99dbf16dfa3552f5323b70a"
   },
   "origin": "Exact generated bindings from console-accepted Manager Test 2; no menu identity compiled into production",
-  "accepted_runtime_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95"
+  "accepted_runtime_sha256": "10e3474708a644ac99a58539022cd28a4191a1f56e2bc43d260909f59307aa95",
+  "optional_profile_service": "Independently audited SDK exports; physical acceptance pending"
 }

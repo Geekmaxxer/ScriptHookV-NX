@@ -2,22 +2,25 @@
 #include "plugin_loader.hpp"
 #include "plugin_resources.hpp"
 #include "../core/storage.hpp"
+#include "../core/slot_store.hpp"
 namespace ScriptHook {
 namespace {
-constexpr uint32_t ArenaCount=128,BlockCount=2048,OwnerCount=16,End=UINT32_MAX;
+constexpr uint32_t ArenaCount=128,BlockCount=2048,End=UINT32_MAX;
 constexpr size_t PoolBytes=65536,MaxAlignment=4096;
 struct Owner {void* token;uint64_t requested,charged,live,pools,peak_requested,peak_charged,failures,release_failures;};
 struct Arena {void* owner;uintptr_t base;size_t bytes;uint32_t head,tail;bool pages_released,release_failed;};
 struct Block {void* owner;uintptr_t address;size_t bytes,alignment;uint32_t arena,next,previous,hash_slot;};
 constexpr uint32_t LookupCount=4096;
-Owner owners[OwnerCount]{};Arena arenas[ArenaCount]{};Block blocks[BlockCount]{};uint32_t lookup[LookupCount]{};
+SlotStore<Owner,16> owners{};Arena arenas[ArenaCount]{};Block blocks[BlockCount]{};uint32_t lookup[LookupCount]{};
 bool busy{};uint32_t highwater{},free_head=End,tombstones{};
 struct Lock {bool owned;Lock():owned(!busy){if(owned)busy=true;}~Lock(){if(owned)busy=false;}};
 Owner* owner(void* token){
     if(!token)return nullptr;
     for(auto& o:owners)if(o.token==token)return &o;
     for(auto& o:owners)if(!o.token){o.token=token;return &o;}
-    return nullptr;
+    const auto next=owners.Capacity();
+    if(!owners.Ensure(next))return nullptr;
+    owners[next].token=token;return &owners[next];
 }
 void fail(Owner* o){if(o&&o->failures!=UINT64_MAX)++o->failures;}
 void release_fail(Owner* o){if(o&&o->release_failures!=UINT64_MAX)++o->release_failures;}

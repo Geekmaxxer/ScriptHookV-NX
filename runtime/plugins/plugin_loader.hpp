@@ -3,6 +3,7 @@
 namespace ScriptHook {
 class PluginLoader {
 public:
+    static void InvalidateReport();
     static void Tick();
     static void Report();
     static uint32_t Loaded();

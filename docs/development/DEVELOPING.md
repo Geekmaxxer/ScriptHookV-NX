@@ -19,7 +19,7 @@ covered locally, but this release does not claim an actual Linux/macOS build tes
 Output paths may contain spaces. A previous output directory is never overwritten.
 Use `--resident-limit`, `--script-slots` and `--plugin-memory-mib` to select
 compiled defaults, or edit `include/runtime_defaults.h`. See
-[runtime limits](../reference/RUNTIME-LIMITS.md) for startup overrides and bounded ceilings.
+[runtime limits](../reference/RUNTIME-LIMITS.md) for startup overrides and allocation behavior.
 
 ## Target configuration
 

@@ -6,6 +6,7 @@
 #include "plugin_catalog.h"
 #include "plugin_file_mutations.h"
 #include "plugin_resources.h"
+#include "plugin_profile.h"
 #include "natives.h"
 
 // Familiar source syntax, using this Switch build's native declarations.

@@ -2,11 +2,11 @@
 #include "plugin_heap.hpp"
 #include "plugin_loader.hpp"
 #include "../core/memory.hpp"
+#include "../core/slot_store.hpp"
 #include "../script/script_manager.hpp"
 
 namespace ScriptHook {
 namespace {
-constexpr size_t OwnerLimit = 16;
 struct Entry {
     ShvNxResourceCleanup cleanup;
     void* context;
@@ -19,13 +19,17 @@ struct Owner {
     uint32_t count, depth;
     bool draining;
 };
-Owner owners[OwnerLimit];
+SlotStore<Owner,16> owners;
 uint64_t next_serial = 1;
 
 Owner* owner(void* token, bool create = false) {
     if (!token) return nullptr;
     for (auto& value : owners) if (value.token == token) return &value;
     if (create) for (auto& value : owners) if (!value.token) { value.token = token; return &value; }
+    if (create) {
+        const auto next = owners.Capacity();
+        if (owners.Ensure(next)) { owners[next].token = token; return &owners[next]; }
+    }
     return nullptr;
 }
 Entry* find(void* token, ShvNxResourceHandle handle) {

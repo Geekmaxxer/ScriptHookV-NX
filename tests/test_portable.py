@@ -98,17 +98,30 @@ class PortableTests(unittest.TestCase):
         for settings in ({'resident_limit':values['SHVNX_MAX_RESIDENT_PLUGINS']+1},
                          {'script_slots':values['SHVNX_MAX_SCRIPT_SLOTS']+1},
                          {'plugin_memory_mib':values['SHVNX_MAX_PLUGIN_MEMORY_MIB']+1},
-                         {'module_image_mib':33},{'module_bss_mib':33},{'module_bss_mib':True},
-                         {'script_slots':0},{'resident_limit':True},{'script_slots':'24'},
+                         {'module_image_mib':-1},{'module_bss_mib':-1},{'module_bss_mib':True},
+                         {'script_slots':-1},{'resident_limit':True},{'script_slots':'24'},
                          {'plugin_memory_mib':1.5},{'typo':8},[]):
             with self.subTest(settings=settings), self.assertRaises(ValueError): validate(settings)
+    def test_runtime_automatic_and_large_configuration(self):
+        from runtime_limits import KEYS
+        automatic={key:0 for key in KEYS}
+        self.assertEqual(validate(automatic),automatic)
+        self.assertIn('script_slots=0',render(automatic))
+        validate(dict(resident_limit=1024,script_slots=9000,plugin_memory_mib=4096,module_image_mib=128,module_bss_mib=256))
+        self.assertEqual(module_requirements(64*1024*1024,128*1024*1024)['minimum_runtime_limits']['plugin_memory_mib'],385)
+    def test_runtime_automatic_build_defaults(self):
+        from runtime_limits import KEYS
+        with tempfile.TemporaryDirectory() as name:
+            header=Path(name)/'runtime_defaults.h';shutil.copy2(HEADER,header)
+            values=build_defaults(header,{key:0 for key in KEYS})
+            self.assertFalse(module_requirements(64*1024*1024,128*1024*1024,values)['suggested_runtime_limits'])
     def test_runtime_build_overrides_snapshot_only(self):
         before=HEADER.read_bytes()
         with tempfile.TemporaryDirectory() as name:
             header=Path(name)/'runtime_defaults.h';shutil.copy2(HEADER,header)
             values=build_defaults(header,{'resident_limit':12,'script_slots':24,'plugin_memory_mib':16,'module_image_mib':6,'module_bss_mib':8})
             self.assertEqual(values['SHVNX_DEFAULT_SCRIPT_SLOTS'],24)
-            self.assertEqual(values['SHVNX_MAX_SCRIPT_SLOTS'],32)
+            self.assertEqual(values['SHVNX_MAX_SCRIPT_SLOTS'],2**32-1)
             self.assertEqual(values['SHVNX_DEFAULT_MODULE_IMAGE_MIB'],6)
             self.assertEqual(values['SHVNX_DEFAULT_MODULE_BSS_MIB'],8)
             self.assertEqual(HEADER.read_bytes(),before)
@@ -117,7 +130,7 @@ class PortableTests(unittest.TestCase):
         self.assertEqual(result['accounted_bytes'],14*1024*1024+4096)
         self.assertEqual(result['suggested_runtime_limits'],dict(module_image_mib=3,module_bss_mib=4,plugin_memory_mib=15))
         self.assertEqual(module_requirements(4096,0)['accounted_bytes'],5*4096)
-        for image,bss in ((1,0),(0,0),(-4096,0),(4096,33*1024*1024),(33*1024*1024,0),(32*1024*1024,32*1024*1024)):
+        for image,bss in ((1,0),(0,0),(-4096,0),(4096,2**32),(2**32,0)):
             with self.subTest(image=image,bss=bss),self.assertRaises(ValueError):module_requirements(image,bss)
     def test_runtime_project_config_validation(self):
         with tempfile.TemporaryDirectory() as name:
@@ -126,6 +139,8 @@ class PortableTests(unittest.TestCase):
             data['runtime_limits']={'resident_limit':12,'script_slots':24}
             path.write_text(json.dumps(data));self.assertEqual(inputs(path)[0]['runtime_limits'],data['runtime_limits'])
             data['runtime_limits']={'script_slots':9000};path.write_text(json.dumps(data))
+            self.assertEqual(inputs(path)[0]['runtime_limits'],data['runtime_limits'])
+            data['runtime_limits']={'script_slots':-1};path.write_text(json.dumps(data))
             with self.assertRaises(ValueError):inputs(path)
     def test_runtime_config_cli_preserves_existing_file(self):
         import subprocess,sys

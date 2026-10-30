@@ -18,6 +18,7 @@ are separate stages. Historical records remain immutable.
 | Paged file/directory catalogs | [Directory catalogs](PLUGIN-DIRECTORY1.md) | Pending |
 | File mutation and recoverable publication | [Publication workflow](PLUGIN-PUBLICATION1.md) | Pending |
 | Registered cleanup and managed ownership | [Owned-resource lifecycle](PLUGIN-RESOURCES1.md) | Pending |
+| Active profile and growing runtime capacity | [Platform/capacity workflow](PLATFORM-CAPACITY1.md) | Pending; next integration gate |
 
 ## Accepted baseline
 

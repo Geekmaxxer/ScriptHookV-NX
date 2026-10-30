@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "build_id": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "sdk_sha256": "2549a08225392c12b2dee7f14a5c6e49f955aae0dc99bc65628c4b47bf5d7652",
+  "constants": {
+    "open_users": 1717616,
+    "nickname": 1718592,
+    "initialized": 1755728
+  },
+  "proofs": [
+    {
+      "offset": 1717616,
+      "bytes": "ff0303d1fd7b09a9f55300f9f44f0ba9",
+      "symbol": "_ZN2nn7account13ListOpenUsersEPiPNS0_3UidEi"
+    },
+    {
+      "offset": 1718592,
+      "bytes": "ffc301d1fd7b04a9f52b00f9f44f06a9",
+      "symbol": "_ZN2nn7account11GetNicknameEPNS0_8NicknameERKNS0_3UidE"
+    },
+    {
+      "offset": 1755728,
+      "bytes": "fd7bbea9f44f01a9fd030091544c00d0",
+      "symbol": "_ZN2nn7account6detail13IsInitializedEv"
+    }
+  ],
+  "nickname_bytes": 33,
+  "uid_bytes": 16,
+  "maximum_open_users": 8,
+  "ida_version": "9.5",
+  "physical_acceptance_pending": true
+}

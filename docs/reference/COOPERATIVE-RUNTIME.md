@@ -41,8 +41,8 @@ until the next frame. A returned function releases its slot; re-registering it
 starts with a fresh stack. Duplicate registration of an active function is harmless.
 
 The default pool has sixteen fixed 64 KiB stacks (1 MiB). Optional startup
-configuration can select up to 32 slots in the standard build; only additional
-stacks allocate pages, once before plugins start. There are no sleeping OS
+configuration sets the admission capacity; additional entries and stacks grow
+on demand through stable pages and are retained for reuse. There are no sleeping OS
 threads or scripts registered at module startup. See [runtime limits](RUNTIME-LIMITS.md).
 Each frame permits at most one resume per configured slot. A two-millisecond elapsed-time check
 after each resume defers further work fairly; it cannot interrupt a script that

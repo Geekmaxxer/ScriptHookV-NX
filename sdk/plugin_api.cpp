@@ -5,8 +5,23 @@
 #include "plugin_catalog.h"
 #include "plugin_file_mutations.h"
 #include "plugin_resources.h"
+#include "plugin_profile.h"
+namespace { const ShvNxProfile* profile; }
 namespace { const ShvNxApi* api; const ShvNxExtensions* extensions; const ShvNxMemory* memory; const ShvNxFiles* files; const ShvNxCatalog* catalog; const ShvNxFileMutations* mutations; const ShvNxResources* resources; }
 extern "C" {
+SHV_NX_API bool shvPluginBindProfile(const ShvNxProfile* value) {
+    if (!value || value->abi != SHV_NX_PROFILE_ABI_VERSION || value->size < sizeof(ShvNxProfile) || !value->get) return false;
+    profile = value;
+    return true;
+}
+bool scriptProfileAvailable() { return api && profile; }
+ShvNxProfileStatus scriptGetUserProfile(ShvNxUserProfile* value) {
+    if (!value) return ShvNxProfile_InvalidArgument;
+    if (api && profile) return profile->get(api->plugin, value, sizeof(*value));
+    *value = {}; value->size = sizeof(*value); value->abi = SHV_NX_PROFILE_ABI_VERSION;
+    value->status = ShvNxProfile_Unavailable;
+    return ShvNxProfile_Unavailable;
+}
 SHV_NX_API bool shvPluginBindResources(const ShvNxResources* value) {
     if (!value || value->abi != SHV_NX_RESOURCES_ABI_VERSION || value->size < sizeof(ShvNxResources) ||
         !value->register_resource || !value->release || !value->forget || !value->active || !value->pinned || !value->count) return false;

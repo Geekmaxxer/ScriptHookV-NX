@@ -56,7 +56,7 @@ def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, refe
         requested=data.get('runtime_limits',{})
         suggested=report['suggested_runtime_limits']
         for key,minimum in report['minimum_runtime_limits'].items():
-            if key in requested and requested[key]<minimum:
+            if key in requested and requested[key] and requested[key]<minimum:
                 raise ValueError(f'runtime_limits.{key} is below this module\'s measured minimum {minimum}')
         limits={**suggested,**requested}
         if limits:

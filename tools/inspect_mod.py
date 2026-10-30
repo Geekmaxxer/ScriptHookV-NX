@@ -5,15 +5,15 @@ import json
 from pathlib import Path
 import struct
 import zlib
-from runtime_limits import definitions, validate, module_requirements
+from runtime_limits import definitions, validate, module_requirements, byte_limit
 
 def require(ok, message):
     if not ok: raise ValueError(message)
 
 def inspect_nro(data, module_image_mib=None, module_bss_mib=None, plugin_memory_mib=None):
     values=definitions();selected={k:v for k,v in dict(module_image_mib=module_image_mib,module_bss_mib=module_bss_mib,plugin_memory_mib=plugin_memory_mib).items() if v is not None};validate(selected,values)
-    image_cap=selected.get('module_image_mib',values['SHVNX_DEFAULT_MODULE_IMAGE_MIB'])*1024*1024
-    bss_cap=selected.get('module_bss_mib',values['SHVNX_DEFAULT_MODULE_BSS_MIB'])*1024*1024
+    image_cap=byte_limit(selected.get('module_image_mib',values['SHVNX_DEFAULT_MODULE_IMAGE_MIB']))
+    bss_cap=byte_limit(selected.get('module_bss_mib',values['SHVNX_DEFAULT_MODULE_BSS_MIB']))
     require(0x1000 <= len(data) and len(data) % 4096 == 0, 'NRO image must be page aligned')
     require(len(data)<=image_cap, 'NRO image exceeds selected module_image_mib limit')
     require(data[0x10:0x14] == b'NRO0', 'Missing NRO0 header')
@@ -24,7 +24,7 @@ def inspect_nro(data, module_image_mib=None, module_bss_mib=None, plugin_memory_
             ro == ts and rw == ro+rs and rw+ds == size, 'Invalid NRO segment layout')
     require(bss<=bss_cap, 'NRO BSS exceeds selected module_bss_mib limit')
     requirements=module_requirements(size,bss,values)
-    if plugin_memory_mib is not None:require(requirements['accounted_bytes']<=plugin_memory_mib*1024*1024,'NRO exceeds selected plugin_memory_mib accounting budget')
+    if plugin_memory_mib is not None:require(requirements['accounted_bytes']<=byte_limit(plugin_memory_mib),'NRO exceeds selected plugin_memory_mib accounting budget')
     mod = struct.unpack_from('<I', data, 4)[0]
     require(0x80 <= mod <= size-28 and data[mod:mod+4] == b'MOD0', 'Missing MOD0')
     dynamic = mod + struct.unpack_from('<i', data, mod+4)[0]
@@ -82,8 +82,8 @@ def inspect_bindings(data):
 
 def inspect(path, **limits):
     values=definitions();validate(limits,values)
-    cap=limits.get('module_image_mib',values['SHVNX_DEFAULT_MODULE_IMAGE_MIB'])*1024*1024
-    require(path.stat().st_size <= max(65536,cap), 'File exceeds selected module_image_mib preflight limit')
+    cap=byte_limit(limits.get('module_image_mib',values['SHVNX_DEFAULT_MODULE_IMAGE_MIB']))
+    require(path.stat().st_size <= max(65536,min(cap,0xfffff000)), 'File exceeds selected module_image_mib preflight limit')
     data = path.read_bytes()
     result = inspect_bindings(data) if data[:4] == b'SHNB' else inspect_nro(data,**limits)
     return dict(path=str(path), sha256=hashlib.sha256(data).hexdigest(), structural_checks_passed=True,

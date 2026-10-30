@@ -12,9 +12,10 @@ The source examples use unique plugin IDs and document their observable results.
 | `streamed-catalog/` | Chunked 256 KiB file access, nested directories and yielding |
 | `recoverable-publication/` | Prepared large-file validation, publication and retained backup |
 | `managed-resources/` | Registered string/vector ownership across cooperative waits and cancellation |
+| `user-profile/` | Current single-open-user nickname through the optional platform profile service |
 | `mods/` | Showcase gameplay mods and optional standalone manager |
 
-The numeric, container, storage and managed-resource projects require unreleased runtime/SDK services;
+The numeric, container, storage, managed-resource and profile projects require unreleased runtime/SDK services;
 their README files list exact requirements. Each example's local and hardware
 acceptance scope is independent. Build into a fresh output directory and close
 GTA before replacing installed code.

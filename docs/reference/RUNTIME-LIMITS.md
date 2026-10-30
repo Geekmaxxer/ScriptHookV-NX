@@ -1,12 +1,24 @@
-# Configure runtime limits
+# Runtime configuration
 
-The standard defaults are **8 resident NROs, 16 cooperative script slots, an
-8 MiB plugin accounting budget and 2 MiB per image/BSS**. Each can be set independently. Changes take
-effect after restarting GTA; rescanning plugins does not reload this file.
+`switch/gtav-scripthook/runtime.ini` sets startup capacity for the current
+unreleased runtime candidate. The defaults remain eight resident NROs, sixteen
+cooperative scripts, an 8 MiB plugin accounting budget and 2 MiB image/BSS limits.
+Restart GTA after editing; rescanning plugins does not reload this file.
 
-## Players
+## Settings
 
-Create `switch/gtav-scripthook/runtime.ini` on the SD card. For example:
+| Key | Unit | Default |
+| --- | --- | --- |
+| `resident_limit` | Resident NROs | 8 |
+| `script_slots` | Cooperative entries across all plugins | 16 |
+| `plugin_memory_mib` | Shared plugin backing, heap and texture accounting, in MiB | 8 |
+| `module_image_mib` | One NRO image, in MiB | 2 |
+| `module_bss_mib` | One NRO BSS extent, in MiB | 2 |
+
+Values are nonnegative decimal whole numbers. **Zero selects automatic capacity**
+for that key. Positive values set an explicit limit. The parser and build tools
+check integer representation and MiB-to-byte conversion; malformed or duplicate
+known keys independently retain their compiled defaults. Missing keys use defaults.
 
 ```ini
 resident_limit=12
@@ -16,104 +28,97 @@ module_image_mib=3
 module_bss_mib=4
 ```
 
-The standard build accepts residents **1–16**, script slots **1–32** and budget
-**1-64 MiB**. The unreleased [Large Module Test 1](../verification/LARGE-MODULES1.md) source also
-accepts `module_image_mib` and `module_bss_mib`, each **1-32 MiB**. Published older
-runtimes ignore these keys and keep their fixed 2 MiB caps. Omit a line to use its
-compiled default; delete the file to restore all defaults.
-An optional commented template is in `sdk/runtime.ini.example`.
+A configuration can select automatic capacity independently:
 
-Use decimal whole numbers. Blank lines, spaces, UTF-8 BOM, Windows line endings
-and `#`/`;` comments are supported. Unknown keys are ignored. An invalid or
-duplicate known key falls back to its compiled default independently of the
-other keys. Unreadable files or files larger than 4096 bytes use all defaults.
+```ini
+resident_limit=0
+script_slots=0
+plugin_memory_mib=0
+module_image_mib=0
+module_bss_mib=0
+```
 
-More capacity does not make a mod faster or fix unsafe code. The plugin budget
-caps image/BSS backing, mapped copies and registration pages; it is not a total
-game-memory reservation. The 64 KiB stacks are accounted separately. Defaults
-reserve 1 MiB of stacks. Requesting more than 16 slots allocates the additional
-stacks once, up to another 1 MiB at 32. They remain allocated until game exit.
-Allocation failure keeps the default slot count and is recorded in the report.
-Lowering the count does not reclaim stacks compiled into the module.
+Blank lines, UTF-8 BOM, spaces, CRLF and `#`/`;` comments are supported. Unknown
+keys are ignored. An unreadable file or one larger than 4096 bytes uses defaults.
+The runtime does not create or modify this shared configuration. An optional
+commented template is supplied in `sdk/runtime.ini.example`.
 
-Residents and runnable scripts are independent limits: a plugin can have more
-than one cooperative script, and stopped/completed NROs remain resident until
-GTA exits. A lower script or memory limit can prevent loading before the
-resident count is reached. The catalog still lists at most 16 plugins.
+## Allocation and lifetime
 
-## NRO and NSC mod developers
+Loader/catalog records, scheduler entries, additional-entry lists and heap/resource
+owner records grow through stable metadata pages. Existing owner tokens, handler
+addresses and suspended contexts remain valid when a table grows. New pages are
+allocated on demand; a large configured count does not reserve every record or stack
+at startup. Allocation failure refuses the new operation and retains existing work.
 
-No C++ changes are needed to prepare a test configuration:
+The bootstrap contains sixteen 64 KiB script stacks. Additional stacks allocate
+when an entry is admitted and remain available for reuse until GTA exits. A lower
+configured count does not reclaim bootstrap storage. Startup configuration cannot
+orphan scripts or reservations registered before the first valid game tick.
+
+Resident and script counts are independent. A plugin can own several entries;
+completed/stopped NROs remain resident. Plugin image/BSS backing, registration
+pages, heap arenas and textures share `plugin_memory_mib` accounting. Additional
+core metadata pages and script stacks are reported separately. This budget is not
+an estimate of total process or GPU memory. Free heap payload does not release
+unused pool capacity until `scriptTrimMemory()`.
+
+Public slot/reservation indices use their existing 32-bit encodings. NRO fields
+retain their binary-format widths, byte accounting uses 64-bit sizes, and directory
+traversal retains its separate 4096-entry validation bound. Callback, texture,
+heap-record and other service-specific contracts remain independently defined.
+
+## Generate and review configuration
 
 ```powershell
 python tools/configure_runtime.py --resident-limit 12 --script-slots 24 --plugin-memory-mib 12 --output runtime.ini
 ```
 
-Supply only the flags you need; omitted settings stay absent from the generated
-file. Existing files are preserved unless `--force` is explicitly supplied.
-Give users the file as an optional configuration to review and merge with their
-own. It controls the shared runtime, rather than one plugin. Plugins do not
-silently raise global limits or overwrite another mod's configuration.
+Supply only the settings required for the workload. Existing output files are
+preserved unless `--force` is supplied. Review and merge a mod's suggestions into
+the shared file. NROs do not change global settings automatically.
 
-Generated `project.json` projects also accept an optional object:
+Projects accept the same keys inside `runtime_limits`:
 
 ```json
 "runtime_limits": { "script_slots": 24, "plugin_memory_mib": 12 }
 ```
 
-`build_mod.py` validates this object before compilation and emits `runtime.ini`
-beside the NRO/NSC output. It does not install it. Existing ABI 1 NROs, menus and
-`.snb` files remain compatible without rebuilding.
+`build_mod.py` validates the object and emits a configuration beside its output;
+it does not install it. NRO builds record measured image/BSS extents, static backing
+charges and minimum configuration requirements. Those measurements exclude future
+heap/texture use, process overhead and measured gameplay performance.
 
-## Runtime builders
-
-Set defaults in `include/runtime_defaults.h`, or override them for one
-build without changing the checkout:
+Core builders can set compiled defaults with the corresponding command flags:
 
 ```powershell
-python tools/build.py --devkitpro C:/devkitPro --output out/core-custom-test1 --resident-limit 12 --script-slots 24 --plugin-memory-mib 12
+python tools/build.py --devkitpro C:/devkitPro --output out/core-custom --resident-limit 12 --script-slots 24 --plugin-memory-mib 12
 ```
 
-The builder snapshots the resulting header and records the actual defaults and
-ceilings in `build-manifest.json`. The SD file overrides those defaults per key.
-Compiled ceilings are also in the header: up to 16 resident catalog entries,
-64 script entries and 256 MiB accounting are supported by the source guards.
-The shipped ceilings are 16/32/64 MiB. Raising a ceiling requires rebuilding and
-testing the runtime; an NRO's compiler flags cannot reconfigure `subsdk5`.
+The builder snapshots `include/runtime_defaults.h` and records defaults/encoding
+bounds in `build-manifest.json`. An installed older runtime retains its own
+configuration contract; an SDK or configuration file does not upgrade it.
 
-The loader reads configuration once on the first valid game-script tick,
-before scanning/loading NROs. There is no file polling, extra worker thread or
-change to the two-millisecond cooperative dispatch check. Early API-registered
-scripts cannot be orphaned by a startup request to shrink their pool.
+## Diagnostics and acceptance
 
-## Check the result
+`loader-report.txt` includes effective `resident_limit`, `script_slot_limit`,
+`plugin_memory_budget`, `module_image_limit` and `module_bss_limit`. Byte quantities
+are reported in bytes; default/ceiling MiB fields use MiB. Values are hexadecimal.
 
-`switch/gtav-scripthook/loader-report.txt` reports effective `resident_limit`,
-`script_slot_limit` and `plugin_memory_budget` (bytes), plus compiled defaults
-and ceilings. Values are hexadecimal.
+- `runtime_config_state`: 1 absent, 2 read, 3 read error.
+- `runtime_config_applied_mask` / `runtime_config_invalid_mask`: bits 0 through 4
+  correspond to residents, scripts, budget, image and BSS.
+- `runtime_config_automatic_mask`: the same bits identify zero-valued settings.
+- `runtime_config_stack_error`: the most recent stack admission/configuration error.
+- `script_stack_allocated_bytes`: retained bootstrap and additional stack storage.
+- `runtime_metadata_bytes` / `runtime_metadata_error`: additional core metadata
+  page storage and the most recent metadata allocation result.
+- `report_clipped`: whether the bounded report omitted part of a larger catalog.
 
-`runtime_config_state`: 1 means no file, 2 means read, 3 means read error.
-`runtime_config_applied_mask` and `runtime_config_invalid_mask` use bit 0 for
-residents, bit 1 for scripts, bit 2 for memory, bit 3 for image and bit 4 for BSS.
-`runtime_config_error` records
-file errors; `runtime_config_stack_error` records stack allocation or early
-registration conflicts. `script_stack_allocated_bytes` includes the base pool
-and any added stacks. Configuration is a startup setting, so restart GTA when
-testing a different file.
+A stack or metadata admission failure does not rewrite the requested configuration.
+Use the error and actual loaded/running counts when assessing a workload. A reported
+encoding bound is not an accepted hardware configuration.
 
-The configurable-limits runtime has local build/emulator coverage; this does
-not claim Switch acceptance or stability at every larger configuration.
-
-Large-module authors can select the additional flags `--module-image-mib` and
-`--module-bss-mib` in both `configure_runtime.py` and `build.py`. Generated projects
-accept those keys inside `runtime_limits`. Measured minimums and an optional
-configuration suggestion accompany large NRO builds; see [Large Module Test 1](../verification/LARGE-MODULES1.md).
-Review/merge suggestions with the shared config rather than replacing another
-mod's settings. Report fields `module_image_limit` and `module_bss_limit` are bytes;
-the new default/ceiling fields use MiB. Enlarged per-module caps never bypass the
-shared accounting budget.
-
-The unreleased [plugin memory service](../verification/PLUGIN-MEMORY1.md) charges arena pages
-against that shared budget. Payload bytes differ from charged pool capacity;
-freeing a block retains pool capacity until `scriptTrimMemory()`. Separate
-metadata/arena limits also apply. The service does not raise global settings.
+See [platform/capacity verification](../verification/PLATFORM-CAPACITY1.md) for the
+exact local coverage and hardware checklist. Further substantial scheduler/loader
+expansion is gated on physical acceptance of the current candidate.

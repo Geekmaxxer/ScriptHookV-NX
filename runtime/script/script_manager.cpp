@@ -7,10 +7,11 @@
 #include "../plugins/plugin_callbacks.hpp"
 #include "../plugins/plugin_textures.hpp"
 #include "../core/storage.hpp"
+#include "../core/slot_store.hpp"
 
 namespace ScriptHook {
 namespace {
-constexpr size_t none = ScriptManager::MaxScripts;
+constexpr size_t none = SIZE_MAX;
 constexpr uint64_t ticks_per_ms = 19200, guard = 0x5348564e5853544bULL;
 enum State : uint32_t { Free, Ready, Running, Sleeping, Finished, Reserved };
 struct Entry {
@@ -20,14 +21,37 @@ struct Entry {
     NativeCallStatus native_status;
     State state;
     bool cancel;
+    uintptr_t stack;
 };
-Entry scripts[ScriptManager::MaxScripts];
+SlotStore<Entry, ScriptManager::BaseScripts> scripts;
 alignas(16) uint8_t stacks[ScriptManager::BaseScripts][ScriptManager::StackBytes];
-uintptr_t extra_stacks;
+size_t allocated_stack_bytes = sizeof(stacks);
 size_t slot_limit = ScriptManager::BaseScripts;
 uint8_t* stack_memory(size_t slot) {
     return slot < ScriptManager::BaseScripts ? stacks[slot] :
-        reinterpret_cast<uint8_t*>(extra_stacks) + (slot - ScriptManager::BaseScripts) * ScriptManager::StackBytes;
+        reinterpret_cast<uint8_t*>(scripts[slot].stack);
+}
+size_t active_capacity() { return scripts.Capacity() < slot_limit ? scripts.Capacity() : slot_limit; }
+void clear_entry(Entry& entry) { const auto stack = entry.stack; entry = {}; entry.stack = stack; }
+size_t available_slot() {
+    size_t index = 0;
+    const auto capacity = active_capacity();
+    while (index < capacity && scripts[index].state != Free) ++index;
+    if (index == capacity && (index == slot_limit || !scripts.Ensure(index))) return none;
+    auto& entry = scripts[index];
+    if (index >= ScriptManager::BaseScripts && !entry.stack) {
+        uintptr_t address = 0;
+        const auto result = sdk_call<uint32_t(*)(uintptr_t*, size_t)>(binding::allocate_pages)(&address, ScriptManager::StackBytes);
+        if (result || !address) { RuntimeConfig::SetStackError(result ? result : 0x10021); return none; }
+        allocated_stack_bytes += ScriptManager::StackBytes;
+        if ((address & 4095) || address > UINTPTR_MAX - ScriptManager::StackBytes || !Memory::IsWritable(address, ScriptManager::StackBytes)) {
+            RuntimeConfig::SetStackError(0x10021); return none;
+        }
+        entry.stack = address;
+        PluginLoader::InvalidateReport();
+    }
+    RuntimeConfig::SetStackError(0);
+    return index;
 }
 FiberContext scheduler;
 size_t current = none, next_slot;
@@ -147,7 +171,7 @@ void write_test_report() {
 
 void ScriptManager::Initialize() {
     NativeInvoker::Initialize();
-    for (auto& entry : scripts) entry = {};
+    for (auto& entry : scripts) clear_entry(entry);
     current = none; next_slot = 0; owner_tls = host_pointer = serial = 0;
     host_id = frame_seen = mutation_lock = 0; have_frame = dispatching = false;
     info = {}; info.abi = SHV_NX_RUNTIME_ABI_VERSION;
@@ -157,22 +181,16 @@ void ScriptManager::Initialize() {
 size_t ScriptManager::ConfigureSlots(size_t requested, uint32_t& error) {
     error = 0;
     Mutation lock;
-    if (!lock.held || dispatching || requested < 1 || requested > MaxScripts) { error = 0x10021; return slot_limit; }
-    // Preserve any script/reservation registered before the first VM tick.
-    for (size_t i = requested; i < MaxScripts; ++i)
+    if (!lock.held || dispatching || requested > MaxScripts) { error = 0x10021; return slot_limit; }
+    if (!requested) requested = MaxScripts;
+    // Preserve scripts and reservations registered before the first VM tick.
+    for (size_t i = requested; i < scripts.Capacity(); ++i)
         if (scripts[i].state != Free) { error = 0x10022; return slot_limit; }
-    if (requested > BaseScripts && !extra_stacks) {
-        uintptr_t address = 0;
-        const size_t bytes = (requested - BaseScripts) * StackBytes;
-        error = sdk_call<uint32_t(*)(uintptr_t*,size_t)>(binding::allocate_pages)(&address, bytes);
-        if (error || !address || address % 4096) { if (!error) error = 0x10021; return slot_limit; }
-        extra_stacks = address;
-    }
     slot_limit = requested;
     return slot_limit;
 }
 size_t ScriptManager::SlotLimit() { return slot_limit; }
-size_t ScriptManager::StackAllocationBytes() { return (slot_limit > BaseScripts ? slot_limit : BaseScripts) * StackBytes; }
+size_t ScriptManager::StackAllocationBytes() { return allocated_stack_bytes; }
 bool ScriptManager::Register(ScriptFunction function) {
     Mutation lock; if (!lock.held) return false;
     if (!function || !Memory::IsExecutable(reinterpret_cast<uintptr_t>(function))) {
@@ -181,8 +199,8 @@ bool ScriptManager::Register(ScriptFunction function) {
     for (const auto& entry : scripts) if (entry.state != Free && entry.function == function) {
         set_status(ScriptRuntime_Ok); return true;
     }
-    for (size_t i = 0; i < slot_limit; ++i) if (scripts[i].state == Free) {
-        auto& entry = scripts[i]; entry = {};
+    if (const size_t i = available_slot(); i != none) {
+        auto& entry = scripts[i]; clear_entry(entry);
         auto* low = reinterpret_cast<uint64_t*>(stack_memory(i));
         for (size_t j = 0; j < 16; ++j) low[j] = guard;
         auto* high = reinterpret_cast<uint64_t*>(stack_memory(i) + StackBytes - 16);
@@ -198,19 +216,19 @@ bool ScriptManager::Register(ScriptFunction function) {
 }
 uint32_t ScriptManager::ReserveSlot() {
     Mutation lock; if (!lock.held) return 0;
-    for (size_t i = 0; i < slot_limit; ++i) if (scripts[i].state == Free) {
-        scripts[i] = {}; scripts[i].state = Reserved;
+    if (const size_t i = available_slot(); i != none) {
+        clear_entry(scripts[i]); scripts[i].state = Reserved;
         set_status(ScriptRuntime_Ok); return uint32_t(i + 1);
     }
     set_status(ScriptRuntime_Capacity); return 0;
 }
 bool ScriptManager::CommitReserved(uint32_t token, ScriptFunction function) {
     Mutation lock; if (!lock.held) return false;
-    if (!token || token > slot_limit || scripts[token - 1].state != Reserved ||
+    if (!token || token > slot_limit || token > scripts.Capacity() || scripts[token - 1].state != Reserved ||
         !function || !Memory::IsExecutable(reinterpret_cast<uintptr_t>(function))) {
         set_status(ScriptRuntime_InvalidFunction); return false;
     }
-    const auto i = size_t(token - 1); auto& entry = scripts[i]; entry = {};
+    const auto i = size_t(token - 1); auto& entry = scripts[i]; clear_entry(entry);
     auto* low = reinterpret_cast<uint64_t*>(stack_memory(i));
     for (size_t j = 0; j < 16; ++j) low[j] = guard;
     auto* high = reinterpret_cast<uint64_t*>(stack_memory(i) + StackBytes - 16);
@@ -224,7 +242,7 @@ bool ScriptManager::CommitReserved(uint32_t token, ScriptFunction function) {
 }
 void ScriptManager::ReleaseReserved(uint32_t token) {
     Mutation lock; if (!lock.held) return;
-    if (token && token <= MaxScripts && scripts[token - 1].state == Reserved) scripts[token - 1] = {};
+    if (token && token <= scripts.Capacity() && scripts[token - 1].state == Reserved) clear_entry(scripts[token - 1]);
 }
 void ScriptManager::Unregister(ScriptFunction function) {
     Mutation lock; if (!lock.held) return;
@@ -243,7 +261,7 @@ bool ScriptManager::Contains(ScriptFunction function) {
 void ScriptManager::StopAll() {
     Mutation lock; if (!lock.held) return;
     for (auto& entry : scripts) if (entry.state != Free) {
-        if (entry.state == Reserved) { entry = {}; continue; }
+        if (entry.state == Reserved) { clear_entry(entry); continue; }
         if (entry.state == Running) entry.cancel = true; else release(entry, true);
     }
     if (test_running || test_pending) {
@@ -346,9 +364,10 @@ void ScriptManager::OnTick(void* host) {
     }
     dispatching = true; ++serial; ++info.dispatches;
     const auto started = sh_get_tick();
-    const auto first = next_slot;
-    for (size_t n = 0; n < slot_limit; ++n) {
-        const auto i = (first + n) % slot_limit; auto& entry = scripts[i];
+    const auto capacity = active_capacity();
+    const auto first = next_slot % capacity;
+    for (size_t n = 0; n < capacity; ++n) {
+        const auto i = (first + n) % capacity; auto& entry = scripts[i];
         if ((entry.state != Ready && entry.state != Sleeping) || entry.earliest_dispatch > serial ||
             int64_t(sh_get_tick() - entry.wake_tick) < 0) continue;
         if (!guards_ok(i)) { ++info.stack_failures; set_status(ScriptRuntime_StackCorrupt); release(entry, true); continue; }
@@ -360,7 +379,7 @@ void ScriptManager::OnTick(void* host) {
         current = none;
         if (!guards_ok(i)) { ++info.stack_failures; entry.cancel = true; set_status(ScriptRuntime_StackCorrupt); }
         if (entry.state == Finished || entry.cancel) release(entry, entry.cancel);
-        next_slot = (i + 1) % slot_limit;
+        next_slot = (i + 1) % capacity;
         if (sh_get_tick() - started >= 2 * ticks_per_ms) { ++info.budget_overruns; break; }
     }
     dispatching = false;

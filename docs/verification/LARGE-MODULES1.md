@@ -1,5 +1,8 @@
 # Large Module Test 1
 
+Historical record. Its original configuration limits apply to that candidate;
+the current contract is [runtime configuration](../reference/RUNTIME-LIMITS.md).
+
 Date: 2026-10-29. Unreleased runtime/SDK candidate. No SD installation, public
 release replacement or new Switch acceptance is performed.
 

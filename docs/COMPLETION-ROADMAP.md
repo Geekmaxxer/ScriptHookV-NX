@@ -38,6 +38,9 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify isolated file mutations, backup-preserving publication and explicit recovery locally.
 - [x] Verify registered resource pinning, reverse cleanup and managed cancellation locally.
 - [x] Verify registered cleanup on rejected initialization and a yielding string/vector example locally.
+- [x] Verify growing capacity tables, lazy stack admission and high-index ownership locally.
+- [x] Audit and verify the optional active-profile nickname interface locally.
+- [ ] Complete the combined platform/capacity hardware acceptance sequence before further major runtime expansion.
 - [ ] Accept owned-resource cancellation and nested cleanup on Switch.
 - [ ] Define broader global initialization, exception and static-local policies.
 - [ ] Validate a substantial combined workload on the supported Switch.

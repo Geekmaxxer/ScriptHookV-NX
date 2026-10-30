@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased platform profile and capacity - 2026-10-30
+
+- Add a guarded, optional profile service for the single open Switch user's UTF-8 nickname, with explicit account-state and platform errors.
+- Support automatic capacity and larger explicit settings across runtime.ini, project manifests and build/configuration tools.
+- Grow stable catalog, scheduler, additional-entry and heap/resource owner metadata on demand; retain admitted stacks for reuse and report allocation failures.
+- Verify larger cooperative workloads, high-index owner cancellation and the complete profile example locally. Further major runtime expansion is gated on physical acceptance of the combined candidate.
+
 ## Unreleased owned-resource lifecycle - 2026-10-30
 
 - Add an independent optional resource table with owner-thread validation, exact heap contexts, pinned allocations and at-most-once cleanup.

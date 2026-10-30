@@ -21,7 +21,10 @@ The PC 2699/1.61 content baseline is not an equivalent Switch ABI.
 
 ## 2. Module capacity and scheduling
 
-- [x] Provide configurable image/BSS caps from 1-32 MiB; retain 2 MiB defaults.
+- [x] Provide configurable image/BSS extent limits; retain 2 MiB defaults.
+- [x] Support automatic and larger positive values for all five runtime settings.
+- [x] Grow stable loader/scheduler/owner records and admit additional stacks on demand.
+- [x] Remove running-state bitmask assumptions for high-index plugin owners.
 - [x] Preserve independent shared accounting and explicit capacity refusal.
 - [x] Report measured module extents and minimum configuration requirements.
 - [x] Exercise large NROs, failure cleanup, coexistence and restart locally.
@@ -95,6 +98,7 @@ Evidence: [owned-resource contract](reference/OWNED-RESOURCES.md) and
 
 - [x] Provide pools, generation-checked pointers and bounded globals.
 - [x] Provide controller input, optional USB keyboard, HUD callbacks and PNG textures.
+- [x] Provide audited single-open-user nickname access with explicit availability and ambiguity states.
 - [ ] Pin a substantial port and inventory required native/memory/resource behavior.
 - [ ] Add verified target adapters for missing engine and streaming services.
 - [ ] Validate asset ownership, cleanup and transitions with concurrent mods.
@@ -103,6 +107,9 @@ PC ScriptHookV exposes natives; it does not replace Windows, DirectX or library
 runtimes. Independent reverse engineering is not an original-source or ABI contract.
 
 ## 7. Combined runtime acceptance
+
+The [platform/capacity acceptance sequence](verification/PLATFORM-CAPACITY1.md)
+is the next gate before further substantial runtime expansion.
 
 - [x] Build smaller combined container/numeric/XML/settings probes.
 - [ ] Build a substantial workload covering data, textures, callbacks and entities.

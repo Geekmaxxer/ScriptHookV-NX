@@ -20,6 +20,7 @@ workflow. This page describes interfaces and requirements.
 | Catalogs | Independent optional catalog table: paged directory metadata |
 | File mutations | Independent optional table: isolated rename/delete and explicit publication recovery |
 | Owned resources | Independent optional table: registered cleanup and cancellation-safe managed heap ownership |
+| User profile | Independent optional table: current single-open-user nickname and explicit availability/error states |
 
 Candidate profiles have local verification and require new hardware acceptance.
 See [memory](../verification/PLUGIN-MEMORY1.md), [C/XML](../verification/PLUGIN-LIBRARIES1.md),
@@ -65,8 +66,9 @@ are recognized; the current toolchain was tested on Windows.
 
 Copy `out/my-plugin/plugin.nro` to
 `sd:/switch/gtav-scripthook/plugins/my-plugin.nro`, then restart GTA.
-The loader scans directory pages, retains a bounded 16-entry catalog and allows
-eight resident NROs in Capacity Test 1 (four in earlier published runtimes).
+The published Capacity Test 1 baseline allows eight resident NROs (four in earlier
+runtimes). The current unreleased candidate grows catalog/owner records on demand;
+see [runtime configuration](RUNTIME-LIMITS.md) for admission and allocation behavior.
 Auto candidates load one per frame after obtaining a valid
 game script context. `.nro.manual` waits for Load Now; `.nro.disabled` cannot load
 until its policy changes. Suffixes are case-insensitive. Catalog order is stable;
@@ -125,8 +127,8 @@ the original intact and fails the file operation so defaults cannot overwrite it
 
 Modules remain mapped until game exit because NSCs can retain their native
 handler addresses. Hot unloading/reloading is deliberately unavailable. Images
-and BSS each default to 2 MiB; the unreleased [large-module candidate](../verification/LARGE-MODULES1.md)
-allows independent 1-32 MiB caps while enforcing the shared budget. The default is sixteen cooperative stacks;
+and BSS each default to 2 MiB; the current candidate supports independently
+configured extent limits while enforcing the shared accounting budget. The default is sixteen cooperative stacks;
 [optional runtime limits](RUNTIME-LIMITS.md) can change that capacity. Duplicate IDs (case-insensitive), mismatched ABIs, malformed layouts,
 global constructors/destructors and missing entry points are rejected. Mods are
 trusted executable code; faults or loops inside a plugin cannot be recovered by

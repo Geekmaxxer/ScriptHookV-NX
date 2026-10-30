@@ -16,5 +16,10 @@ public:
     static uint32_t AppliedMask(); // bits 0..4: residents/scripts/memory/image/BSS.
     static uint32_t InvalidMask();
     static uint32_t StackError();
+    static void SetStackError(uint32_t error);
+    static void* AllocateMetadata(size_t bytes);
+    static size_t MetadataBytes();
+    static uint32_t MetadataError();
+    static uint32_t AutomaticMask();
 };
 }

@@ -43,6 +43,7 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
   conversion and fallible C++ containers.
 - Unreleased chunked file access, isolated nested directories and paged catalogs.
 - Unreleased registered resource cleanup and managed heap objects across cancellation.
+- Unreleased active-profile nickname access and growing runtime capacity tables.
 
 See the [API reference](docs/reference/API-REFERENCE.md) for contracts and
 [compatibility](docs/reference/COMPATIBILITY.md) for platform limitations.

@@ -17,7 +17,7 @@ extern "C" void sh_fiber_switch(FiberContext* from, const FiberContext* to);
 class ScriptManager {
 public:
     static constexpr size_t MaxScripts = SHVNX_MAX_SCRIPT_SLOTS, StackBytes = 64 * 1024;
-    static constexpr size_t BaseScripts = SHVNX_DEFAULT_SCRIPT_SLOTS;
+    static constexpr size_t BaseScripts = 16;
     static size_t ConfigureSlots(size_t requested, uint32_t& error);
     static size_t SlotLimit();
     static size_t StackAllocationBytes();

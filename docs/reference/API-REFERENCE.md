@@ -33,6 +33,11 @@ The unreleased independent [file table](FILE-SERVICES.md) adds bounded chunked
 I/O and isolated nested paths. Check `scriptFilesAvailable()` before using it;
 the original raw settings ABI retains its existing contract.
 
+The independent [profile service](USER-PROFILE.md) adds
+`scriptProfileAvailable()` and `scriptGetUserProfile(&profile)` for the single
+open user's UTF-8 nickname. Availability, initialized state and selection errors
+are distinct. The runtime does not select an account for the caller.
+
 `main.h` also declares core-only APIs for in-core registration, scheduler control,
 self-tests and diagnostics. The optional [extensions table](EXTENSIONS.md) now
 supplies owned script registration, enumeration, pointers, textures and callbacks.

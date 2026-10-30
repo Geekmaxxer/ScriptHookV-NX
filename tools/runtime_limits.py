@@ -19,11 +19,11 @@ def definitions(header=HEADER):
         if len(matches) != 1:
             raise ValueError('Expected one decimal definition for '+macro)
         values[macro] = int(matches[0])
-    for macro, bound in zip((pair[1] for pair in KEYS.values()), (16, 64, 256, 32, 32)):
+    for macro, bound in zip((pair[1] for pair in KEYS.values()), (2**32-1, 2**32-1, (2**64-1)//(1024*1024), (2**64-1)//(1024*1024), (2**64-1)//(1024*1024))):
         if not 1 <= values[macro] <= bound:
             raise ValueError(f'{macro} must be between 1 and {bound}')
     for key, (default, maximum) in KEYS.items():
-        if not 1 <= values[default] <= values[maximum]:
+        if not 0 <= values[default] <= values[maximum]:
             raise ValueError('Compiled default outside ceiling: '+key)
     return values
 
@@ -34,8 +34,8 @@ def validate(settings, values=None):
     for key, number in settings.items():
         if key not in KEYS:
             raise ValueError('Unknown runtime limit: '+str(key))
-        if type(number) is not int or not 1 <= number <= values[KEYS[key][1]]:
-            raise ValueError(f'{key} must be a whole number from 1 to {values[KEYS[key][1]]}')
+        if type(number) is not int or not 0 <= number <= values[KEYS[key][1]]:
+            raise ValueError(f'{key} must be a whole number from 0 to {values[KEYS[key][1]]}')
     return settings
 
 def render(settings, values=None):
@@ -45,12 +45,18 @@ def render(settings, values=None):
             + ''.join(f'{key}={settings[key]}\n' for key in KEYS if key in settings))
 
 
+def byte_limit(mib):
+    return mib*1024*1024 if mib else 2**64-1
+
+
 def module_requirements(image_bytes, bss_bytes, values=None):
     """Static loader charge; excludes textures, stacks and future heap use."""
     values = definitions() if values is None else values
     for number in (image_bytes, bss_bytes):
         if type(number) is not int or number < 0 or number % 4096:
             raise ValueError('Module extents must be nonnegative page-aligned integers')
+    if image_bytes > 0xfffff000 or bss_bytes > 0xfffff000:
+        raise ValueError('Module extents exceed the NRO format')
     if image_bytes < 4096:
         raise ValueError('Module image must contain at least one page')
     mib = 1024*1024
@@ -59,7 +65,7 @@ def module_requirements(image_bytes, bss_bytes, values=None):
                    module_bss_mib=max(1,(bss_bytes+mib-1)//mib),
                    plugin_memory_mib=(charge+mib-1)//mib)
     validate(minimum, values)
-    suggested = {key:number for key,number in minimum.items() if number > values[KEYS[key][0]]}
+    suggested = {key:number for key,number in minimum.items() if values[KEYS[key][0]] and number > values[KEYS[key][0]]}
     return dict(accounted_bytes=charge, minimum_runtime_limits=minimum,
                 suggested_runtime_limits=suggested)
 

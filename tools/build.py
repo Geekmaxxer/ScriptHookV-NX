@@ -12,7 +12,7 @@ from generate_bindings import generate, Image, DEFAULT_PROFILE
 from build_plugin import toolchain, tool
 from nso import decode_nso, segments
 from runtime_limits import build_defaults, definitions, validate
-from engine_bindings import generate_engine
+from engine_bindings import generate_engine, generate_profile
 from sd_permissions import bundle, copy_distribution, stage as stage_sd_access
 
 def main():
@@ -63,6 +63,7 @@ def main():
         generate(generated, args.menu.resolve() if args.menu else None,
                  args.target_main, args.target_sdk, args.target_profile)
         generate_engine(generated,args.target_profile.resolve())
+        generate_profile(generated,args.target_profile.resolve())
         build_dir.mkdir(parents=True)
         shutil.copytree(generated, build_dir/'generated')
     for folder in ('runtime', 'include', 'sdk', 'tools', 'targets'):
@@ -99,6 +100,7 @@ def main():
         project_root / 'runtime/core/memory.cpp',
         project_root / 'runtime/core/storage.cpp',
         project_root / 'runtime/core/runtime_config.cpp',
+        project_root / 'runtime/core/user_profile.cpp',
         project_root / 'runtime/core/engine_api.cpp',
         project_root / 'runtime/core/main.cpp',
         project_root / 'runtime/script/native_table.cpp',

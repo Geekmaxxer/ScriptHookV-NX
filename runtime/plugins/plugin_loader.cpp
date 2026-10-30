@@ -1,5 +1,7 @@
 #include "plugin_loader.hpp"
 #include "../core/runtime_config.hpp"
+#include "../core/slot_store.hpp"
+#include "../core/user_profile.hpp"
 #include "../core/engine_api.hpp"
 #include "plugin.h"
 #include "extensions.h"
@@ -15,8 +17,7 @@
 #include "../script/script_manager.hpp"
 namespace ScriptHook {
 namespace {
-constexpr size_t max_plugins=16;
-static_assert(SHVNX_MAX_RESIDENT_PLUGINS<=max_plugins);
+size_t catalog_limit(){const auto n=RuntimeConfig::Residents();return n<16?16:n;}
 enum Policy : uint32_t { Disabled, Manual, Auto };
 struct Nro {uint32_t start,mod,reserved[2],magic,version,size,flags,text,text_bytes,ro,ro_bytes,data,data_bytes,bss,reserved2;uint8_t rest[64];};
 static_assert(sizeof(Nro)==0x80);
@@ -30,8 +31,9 @@ struct alignas(8) Plugin {
     ShvNxCatalog catalog;
     ShvNxFileMutations mutations;
     ShvNxResources resources;
+    ShvNxProfile profile;
     ScriptFunction run,cleanup;
-    ScriptFunction additional[ScriptManager::MaxScripts];
+    SlotStore<ScriptFunction,16> additional;
     uint32_t additional_count;
     uint32_t cleanup_calls,cleanup_failures;
     struct Timing { uint64_t calls,total,worst; } timing[4];
@@ -39,11 +41,11 @@ struct alignas(8) Plugin {
     CustomNativeEntry pending[32];uint32_t pending_count;
     uint32_t step,error;
     uint32_t policy,loaded_policy;
-    bool loaded,registered,active,published,queued,present,conflict,kill_queued,stopped,stopping,cleanup_done,data_directory_ready;
+    bool loaded,registered,active,published,queued,present,conflict,kill_queued,stopped,stopping,cleanup_done,data_directory_ready,reported_running;
 };
 struct Candidate { char filename[64],canonical[55]; uint32_t policy; bool conflict; };
-Plugin plugins[max_plugins];size_t count;
-Candidate candidates[max_plugins];size_t candidate_count;
+SlotStore<Plugin,16> plugins;size_t count;
+SlotStore<Candidate,16> candidates;size_t candidate_count;
 DirectoryEntry directory[16];
 alignas(8) uint8_t manifest_buffer[65536];
 uint32_t stage,error,skipped,last_action_error;
@@ -55,7 +57,6 @@ bool rescan_requested,ro_ready;
 uint32_t policy_slot=UINT32_MAX,policy_requested=UINT32_MAX,policy_previous=UINT32_MAX,policy_effective=UINT32_MAX;
 uint32_t policy_rename_result=UINT32_MAX,policy_postcheck;
 bool policy_rename_attempted;
-uint32_t reported_running_mask;
 size_t extra_memory;
 bool basename(const char* s,size_t maximum,bool dot) {
     if(!s)return false;
@@ -103,10 +104,11 @@ void stop_scripts(Plugin& p){
     ScriptManager::Unregister(p.run);
     for(uint32_t i=0;i<p.additional_count;++i)ScriptManager::Unregister(p.additional[i]);
 }
-uint32_t running_mask(){
-    uint32_t value=0;
-    for(size_t i=0;i<count;++i)if(plugins[i].loaded&&plugins[i].active&&running(plugins[i]))value|=1u<<i;
-    return value;
+bool running_changed(){
+    for(size_t i=0;i<count;++i){const auto& p=plugins[i];
+        if((p.loaded&&p.active&&running(p))!=p.reported_running)return true;
+    }
+    return false;
 }
 const char* error_name(uint32_t value,uint32_t step){
     switch(value){
@@ -188,13 +190,18 @@ bool resource_forget(void* token, ShvNxResourceHandle handle) { if(!own(static_c
 bool resource_active(void* token, ShvNxResourceHandle handle) { return own(static_cast<Plugin*>(token)) && PluginResources::Active(token, handle); }
 bool resource_pinned(void* token, const void* pointer) { return own(static_cast<Plugin*>(token)) && PluginResources::Pinned(token, pointer); }
 uint32_t resource_count(void* token) { return own(static_cast<Plugin*>(token)) ? PluginResources::Count(token) : 0; }
+ShvNxProfileStatus profile_get(void* token, ShvNxUserProfile* out, uint32_t bytes) {
+    if (!own(static_cast<Plugin*>(token))) return ShvNxProfile_WrongThread;
+    if (bytes != sizeof(*out) || !Memory::IsWritable(reinterpret_cast<uintptr_t>(out), bytes)) return ShvNxProfile_InvalidArgument;
+    return UserProfile::Read(*out);
+}
 bool register_script(void* token,ScriptFunction function){
     auto* p=static_cast<Plugin*>(token);
     if(!own(p)||p->stopping||p->kill_queued||(p->active&&(p->stopped||p->cleanup_done))||!code(*p,reinterpret_cast<uintptr_t>(function)))return false;
     if(function==p->run)return !p->active||ScriptManager::Register(function);
     for(uint32_t i=0;i<p->additional_count;++i)if(p->additional[i]==function)
         return !p->active||ScriptManager::Register(function);
-    if(p->additional_count==ScriptManager::MaxScripts)return false;
+    if(p->additional_count==ScriptManager::MaxScripts||!p->additional.Ensure(p->additional_count))return false;
     if(p->active&&!ScriptManager::Register(function))return false;
     p->additional[p->additional_count++]=function;return true;
 }
@@ -410,7 +417,7 @@ void load(Plugin& p){
     if(resident_count()>=RuntimeConfig::Residents()){p.error=0x10015;return;}
     struct Reservation {
         uint32_t token=ScriptManager::ReserveSlot();
-        uint32_t extra[ScriptManager::MaxScripts]{};uint32_t count=0;
+        SlotStore<uint32_t,16> extra{};uint32_t count=0;
         ~Reservation(){ScriptManager::ReleaseReserved(token);for(uint32_t i=0;i<count;++i)ScriptManager::ReleaseReserved(extra[i]);}
     } reservation;
     if(!reservation.token){p.error=0x10009;return;}
@@ -472,6 +479,15 @@ void load(Plugin& p){
     p.catalog={sizeof(ShvNxCatalog),SHV_NX_CATALOG_ABI_VERSION,catalog_list};
     p.mutations={sizeof(ShvNxFileMutations),SHV_NX_FILE_MUTATIONS_ABI_VERSION,file_rename,file_delete};
     p.resources={sizeof(ShvNxResources),SHV_NX_RESOURCES_ABI_VERSION,resource_register,resource_release,resource_forget,resource_active,resource_pinned,resource_count};
+    p.profile={sizeof(ShvNxProfile),SHV_NX_PROFILE_ABI_VERSION,profile_get};
+    uintptr_t bind_profile=0;
+    const auto profile_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&bind_profile,p.module,"shvPluginBindProfile");
+    if(!profile_result&&bind_profile){
+        if(!code(p,bind_profile)||!reinterpret_cast<bool(*)(const ShvNxProfile*)>(bind_profile)(&p.profile)){
+            fail(p,0x10006);return;
+        }
+        if(!NativeInvoker::CanYield()){NativeInvoker::AbandonCalls();fail(p,0x1001b);return;}
+    }
     uintptr_t bind_resources=0;
     const auto resources_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&bind_resources,p.module,"shvPluginBindResources");
     if(!resources_result&&bind_resources){
@@ -535,6 +551,7 @@ void load(Plugin& p){
     }
     if(!initialized){fail(p,0x10008);return;}
     for(uint32_t i=0;i<p.additional_count;++i){
+        if(!reservation.extra.Ensure(reservation.count)){fail(p,0x10002);return;}
         const auto token=ScriptManager::ReserveSlot();
         if(!token){fail(p,0x10009);return;}
         reservation.extra[reservation.count++]=token;
@@ -573,7 +590,10 @@ void discover_plugin(const DirectoryEntry& entry,void*){
         candidates[i].conflict=true;return;
     }
     size_t at=candidate_count;
-    if(candidate_count<max_plugins)++candidate_count;
+    if(candidate_count<catalog_limit()){
+        if(!candidates.Ensure(candidate_count)){error=0x10002;return;}
+        ++candidate_count;
+    }
     else {++skipped;if(!better(next,candidates[candidate_count-1]))return;at=candidate_count-1;}
     while(at&&better(next,candidates[at-1])){candidates[at]=candidates[at-1];--at;}
     candidates[at]=next;
@@ -595,9 +615,10 @@ void scan(){
         if(!disk.Scan("bindings",directory,16,discover_binding,&disk,binding_entries)){error=disk.error;return;}
         if(!disk.Scan("plugins",directory,16,discover_plugin,nullptr,plugin_entries)){error=disk.error;return;}
     }
+    if(error==0x10002)return;
     for(size_t i=0;i<candidate_count;++i){
         size_t slot=count;
-        if(count==max_plugins){
+        if(count==catalog_limit()){
             // Reclaim only unpublished catalog rows. Resident tokens never
             // move. Missing files and low-priority disabled/manual entries
             // must not permanently crowd new Auto plugins out of the list.
@@ -608,8 +629,8 @@ void scan(){
             }
             if(slot==count){++skipped;continue;}
             if(plugins[slot].present)++skipped;
-        } else ++count;
-        auto& p=plugins[slot];p={};copy(p.filename,candidates[i].filename);copy(p.canonical,candidates[i].canonical);
+        } else {if(!plugins.Ensure(count)){error=0x10002;return;}++count;}
+        auto& p=plugins[slot];auto retained=p.additional;p={};p.additional=retained;for(auto& fn:p.additional)fn=nullptr;copy(p.filename,candidates[i].filename);copy(p.canonical,candidates[i].canonical);
         p.policy=candidates[i].policy;p.present=true;p.conflict=candidates[i].conflict;
         p.queued=p.policy==Auto&&!p.conflict;
     }
@@ -621,7 +642,8 @@ void scan(){
 }
 }
 uint32_t PluginLoader::Loaded(){return uint32_t(resident_count());}
-bool PluginLoader::Pending(){return stage!=3||!reported||rescan_requested||any_queued()||PluginCallbacks::Active()||PluginTextures::Active()||running_mask()!=reported_running_mask;}
+void PluginLoader::InvalidateReport(){reported=false;}
+bool PluginLoader::Pending(){return stage!=3||!reported||rescan_requested||any_queued()||PluginCallbacks::Active()||PluginTextures::Active()||running_changed();}
 void PluginLoader::Tick(){
     if(!Memory::ResolveSdk())return;
     const auto tls=sh_get_thread_pointer();if(owner_tls&&owner_tls!=tls)return;owner_tls=tls;
@@ -669,7 +691,7 @@ void PluginLoader::Tick(){
         if(!any_queued()){stage=3;Report();}
         return;
     }
-    if(stage==3&&running_mask()!=reported_running_mask)reported=false;
+    if(stage==3&&running_changed())reported=false;
     if(stage==3&&!reported)Report();
 }
 void PluginLoader::Report(){
@@ -691,6 +713,7 @@ void PluginLoader::Report(){
     field("script_slot_limit",ScriptManager::SlotLimit());field("script_stack_bytes",ScriptManager::StackBytes);
     field("runtime_config_state",RuntimeConfig::State());field("runtime_config_error",RuntimeConfig::Error());
     field("runtime_config_applied_mask",RuntimeConfig::AppliedMask());field("runtime_config_invalid_mask",RuntimeConfig::InvalidMask());
+    field("runtime_config_automatic_mask",RuntimeConfig::AutomaticMask());field("runtime_metadata_bytes",RuntimeConfig::MetadataBytes());field("runtime_metadata_error",RuntimeConfig::MetadataError());
     field("runtime_config_stack_error",RuntimeConfig::StackError());field("script_stack_allocated_bytes",ScriptManager::StackAllocationBytes());
     field("default_resident_limit",SHVNX_DEFAULT_RESIDENT_PLUGINS);field("default_script_slots",SHVNX_DEFAULT_SCRIPT_SLOTS);field("default_plugin_memory_mib",SHVNX_DEFAULT_PLUGIN_MEMORY_MIB);
     field("resident_limit_ceiling",SHVNX_MAX_RESIDENT_PLUGINS);field("script_slots_ceiling",SHVNX_MAX_SCRIPT_SLOTS);field("plugin_memory_mib_ceiling",SHVNX_MAX_PLUGIN_MEMORY_MIB);
@@ -709,7 +732,8 @@ void PluginLoader::Report(){
     const char* tail=clipped?"report_clipped=1\n":"report_clipped=0\n";while(*tail&&n+1<sizeof(report))report[n++]=*tail++;
     // A persistent SD failure must not mount/write every game frame. A new
     // scan or manager action explicitly requests another bounded attempt.
-    reported_running_mask=running_mask();reported=true;Storage disk;(void)disk.Write("loader-report.txt",report,n);
+    for(auto& p:plugins)p.reported_running=p.loaded&&p.active&&running(p);
+    reported=true;Storage disk;(void)disk.Write("loader-report.txt",report,n);
 }
 uint32_t PluginLoader::Count(){return uint32_t(count);}
 void PluginLoader::RecordTime(void* owner,uint32_t kind,uint64_t ticks){

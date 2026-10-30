@@ -1,6 +1,32 @@
 """Emit independently guarded engine API offsets from an audited target profile."""
 import json
 
+
+def generate_profile(output, profile):
+    record = json.loads((profile/'profile-api.json').read_text())
+    target = json.loads((profile/'profile.json').read_text())
+    bindings = json.loads((profile/'bindings.json').read_text())
+    if record.get('format') != 1 or record['build_id'] != target['build_id'] or record['sdk_sha256'] != bindings['sdk_sha256']:
+        raise ValueError('Account profile contract does not match the selected target')
+    if set(record['constants']) != {'initialized', 'open_users', 'nickname'} or len(record['proofs']) != 3:
+        raise ValueError('Incomplete account profile instruction contracts')
+    if (record['nickname_bytes'], record['uid_bytes'], record['maximum_open_users']) != (33, 16, 8):
+        raise ValueError('Unsupported account profile layouts')
+    lines = ['#pragma once', '#include <stdint.h>', 'namespace ScriptHook::profile_binding {']
+    for name, value in record['constants'].items():
+        if type(value) is not int or value % 4 or not 0 < value < 0x800000:
+            raise ValueError('Invalid profile function offset: '+name)
+        lines.append(f'constexpr uint32_t {name}=0x{value:x};')
+    lines += ['struct Proof { uint32_t offset; uint8_t bytes[16]; };', 'constexpr Proof proofs[]={']
+    if {row['offset'] for row in record['proofs']} != set(record['constants'].values()):
+        raise ValueError('Profile guards do not cover every function')
+    for row in record['proofs']:
+        data = bytes.fromhex(row['bytes'])
+        if len(data) != 16: raise ValueError('Invalid profile instruction guard')
+        lines.append('{0x%x,{%s}},' % (row['offset'], ','.join('0x%02x' % b for b in data)))
+    lines += ['};', '}']
+    (output/'profile_bindings.hpp').write_text('\n'.join(lines)+'\n', encoding='utf-8')
+
 def generate_engine(output, profile):
     record=json.loads((profile/'engine-api.json').read_text())
     target=json.loads((profile/'profile.json').read_text())
