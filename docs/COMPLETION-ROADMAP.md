@@ -40,10 +40,13 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify registered cleanup on rejected initialization and a yielding string/vector example locally.
 - [x] Verify growing capacity tables, lazy stack admission and high-index ownership locally.
 - [x] Audit and verify the optional active-profile nickname interface locally.
+- [x] Build and locally verify a combined storage/XML, managed-lifetime and render/worker acceptance probe.
 - [ ] Complete the combined platform/capacity hardware acceptance sequence before further major runtime expansion.
-- [ ] Accept owned-resource cancellation and nested cleanup on Switch.
+- [x] Accept the combined managed session's cancellation, restart and final cleanup on Switch.
+- [ ] Accept broader nested ownership, failure and transition cleanup on Switch.
 - [ ] Define broader global initialization, exception and static-local policies.
-- [ ] Validate a substantial combined workload on the supported Switch.
+- [x] Validate the instrumented combined workload on the supported Switch.
+- [ ] Complete measured performance, capacity growth and extended combined-workload acceptance.
 
 ## Mod compatibility and examples
 

@@ -12,6 +12,7 @@ They do not download compilers, modify your SD card or execute an inspected mod.
 | `build_mod.py` | Build a project.json, with matched binding generation for NSCs |
 | `build_plugin.py` | Direct multi-source NRO builder, explicit header snapshots and unresolved-import rejection |
 | `check_examples.py` | Build and preflight all standalone NRO examples in a fresh output folder |
+| `build_runtime_acceptance.py` | Build a manual combined-service hardware probe and verified ZIP without bundling a runtime; see [acceptance record](verification/COMBINED-ACCEPTANCE1.md) |
 | `verify_repo.py` | Run full-source profile, portable-tool and optional mod-porter/NRO checks |
 | `run_ui_tests.py` | Test the bounded controller UI model with a host compiler or devkitA64/Unicorn |
 | `configure_runtime.py` | Generate an optional runtime.ini with independent resident, script and memory limits |

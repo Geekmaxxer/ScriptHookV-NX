@@ -86,7 +86,8 @@ independent versioned service; memory parsing does not remove filesystem limits.
 - [x] Drain registered cleanup after user stop and rejected initialization before heap discard.
 - [x] Execute a complete managed string/vector lifetime across Kill/Load locally.
 - [ ] Define global constructor ordering, exception unwinding and static-local policy.
-- [ ] Accept managed cancellation and nested cleanup on Switch.
+- [x] Accept the combined managed session's cancellation, restart and final owner cleanup on Switch.
+- [ ] Accept broader nested registrations and failure cleanup on Switch.
 - [ ] Measure callbacks and initialization under substantial workloads.
 
 Normal scope exit runs destructors; Kill does not unwind suspended objects.
@@ -118,12 +119,22 @@ is the next gate before further substantial runtime expansion.
 - [x] Record launch recovery after correction of the missing DLC path coverage.
 - [x] Publish player guidance and package a read-only check with explicit optional-path recovery.
 - [x] Add desktop/CLI recovery and bounded Atmosphere fatal-report import.
-- [ ] Read back the successful configuration and verify startup with Test1 restored.
-- [ ] Build a substantial workload covering data, textures, callbacks and entities.
-- [ ] Validate installation/rollback and exact artifact identities.
-- [ ] Test pause/loading/death/character transitions, Kill/Load and concurrent mods.
+- [x] Read back the successful configuration and verify startup with Test1 restored.
+- [x] Verify both demo NRO identities, manual loading and error-free initial execution.
+- [x] Confirm nickname matching for one selected Switch account.
+- [x] Record at least 30 seconds of managed execution with one live resource registration.
+- [x] Verify the combined managed workload's restart and final-run cleanup on Switch.
+- [ ] Verify nickname matching for a second selected Switch profile.
+- [x] Build and locally verify a combined data/XML, texture, callback and borrowed-entity probe.
+- [x] Accept the combined probe's workload, cancellation and restart on Switch.
+- [x] Verify exact installed runtime, probe, texture and configuration identities.
+- [x] Record pause/resume, Kill/Load and coexistence with Disarm and Footprints.
+- [ ] Validate matched runtime installation and rollback.
+- [ ] Test loading, death, character transitions and broader mod combinations.
 - [ ] Record measured RAM/frame time and a long-session hardware soak.
 - [ ] Publish the accepted service matrix and remaining limitations.
+
+Probe and acceptance limits: [combined runtime verification](verification/COMBINED-ACCEPTANCE1.md).
 
 ## 8. Menyoo source-port gate
 

@@ -15,4 +15,6 @@ selected for the game; remove or protect that file before sharing a settings dum
 Ambiguous selections and invalid names are not replaced with fabricated values.
 
 See the [profile API](../../docs/reference/USER-PROFILE.md) for exact status,
-UTF-8 and emulator behavior. Physical Switch and Eden acceptance are pending.
+UTF-8 and emulator behavior. The [initial physical run](../../docs/verification/PLATFORM-CAPACITY1.md#physical-test1-demo-run)
+matched one selected Switch profile. A second profile and the intended Eden
+launch/account workflow remain separate acceptance checks.

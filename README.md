@@ -54,13 +54,14 @@ See the [API reference](docs/reference/API-REFERENCE.md) for contracts and
 The published baseline is **v1.4.1 Preview**, with **Mod Porter 0.9.1**. Its runtime
 has [scoped Switch gameplay acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json).
 Current development adds substantial source-port services; those candidates have
-local verification and still require new physical Switch acceptance.
-The latest [console observation](docs/verification/PLATFORM-CAPACITY1.md)
-records the same physical fatal call chain with Test1 and the retained accepted
-runtime, and later failures with both SD runtime/menu module overrides absent.
-Console launch recovery was subsequently reported after correcting the DLC
-placeholder placement. Physical candidate acceptance remains pending with the
-Test1 runtime and required menu module restored.
+local verification and scoped physical Switch acceptance; broader validation remains open.
+The latest [physical Test1 record](docs/verification/PLATFORM-CAPACITY1.md#physical-test1-demo-run)
+verifies startup, manual demo loading, a nickname matching one selected Switch
+account and a reported managed run of at least 30 seconds. The later
+[combined workload](docs/verification/COMBINED-ACCEPTANCE1.md#physical-test1-result---2026-10-30)
+verifies storage/XML, worker/render callbacks, borrowed entities and final-run
+managed cleanup after restart. Additional profiles, capacity growth, transitions
+and measured performance/soak acceptance remain pending.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. A changed executable requires a renewed

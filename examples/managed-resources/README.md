@@ -22,4 +22,6 @@ remains subject to the existing explicit Trim contract.
 
 See [owned resource lifetimes](../../docs/reference/OWNED-RESOURCES.md). This is
 explicit managed ownership, not general stack unwinding or global constructor
-support. Physical Switch lifetime and performance acceptance remain pending.
+support. An [initial physical run](../../docs/verification/PLATFORM-CAPACITY1.md#physical-test1-demo-run)
+kept the managed session active for a reported minimum of 30 seconds. Kill/restart,
+full lifetime behavior and performance acceptance remain pending.

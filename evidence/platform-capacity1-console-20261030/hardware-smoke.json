@@ -1,0 +1,145 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "milestone": "platform-capacity1-physical-smoke",
+  "status": "physical-smoke-accepted-cleanup-and-capacity-acceptance-pending",
+  "target_title": "0100b00b51230000",
+  "expected_game_build": "6e3e9b3af5746e74b615bd981080c9271bc22662",
+  "module_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+  "installed_artifact_sha256": {
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk5": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "atmosphere/contents/0100b00b51230000/exefs/main.npdm": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+    "switch/gtav-scripthook/plugins/managed-resources.nro.manual": "f425bfb9ae55d8f55d91c6bf1862961dc3734eff8cb700a8adc3bb00595b0c4b",
+    "switch/gtav-scripthook/plugins/user-profile.nro.manual": "ab48669becb60d0fff33957cf5c86df59f40d15b0cb914c46b63b394c77b2710",
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk4": "b689d63064386966523dd9f6429dc2a4ecefc374044523d8e0b7e2a1318dd001",
+    "atmosphere/contents/0100b00b51230000/exefs/subsdk9": "9ffc4183156bf156c5eea29b01ea73002a405476b07d6bea303f0638f70916f5"
+  },
+  "acceptance_scope": "Physical launch, manual loading of exact test NROs, one matched selected-account nickname and an active managed workload. Duration is operator-reported.",
+  "console_observations": {
+    "successful_launch_reported": true,
+    "manual_demo_loads_reported": true,
+    "managed_minimum_running_seconds_reported": 30,
+    "managed_duration_instrumented": false,
+    "profile_matches_selected_switch_account_reported": true,
+    "profile_selections_tested": 1,
+    "managed_kill_or_restart_performed": false,
+    "no_regressions_reported": true
+  },
+  "loader": {
+    "stage": 3,
+    "error": 0,
+    "engine_api_verified": 1,
+    "last_action_error": 0,
+    "plugins_discovered": 15,
+    "plugins_loaded": 5,
+    "plugins_running": 3,
+    "plugins_disabled": 2,
+    "report_clipped": false
+  },
+  "configuration": {
+    "resident_limit": 16,
+    "script_slots": 32,
+    "plugin_memory_budget_bytes": 10485760,
+    "module_image_limit_bytes": 2097152,
+    "module_bss_limit_bytes": 2097152,
+    "automatic_mask": 0,
+    "invalid_mask": 0,
+    "configuration_error": 0
+  },
+  "observed_accounting": {
+    "plugin_memory_accounted_bytes": 700416,
+    "metadata_bytes": 0,
+    "metadata_error": 0,
+    "retained_script_stack_bytes": 1048576
+  },
+  "demo_loader_fields": {
+    "managed-resources.nro.manual": {
+      "slot": "0x9",
+      "policy": "0x1",
+      "resident": "0x1",
+      "running": "0x1",
+      "kill_queued": "0x0",
+      "stopped": "0x0",
+      "queued": "0x0",
+      "present": "0x1",
+      "step": "0x7",
+      "step_name": "loaded",
+      "error": "0x0",
+      "error_name": "none",
+      "additional_entries": "0x0",
+      "callbacks_active": "0x0",
+      "callback_failures": "0x0",
+      "texture_memory_bytes": "0x0",
+      "resource_count": "0x1",
+      "resource_failures": "0x0"
+    },
+    "user-profile.nro.manual": {
+      "slot": "0xc",
+      "policy": "0x1",
+      "resident": "0x1",
+      "running": "0x0",
+      "kill_queued": "0x0",
+      "stopped": "0x0",
+      "queued": "0x0",
+      "present": "0x1",
+      "step": "0x7",
+      "step_name": "loaded",
+      "error": "0x0",
+      "error_name": "none",
+      "additional_entries": "0x0",
+      "callbacks_active": "0x0",
+      "callback_failures": "0x0",
+      "texture_memory_bytes": "0x0",
+      "resource_count": "0x0",
+      "resource_failures": "0x0"
+    }
+  },
+  "output_checks": {
+    "profile_nonempty_valid_utf8": true,
+    "profile_output_bytes": 7,
+    "profile_name_redacted": true,
+    "managed_start_marker_valid": true,
+    "managed_cleanup_marker_present": false,
+    "managed_active_resource_count": 1
+  },
+  "dlc_layout": {
+    "known_paths_covered": 25,
+    "missing_optional_paths": 0,
+    "base_problems": 0,
+    "invalid_paths": 0,
+    "blank_optional_placeholders": 17,
+    "full_playable_dlc_restoration_verified": false,
+    "check_mode_read_only": true
+  },
+  "reports": {
+    "loader_sha256": "7b6e452541fd45debb5bf13b5318db0b7bd548e4a85a876e3db43611ea7a31f9",
+    "runtime_ini_sha256": "a2f9c211bb7dbd88ffa866b98f47c6b1b6542ac7a9941fb3456da3cfb73463b3",
+    "managed_started_sha256": "0603dd60d1700c70e99519dc53111fa5bb3cde6bccd10738da1fc622c075e859"
+  },
+  "accepted_checks": [
+    "Exact Test1 runtime and test NRO installation",
+    "Physical startup and manual demo loading",
+    "Nickname output matching one selected Switch account",
+    "Reported managed execution for at least 30 seconds with one active registration"
+  ],
+  "remaining_checks": [
+    "Managed Kill Process cleanup and zero remaining registrations",
+    "Managed restart, repeated cancellation and allocation reclamation",
+    "Second selected Switch profile",
+    "Automatic settings and metadata/stack growth beyond the bootstrap capacity",
+    "Transitions, combined workloads, measured RAM/frame/stack use and extended-session soak",
+    "Matched runtime installation rollback"
+  ],
+  "physical_smoke_accepted": true,
+  "full_platform_capacity_acceptance": false,
+  "scoped_eden_observations_unchanged": true,
+  "installed_nsp_contents_verified": false,
+  "game_archives_read": false,
+  "sd_modified": false,
+  "runtime_code_changed": false,
+  "published": false,
+  "fatal_reports": {
+    "retained_count": 6,
+    "new_or_changed_since_preceding_inspection": false
+  }
+}

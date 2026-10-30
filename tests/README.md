@@ -21,3 +21,10 @@ matching game/SDK images and emulator adapters. Those inputs are private and
 excluded from public exports. Such suites execute real compiled instructions
 while modeling specified OS/game services; they do not establish physical Switch
 gameplay, frame time or memory consumption.
+
+The maintainer-only `test_runtime_acceptance.py` builds the combined acceptance
+probe and executes it against the matching production runtime. It covers normal
+execution, interruption, restart, ownership cleanup and injected failures. Its
+private fixture/harness dependencies are excluded from portable source exports;
+the [public record](../docs/verification/COMBINED-ACCEPTANCE1.md) retains its scope
+and hashes. Run it with `--core <matching-core-directory> --output <fresh-directory>`.

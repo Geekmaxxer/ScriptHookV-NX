@@ -1,0 +1,287 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "status": "Local verification complete; physical combined-workload acceptance pending",
+  "target": {
+    "title_id": "0100b00b51230000",
+    "build_id": "6e3e9b3af5746e74b615bd981080c9271bc22662"
+  },
+  "combined_arm64": {
+    "passed": 24,
+    "failed": 0,
+    "checks": [
+      "Actual combined NRO enters its active workload",
+      "All 256 KiB are written and read back across cooperative yields",
+      "XML contains all 128 roundtripping numeric records",
+      "Paged catalog and isolated rename/delete complete",
+      "Managed context and final auditor remain independently registered",
+      "Additional script and PNG callback run during the same workload",
+      "Borrowed entity sampling runs without mutating game state",
+      "All fixture files outside the named probe outputs are preserved",
+      "Cancellation runs the session destructor and final auditor in order",
+      "Cleanup proves no retained owner allocations or registrations",
+      "Trim releases empty heap arenas without claiming resident texture release",
+      "Stopped callbacks cease producing sprites",
+      "Restart resets counters and reuses the retained texture safely",
+      "Repeated stop produces fresh matching run evidence",
+      "Cancellation during multi-chunk output still destroys all managed payloads",
+      "Explicit restart rebuilds and validates an interrupted payload",
+      "Readback corruption stops the workload and still reclaims ownership",
+      "Unexpected existing payload is preserved for inspection",
+      "Unexpected mutation sentinel content is never deleted",
+      "Missing PNG asset fails explicitly and releases managed storage",
+      "Catalog I/O failure records the stage and closes directory state",
+      "Refused additional script admission cleans partially initialized callbacks and objects",
+      "Missing required resource service rejects initialization",
+      "No filesystem handles or mounts survive completed calls"
+    ],
+    "module_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "plugin_sha256": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+    "real_runtime_sdk_xml_and_probe_arm64_executed": true,
+    "filesystem_ro_engine_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "catalog_regression": {
+    "passed": 57,
+    "failed": 0,
+    "module_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f"
+  },
+  "standalone_examples": {
+    "passed": 17,
+    "examples": [
+      {
+        "name": "scriptmain",
+        "source_sha256": "b5068e2705219a02b15bb95819489f7a986243eff5ad669c777508f165d2c8b5",
+        "sha256": "bde54454034dec9466233f053f0ea0e19994e56e8aacc3c0b0763a360ef60003",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "public-sample",
+        "source_sha256": "0985173e70fd2d2f5a921dd7ada00183d1b4e638cf2cd921e385ac9ce8e97be6",
+        "sha256": "412ce17ee7544867f9c98389d6171c593c6e353dd59ed0a2a735ce5edd8b0036",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "controller-ui",
+        "source_sha256": "7e936563dcac0f483e5455deddb26bfa102ee68dcfbfd413d7e4c69417f3f8d3",
+        "sha256": "2421527ee024baf91794cdd91e761bcd386c92668c51234314374d18b3359ebd",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 45056,
+        "bss_bytes": 4096,
+        "accounted_bytes": 102400
+      },
+      {
+        "name": "hello",
+        "source_sha256": "a914ddad3931aaf8f951ebc5f0598156e57431d129a9f5cfcc688178adf46c19",
+        "sha256": "7a2aed1f5cef8417ae05a453f99e5adf9cc067c5cf7f77f02f37eb99ec5e226f",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "native-provider",
+        "source_sha256": "cfab58c5ac9bb30bb48b2234e92537b9b2c2353c5c33058585e441f7c997d8e9",
+        "sha256": "5ea364e357282e2b24c0d496f3839789b0972ec62242426d0392588620204d40",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "overlay",
+        "source_sha256": "b8701992421b60008e1ef96af199e255c28261427e18c90ce19c0e6befa6f8dd",
+        "sha256": "2bf944876829fb7ade532a055fe5b6f40fab041dcb3ca72b5f2bd029c0f6e45f",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "saved-counter",
+        "source_sha256": "29d9768c54a8228b68cc1dc872085bd600f81efca87ba99fa369b34ec4ae9d17",
+        "sha256": "8f02bd0fc854a8bb067dc7ac9fd2ac4d2d37f2311bc9125924bd59c1211caee8",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "sdk-parity",
+        "source_sha256": "cabcad32322f65d27faee74e1b71e9fa14f64adbe803a95b23271d120b417b5f",
+        "sha256": "6314586b073191c622ee636bd71adf3d5a9086a8fc91fa454876ec064a3599a8",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 40960,
+        "bss_bytes": 4096,
+        "accounted_bytes": 94208
+      },
+      {
+        "name": "vehicle-logger",
+        "source_sha256": "fea73eac51de4aaebceb6be28605c8f92e6777df387c7254aff7ae92346b8415",
+        "sha256": "1609082535f55a83c40124dbee7bed40093a7661a33c2d8af00197c0a2650f51",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "container-registry",
+        "sha256": "667d58dad875079caaedb2cd6f398666447724716f6ef17f7e9d3f662d7b06d1",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 192512,
+        "bss_bytes": 4096,
+        "accounted_bytes": 397312
+      },
+      {
+        "name": "managed-resources",
+        "sha256": "f425bfb9ae55d8f55d91c6bf1862961dc3734eff8cb700a8adc3bb00595b0c4b",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      },
+      {
+        "name": "numeric-xml",
+        "sha256": "541d6c4cfe70b6bbe733fa868d09645e785e0c7a8d7cc7867f0791959662ac61",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 184320,
+        "bss_bytes": 4096,
+        "accounted_bytes": 380928
+      },
+      {
+        "name": "recoverable-data",
+        "sha256": "4443a7d27de5639942a32de11b0a716ebc26bac41a4305112994cbdb86794e41",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 45056,
+        "bss_bytes": 4096,
+        "accounted_bytes": 102400
+      },
+      {
+        "name": "recoverable-publication",
+        "sha256": "6ec20b1da1e9856e3f6b7d9933b727d03a7e0e1cdf6f94abb2b12a05ea36bba5",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 20480,
+        "accounted_bytes": 86016
+      },
+      {
+        "name": "runtime-acceptance",
+        "sha256": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 204800,
+        "bss_bytes": 20480,
+        "accounted_bytes": 454656
+      },
+      {
+        "name": "streamed-catalog",
+        "sha256": "f4d809307473e9cb3f22ece14da223761046be8b63a7d05106b3e6e4aec848de",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 36864,
+        "accounted_bytes": 118784
+      },
+      {
+        "name": "user-profile",
+        "sha256": "ab48669becb60d0fff33957cf5c86df59f40d15b0cb914c46b63b394c77b2710",
+        "structural_checks_passed": true,
+        "switch_runtime_verified": false,
+        "image_bytes": 20480,
+        "bss_bytes": 4096,
+        "accounted_bytes": 53248
+      }
+    ],
+    "switch_runtime_verified": false
+  },
+  "lean_sdk_rebuild": {
+    "passed": true,
+    "packaged_project_complete": true,
+    "unrelated_working_directory": true,
+    "matching_plugin_sha256": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+    "guide_links_checked": 1
+  },
+  "plugin": {
+    "nro_sha256": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+    "bytes": 204800,
+    "image_bytes": 204800,
+    "bss_bytes": 20480,
+    "accounted_bytes": 454656,
+    "minimum_runtime_limits": {
+      "module_image_mib": 1,
+      "module_bss_mib": 1,
+      "plugin_memory_mib": 1
+    }
+  },
+  "compiler_stack": {
+    "maximum_individual_frame_bytes": 3536,
+    "complete_call_chain_bound": false,
+    "physical_stack_use_measured": false
+  },
+  "package": {
+    "format": 1,
+    "plugin_sha256": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+    "expected_runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "runtime_module_included": false,
+    "game_assets_included": false,
+    "generated_png_included": true,
+    "startup_policy": "Manual",
+    "files": {
+      "Check-Game-Layout.cmd": "09d906709bf152c33a9156d003939ff9ec057fb69ee00daf10d524f38896712c",
+      "Check-Game-Layout.ps1": "c21d30b60c0befeea3856b1e240bd56741c2e2fb41a28e3557d7e5e101530869",
+      "GAME-STARTUP.md": "a8bc6f7957c0ca280bd620295424b8b97703b1c242a009dd5050427a8f5f94c3",
+      "HARDWARE-CHECKLIST.md": "03e11b65cc58fe4721f6d57f7854976c5b97dd28da7c81574c01edd47827b6ee",
+      "Install-SD-Access.cmd": "e20d6b743bba4abaffc5ad074c59ed816c8058225de083418620145c3d1daf1b",
+      "Install-SD-Access.ps1": "d5db8108b2c8a74b93181cdff0845fed8b46cd11d26836a8ad38089b670a048c",
+      "LICENSE": "fe5a3c544660aaff24049783d09cc44c30bcd19eb5c3af922997388e0766c79d",
+      "NOTICE": "933b76035cd1c5c10c25d4b5ef58dc4f346a87dbbfa65719c03acd8317cab74d",
+      "READ-ME-FIRST.md": "6178f3e6e0914b20c233586d5920720a386f2ddb29cc9d81209ef34a0cb622c2",
+      "SD-ACCESS.md": "55d0d1d519725221499cb7e88f8c8da893bed47e0f8056f46f913376265cd32f",
+      "THIRD-PARTY-NOTICES.txt": "c9c13f30df29396c328d95e82fcfe45f701190aaf07f18cdc1a248d92e715282",
+      "switch/gtav-scripthook/plugins/runtime-acceptance.nro.manual": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+      "switch/gtav-scripthook/assets/runtime-acceptance/probe.png": "6139992d6f572ea494f610ab62a16f43b746c66593528eabc0b7f87b5aea6869",
+      "atmosphere/contents/0100b00b51230000/exefs/main.npdm": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f"
+    },
+    "zip_sha256": "f20b89900fa2399576559f6e9f2d86021cecef7d917b3f84b774e483ae5a06ad",
+    "zip_bytes": 109166,
+    "zip_readback_verified": true,
+    "switch_runtime_verified": false,
+    "installed": false,
+    "published": false
+  },
+  "source_sha256": {
+    "examples/runtime-acceptance/main.cpp": "2c3b7282def244ea4d2c1c943e17228524a08d3a13899c812ee212c5e8f261d4",
+    "examples/runtime-acceptance/project.json": "b0a1107fb307e9e105572dba0711253ca326e5e4d375a9da36b25691778b04f9",
+    "examples/runtime-acceptance/README.md": "5fe495624e0908e8e19ae79b429a958d94fe7eb89f9a94a209e7dbfb18a9ed67",
+    "tools/build_runtime_acceptance.py": "71fdc88557cbe49da26fe3b7ed7aefbb24bf49dcb5c831225cfb64ddf35d2040",
+    "mod-porter/package.py": "b8c0ae9dbea3feb8c975b4e588955fb12918732f61c1425e5d2dbdf7b74a0ead",
+    "tests/test_runtime_acceptance.py": "01a62a04d8f66cfe034ad0803da5ff6501180526f053617007eff1488694e68c",
+    "tests/test_plugin_catalog.py": "2cad054f0dbd1874b001baadefaf3467bfad4076835e77495351994db9b597ad"
+  },
+  "runtime_implementation_changed": false,
+  "abi_or_native_signatures_changed": false,
+  "original_test1_demo_artifacts_changed": false,
+  "switch_runtime_verified": false,
+  "installed": false,
+  "published": false
+}

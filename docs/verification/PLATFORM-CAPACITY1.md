@@ -17,8 +17,8 @@ RomFS metadata builder and a merged assertion-abort site. Several failed checks
 share that call site, so the exact assertion remains unresolved. Later DLC-path
 isolation and reported launch recovery are recorded below. The initial working
 baseline assumption was superseded by the DLC-removal chronology.
-The physical loader report predates this candidate and does not establish a
-successful Test1 startup.
+The initial physical loader report predated this candidate. The later exact-artifact
+hardware run below supersedes that startup uncertainty within its recorded scope.
 
 Eden's report records four loaded modules, zero loader errors, successful completion
 of the profile demo, and an active managed session with one registered resource.
@@ -42,7 +42,7 @@ The shared abort site still does not identify one unique failed assertion.
 - [x] Decode the A fatal report and compare it with Test1 after address normalization.
 - [x] Recheck the installed Atmosphere binary against the analyzed KIP.
 - [x] Record a failed launch after removal of both SD `subsdk4` and `subsdk5` overrides.
-- [ ] Restore the override and resolve startup before continuing candidate acceptance.
+- [x] Restore the override and verify startup before continuing candidate acceptance.
 
 ### Runtime-absent inspection and DLC chronology
 
@@ -82,7 +82,8 @@ narrow the investigation without establishing a completed repair.
 - [x] Inspect the named NSP without changing the installed package.
 - [x] Complete read-only filesystem checking and guarded diagnostic preparation.
 - [x] Inspect the diagnostic placement and record its console launch result.
-- [ ] Read back the successful configuration and record active package/module identities.
+- [x] Read back the successful Test1 runtime, menu, example and configuration identities.
+- [ ] Independently verify installed NSP contents if a package audit is required.
 
 ### Startup recovery after DLC path correction
 
@@ -99,14 +100,12 @@ unidentified. Blank placeholders provide path coverage without restoring playabl
 DLC content. Preserve the working layout during runtime testing; removing the
 placeholder coverage without a replacement profile can reintroduce the failure.
 
-The successful configuration has not been read back from the SD card. The last
-verified snapshot had neither `subsdk4` nor `subsdk5`, and extended gameplay was
-not explicitly verified. This launch result does not establish Test1 acceptance.
-The next step restores the exact retained Test1 runtime and required menu module,
-records their identities, and executes the physical profile/capacity sequence.
+That first recovery observation had no post-launch SD snapshot and did not
+establish Test1 acceptance. The subsequent physical demo run below verifies the
+restored modules and records its narrower completed acceptance checks.
 
 - [x] Record console launch recovery after correction of the DLC path coverage.
-- [ ] Verify the working configuration with Test1 and the menu module restored.
+- [x] Verify the working configuration with Test1 and the menu module restored.
 - [ ] Complete the profile, ownership, capacity and combined-workload hardware checks.
 
 The RomFS folder contains loose game data and must remain present for this test.
@@ -115,6 +114,39 @@ repair is not established by these reports. Retained metadata can be incomplete
 after an interrupted build and does not by itself prove game-file corruption.
 Physical acceptance remains open. No runtime or firmware patch is justified by
 the merged abort site alone. The investigation has made no SD writes.
+
+### Physical Test1 demo run
+
+The [hardware record](../../evidence/platform-capacity1-console-20261030/hardware-smoke.json)
+verifies the installed Test1 runtime (`930d3043...`), both test NROs and shared
+NPDM against the retained kit. The menu module is restored. The complete loader
+snapshot reports stage complete, zero loader/configuration/action errors, five
+resident modules and three running scripts.
+
+The profile demo completed without a loader error and produced nonempty valid
+UTF-8 output. Matching the selected Switch account was confirmed for one profile.
+The nickname is excluded from public evidence. The managed demo remained active
+with one registered resource and zero resource failures; at least 30 seconds of
+execution was reported. Duration was not instrumented. The start marker exists.
+Kill Process was not used, so no managed cleanup marker is expected yet.
+
+The configuration is 16 resident slots, 32 script slots, a 10 MiB plugin budget
+and 2 MiB image/BSS limits. Automatic settings are disabled, dynamic metadata is
+zero and retained stack storage is 1 MiB. This run does not exercise metadata
+or additional-stack growth. Other resident code does not imply additional running
+mods or gameplay acceptance.
+
+The read-only layout check finds all 25 known DLC paths covered. Seventeen
+optional paths still contain blank placeholders; full playable DLC restoration
+has not been verified. No new fatal report appeared relative to the preceding
+retained inventory. The successful runtime state is the stronger startup evidence.
+
+- [x] Verify exact candidate/runtime, demo and configuration identities.
+- [x] Accept physical startup and manual loading of both demos.
+- [x] Accept nickname matching for one selected Switch account.
+- [x] Record the managed workload's initial active run and registration state.
+- [ ] Verify Kill Process cleanup, zero remaining registrations and repeatable restart.
+- [ ] Verify a second selected profile, capacity growth and the combined hardware sequence.
 
 ## Implementation
 
@@ -139,13 +171,23 @@ Horizon resource availability or measured frame/stack/RAM behavior.
 
 ## Required hardware sequence
 
-- [ ] Record exact title/build, runtime hash, SDK/plugin hashes and configuration.
+The [combined probe](COMBINED-ACCEPTANCE1.md) packages storage, numeric XML,
+managed cleanup, an additional script, a PNG callback and borrowed ped sampling
+for this sequence. It uses the existing Test1 runtime and leaves both original
+demo artifacts unchanged. Its [physical result](COMBINED-ACCEPTANCE1.md#physical-test1-result---2026-10-30)
+accepts the scoped workload and final-run cleanup. Capacity growth, stress and
+the second selected profile remain unaccepted.
+
+- [x] Record the exact installed candidate, example and configuration identities.
+- [ ] Independently audit installed package contents if its game/SDK identity changes.
 - [ ] Start with the standard defaults and an existing accepted plugin.
 - [ ] Run the user-profile example with two different selected Switch profiles.
-- [ ] Confirm profile output follows the account/save actually used by GTA.
-- [ ] Run managed resources, cancel during waits, restart and inspect cleanup counts.
-- [ ] Combine numeric XML, containers, files, callbacks/textures and existing mods.
-- [ ] Exercise pause/loading/death/character transitions and repeated Kill/Load.
+- [x] Confirm profile output matches one selected Switch account.
+- [ ] Verify matching across the second selected account/save context.
+- [x] Run the combined managed workload, cancel, restart and verify final-run cleanup counts.
+- [x] Combine numeric XML, containers, files, callbacks/textures and existing mods.
+- [x] Record pause/resume and repeated Kill/Load for the combined workload.
+- [ ] Exercise loading, death, character transitions and broader nested cleanup.
 - [ ] Increase explicit capacities incrementally and record actual admission/errors.
 - [ ] Exercise automatic settings independently and preserve prior configuration.
 - [ ] Measure peak RAM, frame cost, whole-stack use and an extended-session soak.
@@ -159,9 +201,10 @@ Switch acceptance.
 
 Further substantial scheduler/loader expansion, global initialization support and
 Menyoo compatibility claims should wait for the hardware sequence above. The
-accumulated heap, library, storage, managed-ownership and capacity candidates have
-not inherited the published runtime's gameplay acceptance. Additional API work
-would otherwise enlarge the untested integration surface.
+combined probe now verifies a specific heap/library/storage/ownership workload
+on the exact Test1 runtime. That scoped result does not establish capacity growth,
+all transitions or the complete service matrix. Additional API work would
+otherwise enlarge the remaining untested integration surface.
 
 Fixes supported by local failures, documentation and test preparation can proceed
 within their own validation scope. Hardware failures must be recorded against

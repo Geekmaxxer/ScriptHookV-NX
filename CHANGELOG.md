@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased combined acceptance probe - 2026-10-30
+
+- Record scoped physical acceptance of the exact Test1 probe: matching run-2 reports, verified payload/XML, active callbacks and final owner heap/resource reclamation while Disarm and Footprints remain running. Capacity growth, broader transitions and performance/soak acceptance remain open.
+
+- Add a manual combined workload for chunked files, numeric XML, managed containers, paged catalogs, file mutations, a worker, PNG rendering and borrowed entity handles.
+- Record run-specific operation and cleanup evidence across cooperative cancellation and restart; preserve unexpected files for inspection.
+- Add a reproducible test-kit builder with a manual NRO, generated texture, SD-access tooling and complete notices. The existing runtime and original Test1 demos remain unchanged.
+- Verify 24 combined ARM64 scenarios, 57 catalog regressions and 17 example builds locally. Physical combined-workload, performance and capacity acceptance remain pending.
+
 ## Unreleased startup diagnostics and DLC recovery - 2026-10-30
 
 - Document DLC removal, Atmosphere's RomFS merge, the observed startup recovery and profile limitations.

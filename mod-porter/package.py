@@ -76,6 +76,15 @@ def run(*args):
     subprocess.run([str(a) for a in args], check=True, cwd=ROOT)
 
 
+def copy_acceptance_example(destination):
+    """Keep the packaged probe builder usable in a lean SDK."""
+    project=destination/'examples/runtime-acceptance'
+    project.mkdir(parents=True,exist_ok=True)
+    for name in ('main.cpp','project.json'):
+        shutil.copy2(ROOT/'examples/runtime-acceptance'/name,project/name)
+    public_guide('../examples/runtime-acceptance/README.md',project/'README.md')
+
+
 def archive(folder, output):
     files = sorted(p for p in folder.rglob('*') if p.is_file())
     with zipfile.ZipFile(output, 'x', compression=zipfile.ZIP_DEFLATED) as z:
@@ -105,11 +114,12 @@ def package(output):
         shutil.copytree(ROOT/name, stage/'SDK'/name)
     copy_distribution(stage/'SDK')
     (stage/'SDK/tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
         shutil.copy2(ROOT/'tools'/name, stage/'SDK/tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, stage/name)
         shutil.copy2(ROOT/name, stage/'SDK'/name)
+    copy_acceptance_example(stage/'SDK')
     shutil.copytree(ROOT/'mod-porter/examples', stage/'examples')
     shutil.copytree(ROOT/'mod-porter/third-party', stage/'third-party')
     (stage/'GUIDE.md').write_text(porter_guide(), encoding='utf-8')
@@ -163,12 +173,13 @@ def package(output):
         shutil.copytree(ROOT/name, source/name)
     copy_distribution(source)
     (source/'tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
         shutil.copy2(ROOT/'tools'/name, source/'tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, source/name)
     (source/'.gitignore').write_text('**/bin/\n**/obj/\n**/.vs/\n__pycache__/\n/releases/\n', encoding='utf-8')
     copy_documentation(source)
+    copy_acceptance_example(source)
     for folder, suffixes in (('examples', {'.cpp', '.sc'}), ('tests', {'.cpp'})):
         for path in (ROOT/folder).rglob('*'):
             if path.is_file() and path.suffix in suffixes:

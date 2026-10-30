@@ -44,10 +44,24 @@ high-water measurements.
 
 ## Physical acceptance
 
-- [ ] Verify exact runtime, SDK, example and configuration identities on Switch.
-- [ ] Cancel and restart a managed workload across waits and game transitions.
-- [ ] Check explicit stop ordering and absence of retained live registrations.
-- [ ] Exercise concurrent mods and a substantial nested ownership workload.
+The [initial physical Test1 run](PLATFORM-CAPACITY1.md#physical-test1-demo-run)
+verifies the exact managed example on the candidate runtime. Its session remained
+active with one registered resource, no resource failures and a reported run of
+at least 30 seconds. Stop/restart was not exercised in that initial run.
+
+The later [combined probe](COMBINED-ACCEPTANCE1.md#physical-test1-result---2026-10-30)
+verifies a managed string/vector session on the same candidate with a completed
+Load/Kill/Load/Kill checklist. Final-run reports agree on run 2, one stop callback,
+one session destructor, zero remaining registrations and zero live/requested heap
+allocations. Trim succeeds without release errors. Disarm and Footprints remain
+running. Only the final run's detailed cleanup survives; the first run's report
+was overwritten. Broader nested ownership and transition failures remain open.
+
+- [x] Verify exact runtime, example and configuration identities on Switch.
+- [x] Cancel and restart the combined managed workload across cooperative waits.
+- [x] Check final-run destructor/auditor results and absence of live registrations.
+- [x] Record coexistence with running Disarm and Footprints.
+- [ ] Exercise game transitions, nested registrations and broader failure cleanup.
 - [ ] Measure callback latency, peak RAM, whole-stack use and extended-session behavior.
 - [ ] Accept updated runtime installation and rollback separately.
 
