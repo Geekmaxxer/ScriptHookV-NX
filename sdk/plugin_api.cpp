@@ -4,8 +4,24 @@
 #include "plugin_files.h"
 #include "plugin_catalog.h"
 #include "plugin_file_mutations.h"
-namespace { const ShvNxApi* api; const ShvNxExtensions* extensions; const ShvNxMemory* memory; const ShvNxFiles* files; const ShvNxCatalog* catalog; const ShvNxFileMutations* mutations; }
+#include "plugin_resources.h"
+namespace { const ShvNxApi* api; const ShvNxExtensions* extensions; const ShvNxMemory* memory; const ShvNxFiles* files; const ShvNxCatalog* catalog; const ShvNxFileMutations* mutations; const ShvNxResources* resources; }
 extern "C" {
+SHV_NX_API bool shvPluginBindResources(const ShvNxResources* value) {
+    if (!value || value->abi != SHV_NX_RESOURCES_ABI_VERSION || value->size < sizeof(ShvNxResources) ||
+        !value->register_resource || !value->release || !value->forget || !value->active || !value->pinned || !value->count) return false;
+    resources = value;
+    return true;
+}
+bool scriptResourcesAvailable() { return api && resources; }
+ShvNxResourceHandle scriptResourceRegister(ShvNxResourceCleanup cleanup, void* context) {
+    return api && resources ? resources->register_resource(api->plugin, cleanup, context) : 0;
+}
+bool scriptResourceRelease(ShvNxResourceHandle handle) { return api && resources && resources->release(api->plugin, handle); }
+bool scriptResourceForget(ShvNxResourceHandle handle) { return api && resources && resources->forget(api->plugin, handle); }
+bool scriptResourceActive(ShvNxResourceHandle handle) { return api && resources && resources->active(api->plugin, handle); }
+bool scriptResourcePinned(const void* pointer) { return api && resources && resources->pinned(api->plugin, pointer); }
+uint32_t scriptResourceCount() { return api && resources ? resources->count(api->plugin) : 0; }
 SHV_NX_API bool shvPluginBindFileMutations(const ShvNxFileMutations* value) {
     if (!value || value->abi != SHV_NX_FILE_MUTATIONS_ABI_VERSION || value->size < sizeof(ShvNxFileMutations) ||
         !value->rename_file || !value->delete_file) return false;

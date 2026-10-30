@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased owned-resource lifecycle - 2026-10-30
+
+- Add an independent optional resource table with owner-thread validation, exact heap contexts, pinned allocations and at-most-once cleanup.
+- Drain registrations in reverse order after explicit stop, natural completion and rejected initialization; preserve existing ABI layouts and retained-code behavior.
+- Add move-only managed heap ownership, callback-state diagnostics and a complete string/vector example across cooperative waits. Physical Switch acceptance remains pending.
+
 ## Unreleased recoverable file publication - 2026-10-29
 
 - Add an independent file-mutation table with owner/path/extent checks, rename without replacement and explicit deletion with postcondition verification.

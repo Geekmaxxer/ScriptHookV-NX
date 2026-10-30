@@ -69,6 +69,11 @@ Existing ABI 1 plugins without the export remain supported. Older runtimes ignor
 the export. Cleanup does not unmap the NRO or remove its custom-native handlers,
 and is not guaranteed on a crash or process exit.
 
+The unreleased [owned-resource service](OWNED-RESOURCES.md) adds independently
+registered cleanup after explicit stop and on rejected initialization. Its
+`Managed<T>` helper can own a heap object across waits and cancellation. Ordinary
+automatic objects on abandoned stacks still receive no destructor call.
+
 `<shv/input.h>` provides Nintendo-labeled GTA frontend controls and
 `ScriptHook::Input::ShoulderChord`, defaulting to L + R + Y. Poll once per frame;
 the chord fires once per complete press. These are GTA control actions rather

@@ -1,5 +1,6 @@
 #include "plugin_heap.hpp"
 #include "plugin_loader.hpp"
+#include "plugin_resources.hpp"
 #include "../core/storage.hpp"
 namespace ScriptHook {
 namespace {
@@ -102,12 +103,13 @@ bool trim(Owner& o){
 }
 }
 void* PluginHeap::Allocate(void* token,size_t bytes,size_t alignment,uint32_t flags){Lock lock;auto* o=owner(token);if(!lock.owned||!o){fail(o);return nullptr;}return allocate(*o,bytes,alignment,flags);}
-bool PluginHeap::Free(void* token,void* p){Lock lock;auto* o=owner(token);if(!lock.owned||!o){fail(o);return false;}if(!p)return true;const auto i=find(token,p);if(i==End){fail(o);return false;}free_block(i);return true;}
+bool PluginHeap::Free(void* token,void* p){Lock lock;auto* o=owner(token);if(!lock.owned||!o){fail(o);return false;}if(!p)return true;const auto i=find(token,p);if(i==End||PluginResources::Pinned(token,p)){fail(o);return false;}free_block(i);return true;}
 size_t PluginHeap::Size(void* token,const void* p){Lock lock;if(!lock.owned||!p)return 0;const auto i=find(token,p);return i==End?0:blocks[i].bytes;}
 void* PluginHeap::Reallocate(void* token,void* p,size_t bytes){
     Lock lock;auto* o=owner(token);if(!lock.owned||!o){fail(o);return nullptr;}
     if(!p)return allocate(*o,bytes,16,0);
     const auto i=find(token,p);if(i==End){fail(o);return nullptr;}
+    if(PluginResources::Pinned(token,p)){fail(o);return nullptr;}
     if(!bytes){free_block(i);return nullptr;}
     auto& b=blocks[i];
     if(bytes<=b.bytes){o->requested-=b.bytes-bytes;b.bytes=bytes;return p;}
@@ -123,5 +125,5 @@ bool PluginHeap::Stats(void* token,ShvNxMemoryStats& out){
     out.peak_requested_bytes=o->peak_requested;out.peak_charged_bytes=o->peak_charged;out.failures=o->failures;out.release_failures=o->release_failures;return true;
 }
 bool PluginHeap::Trim(void* token){Lock lock;auto* o=owner(token);return lock.owned&&o&&trim(*o);}
-bool PluginHeap::Discard(void* token){Lock lock;auto* o=owner(token);if(!lock.owned||!o)return false;for(uint32_t i=0;i<BlockCount;++i)if(blocks[i].owner==token)free_block(i);return trim(*o);}
+bool PluginHeap::Discard(void* token){Lock lock;auto* o=owner(token);if(!lock.owned||!o||PluginResources::Count(token))return false;for(uint32_t i=0;i<BlockCount;++i)if(blocks[i].owner==token)free_block(i);return trim(*o);}
 }

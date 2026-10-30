@@ -46,6 +46,7 @@ plugin that does not yield.
 | Bounded file services | [Chunk/path/lifecycle tests](../verification/PLUGIN-FILES1.md) | SD behavior and measured frame cost |
 | Paged directory catalogs | [Metadata/page/ownership tests](../verification/PLUGIN-DIRECTORY1.md) | Catalog cost and transition acceptance |
 | File mutation/publication | [State/recovery/failure tests](../verification/PLUGIN-PUBLICATION1.md) | Actual SD behavior and interruption acceptance |
+| Owned-resource lifecycle | [Pinning/cancellation tests](../verification/PLUGIN-RESOURCES1.md) | Combined ownership and transition acceptance |
 
 Candidates preserve ABI 1 layouts but require their optional services. Older
 runtimes may not provide those tables. New SDK functionality and examples do not

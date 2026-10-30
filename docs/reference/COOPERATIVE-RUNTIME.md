@@ -68,6 +68,9 @@ host changes and skipping killed hosts. `scriptUnregister` discards a suspended 
 self-unregistration and `scriptStopAll` take effect by the next yield/return for
 the running script. Cancellation does not unwind C++ destructors. Release owned
 game resources before unregistering; module unloading is not supported yet.
+The unreleased [owned-resource service](OWNED-RESOURCES.md) provides explicit
+registered cleanup at whole-plugin stop. A registered heap object can be managed
+across waits without relying on destruction of the suspended stack wrapper.
 
 In-core `scriptRegisterChecked`, `getScriptRuntimeStatus`, `getScriptRuntimeInfo`
 and `getScriptRuntimeAbiVersion` expose registration results and diagnostics.

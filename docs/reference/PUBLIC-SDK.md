@@ -19,6 +19,7 @@ workflow. This page describes interfaces and requirements.
 | Files | Optional file table: bounded offset I/O and isolated nested directories |
 | Catalogs | Independent optional catalog table: paged directory metadata |
 | File mutations | Independent optional table: isolated rename/delete and explicit publication recovery |
+| Owned resources | Independent optional table: registered cleanup and cancellation-safe managed heap ownership |
 
 Candidate profiles have local verification and require new hardware acceptance.
 See [memory](../verification/PLUGIN-MEMORY1.md), [C/XML](../verification/PLUGIN-LIBRARIES1.md),
@@ -40,6 +41,12 @@ pages without retaining cursors; check `scriptCatalogAvailable()` independently.
 The [mutation and publication service](FILE-PUBLICATION.md) adds rename without
 replacement, checked deletion and backup-preserving publication helpers. Check
 `scriptFileMutationsAvailable()` and validate application content explicitly.
+
+The [resource service](OWNED-RESOURCES.md) supplies 64 explicit cleanup
+registrations per owner and the `shv/managed.h` object helper. Check
+`scriptResourcesAvailable()` independently. Registered heap contexts are pinned
+until release/forget; cancellation drains registrations after explicit stop.
+Suspended stack frames still do not unwind.
 
 ## C++ plugins
 

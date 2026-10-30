@@ -287,6 +287,25 @@ bool ScriptManager::RunCleanup(ScriptFunction function) {
     NativeInvoker::RestoreStatus(saved_status, saved_hash);
     return finished && !cleanup_wait_attempted;
 }
+bool ScriptManager::CanRunResourceCleanup(ShvNxResourceCleanup function) {
+    return own_thread() && function && Memory::IsExecutable(reinterpret_cast<uintptr_t>(function)) && NativeInvoker::CanYield();
+}
+bool ScriptManager::RunResourceCleanup(ShvNxResourceCleanup function, void* context) {
+    if (!CanRunResourceCleanup(function)) return false;
+    const auto saved_status = getNativeCallStatus();
+    const auto saved_hash = getLastNativeHash();
+    const bool outer_active = cleanup_active, outer_wait = cleanup_wait_attempted;
+    cleanup_active = true;
+    cleanup_wait_attempted = false;
+    function(context);
+    const bool attempted_wait = cleanup_wait_attempted;
+    const bool finished = NativeInvoker::CanYield();
+    if (!finished) NativeInvoker::AbandonCalls();
+    cleanup_active = outer_active;
+    cleanup_wait_attempted = outer_wait || attempted_wait;
+    NativeInvoker::RestoreStatus(saved_status, saved_hash);
+    return finished && !attempted_wait;
+}
 void ScriptManager::OnTick(void* host) {
     if ((!info.active && !test_pending && !PluginLoader::Pending()) || !Memory::s_mainBase || dispatching) return;
     if (!own_thread()) { ++info.context_rejections; return; }

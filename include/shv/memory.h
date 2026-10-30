@@ -1,5 +1,6 @@
 #pragma once
 #include "../plugin_memory.h"
+#include "../plugin_resources.h"
 #include <new>
 #include <type_traits>
 #include <utility>
@@ -16,7 +17,7 @@ template<class T,class... Args>T* TryNew(Args&&... args) noexcept{
 template<class T>bool Delete(T*& value) noexcept{
     static_assert(std::is_nothrow_destructible_v<T>,"Delete requires noexcept destruction");
     if(!value)return true;
-    if(scriptAllocationSize(value)!=sizeof(T))return false;
+    if(scriptAllocationSize(value)!=sizeof(T)||scriptResourcePinned(value))return false;
     value->~T();const bool released=scriptFree(value);if(released)value=nullptr;return released;
 }
 }

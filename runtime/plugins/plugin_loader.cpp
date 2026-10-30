@@ -7,6 +7,7 @@
 #include "plugin_callbacks.hpp"
 #include "plugin_textures.hpp"
 #include "plugin_heap.hpp"
+#include "plugin_resources.hpp"
 #include "../../include/nativeCaller.h"
 #include "../core/storage.hpp"
 #include "../script/native_table.hpp"
@@ -28,6 +29,7 @@ struct alignas(8) Plugin {
     ShvNxFiles files;
     ShvNxCatalog catalog;
     ShvNxFileMutations mutations;
+    ShvNxResources resources;
     ScriptFunction run,cleanup;
     ScriptFunction additional[ScriptManager::MaxScripts];
     uint32_t additional_count;
@@ -154,6 +156,9 @@ void discard(Plugin& p){
     // Published handlers and suspended fiber return addresses can point into
     // this image for the lifetime of the game. Never invalidate them.
     if(p.published||p.active)return;
+    const bool stopping=p.stopping;p.stopping=true;
+    const bool drained=PluginResources::Drain(&p);p.stopping=stopping;
+    if(!drained&&PluginResources::Count(&p))return;
     if(!PluginHeap::Discard(&p))return;
     if(p.loaded){const auto rc=sdk_call<uint32_t(*)(void*)>(binding::ro_unload)(p.module);if(rc)return;p.loaded=false;}
     if(p.registered){sdk_call<void(*)(void*)>(binding::ro_unregister)(p.registration);p.registered=false;}
@@ -170,6 +175,19 @@ bool heap_stats(void* p,ShvNxMemoryStats* out){
 }
 bool heap_trim(void* p){return own(static_cast<Plugin*>(p))&&PluginHeap::Trim(p);}
 bool code(Plugin& p,uintptr_t address){return address>=p.base+0x80&&address-p.base<p.text_bytes&&Memory::IsExecutable(address);}
+ShvNxResourceHandle resource_register(void* token, ShvNxResourceCleanup cleanup, void* context) {
+    auto* p = static_cast<Plugin*>(token);
+    if (!own(p) || p->stopping || p->kill_queued || (p->active && (p->stopped || p->cleanup_done)) ||
+        !code(*p, reinterpret_cast<uintptr_t>(cleanup))) return 0;
+    const auto handle = PluginResources::Register(p, cleanup, context);
+    reported = false;
+    return handle;
+}
+bool resource_release(void* token, ShvNxResourceHandle handle) { if(!own(static_cast<Plugin*>(token)))return false;reported=false;return PluginResources::Release(token,handle); }
+bool resource_forget(void* token, ShvNxResourceHandle handle) { if(!own(static_cast<Plugin*>(token)))return false;reported=false;return PluginResources::Forget(token,handle); }
+bool resource_active(void* token, ShvNxResourceHandle handle) { return own(static_cast<Plugin*>(token)) && PluginResources::Active(token, handle); }
+bool resource_pinned(void* token, const void* pointer) { return own(static_cast<Plugin*>(token)) && PluginResources::Pinned(token, pointer); }
+uint32_t resource_count(void* token) { return own(static_cast<Plugin*>(token)) ? PluginResources::Count(token) : 0; }
 bool register_script(void* token,ScriptFunction function){
     auto* p=static_cast<Plugin*>(token);
     if(!own(p)||p->stopping||p->kill_queued||(p->active&&(p->stopped||p->cleanup_done))||!code(*p,reinterpret_cast<uintptr_t>(function)))return false;
@@ -372,7 +390,11 @@ ShvNxFileStatus catalog_list(void* token, const char* name, uint32_t offset,
     if (!file_root(*p, disk)) return ShvNxFile_IoError;
     return disk.CatalogPage(path, offset, entries, capacity, *page);
 }
-void fail(Plugin& p,uint32_t reason){PluginCallbacks::Forget(&p);PluginTextures::Stop(&p);p.error=reason;discard(p);}
+void fail(Plugin& p,uint32_t reason){
+    stop_scripts(p);PluginCallbacks::Forget(&p);PluginTextures::Stop(&p);
+    const bool stopping=p.stopping;p.stopping=true;(void)PluginResources::Drain(&p);p.stopping=stopping;
+    p.error=reason;discard(p);
+}
 void load(Plugin& p){
     if(p.loaded){
         if(!p.active||!p.run){p.error=0x1001a;return;}
@@ -449,6 +471,15 @@ void load(Plugin& p){
     p.files={sizeof(ShvNxFiles),SHV_NX_FILES_ABI_VERSION,file_size,file_read,file_write,file_create,file_directory};
     p.catalog={sizeof(ShvNxCatalog),SHV_NX_CATALOG_ABI_VERSION,catalog_list};
     p.mutations={sizeof(ShvNxFileMutations),SHV_NX_FILE_MUTATIONS_ABI_VERSION,file_rename,file_delete};
+    p.resources={sizeof(ShvNxResources),SHV_NX_RESOURCES_ABI_VERSION,resource_register,resource_release,resource_forget,resource_active,resource_pinned,resource_count};
+    uintptr_t bind_resources=0;
+    const auto resources_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&bind_resources,p.module,"shvPluginBindResources");
+    if(!resources_result&&bind_resources){
+        if(!code(p,bind_resources)||!reinterpret_cast<bool(*)(const ShvNxResources*)>(bind_resources)(&p.resources)){
+            fail(p,0x10006);return;
+        }
+        if(!NativeInvoker::CanYield()){NativeInvoker::AbandonCalls();fail(p,0x1001b);return;}
+    }
     uintptr_t bind_mutations=0;
     const auto mutations_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&bind_mutations,p.module,"shvPluginBindFileMutations");
     if(!mutations_result&&bind_mutations){
@@ -513,15 +544,15 @@ void load(Plugin& p){
     // Keep the image resident from the first published pointer onward, even
     // if a later registration unexpectedly fails.
     if(p.pending_count)p.published=true;
-    for(uint32_t i=0;i<p.pending_count;++i)if(!NativeTable::RegisterCustom(p.pending[i].hash,p.pending[i].handler)){p.error=0x1000e;return;}
+    for(uint32_t i=0;i<p.pending_count;++i)if(!NativeTable::RegisterCustom(p.pending[i].hash,p.pending[i].handler)){fail(p,0x1000e);return;}
     p.run=descriptor->run;
     uintptr_t stop=0;
     // Missing optional export is normal for existing ABI 1 plugins.
     const auto stop_result=sdk_call<uint32_t(*)(uintptr_t*,const void*,const char*)>(binding::ro_symbol)(&stop,p.module,"shvPluginStop");
     if(!stop_result&&stop){if(!code(p,stop)){fail(p,0x10006);return;}p.cleanup=reinterpret_cast<ScriptFunction>(stop);}
-    p.step=6;if(!ScriptManager::CommitReserved(reservation.token,p.run)){p.error=0x10009;return;}
+    p.step=6;if(!ScriptManager::CommitReserved(reservation.token,p.run)){fail(p,0x10009);return;}
     for(uint32_t i=0;i<p.additional_count;++i)if(!ScriptManager::CommitReserved(reservation.extra[i],p.additional[i])){
-        stop_scripts(p);p.error=0x10009;return;
+        fail(p,0x10009);return;
     }
     p.active=true;PluginCallbacks::Enable(&p,true);p.loaded_policy=p.policy;p.step=7;
 }
@@ -605,6 +636,7 @@ void PluginLoader::Tick(){
         const bool killed=p.kill_queued;
         p.kill_queued=false;p.stopping=true;stop_scripts(p);PluginCallbacks::Enable(&p,false);PluginTextures::Stop(&p);p.stopped=killed;p.cleanup_done=true;
         if(p.cleanup){const auto started=sh_get_tick();++p.cleanup_calls;if(!ScriptManager::RunCleanup(p.cleanup))++p.cleanup_failures;RecordTime(&p,2,sh_get_tick()-started);}
+        if(!PluginResources::Drain(&p))++p.cleanup_failures;
         p.stopping=false;reported=false;
     }
     if(!stage||rescan_requested){
@@ -671,7 +703,8 @@ void PluginLoader::Report(){
     for(size_t i=0;i<count;++i){const auto& p=plugins[i];append("plugin=");append(p.filename);append("\n");field("slot",i);field("policy",p.policy);field("resident",p.loaded);field("running",IsRunning(uint32_t(i)));field("kill_queued",p.kill_queued);field("stopped",p.stopped);field("queued",p.queued);field("present",p.present);
         field("step",p.step);append("step_name=");append(step_name(p.step));append("\n");field("error",p.error);append("error_name=");append(error_name(p.error,p.step));append("\n");
         field("additional_entries",p.additional_count);field("callbacks_active",PluginCallbacks::Active(const_cast<Plugin*>(&p)));
-        field("callback_failures",PluginCallbacks::Failures(const_cast<Plugin*>(&p)));field("texture_memory_bytes",PluginTextures::Bytes(const_cast<Plugin*>(&p)));}
+        field("callback_failures",PluginCallbacks::Failures(const_cast<Plugin*>(&p)));field("texture_memory_bytes",PluginTextures::Bytes(const_cast<Plugin*>(&p)));
+        field("resource_count",PluginResources::Count(const_cast<Plugin*>(&p)));field("resource_failures",PluginResources::Failures(const_cast<Plugin*>(&p)));}
     // Leave room for a complete clipping field even when the body reaches its cap.
     const char* tail=clipped?"report_clipped=1\n":"report_clipped=0\n";while(*tail&&n+1<sizeof(report))report[n++]=*tail++;
     // A persistent SD failure must not mount/write every game frame. A new

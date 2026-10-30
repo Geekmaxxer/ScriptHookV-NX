@@ -2,7 +2,7 @@
 
 This roadmap tracks ScriptHookV-NX, its SDK and delivery tools. The
 [runtime roadmap](PC-RUNTIME-ROADMAP.md) contains the active substantial-plugin
-workstream. Updated 2026-10-29.
+workstream. Updated 2026-10-30.
 
 ## Progress conventions
 
@@ -36,7 +36,10 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify a cooperative 256 KiB sample and interruption/restart behavior locally.
 - [x] Verify paged directory enumeration, complete metadata and bounded failure behavior locally.
 - [x] Verify isolated file mutations, backup-preserving publication and explicit recovery locally.
-- [ ] Define broader initialization, cancellation and exception policies.
+- [x] Verify registered resource pinning, reverse cleanup and managed cancellation locally.
+- [x] Verify registered cleanup on rejected initialization and a yielding string/vector example locally.
+- [ ] Accept owned-resource cancellation and nested cleanup on Switch.
+- [ ] Define broader global initialization, exception and static-local policies.
 - [ ] Validate a substantial combined workload on the supported Switch.
 
 ## Mod compatibility and examples

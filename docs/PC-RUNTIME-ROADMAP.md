@@ -2,7 +2,7 @@
 
 The runtime workstream expands support for substantial PC source ports on the
 identified GTA V Switch executable. Full Menyoo porting follows the implementation
-and acceptance gates below. Updated 2026-10-29.
+and acceptance gates below. Updated 2026-10-30.
 
 Checked implementation/local-validation items do not imply hardware acceptance.
 The public baseline remains identified in the [project roadmap](COMPLETION-ROADMAP.md).
@@ -78,12 +78,18 @@ independent versioned service; memory parsing does not remove filesystem limits.
 - [x] Provide owned additional scripts/callbacks and bounded cleanup.
 - [x] Retain mappings to protect published handlers and suspended code.
 - [x] Refuse unsupported global constructors/destructors explicitly.
-- [ ] Define constructor ordering, failure unwinding and static-local policy.
-- [ ] Define cancellation behavior for suspended C++ ownership.
+- [x] Define explicit registered ownership for heap objects across waits and whole-plugin cancellation.
+- [x] Pin registered contexts and verify release, transfer, nesting and stale handles locally.
+- [x] Drain registered cleanup after user stop and rejected initialization before heap discard.
+- [x] Execute a complete managed string/vector lifetime across Kill/Load locally.
+- [ ] Define global constructor ordering, exception unwinding and static-local policy.
+- [ ] Accept managed cancellation and nested cleanup on Switch.
 - [ ] Measure callbacks and initialization under substantial workloads.
 
 Normal scope exit runs destructors; Kill does not unwind suspended objects.
 Workers, preemption and arbitrary infinite-loop recovery are outside current guarantees.
+Evidence: [owned-resource contract](reference/OWNED-RESOURCES.md) and
+[lifecycle verification](verification/PLUGIN-RESOURCES1.md).
 
 ## 6. Concrete engine compatibility
 

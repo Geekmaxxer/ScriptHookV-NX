@@ -1,0 +1,128 @@
+# Owned resources
+
+The unreleased resource service retains explicit cleanup registrations outside
+cooperative stacks. It can destroy a registered heap object after whole-plugin
+cancellation, even when its local owner was suspended inside `WAIT`. Normal C++
+scope exit remains unchanged; cancellation still discards suspended stack frames.
+
+The service has local ARM64 verification and requires new physical Switch
+acceptance. See the [verification record](../verification/PLUGIN-RESOURCES1.md).
+
+## Availability and ABI
+
+Include `script.h` or `plugin_resources.h` and check
+`scriptResourcesAvailable()`. The independent `ShvNxResources` ABI 1 table is
+56 bytes on AArch64 and is bound before explicit initialization. Base plugin,
+extension, memory and file contracts retain their existing layouts. Older
+runtimes may omit this service; a plugin that requires it must reject initialization.
+
+Each resident plugin can hold 64 registrations. Operations belong to its loader
+thread. A cleanup function must reside in that plugin's executable text.
+Registrations receive nonzero 64-bit handles, are owner-specific and never reuse
+a consumed handle during the process lifetime. Exhaustion returns zero.
+
+## Registration and release
+
+| Operation | Contract |
+| --- | --- |
+| `scriptResourceRegister(cleanup, context)` | Register bounded cleanup; return zero on refusal |
+| `scriptResourceRelease(handle)` | Consume a valid registration, unpin its context, then invoke cleanup |
+| `scriptResourceForget(handle)` | Remove the registration without invoking cleanup; transfer responsibility to the caller |
+| `scriptResourceActive(handle)` | Test an active registration belonging to this plugin |
+| `scriptResourcePinned(pointer)` | Test whether an exact context allocation is pinned |
+| `scriptResourceCount()` | Return this plugin's active registration count |
+
+A non-null context must be the exact start of a live allocation in the owning
+plugin's memory service. Stack, static, interior and foreign allocation pointers
+are refused. One allocation can have one registration. Null contexts are allowed
+for callbacks that reference explicitly initialized module state, including
+plugins without a bound memory table.
+
+Registration pins the context against free and realloc, including realloc to
+zero. `ScriptHook::Memory::Delete` checks the pin before invoking a destructor.
+Ordinary C++ `delete` invokes the destructor before reaching the allocator and
+must not be used on a registered object. Pinning protects the context allocation;
+the callback remains responsible for any separately allocated children.
+
+Release checks its execution preconditions before consumption. An unfinished raw
+native call defers release and leaves the registration active. Once invoked, the
+registration is consumed before the callback so that cleanup can destroy and free
+its context. A false result can therefore mean a callback violated its contract
+after consumption. Check `scriptResourceActive(handle)` before retrying; an
+invoked callback is not repeated automatically.
+
+## Lifecycle and callback rules
+
+Whole-plugin stop cancels owned entries and disables callbacks/textures, invokes
+the explicit `shvPluginStop` callback, then drains remaining resource registrations
+in reverse registration order. Natural completion follows the same process after
+all entries, callbacks and timed draws finish. Rejected initialization and failed
+prepublication setup drain registered resources before heap discard and unmapping.
+Stopping one entry does not drain resources while other plugin activity remains.
+
+Resource callbacks must be bounded, must not throw and must not call `WAIT` or
+leave an unfinished raw native call. Ordinary native calls require a valid game
+context. The runtime diagnoses attempted waits and unfinished calls, abandons the
+latter and restores the surrounding native status. Callback execution contributes
+to cleanup timing diagnostics. It cannot preempt a loop or recover from invalid
+memory access.
+
+New registrations are refused while stopping, draining or executing a resource
+callback. A callback may release an existing child registration; consumed entries
+cannot run twice. Forgetting another registration explicitly transfers its
+cleanup responsibility out of the drain.
+
+If callback preconditions prevent invocation, the live registration and pinned
+allocation remain retained. Stop processing does not schedule automatic retries.
+Resident mappings and raw unregistered allocations continue to follow their
+existing lifetimes. Cleanup is not guaranteed after a crash, game exit or power
+loss, and at-most-once invocation does not establish success of an external
+operation performed by the callback.
+
+Loader reports include `resource_count` and `resource_failures`. The latter counts
+registry-level registration refusals and invoked callback violations; it is not
+an aggregate of all rejected API calls. Inspect remaining counts when accepting
+a workload.
+
+## Managed heap objects
+
+`shv/managed.h` supplies move-only `ScriptHook::Memory::Managed<T>`. Enable the
+explicit `c_runtime` and `cxx_runtime` project options and require both memory and
+resource services. `T` must satisfy the existing nothrow construction/destruction
+requirements and its destructor must follow the callback rules above.
+
+```cpp
+#include "script.h"
+#include "shv/managed.h"
+
+struct State {
+    uint64_t frames = 0;
+};
+
+void Main() {
+    auto state = ScriptHook::Memory::Managed<State>::TryMake();
+    if (!state) return;
+    for (;;) {
+        {
+            State* current = state.Get();
+            if (!current) return;
+            ++current->frames;
+        }
+        WAIT(0);
+    }
+}
+```
+
+`TryMake` returns an empty owner on allocation or registration failure and cleans
+up a newly constructed object if registration fails. Scope exit and `Reset` release
+the ticket. `Get` returns a borrow only while the ticket remains active. Reacquire
+it after waits and never retain it across cancellation or external release.
+`Detach` forgets the registration and returns the live pointer; the caller must
+subsequently destroy/free it. Move construction transfers ownership. Move
+assignment first resets the destination and transfers only if reset succeeds.
+Complete pending raw native calls before reset, destruction or move assignment.
+
+The [complete example](../../examples/managed-resources/README.md) owns a dynamic
+string and vector across waits and releases their nested storage on cancellation.
+This facility provides explicit registered ownership, not global constructor
+ordering, exception unwinding, hosted STL compatibility or arbitrary stack cleanup.

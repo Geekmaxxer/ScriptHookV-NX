@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "runtime_defaults.h"
+#include "plugin_resources.h"
 
 namespace ScriptHook {
 struct alignas(16) FiberContext {
@@ -29,6 +30,8 @@ public:
     static void ReleaseReserved(uint32_t token);
     static void Unregister(ScriptFunction function);
     static bool RunCleanup(ScriptFunction function);
+    static bool CanRunResourceCleanup(ShvNxResourceCleanup function);
+    static bool RunResourceCleanup(ShvNxResourceCleanup function, void* context);
     static bool Contains(ScriptFunction function);
     static void StopAll();
     static void Wait(uint32_t ms);

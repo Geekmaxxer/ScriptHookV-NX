@@ -112,6 +112,7 @@ def main():
         project_root / 'runtime/plugins/plugin_callbacks.cpp',
         project_root / 'runtime/plugins/plugin_textures.cpp',
         project_root / 'runtime/plugins/plugin_heap.cpp',
+        project_root / 'runtime/plugins/plugin_resources.cpp',
     ]
 
     objects = []
