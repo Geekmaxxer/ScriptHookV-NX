@@ -33,6 +33,16 @@ def inputs(project):
         raise ValueError('Provide at least one source file')
     if 'runtime_limits' in data:
         validate(data['runtime_limits'])
+    if 'c_runtime' in data and (type(data['c_runtime']) is not bool or data['kind']!='nro'):
+        raise ValueError('c_runtime must be a boolean on an NRO project')
+    if 'numeric_runtime' in data and (type(data['numeric_runtime']) is not bool or data['kind']!='nro'):
+        raise ValueError('numeric_runtime must be a boolean on an NRO project')
+    if data.get('numeric_runtime',False) and not data.get('c_runtime',False):
+        raise ValueError('numeric_runtime requires c_runtime=true')
+    if 'cxx_runtime' in data and (type(data['cxx_runtime']) is not bool or data['kind']!='nro'):
+        raise ValueError('cxx_runtime must be a boolean on an NRO project')
+    if data.get('cxx_runtime',False) and not data.get('c_runtime',False):
+        raise ValueError('cxx_runtime requires c_runtime=true')
     return data, sources, includes
 
 def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, reference=None):
@@ -40,11 +50,18 @@ def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, refe
         raise FileExistsError('Use a new output directory to preserve prior builds')
     data, sources, includes = inputs(project)
     if data['kind'] == 'nro':
-        build(sources, output, devkit, includes)
+        build(sources, output, devkit, includes,c_runtime=data.get('c_runtime',False),numeric_runtime=data.get('numeric_runtime',False),cxx_runtime=data.get('cxx_runtime',False))
         shutil.copy2(project, output/'project.json')
-        if 'runtime_limits' in data:
+        report=json.loads((output/'plugin-build.json').read_text())
+        requested=data.get('runtime_limits',{})
+        suggested=report['suggested_runtime_limits']
+        for key,minimum in report['minimum_runtime_limits'].items():
+            if key in requested and requested[key]<minimum:
+                raise ValueError(f'runtime_limits.{key} is below this module\'s measured minimum {minimum}')
+        limits={**suggested,**requested}
+        if limits:
             # Optional suggestion beside the NRO, never auto-installed globally.
-            (output/'runtime.ini').write_text(render(data['runtime_limits']), encoding='utf-8')
+            (output/'runtime.ini').write_text(render(limits), encoding='utf-8')
         return output/'plugin.nro'
     if len(sources) != 1 or sources[0].suffix.lower() != '.sc':
         raise ValueError('Each NSC project builds one named .sc entry')

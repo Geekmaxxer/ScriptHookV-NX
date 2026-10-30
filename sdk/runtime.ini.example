@@ -6,3 +6,7 @@
 # resident_limit=8
 # script_slots=16
 # plugin_memory_mib=8
+# Per-module caps, each 1-32 MiB; standard defaults remain 2 MiB.
+# Raising a module cap does not raise the shared plugin accounting budget.
+# module_image_mib=2
+# module_bss_mib=2

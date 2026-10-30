@@ -1,7 +1,69 @@
 #include "plugin.h"
 #include "extensions.h"
-namespace { const ShvNxApi* api; const ShvNxExtensions* extensions; }
+#include "plugin_memory.h"
+#include "plugin_files.h"
+#include "plugin_catalog.h"
+#include "plugin_file_mutations.h"
+namespace { const ShvNxApi* api; const ShvNxExtensions* extensions; const ShvNxMemory* memory; const ShvNxFiles* files; const ShvNxCatalog* catalog; const ShvNxFileMutations* mutations; }
 extern "C" {
+SHV_NX_API bool shvPluginBindFileMutations(const ShvNxFileMutations* value) {
+    if (!value || value->abi != SHV_NX_FILE_MUTATIONS_ABI_VERSION || value->size < sizeof(ShvNxFileMutations) ||
+        !value->rename_file || !value->delete_file) return false;
+    mutations = value;
+    return true;
+}
+bool scriptFileMutationsAvailable() { return api && mutations; }
+ShvNxFileStatus scriptFileRename(const char* from, const char* to) {
+    return api && mutations ? mutations->rename_file(api->plugin, from, to) : ShvNxFile_Unavailable;
+}
+ShvNxFileStatus scriptFileDelete(const char* path) {
+    return api && mutations ? mutations->delete_file(api->plugin, path) : ShvNxFile_Unavailable;
+}
+SHV_NX_API bool shvPluginBindCatalog(const ShvNxCatalog* value) {
+    if (!value || value->abi != SHV_NX_CATALOG_ABI_VERSION || value->size < sizeof(ShvNxCatalog) || !value->list)
+        return false;
+    catalog = value;
+    return true;
+}
+bool scriptCatalogAvailable() { return api && catalog; }
+ShvNxFileStatus scriptDirectoryList(const char* path, uint32_t offset,
+    ShvNxDirectoryEntry* entries, uint32_t capacity, ShvNxDirectoryPage* page) {
+    return api && catalog ? catalog->list(api->plugin, path, offset, entries, capacity, page) : ShvNxFile_Unavailable;
+}
+SHV_NX_API bool shvPluginBindFiles(const ShvNxFiles* value) {
+    if (!value || value->abi != SHV_NX_FILES_ABI_VERSION || value->size < sizeof(ShvNxFiles) ||
+        !value->size_of || !value->read_at || !value->write_at || !value->create || !value->directory) return false;
+    files = value;
+    return true;
+}
+bool scriptFilesAvailable() { return api && files; }
+ShvNxFileStatus scriptFileSize(const char* path, uint64_t* bytes) {
+    return api && files ? files->size_of(api->plugin, path, bytes) : ShvNxFile_Unavailable;
+}
+ShvNxFileStatus scriptFileReadAt(const char* path, uint64_t offset, void* out, size_t capacity, size_t* bytes) {
+    return api && files ? files->read_at(api->plugin, path, offset, out, capacity, bytes) : ShvNxFile_Unavailable;
+}
+ShvNxFileStatus scriptFileWriteAt(const char* path, uint64_t offset, const void* data, size_t bytes) {
+    return api && files ? files->write_at(api->plugin, path, offset, data, bytes) : ShvNxFile_Unavailable;
+}
+ShvNxFileStatus scriptFileCreate(const char* path, uint64_t bytes) {
+    return api && files ? files->create(api->plugin, path, bytes) : ShvNxFile_Unavailable;
+}
+ShvNxFileStatus scriptDirectoryCreate(const char* path) {
+    return api && files ? files->directory(api->plugin, path) : ShvNxFile_Unavailable;
+}
+SHV_NX_API bool shvPluginBindMemory(const ShvNxMemory* value){
+    if(!value||value->abi!=SHV_NX_MEMORY_ABI_VERSION||value->size<sizeof(ShvNxMemory)||!value->allocate||!value->reallocate||!value->free||!value->allocation_size||!value->stats||!value->trim)return false;
+    memory=value;return true;
+}
+bool scriptMemoryAvailable(){return api&&memory;}
+void* scriptAllocate(size_t bytes,size_t alignment,uint32_t flags){return api&&memory?memory->allocate(api->plugin,bytes,alignment,flags):nullptr;}
+void* scriptCalloc(size_t count,size_t bytes){return !bytes||count>SIZE_MAX/bytes?nullptr:scriptAllocate(count*bytes,16,SHV_NX_MEMORY_ZERO);}
+void* scriptReallocate(void* p,size_t bytes){return api&&memory?memory->reallocate(api->plugin,p,bytes):nullptr;}
+bool scriptFree(void* p){return api&&memory&&memory->free(api->plugin,p);}
+size_t scriptAllocationSize(const void* p){return api&&memory?memory->allocation_size(api->plugin,p):0;}
+bool scriptGetMemoryStats(ShvNxMemoryStats* s){return api&&memory&&memory->stats(api->plugin,s);}
+bool scriptTrimMemory(){return api&&memory&&memory->trim(api->plugin);}
 SHV_NX_API bool shvPluginBindExtensions(const ShvNxExtensions* value) {
     if(!value||value->abi!=SHV_NX_EXTENSIONS_ABI_VERSION||value->size<sizeof(ShvNxExtensions)||
        !value->register_script||!value->unregister_script||!value->enumerate||!value->global||!value->entity||
@@ -9,6 +71,9 @@ SHV_NX_API bool shvPluginBindExtensions(const ShvNxExtensions* value) {
     extensions=value;return true;
 }
 bool shvBindApi(const ShvNxApi* value) {
+#if defined(SHVNX_PLUGIN_C_RUNTIME) && SHVNX_PLUGIN_C_RUNTIME
+    if(!memory)return false;
+#endif
     if(!value||value->size!=sizeof(ShvNxApi)||value->abi!=SHV_NX_PLUGIN_ABI_VERSION||value->caller_abi!=SHV_NX_CALLER_ABI_VERSION||value->runtime_abi!=SHV_NX_RUNTIME_ABI_VERSION)return false;
     api=value;return true;
 }

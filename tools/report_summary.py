@@ -24,6 +24,9 @@ def summarize(path):
             report['notes'].append(plugin['filename']+': '+(str(limit)+' resident modules' if limit else 'resident module limit')+' already reached; disable one and restart GTA')
         elif error == 0x10017:
             report['notes'].append(plugin['filename']+': keep exactly one Auto/Manual/Disabled filename for this plugin')
+        elif error in (0x10023,0x10024,0x10016):
+            key={0x10023:'module_image_mib',0x10024:'module_bss_mib',0x10016:'plugin_memory_mib'}[error]
+            report['notes'].append(plugin['filename']+': '+key+' limit reached; review the measured plugin-build.json requirements and shared runtime.ini, then restart GTA. Larger limits need matched runtime and gameplay testing.')
         elif error:
             report['notes'].append(plugin['filename']+': '+plugin.get('error_name', plugin.get('error', 'unknown error')))
     if report['global_values'].get('units')=='microseconds':

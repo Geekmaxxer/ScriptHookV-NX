@@ -29,11 +29,13 @@ def main():
     parser.add_argument('--resident-limit', type=int, help='Compiled default resident NRO limit (8 unless the header is edited)')
     parser.add_argument('--script-slots', type=int, help='Compiled default cooperative script slots (16 unless the header is edited)')
     parser.add_argument('--plugin-memory-mib', type=int, help='Compiled default plugin accounting budget in MiB (8 unless the header is edited)')
+    parser.add_argument('--module-image-mib', type=int, help='Compiled default per-NRO image cap in MiB (2 by default)')
+    parser.add_argument('--module-bss-mib', type=int, help='Compiled default per-NRO BSS cap in MiB (2 by default)')
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parents[1]
     bundle(project_root)
-    overrides = {key: getattr(args, key) for key in ('resident_limit', 'script_slots', 'plugin_memory_mib')
+    overrides = {key: getattr(args, key) for key in ('resident_limit', 'script_slots', 'plugin_memory_mib', 'module_image_mib', 'module_bss_mib')
                  if getattr(args, key) is not None}
     validate(overrides, definitions(project_root/'include/runtime_defaults.h'))
     if args.slot != 'subsdk5':
@@ -52,7 +54,7 @@ def main():
     build_dir = args.output.resolve()
     if build_dir.exists():
         parser.error('Use a fresh output directory; existing builds are preserved')
-    if any(build_dir.is_relative_to(project_root/folder) for folder in ('source', 'include', 'sdk', 'tools', 'targets')):
+    if any(build_dir.is_relative_to(project_root/folder) for folder in ('runtime', 'include', 'sdk', 'tools', 'targets')):
         parser.error('Output must be outside the source/header/tool/profile trees being snapshotted')
     # Validate the selected target before creating any output directory.
     import tempfile
@@ -63,8 +65,10 @@ def main():
         generate_engine(generated,args.target_profile.resolve())
         build_dir.mkdir(parents=True)
         shutil.copytree(generated, build_dir/'generated')
-    for folder in ('source', 'include', 'sdk', 'tools', 'targets'):
+    for folder in ('runtime', 'include', 'sdk', 'tools', 'targets'):
         shutil.copytree(project_root/folder, build_dir/folder, ignore=shutil.ignore_patterns('__pycache__'))
+    if (project_root/'tests/fixtures').is_dir():
+        shutil.copytree(project_root/'tests/fixtures',build_dir/'tests/fixtures')
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(project_root/name, build_dir/name)
     copy_distribution(build_dir, project_root)
@@ -86,27 +90,28 @@ def main():
         '-fdebug-prefix-map=' + str(devkit_root) + '=/devkitPro',
         '-std=c++17',
         f"-I{build_dir / 'include'}",
-        f"-I{build_dir / 'source'}"
+        f"-I{build_dir / 'runtime'}"
     ]
     common_flags += ['-I' + str(build_dir / 'generated')]
 
     sources = [
-        project_root / 'source/core/start.s',
-        project_root / 'source/core/memory.cpp',
-        project_root / 'source/core/storage.cpp',
-        project_root / 'source/core/runtime_config.cpp',
-        project_root / 'source/core/engine_api.cpp',
-        project_root / 'source/core/main.cpp',
-        project_root / 'source/script/native_table.cpp',
-        project_root / 'source/script/native_manifest.cpp',
-        project_root / 'source/script/native_caller.cpp',
-        project_root / 'source/script/script_manager.cpp',
-        project_root / 'source/script/scr_thread.cpp',
-        project_root / 'source/bridge/persistence.cpp',
-        project_root / 'source/bridge/public_natives.cpp',
-        project_root / 'source/plugins/plugin_loader.cpp',
-        project_root / 'source/plugins/plugin_callbacks.cpp',
-        project_root / 'source/plugins/plugin_textures.cpp',
+        project_root / 'runtime/core/start.s',
+        project_root / 'runtime/core/memory.cpp',
+        project_root / 'runtime/core/storage.cpp',
+        project_root / 'runtime/core/runtime_config.cpp',
+        project_root / 'runtime/core/engine_api.cpp',
+        project_root / 'runtime/core/main.cpp',
+        project_root / 'runtime/script/native_table.cpp',
+        project_root / 'runtime/script/native_manifest.cpp',
+        project_root / 'runtime/script/native_caller.cpp',
+        project_root / 'runtime/script/script_manager.cpp',
+        project_root / 'runtime/script/scr_thread.cpp',
+        project_root / 'runtime/bridge/persistence.cpp',
+        project_root / 'runtime/bridge/public_natives.cpp',
+        project_root / 'runtime/plugins/plugin_loader.cpp',
+        project_root / 'runtime/plugins/plugin_callbacks.cpp',
+        project_root / 'runtime/plugins/plugin_textures.cpp',
+        project_root / 'runtime/plugins/plugin_heap.cpp',
     ]
 
     objects = []
@@ -125,7 +130,7 @@ def main():
 
     # Link ELF
     elf_file = build_dir / 'scripthook-nx.elf'
-    link_script = build_dir / 'source/core/link.ld'
+    link_script = build_dir / 'runtime/core/link.ld'
     link_cmd = [
         str(compiler), *common_flags,
         '-nostdlib', '-nostartfiles', '-shared',
@@ -187,7 +192,7 @@ def main():
     report = dict(compiled=True, packaged=True, switch_runtime_verified=False, sd_access=sd_access,
                   module_sha256=hashlib.sha256(nso_slot_file.read_bytes()).hexdigest(),
                   source_sha256={p.relative_to(build_dir).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-                                 for folder in ('source', 'include', 'sdk', 'tools', 'generated', 'targets', 'distribution')
+                                 for folder in ('runtime', 'include', 'sdk', 'tools', 'generated', 'targets', 'packaging')
                                  for p in (build_dir / folder).rglob('*') if p.is_file()},
                   segment_hashes_verified=True, unresolved_imports=[], plugin_execution_enabled=True,
                   target_build=json.loads((build_dir/'generated/bindings.json').read_text())['main_build_id'][:40],
@@ -201,6 +206,8 @@ def main():
                   runtime_max_scripts=limits['SHVNX_DEFAULT_SCRIPT_SLOTS'], runtime_stack_bytes=65536,
                   plugin_resident_limit=limits['SHVNX_DEFAULT_RESIDENT_PLUGINS'],
                   plugin_memory_budget_bytes=limits['SHVNX_DEFAULT_PLUGIN_MEMORY_MIB']*1024*1024,
+                  module_image_limit_bytes=limits['SHVNX_DEFAULT_MODULE_IMAGE_MIB']*1024*1024,
+                  module_bss_limit_bytes=limits['SHVNX_DEFAULT_MODULE_BSS_MIB']*1024*1024,
                   runtime_limits=limits, runtime_config_path='switch/gtav-scripthook/runtime.ini')
     (build_dir / 'build-manifest.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
 

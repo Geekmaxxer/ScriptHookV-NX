@@ -25,7 +25,7 @@ context; they do not establish that the dependency is absent from the game.
 
 The asset output merges the current selected DLC list and retains its other
 entries. Rendering quality, animations and collision freezes need the console
-matrix in [maintenance](../../docs/MAINTENANCE.md). The pipeline does not alter
+matrix in [maintenance](../../docs/development/MAINTENANCE.md). The pipeline does not alter
 mesh/collision complexity or claim to resolve those freezes.
 
 The clean source export passed the full suite with devkitA64. Compiler-free

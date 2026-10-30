@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/ulfjack/ryu",
+  "tag": null,
+  "commit": "4c0618b0e44f7ef027ebae05d2cc7812048f7c8f",
+  "archive_sha256": "5c039f2957769c5f61a8699b12d8703043b3f47c3ac6e2124c5a04afb6819f29",
+  "sha256": {
+    "LICENSE-Apache2": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "LICENSE-Boost": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+    "ryu/common.h": "0bbd71d26da6193e678d0776cf418f43f287c73d6fd6725353df0aadf70f2a19",
+    "ryu/d2fixed.c": "78c56baef739197e1e3e395c0304c3f15ed5afbe4e01b3473a92c3cbc3eeb81b",
+    "ryu/d2fixed_full_table.h": "c505f1f21f5e4658196afd23df50f1ec4d048144095f73d92454705240a14547",
+    "ryu/d2s.c": "d24323c7eb77d63f1e52c415212b50060b776f0883525d907d04954fcd48cf64",
+    "ryu/d2s_full_table.h": "2618f6e5fae6c4443899b184efe3d08295dd267dc9f1a994c983c7caca59ebe6",
+    "ryu/d2s_intrinsics.h": "1d05702f2edacce428223d4b43dd3095c1bd1f3ad30128ce1761d84356dddc7d",
+    "ryu/d2s_small_table.h": "54fec51f1c5eed786a8ce6de881b81582dd71f0812dcd4324b37396617bb0fa9",
+    "ryu/digit_table.h": "8b782573abc0b8554d74163ae6c02f0beb5c30d1e63eaebdb0ddf2c98d817e01",
+    "ryu/f2s.c": "0a98f4fce6be4c599f9602b8059e95bae6bffbb622dcde52deb4a8f8b51f5e0e",
+    "ryu/f2s_full_table.h": "ec08e3a1993d29ed5cabd54c97f2bd7dcf9e5f7b61cf854502613d6634855fb3",
+    "ryu/f2s_intrinsics.h": "662d2903454b8f6c44f18d0567e6d3f8f73f360d0d50a46e91fd245fdfa8fdc0",
+    "ryu/generic_128.h": "f29cc156f7c09d6e056061850bf392abbacc0fa1d490c52e4bcf35757df90a19",
+    "ryu/ryu.h": "b7feab0ba1df5e9ef3d602f386592ad152491405e49b408fb21c0e0e9e6bfb16",
+    "ryu/ryu_generic_128.h": "c1ea7f47166eb4d081a164cf475b4a2383a6af78a309e6fd3605968e78969879",
+    "ryu/ryu_parse.h": "da8ad9764b2701627cb75926b9d14b540fdfd7be693d671da9594eb16dabd27a"
+  }
+}

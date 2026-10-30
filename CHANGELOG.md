@@ -1,12 +1,75 @@
 # Changelog
 
+## Unreleased recoverable file publication - 2026-10-29
+
+- Add an independent file-mutation table with owner/path/extent checks, rename without replacement and explicit deletion with postcondition verification.
+- Add a heap-free publication helper that preserves backups, refuses conflicts and supports explicit restoration after inspection.
+- Exercise all file-presence states, failed acknowledgements/postchecks and a cooperative 256 KiB preparation/publication example. Physical storage and performance acceptance remain pending.
+
+## Unreleased directory catalog services - 2026-10-29
+
+- Add an independent optional catalog table for bounded file/directory pages, complete names, file sizes and component compatibility metadata.
+- Keep directory handles scoped to one call; preserve the file-table layout, validate owner access and report traversal limits or malformed metadata explicitly.
+- Review mixed directory modes with IDA Pro 9.5 and extend the cooperative streaming example with catalog verification. Physical Switch acceptance remains pending.
+
+## Unreleased bounded file services - 2026-10-29
+
+- Add an optional independently versioned file table with owner-thread checks, bounded relative paths, exclusive creation and offset reads/writes.
+- Support files up to 64 MiB with transfers up to 64 KiB, checked nested directories and no handles retained across calls or lifecycle changes.
+- Add a cooperative 256 KiB example and compiled path, error, ownership and interruption checks. Raw settings and published-runtime contracts remain unchanged; Switch storage/performance acceptance is pending.
+
+## Unreleased repository and data-storage refinement - 2026-10-29
+
+- Rename root implementation/application/install directories to runtime, mod-porter and packaging; update source exports, SDK discovery, builds and documentation.
+- Remove disposable IDE/compiler/Python caches and archive superseded release-specific maintenance scripts outside the maintained source.
+- Replace the introductory information dump with project purpose, entry points, capabilities and repository ownership.
+- Group documentation by audience/purpose, separate regressions and fixtures from build tools, and consolidate gameplay examples under examples/mods.
+- Expand project/runtime roadmaps into implementation and acceptance checklists; add navigation/layout verification and consistent editor settings.
+- Preserve SDK dependency sources/licenses and complete example manifests in curated exports; validate moved workflows and desktop source paths.
+- Add bounded checksummed binary/XML records with verified alternating writes, conservative unreadable-slot handling and explicit initialization/repair. Hardware storage acceptance remains pending.
+
+## Unreleased C++ library candidate - 2026-10-29
+
+- Add explicit owner-backed nothrow scalar/array/aligned allocation and sized/unsized deletion through the existing memory service.
+- Supply fallible growable vectors, byte strings and sorted maps with explicit copy/move behavior, alias-safe growth and allocation-failure preservation.
+- Add typed construction/deletion helpers, trait checks and owner/lifetime tests; keep throwing new, hosted STL and global initialization unsupported.
+- Execute mixed container models, a 4,096-entry map, cooperative workloads and a complete numeric XML registry example. Core and accepted release remain unchanged; physical acceptance is pending.
+
+## Unreleased numeric library candidate - 2026-10-29
+
+- Add explicit C/numeric project and CLI profiles with bounded, status-bearing decimal float/double parsing and roundtripping formatting.
+- Enable typed pugixml floating attributes/text through scoped bridges to pinned unmodified fast_float and Ryu; preserve default-profile and strict unsupported-import behavior.
+- Test IEEE boundaries, halfway rounding, subnormals, independent precision-format oracles, storage guards, owner/lifecycle failure and actual cooperative stacks; report compiler frames separately from whole-stack measurements.
+- Add a complete numeric XML/settings example and retain dependency licenses/provenance. Core/accepted release remain unchanged; hardware acceptance remains pending.
+
+## Unreleased plugin library candidate - 2026-10-29
+
+- Add an opt-in owner-heap C allocation/string subset, with required-memory binding and project/CLI flags.
+- Pin unmodified pugixml 1.16 with source hashes and MIT notice; provide a text/integer UTF-8 memory DOM and bounded serialization adapter.
+- Preserve strict failures for unsupported float conversion, stdio and hosted C++ dependencies; retain constructor arrays so link-time garbage collection cannot hide them.
+- Execute real CRT/XML ARM64 workloads, malformed/large data, allocation failure, cross-owner and restart cases; verify an isolated copied SDK. Core binary and accepted release remain unchanged; Switch acceptance is pending.
+
+## Unreleased plugin memory candidate - 2026-10-29
+
+- Add an optional independently versioned owner-thread memory table without changing base/extension ABI 1 layouts.
+- Supply pooled aligned allocation, calloc, realloc, exact-pointer free/size, statistics and Trim under the shared plugin budget.
+- Preserve live data across Kill/Load; reclaim unpublished failed initialization and retain failed release phases for correct retry/accounting.
+- Add mixed-owner allocation, capacity, lifecycle, reentry and OS failure checks. General CRT/STL and Switch acceptance remain open.
+
+## Unreleased runtime capacity candidate - 2026-10-29
+
+- Begin the expanded PC source-port runtime roadmap; full Menyoo porting remains deferred.
+- Add independent startup/build image and BSS caps from 1-32 MiB, preserving 2 MiB defaults and the shared accounting limit.
+- Report measured module extents/accounting and configuration suggestions; reject contradictory project limits and support explicit large-module preflight.
+- Add a real large NRO lifecycle probe and capacity-failure diagnostics. Local checks do not transfer previous Switch acceptance to the new runtime.
+
 ## v1.4.1 Preview + Mod Porter 0.9.1 - 2026-10-25
 
 - Audited the runtime and desktop tool; the rebuilt runtime remains identical to the accepted reference.
 - Separate DLC workflow steps and collapse optional controls; add clearer navigation from resources to DLC creation.
 - Reject structural metadata errors without damaging editor state; add definition recovery and unsaved-ID protection.
 - Correct nested asset selection, incomplete-SDK diagnostics and already-registered batch output.
-- Expand compiler, asset, workflow, runtime and resize/DPI checks; document scope in docs/QUALITY-AUDIT.md.
+- Expand compiler, asset, workflow, runtime and resize/DPI checks; document scope in docs/verification/QUALITY-AUDIT.md.
 
 ## Mod Porter 0.9.0 Preview - 2026-10-25
 

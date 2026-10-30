@@ -5,18 +5,26 @@ import json
 from pathlib import Path
 import struct
 import zlib
+from runtime_limits import definitions, validate, module_requirements
 
 def require(ok, message):
     if not ok: raise ValueError(message)
 
-def inspect_nro(data):
-    require(0x1000 <= len(data) <= 2*1024*1024 and len(data) % 4096 == 0, 'NRO image must be page aligned and at most 2 MiB')
+def inspect_nro(data, module_image_mib=None, module_bss_mib=None, plugin_memory_mib=None):
+    values=definitions();selected={k:v for k,v in dict(module_image_mib=module_image_mib,module_bss_mib=module_bss_mib,plugin_memory_mib=plugin_memory_mib).items() if v is not None};validate(selected,values)
+    image_cap=selected.get('module_image_mib',values['SHVNX_DEFAULT_MODULE_IMAGE_MIB'])*1024*1024
+    bss_cap=selected.get('module_bss_mib',values['SHVNX_DEFAULT_MODULE_BSS_MIB'])*1024*1024
+    require(0x1000 <= len(data) and len(data) % 4096 == 0, 'NRO image must be page aligned')
+    require(len(data)<=image_cap, 'NRO image exceeds selected module_image_mib limit')
     require(data[0x10:0x14] == b'NRO0', 'Missing NRO0 header')
     version, size, flags = struct.unpack_from('<III', data, 0x14)
     text, ts, ro, rs, rw, ds, bss = struct.unpack_from('<7I', data, 0x20)
     require(version == flags == text == 0 and size == len(data), 'Unsupported NRO header/version/size')
     require(ts >= 4096 and all(n % 4096 == 0 for n in (ts, rs, ds, bss)) and
-            ro == ts and rw == ro+rs and rw+ds == size and bss <= 2*1024*1024, 'Invalid NRO segment layout')
+            ro == ts and rw == ro+rs and rw+ds == size, 'Invalid NRO segment layout')
+    require(bss<=bss_cap, 'NRO BSS exceeds selected module_bss_mib limit')
+    requirements=module_requirements(size,bss,values)
+    if plugin_memory_mib is not None:require(requirements['accounted_bytes']<=plugin_memory_mib*1024*1024,'NRO exceeds selected plugin_memory_mib accounting budget')
     mod = struct.unpack_from('<I', data, 4)[0]
     require(0x80 <= mod <= size-28 and data[mod:mod+4] == b'MOD0', 'Missing MOD0')
     dynamic = mod + struct.unpack_from('<i', data, mod+4)[0]
@@ -45,7 +53,7 @@ def inspect_nro(data):
             exported = True
     require(exported, 'Missing exported shvPluginQuery function')
     return dict(kind='nro', image_bytes=size, bss_bytes=bss,
-                accounted_bytes=2*(size+max(bss, 4096))+4096, query_export_present=True,
+                **requirements, query_export_present=True,
                 note='Descriptor ABI, IDs, initialization, native behavior and console RO acceptance require loading/tests')
 
 def inspect_bindings(data):
@@ -72,17 +80,20 @@ def inspect_bindings(data):
     return dict(kind='snb', identities=records,
                 note='Regenerate from the exact compiled NSC after every build; structural validity does not prove that match')
 
-def inspect(path):
-    require(path.stat().st_size <= 2*1024*1024, 'File exceeds the supported 2 MiB preflight limit')
+def inspect(path, **limits):
+    values=definitions();validate(limits,values)
+    cap=limits.get('module_image_mib',values['SHVNX_DEFAULT_MODULE_IMAGE_MIB'])*1024*1024
+    require(path.stat().st_size <= max(65536,cap), 'File exceeds selected module_image_mib preflight limit')
     data = path.read_bytes()
-    result = inspect_bindings(data) if data[:4] == b'SHNB' else inspect_nro(data)
+    result = inspect_bindings(data) if data[:4] == b'SHNB' else inspect_nro(data,**limits)
     return dict(path=str(path), sha256=hashlib.sha256(data).hexdigest(), structural_checks_passed=True,
                 switch_runtime_verified=False, **result)
 
 def main():
     p = argparse.ArgumentParser(description=__doc__); p.add_argument('file', type=Path)
+    for key in ('module_image_mib','module_bss_mib','plugin_memory_mib'):p.add_argument('--'+key.replace('_','-'),type=int)
     a = p.parse_args()
-    try: result = inspect(a.file)
+    try: result = inspect(a.file,**{k:getattr(a,k) for k in ('module_image_mib','module_bss_mib','plugin_memory_mib') if getattr(a,k) is not None})
     except (OSError, ValueError, struct.error) as error: p.exit(1, 'Preflight failed: '+str(error)+'\n')
     print(json.dumps(result, indent=2))
 

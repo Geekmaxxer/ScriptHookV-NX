@@ -4,9 +4,9 @@
 /releases/
 __pycache__/
 *.pyc
-/desktop/**/bin/
-/desktop/**/obj/
-/desktop/.vs/
+**/bin/
+**/obj/
+**/.vs/
 *.rpf
 *.nso
 *.nro

@@ -22,7 +22,7 @@ BUNDLED_SHA256 = 'db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e65
 
 def bundle(root=ROOT):
     """Fail before packaging if the audited shared metadata is missing/changed."""
-    folder = Path(root)/'distribution'
+    folder = Path(root)/'packaging'
     data = (folder/NPDM_PATH).read_bytes()
     info = inspect(data)
     if sha(data) != BUNDLED_SHA256 or not all(m['flags'] & SD_CARD for m in info['masks']):
@@ -35,7 +35,7 @@ def bundle(root=ROOT):
 def copy_distribution(destination, root=ROOT):
     """Include metadata and preservation tooling in source/SDK snapshots."""
     source = bundle(root)
-    shutil.copytree(source, Path(destination)/'distribution', dirs_exist_ok=True)
+    shutil.copytree(source, Path(destination)/'packaging', dirs_exist_ok=True)
 
 
 def stage(destination, root=ROOT):

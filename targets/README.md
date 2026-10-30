@@ -10,4 +10,4 @@ The runtime still checks size and fingerprint contracts before hooking. A game
 update is not automatically compatible; re-audit the target before changing
 offsets or guards. `runtime-reference.json` records the initialized segment hashes
 of the accepted runtime and allows only its valid GNU build ID to differ during
-an unmodified source rebuild. See the [core build guide](../docs/DEVELOPING.md).
+an unmodified source rebuild. See the [core build guide](../docs/development/DEVELOPING.md).

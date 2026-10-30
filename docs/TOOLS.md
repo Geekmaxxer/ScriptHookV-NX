@@ -12,7 +12,7 @@ They do not download compilers, modify your SD card or execute an inspected mod.
 | `build_mod.py` | Build a project.json, with matched binding generation for NSCs |
 | `build_plugin.py` | Direct multi-source NRO builder, explicit header snapshots and unresolved-import rejection |
 | `check_examples.py` | Build and preflight all standalone NRO examples in a fresh output folder |
-| `verify_repo.py` | Run full-source profile, portable-tool and optional desktop/NRO checks |
+| `verify_repo.py` | Run full-source profile, portable-tool and optional mod-porter/NRO checks |
 | `run_ui_tests.py` | Test the bounded controller UI model with a host compiler or devkitA64/Unicorn |
 | `configure_runtime.py` | Generate an optional runtime.ini with independent resident, script and memory limits |
 | `native_query.py` | Search 8,540 target wrapper signatures and 6,419 static registrations offline |
@@ -44,4 +44,15 @@ headers next to a .cpp: the compiler builds copied sources in its snapshot.
 Build artifacts include debug ELF and provenance; distribute the NRO, required
 bindings and a short player guide rather than the entire build folder.
 Optional `project.json` `runtime_limits` emits a configuration beside the mod;
-see [runtime limits](RUNTIME-LIMITS.md) for keys, defaults and installation.
+see [runtime limits](reference/RUNTIME-LIMITS.md) for keys, defaults and installation.
+
+NRO projects may opt into the unreleased C allocation/string subset with JSON
+`"c_runtime": true`, or direct builds with `build_plugin.py --c-runtime`.
+It requires the candidate memory service and supplies the pinned XML memory
+profile; see [supported operations and failure behavior](verification/PLUGIN-LIBRARIES1.md).
+Add `"numeric_runtime": true` or `--numeric-runtime` alongside that option for
+[decimal float/double and XML floating support](verification/PLUGIN-NUMERIC1.md). Numeric
+builds also report individual compiler stack frames; this is not a full stack bound.
+Add `"cxx_runtime": true` or `--cxx-runtime` alongside the C profile for
+[nothrow C++ objects and fallible containers](verification/PLUGIN-CXX1.md). Numeric support is
+independent. The C++ profile also reports compiler stack frames.

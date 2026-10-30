@@ -10,6 +10,7 @@
 #define SHV_NX_CAP_RENDER_CALLBACKS (UINT64_C(1) << 5)
 #define SHV_NX_CAP_KEYBOARD_CALLBACKS (UINT64_C(1) << 6)
 #define SHV_NX_CAP_CUSTOM_TEXTURES (UINT64_C(1) << 7)
+#define SHV_NX_CAP_PLUGIN_MEMORY (UINT64_C(1) << 8)
 #ifdef __cplusplus
 extern "C" {
 #endif

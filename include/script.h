@@ -1,6 +1,10 @@
 #pragma once
 #include "plugin.h"
 #include "extensions.h"
+#include "plugin_memory.h"
+#include "plugin_files.h"
+#include "plugin_catalog.h"
+#include "plugin_file_mutations.h"
 #include "natives.h"
 
 // Familiar source syntax, using this Switch build's native declarations.

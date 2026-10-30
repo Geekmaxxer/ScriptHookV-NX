@@ -41,7 +41,7 @@ def diagnose(root, devkit=None, check_toolchain=True, core=False):
             import tempfile
             with tempfile.TemporaryDirectory(prefix='shvnx-doctor-') as temporary:
                 profile_bindings(Path(temporary)/'generated', DEFAULT_PROFILE)
-            check('core target profile', (root/'source/core/main.cpp').is_file(), 'Core builds require the full source checkout')
+            check('core target profile', (root/'runtime/core/main.cpp').is_file(), 'Core builds require the full source checkout')
         except (OSError, ValueError, ImportError) as error:
             check('core target profile', False, str(error))
     return dict(passed=sum(c['passed'] for c in checks), failed=sum(not c['passed'] for c in checks), checks=checks,

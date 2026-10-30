@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 from build_plugin import build
+from build_mod import build_project
 from inspect_mod import inspect
 
 def check(root, output, devkit=None):
@@ -20,6 +21,13 @@ def check(root, output, devkit=None):
         proof = inspect(output/name/'plugin.nro')
         rows.append(dict(name=name, source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), **proof))
         print(name+': built and structurally checked')
+    for project in sorted((root/'examples').glob('*/project.json')):
+        name=project.parent.name
+        with (output/(name+'.log')).open('w',encoding='utf-8') as log,contextlib.redirect_stdout(log):
+            build_project(project,output/name,devkit)
+        proof=inspect(output/name/'plugin.nro')
+        rows.append(dict(name=name,project_sha256=hashlib.sha256(project.read_bytes()).hexdigest(),**proof))
+        print(name+': project built and structurally checked')
     report = dict(passed=len(rows), examples=rows, switch_runtime_verified=False)
     (output/'example-checks.json').write_text(json.dumps(report, indent=2)+'\n')
     return report

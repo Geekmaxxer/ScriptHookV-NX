@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/fastfloat/fast_float",
+  "tag": "v8.3.2",
+  "commit": "487ef00acfc33cf8b3167938457958299d1276c0",
+  "archive_sha256": "39638ee40249806daf44c32aac7a97405a292dce818e68f2ca0f4b5126299b1b",
+  "sha256": {
+    "LICENSE-APACHE": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06",
+    "LICENSE-BOOST": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b",
+    "LICENSE-MIT": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+    "include/fast_float/ascii_number.h": "d3f3607d4e7aa0279322a4a847f8d5f937634b8938daa4c0f785d69981a91120",
+    "include/fast_float/bigint.h": "ba39c5d8d8c8fe9ca8d7300aea8392a4367fd60689a9b8e3268aadceca729e53",
+    "include/fast_float/constexpr_feature_detect.h": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38",
+    "include/fast_float/decimal_to_binary.h": "5f4d50ddfac62add34b6682fc0cded2af3e875716aeaa3c9bfdee0a87d9e797c",
+    "include/fast_float/digit_comparison.h": "69fb10f59005eabf0d44a5caf4733fd97a3838a8ac7090c4dc6e3e9e61a31ac3",
+    "include/fast_float/fast_float.h": "fec4c0dc177fb3986a9007824c81fb93338ef83a6dba23325d430174a8686ce1",
+    "include/fast_float/fast_table.h": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb",
+    "include/fast_float/float_common.h": "63c9b24f189b98389e2f2b422419e0b037369e9d830fca3558af3980f6f34657",
+    "include/fast_float/parse_number.h": "f7435c8f2fafd6ef024869f862eca442963d7bb4fde468b38d46303eddf5a74c"
+  }
+}

@@ -20,11 +20,12 @@ def verify(output,desktop=False,cxx=None,devkit=None):
     if diagnosis['failed']:raise ValueError('SDK/profile checks failed; see doctor.json')
     profile_bindings(output/'target-bindings')
     checks.append('native-index-and-target-profile')
-    run('portable-tools',[sys.executable,ROOT/'tools/test_portable.py'])
-    run('sd-access-packaging',[sys.executable,ROOT/'tools/test_sd_permissions.py'])
+    run('repository-layout',[sys.executable,ROOT/'tools/check_repository.py'])
+    run('portable-tools',[sys.executable,ROOT/'tests/test_portable.py'])
+    run('sd-access-packaging',[sys.executable,ROOT/'tests/test_sd_permissions.py'])
     if desktop:
-        run('desktop-tests',['dotnet','run','--project',ROOT/'desktop/ModPorter.Tests/ModPorter.Tests.csproj','-c','Release','--',ROOT,*([] if devkit else ['--no-toolchain'])])
-        if sys.platform=='win32':run('desktop-ui-build',['dotnet','build',ROOT/'desktop/ModPorter.App/ModPorter.App.csproj','-c','Release','-v','quiet'])
+        run('desktop-tests',['dotnet','run','--project',ROOT/'mod-porter/ModPorter.Tests/ModPorter.Tests.csproj','-c','Release','--',ROOT,*([] if devkit else ['--no-toolchain'])])
+        if sys.platform=='win32':run('desktop-ui-build',['dotnet','build',ROOT/'mod-porter/ModPorter.App/ModPorter.App.csproj','-c','Release','-v','quiet'])
     if cxx:run('ui-model',[sys.executable,ROOT/'tools/run_ui_tests.py','--output',output/'ui-model','--cxx',cxx])
     if devkit:run('nro-examples',[sys.executable,ROOT/'tools/check_examples.py','--output',output/'examples','--devkitpro',devkit])
     result=dict(checks=checks,passed=True,scope='Local source, profile, desktop and requested compiler checks',

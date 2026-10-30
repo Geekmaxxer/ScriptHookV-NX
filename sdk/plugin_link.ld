@@ -16,6 +16,11 @@ SECTIONS {
  .rela.plt : {*(.rela.plt)} :ro
  . = ALIGN(0x1000);
  .data : {*(.data .data.*) *(.data.rel.ro .data.rel.ro.*)} :data
+ /* Retain unsupported initializers so section GC cannot hide them from the
+    builder/loader's explicit lifecycle rejection. They are never executed. */
+ .preinit_array : {KEEP(*(.preinit_array .preinit_array.*))} :data
+ .init_array : {KEEP(*(.init_array .init_array.*)) KEEP(*(.ctors .ctors.*))} :data
+ .fini_array : {KEEP(*(.fini_array .fini_array.*)) KEEP(*(.dtors .dtors.*))} :data
  .got : {*(.got .got.*)} :data
  .dynamic : {HIDDEN(__dynamic_start = .);*(.dynamic)} :data :dynamic
  . = ALIGN(0x1000);

@@ -8,10 +8,12 @@ def main():
     p.add_argument('--resident-limit', type=int)
     p.add_argument('--script-slots', type=int)
     p.add_argument('--plugin-memory-mib', type=int)
+    p.add_argument('--module-image-mib', type=int)
+    p.add_argument('--module-bss-mib', type=int)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--force', action='store_true', help='Replace an existing output config')
     a = p.parse_args()
-    settings = {key: getattr(a, key) for key in ('resident_limit', 'script_slots', 'plugin_memory_mib')
+    settings = {key: getattr(a, key) for key in ('resident_limit', 'script_slots', 'plugin_memory_mib', 'module_image_mib', 'module_bss_mib')
                 if getattr(a, key) is not None}
     try:
         text = render(settings)
