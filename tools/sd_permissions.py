@@ -27,7 +27,8 @@ def bundle(root=ROOT):
     info = inspect(data)
     if sha(data) != BUNDLED_SHA256 or not all(m['flags'] & SD_CARD for m in info['masks']):
         raise ValueError('The audited SD-access main.npdm is missing or changed')
-    for name in ('Install-SD-Access.ps1', 'Install-SD-Access.cmd'):
+    for name in ('Install-SD-Access.ps1', 'Install-SD-Access.cmd',
+                 'Check-Game-Layout.ps1', 'Check-Game-Layout.cmd', 'GAME-STARTUP.md'):
         if not (folder/name).is_file(): raise FileNotFoundError('Missing SD installer: '+name)
     return folder
 

@@ -17,6 +17,7 @@ from source; Windows ASI/DLL binaries require a separate port.
 **Players:** follow the [installation guide](docs/guides/INSTALL.md) to install
 the runtime and choose each mod's startup policy. Close GTA before replacing
 runtime or plugin files, and preserve existing settings.
+Before deleting DLC archives to save space, read the [DLC removal and recovery guide](docs/guides/DLC-RECOVERY.md).
 
 **Mod developers:** start with the [plugin quickstart](docs/guides/START-HERE.md).
 The SDK requires Python 3.10+, devkitA64 and switch-tools. Plugin builds do not
@@ -54,6 +55,12 @@ The published baseline is **v1.4.1 Preview**, with **Mod Porter 0.9.1**. Its run
 has [scoped Switch gameplay acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json).
 Current development adds substantial source-port services; those candidates have
 local verification and still require new physical Switch acceptance.
+The latest [console observation](docs/verification/PLATFORM-CAPACITY1.md)
+records the same physical fatal call chain with Test1 and the retained accepted
+runtime, and later failures with both SD runtime/menu module overrides absent.
+Console launch recovery was subsequently reported after correcting the DLC
+placeholder placement. Physical candidate acceptance remains pending with the
+Test1 runtime and required menu module restored.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. A changed executable requires a renewed

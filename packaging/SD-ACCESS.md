@@ -1,5 +1,7 @@
 # Shared SD access
 
+For startup failure after DLC cleanup, read [GTA startup and DLC path recovery](GAME-STARTUP.md).
+
 GTA's process needs explicit SD permission to load NROs and save mod settings.
 The included main.npdm grants it for title 0100b00b51230000 and the supported
 game build. It is shared by ScriptHookV-NX, Self Radio and the MEGATARD menu.

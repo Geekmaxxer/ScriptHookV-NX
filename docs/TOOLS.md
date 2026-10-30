@@ -18,6 +18,7 @@ They do not download compilers, modify your SD card or execute an inspected mod.
 | `native_query.py` | Search 8,540 target wrapper signatures and 6,419 static registrations offline |
 | `inspect_mod.py` | Check NRO segments/export/imports/initializers or binding CRC/identities/bounds |
 | `native_bindings.py` | Generate exact-script custom binding metadata |
+| `../packaging/Check-Game-Layout.cmd` | Check known DLC paths; explicit optional-path recovery preserves existing files. See [recovery guide](guides/DLC-RECOVERY.md). |
 | `report_summary.py` | Summarize loader reports and common residency/policy errors |
 
 ```powershell

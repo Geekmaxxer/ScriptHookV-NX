@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased startup diagnostics and DLC recovery - 2026-10-30
+
+- Document DLC removal, Atmosphere's RomFS merge, the observed startup recovery and profile limitations.
+- Include a read-only game-layout check and explicit, non-replacing optional-path recovery in runtime/plugin install packages.
+- Add Mod Porter layout checking/recovery and bounded AFE2 fatal-report decoding with process identification and build-specific symbolization limits.
+- Verify recovery against scratch SD fixtures; preserve the separate physical runtime acceptance gate.
+
 ## Unreleased platform profile and capacity - 2026-10-30
 
 - Add a guarded, optional profile service for the single open Switch user's UTF-8 nickname, with explicit account-state and platform errors.

@@ -5,7 +5,8 @@ namespace ModPorter.Core;
 public static class SharedSdAccess {
     public const string NpdmPath = "atmosphere/contents/0100b00b51230000/exefs/main.npdm";
     public const string ExpectedSha256 = "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f";
-    public static readonly string[] PackageFiles = [NpdmPath, "Install-SD-Access.ps1", "Install-SD-Access.cmd", "SD-ACCESS.md"];
+    public static readonly string[] PackageFiles = [NpdmPath, "Install-SD-Access.ps1", "Install-SD-Access.cmd", "SD-ACCESS.md",
+        "Check-Game-Layout.ps1", "Check-Game-Layout.cmd", "GAME-STARTUP.md"];
     const ulong SdCard = 1UL << 21;
     static byte[] Read(string path) {
         long length=new FileInfo(path).Length;

@@ -17,6 +17,19 @@ that patched NPDM. Every runtime/test/mod package must include this dependency.
 This build supports title `0100b00b51230000`, game build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`.
 
+## DLC cleanup and startup failures
+
+Before removing DLC archives to save space, read [DLC removal and recovery](DLC-RECOVERY.md).
+Run **Check-Game-Layout.cmd** from the install package after cleanup and before
+launching. Known optional paths can be recovered explicitly without replacing
+existing archives. Blank placeholders retain path coverage; they do not restore
+playable DLC content or edit the game's DLC registration.
+
+An Atmosphere fatal identifying `010041544D530000` refers to `ams.mitm`, which can
+fail while building the merged RomFS before GTA's scripts start. Preserve its
+fatal report and use the recovery guide. Deleting saves or replacing runtime
+code is not an established fix for a missing-path merge failure.
+
 ## Add or disable mods
 
 Put compatible ScriptHookV-NX mods in `switch/gtav-scripthook/plugins/`.

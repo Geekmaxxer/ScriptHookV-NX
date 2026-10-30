@@ -1,0 +1,167 @@
+{
+  "format": 1,
+  "milestone": "platform-capacity1-runtime-absent-and-dlc-inspection",
+  "date": "2026-10-30",
+  "status": "shared-startup-failure-missing-path-diagnostic-pending",
+  "current_sd_subsdk4_absent": true,
+  "current_sd_subsdk5_absent": true,
+  "current_sd_exefs": {
+    "subsdk9": {
+      "size": 56469,
+      "sha256": "9ffc4183156bf156c5eea29b01ea73002a405476b07d6bea303f0638f70916f5"
+    },
+    "main.npdm": {
+      "size": 1604,
+      "sha256": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f"
+    }
+  },
+  "reported_fatal_with_both_sd_modules_removed": true,
+  "fatal_reports": [
+    {
+      "filename": "report_0cceb7462.bin",
+      "sha256": "7d17c7e13ea8d4e9a15b20ec46790fc5e685c925191b14688ac3becd63221d00",
+      "program_id": "010041544D530000",
+      "error_desc": 4094,
+      "pc_module_offset": 269316,
+      "backtrace_module_offsets": [
+        281488,
+        164672,
+        106684,
+        106824,
+        446864,
+        634792
+      ]
+    },
+    {
+      "filename": "report_0476ea03b.bin",
+      "sha256": "ce3a9a5cf36b655db3538c0f7060c58a1c27302289723847e396058cab9bae37",
+      "program_id": "010041544D530000",
+      "error_desc": 4094,
+      "pc_module_offset": 269316,
+      "backtrace_module_offsets": [
+        281488,
+        164672,
+        106684,
+        106824,
+        446864,
+        634792
+      ]
+    },
+    {
+      "filename": "report_046c6c2c3.bin",
+      "sha256": "757b59a0b7fcf50fbe347b899aea3bfe025b6823e4683ad2a1fffeb38ff9dbfb",
+      "program_id": "010041544D530000",
+      "error_desc": 4094,
+      "pc_module_offset": 269316,
+      "backtrace_module_offsets": [
+        281488,
+        164672,
+        106684,
+        106824,
+        446864,
+        634792
+      ]
+    },
+    {
+      "filename": "report_03c4b7cca.bin",
+      "sha256": "6ebb1f9aec8e4e03d3cea608c6a76df78a7c51ce1ccc14574c924fd6e46ed40c",
+      "program_id": "010041544D530000",
+      "error_desc": 4094,
+      "pc_module_offset": 269316,
+      "backtrace_module_offsets": [
+        281488,
+        164672,
+        106684,
+        106824,
+        446864,
+        634792
+      ]
+    },
+    {
+      "filename": "report_03d03c4e8.bin",
+      "sha256": "4235b43c090d7aedb3a1d3956c1e930ce3601152b25c55a258719bd44a3303fb",
+      "program_id": "010041544D530000",
+      "error_desc": 4094,
+      "pc_module_offset": 269316,
+      "backtrace_module_offsets": [
+        281488,
+        164672,
+        106684,
+        106824,
+        446864,
+        634792
+      ]
+    }
+  ],
+  "all_five_normalized_call_chains_match": true,
+  "exact_fatal_to_removal_step_mapping_verified": false,
+  "last_known_working_launch_after_dlc_removal_verified": false,
+  "reported_post_dlc_removal_launch_before_test1": "not-tested",
+  "previous_baseline_npdm_sha256": "bb4e5775535c280e546891be4e145e55d354cf5ef6b35cc9f0aea3a522bf2079",
+  "npdm_snapshot_hashes_differ": true,
+  "filesystem": {
+    "type": "FAT32",
+    "dirty_flag_reported": true,
+    "reported_size_bytes": 96525615104,
+    "available_bytes": 1135738880,
+    "readonly_check_command": [
+      "chkdsk",
+      "D:"
+    ],
+    "readonly_check_exit_code": 0,
+    "readonly_check_no_structural_problems_reported": true,
+    "repair_run": false,
+    "sector_or_media_health_verified": false
+  },
+  "sd_loose_romfs_files": 216,
+  "missing_packer_template_dlc_files": [
+    "update/switch/dlcpacks/mpassault/dlc.rpf",
+    "update/switch/dlcpacks/mpbattle/dlc.rpf",
+    "update/switch/dlcpacks/mpbattle/dlc1.rpf",
+    "update/switch/dlcpacks/mpchristmas2017/dlc.rpf",
+    "update/switch/dlcpacks/mpchristmas2018/dlc.rpf",
+    "update/switch/dlcpacks/mpexecutive/dlc.rpf",
+    "update/switch/dlcpacks/mpgunrunning/dlc.rpf",
+    "update/switch/dlcpacks/mpheist3/dlc.rpf",
+    "update/switch/dlcpacks/mpheist4/dlc.rpf",
+    "update/switch/dlcpacks/mpheist4/dlc1.rpf",
+    "update/switch/dlcpacks/mpheist4/dlc2.rpf",
+    "update/switch/dlcpacks/mplowrider/dlc.rpf",
+    "update/switch/dlcpacks/mplowrider2/dlc.rpf",
+    "update/switch/dlcpacks/mpluxe/dlc.rpf",
+    "update/switch/dlcpacks/mpluxe2/dlc.rpf",
+    "update/switch/dlcpacks/mpsecurity/dlc.rpf",
+    "update/switch/dlcpacks/mpsecurity/dlc1.rpf"
+  ],
+  "named_nsp_sha256": "aaf37fe53245eeed2dcd8182a265f4ddeb1cd04591470da046ef6e931203a647",
+  "named_nsp_program_nca_sha256": "eb745756d26cc516aba8a273495e196332e2887c043986c69e659649c4676790",
+  "named_nsp_romfs_files": 82,
+  "named_nsp_romfs_directories": 5,
+  "packer_template_romfs_files": 139,
+  "installed_nsp_contents_verified": false,
+  "named_nsp_original_offset_model_reproduces_failure": false,
+  "retained_metadata_incomplete": true,
+  "retained_metadata_is_current_successful_build": false,
+  "hypothesis": "Missing loose paths may expose a different LayeredFS merge; the failed assertion and DLC causal role remain unproven.",
+  "diagnostic": {
+    "payload_files": 17,
+    "payload_bytes": 8704,
+    "uses_blank_template_placeholders": true,
+    "contains_playable_dlc_assets": false,
+    "zip_sha256": "3969ad7338a8ea01977d8732b03b819a9b3bd24e78b230096e363e31f3d8f0da",
+    "zip_readback_verified": true,
+    "scratch_helper_guard_tests_passed": true,
+    "sd_readonly_preflight_passed": true,
+    "sd_apply_run": false,
+    "physical_launch_verified": false
+  },
+  "runtime_code_changed": false,
+  "sd_modified_by_investigation": false,
+  "firmware_modified": false,
+  "large_rpf_files_opened": false,
+  "runtime_candidate_accepted": false,
+  "reference_sources": [
+    "https://github.com/Atmosphere-NX/Atmosphere/blob/1.11.2/stratosphere/ams_mitm/source/fs_mitm/fsmitm_romfs.cpp",
+    "https://github.com/Atmosphere-NX/Atmosphere/blob/1.11.2/stratosphere/ams_mitm/source/fs_mitm/fsmitm_romfs.hpp"
+  ]
+}

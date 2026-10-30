@@ -48,6 +48,9 @@ No menu, NRO mods, game archive or saved settings are included. An NSC menu is
 optional; Auto plugins work independently. The standalone manager source is in
 the SDK/repository. Check resident_limit in loader-report.txt for this runtime's
 module capacity; restart GTA to release resident slots.
+Before removing DLC content, read GAME-STARTUP.md and run Check-Game-Layout.cmd.
+It checks known DLC paths and offers explicit missing-path recovery without
+replacing existing archives. The helper does not restore playable DLC assets.
 Restore your backed-up module to roll back. Disable dependent scripts before
 removing the runtime. See the repository's install guide for details.
 '''.format(title=target['title_id'], build=target['build_id'], status=

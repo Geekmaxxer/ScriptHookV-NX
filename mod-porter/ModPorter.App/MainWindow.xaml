@@ -366,10 +366,12 @@
          <RowDefinition Height="Auto" />
          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <WrapPanel>
+        <WrapPanel x:Name="DiagnosticActions">
          <Button Content="Import Switch diagnostic report…" Click="ImportRuntimeReport_Click" Style="{StaticResource Quiet}" />
+         <Button Content="Check game layout…" Click="CheckGameLayout_Click" Style="{StaticResource Quiet}" />
+         <Button x:Name="RecoverGameLayoutButton" Content="Recover missing DLC paths…" Click="RecoverGameLayout_Click" Style="{StaticResource Quiet}" IsEnabled="False" />
         </WrapPanel>
-        <TextBox x:Name="DiagnosticReport" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Text="Import a loader, runtime, or mod status report from your SD card." Margin="0,8,0,0" Height="300" />
+        <TextBox x:Name="DiagnosticReport" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Text="Import an Atmosphere fatal or runtime report, or check the game layout after removing DLC content. Recovery is available for the known build-9b485eb8 loose-RomFS profile." Margin="0,8,0,0" Height="300" />
        </Grid>
       </ScrollViewer>
      </TabItem>

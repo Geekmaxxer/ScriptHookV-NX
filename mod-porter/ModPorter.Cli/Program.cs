@@ -17,6 +17,7 @@ try {
             install <plugin.nro> --id <plugin-id> --sd <SD-root> [--auto]
             restore <installation.json> --sd <SD-root>
             report <runtime-report.txt>
+            game-layout --sd <SD-root> --sdk <SDK> [--recover]
             dlc-prepare <converted-dlc.rpf> --list <current-dlclist.xml> --id <pack-id> --output <new-folder> [--no-zip]
             game-add-dlc <prepared-dlc.rpf> --game <update.rpf|SD-root|game-folder> --id <pack-id> --output <new-folder>
             game-replace <prepared-asset> --archive <current.rpf> --entry <path/in/archive> --output <new-folder>
@@ -45,6 +46,11 @@ try {
     using var cts = new CancellationTokenSource(); Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
     var settings = new ToolSettings(Get("--sdk", Path.Combine(AppContext.BaseDirectory, "SDK")), Get("--python", "python"), Get("--devkitpro", Environment.GetEnvironmentVariable("DEVKITPRO") ?? "C:/devkitPro"));
     switch (args[0]) {
+        case "game-layout": {
+            var layout = await GameLayoutService.RunAsync(settings.SdkPath, Get("--sd"), args.Contains("--recover"), cts.Token);
+            Console.WriteLine(layout.Text());
+            return layout.CoreProblems.Length + layout.InvalidPaths.Length > 0 ? 1 : layout.MissingOptional.Length > 0 ? 2 : 0;
+        }
         case "dlc-library": {
             var library=DlcLibrary.Scan(Get("--game"),cts.Token);
             Console.WriteLine("DLC folder: "+library.PacksDirectory);foreach(var pack in library.Packs)Console.WriteLine(pack);return 0;

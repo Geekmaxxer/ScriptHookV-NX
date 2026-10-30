@@ -1,5 +1,7 @@
 # Documentation
 
+For startup failure after deleting DLC content, see [DLC removal and recovery](guides/DLC-RECOVERY.md).
+
 Choose a guide for your task. Current behavior belongs in guides and reference
 pages; implementation plans and dated verification records are maintained separately.
 

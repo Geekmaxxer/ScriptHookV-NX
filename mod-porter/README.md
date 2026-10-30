@@ -109,6 +109,19 @@ on the project screen. **Esc** cancels the current operation.
 Physics-child texture graphs, Enhanced/Gen9 profiles, encrypted archive tables,
 incompatible rigs and clothing collections still require separate handling.
 
+## DLC cleanup and startup recovery
+
+Use **Tools > Diagnostics > Check game layout** after removing DLC content.
+For the known build-9b485eb8 loose-RomFS profile, **Recover missing DLC paths**
+fills only absent optional paths with blank placeholders and records additions.
+It preserves existing archives, settings and saves. Read [DLC removal and recovery](../docs/guides/DLC-RECOVERY.md)
+for the cause, retained base packs and recovery limits. The helper is also
+available independently in `SDK/packaging/Check-Game-Layout.cmd`.
+
+**Import Switch diagnostic report** accepts AFE2 Atmosphere fatal `.bin` reports
+as well as runtime text reports. It identifies the process without guessing the
+failed assertion or applying another build's symbols.
+
 ## Install and diagnose
 
 Close GTA, then expand **SD installation** on the build screen and use **Install built NRO to SD**. New installations default to Manual

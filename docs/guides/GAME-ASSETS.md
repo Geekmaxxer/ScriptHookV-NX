@@ -4,6 +4,13 @@ The Mod Porter desktop app can prepare compatible Legacy assets and update a
 copy of an installed OPEN RPF. Game files come from your own SD drive, game
 folder or saved copy. Nothing is downloaded from the game or bundled with the tool.
 
+## Remove DLC content safely
+
+Before deleting DLC archives to save space, read [DLC removal and recovery](DLC-RECOVERY.md).
+Use the known profile's placeholders to retain removed optional paths, preserve
+base archives, and check the layout before launch. DLC registration and playable
+content are separate from path coverage. Storage savings do not prove better performance.
+
 ## Keep many models in one DLC
 
 Use **Game assets > DLC collection**. Drop several folders, ZIPs or DLC archives,

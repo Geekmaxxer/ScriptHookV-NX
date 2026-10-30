@@ -112,6 +112,13 @@ The [platform/capacity acceptance sequence](verification/PLATFORM-CAPACITY1.md)
 is the next gate before further substantial runtime expansion.
 
 - [x] Build smaller combined container/numeric/XML/settings probes.
+- [x] Verify the retained runtime installation and compare both startup fatal reports.
+- [x] Record startup failure with the SD runtime and menu module overrides absent.
+- [x] Inspect DLC chronology, local package metadata and filesystem structure.
+- [x] Record launch recovery after correction of the missing DLC path coverage.
+- [x] Publish player guidance and package a read-only check with explicit optional-path recovery.
+- [x] Add desktop/CLI recovery and bounded Atmosphere fatal-report import.
+- [ ] Read back the successful configuration and verify startup with Test1 restored.
 - [ ] Build a substantial workload covering data, textures, callbacks and entities.
 - [ ] Validate installation/rollback and exact artifact identities.
 - [ ] Test pause/loading/death/character transitions, Kill/Load and concurrent mods.

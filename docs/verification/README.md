@@ -20,6 +20,15 @@ are separate stages. Historical records remain immutable.
 | Registered cleanup and managed ownership | [Owned-resource lifecycle](PLUGIN-RESOURCES1.md) | Pending |
 | Active profile and growing runtime capacity | [Platform/capacity workflow](PLATFORM-CAPACITY1.md) | Pending; next integration gate |
 
+The 2026-10-30 [console observation](PLATFORM-CAPACITY1.md#console-observations---2026-10-30)
+records a physical startup failure in the Atmosphere RomFS metadata builder and
+scoped Eden demo results. The retained accepted runtime reproduces the same
+normalized fatal call chain. Later failures also occur with the SD `subsdk4` and
+`subsdk5` files absent. Console launch recovery was subsequently reported after
+correcting the missing-DLC placeholder placement. The precise assertion and active
+package identity remain unverified. Physical acceptance of Test1 still requires
+the runtime and required menu module to be restored and tested.
+
 ## Accepted baseline
 
 - [Runtime completion record](RUNTIME-COMPLETION.md)
@@ -28,6 +37,7 @@ are separate stages. Historical records remain immutable.
 
 ## Tooling reviews
 
+- [DLC startup diagnostics and recovery](DLC-RECOVERY1.md)
 - [Quality audit](QUALITY-AUDIT.md)
 - [Automation audit](AUTOMATION-AUDIT.md)
 

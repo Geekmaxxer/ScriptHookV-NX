@@ -1,4 +1,12 @@
-# Mod Porter 0.9.1 Preview - 2026-10-25
+# Mod Porter changelog
+
+## Unreleased startup recovery
+
+- Add game-layout checking and explicit missing-DLC path recovery under Tools > Diagnostics.
+- Import AFE2 Atmosphere fatal reports, identify ams.mitm and retain module-relative traces without guessing another build's symbols.
+- Include player guidance and the independent Windows recovery helper in SDK and plugin install packages.
+
+## Mod Porter 0.9.1 Preview - 2026-10-25
 
 - Guide the DLC workflow through separate choose, add/review and save sections with more spacing.
 - Keep optional definition, metadata, import and first-installation controls collapsed initially.

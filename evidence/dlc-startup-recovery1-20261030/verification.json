@@ -1,0 +1,104 @@
+{
+  "format": 1,
+  "milestone": "dlc-startup-recovery1",
+  "date": "2026-10-30",
+  "status": "local-tooling-and-packaging-verified",
+  "supported_profile": "build-9b485eb8-loose-romfs",
+  "title_id": "0100b00b51230000",
+  "known_base_archives": 8,
+  "known_optional_paths": 17,
+  "optional_placeholder_bytes": 512,
+  "default_check_read_only": true,
+  "recovery_explicit": true,
+  "existing_archives_replaced": false,
+  "base_archives_stubbed": false,
+  "game_registration_modified": false,
+  "recovery_records_written": true,
+  "recovery_repeat_safe": true,
+  "helper_fixture_tests": {
+    "passed": 10,
+    "failed": 0,
+    "scope": "Disposable SD directories; mounted card not used."
+  },
+  "desktop_tests": {
+    "passed": 220,
+    "failed": 0,
+    "compiler_groups_skipped": 0,
+    "includes_plugin_build_and_install_zip": true
+  },
+  "desktop_layout": {
+    "passed": 2978,
+    "failed": 0,
+    "scenarios": 158,
+    "simulated_dpi": [
+      100,
+      125,
+      150,
+      200
+    ]
+  },
+  "afe2_process_identification": true,
+  "afe2_bounds_checked": true,
+  "failed_assertion_inferred_from_title_id": false,
+  "offsets_symbolized_against_other_builds": false,
+  "independent_recovery_zip": {
+    "files": {
+      "Check-Game-Layout.ps1": "c21d30b60c0befeea3856b1e240bd56741c2e2fb41a28e3557d7e5e101530869",
+      "Check-Game-Layout.cmd": "09d906709bf152c33a9156d003939ff9ec057fb69ee00daf10d524f38896712c",
+      "GAME-STARTUP.md": "a8bc6f7957c0ca280bd620295424b8b97703b1c242a009dd5050427a8f5f94c3",
+      "LICENSE": "fe5a3c544660aaff24049783d09cc44c30bcd19eb5c3af922997388e0766c79d",
+      "NOTICE": "933b76035cd1c5c10c25d4b5ef58dc4f346a87dbbfa65719c03acd8317cab74d"
+    },
+    "zip_sha256": "de9f9be769ed4217e42e9401988c8ac97a796d2a267063db4acdbc1a73c08b2e",
+    "zip_bytes": 8784,
+    "zip_readback_verified": true,
+    "game_archives_included": false,
+    "runtime_module_included": false,
+    "sd_modified": false
+  },
+  "mod_porter_windows_zip": {
+    "file": "ScriptHookV-NX-Mod-Porter-0.9.1-Windows-x64.zip",
+    "bytes": 61254613,
+    "sha256": "94422a3a688105ba99f7e277e1d9b20a619ef22f6df8bd37f766cfef73ff4075"
+  },
+  "mod_porter_source_zip": {
+    "file": "ScriptHookV-NX-Mod-Porter-0.9.1-Source.zip",
+    "bytes": 1328142,
+    "sha256": "0c0f5d7a47d91a343f860b6fb32d6ab98d228ed77de37249a6a4da6b54a73a8c"
+  },
+  "source_sha256": {
+    "packaging/Check-Game-Layout.ps1": "c21d30b60c0befeea3856b1e240bd56741c2e2fb41a28e3557d7e5e101530869",
+    "packaging/Check-Game-Layout.cmd": "09d906709bf152c33a9156d003939ff9ec057fb69ee00daf10d524f38896712c",
+    "packaging/GAME-STARTUP.md": "a8bc6f7957c0ca280bd620295424b8b97703b1c242a009dd5050427a8f5f94c3",
+    "mod-porter/ModPorter.Core/GameLayoutService.cs": "529f9105277ddb19ded4e5faa1bc058a70357636c892a72058e6750a27b2f99d",
+    "mod-porter/ModPorter.Core/RuntimeReportService.cs": "a1369d433eb55f7c8fdc38fb0c7377e8d9791245c64bc32eadb74f211bb66b8f",
+    "mod-porter/ModPorter.Core/SharedSdAccess.cs": "d180e6f6d635a72de069a473f43b6dc27c80c3bd042a91bd6cc3ee1d4e29e47f",
+    "mod-porter/ModPorter.Core/BuildService.cs": "1e5129dcccdc454156469105676db7cd71f85b51faf2518d54d0592304190859",
+    "mod-porter/ModPorter.App/DeploymentWorkflow.cs": "70b21c2ab76ff673ba48df11fcb3722eb391f2877075be69dbf2fc681619e950",
+    "mod-porter/ModPorter.App/MainWindow.xaml": "3a4b2c77667c9bc9fed748773fbc3d4fba350ca315b04b1e99fae1936cb61d21",
+    "mod-porter/ModPorter.App/ResponsiveLayout.cs": "e8004123fcf5929455069b5db671f13eadb7ad0854e7361e0647dda9baaf09a1",
+    "tests/test_game_layout.py": "f628a88881b4a70cd936091313feff087a84bca78ad14dd43011eb32f496eb05",
+    "mod-porter/ModPorter.Tests/StartupTests.cs": "9be93098b786cb0ebea8e3741a5a61763f99f847e67b60ba11ccdd96b7535b88",
+    "tools/sd_permissions.py": "070c9c3c3d0fd98c850cafb06f9ad9a9325d99d67a902a15b7c20b4558065013",
+    "tools/package_runtime.py": "10038349c9a1efd15977ae2dfdd5047209a89e6d5e4ca6c245395d6464373efc",
+    "mod-porter/package.py": "67cd28d5390e257520f7f5fcb2d63bb088b0a1002dfa0a08cd4a415152afe788"
+  },
+  "log_sha256": {
+    "layout-tests.log": "c6630e5bebd355127e8233d3e43dab08bcf477b8ed0917c8120141792100f5ba",
+    "desktop-full-tests.log": "d59a2c1607aaaec2b7a33bafd18c772c3a6bc5a13cfa9b3688369acdd8789a24",
+    "source-verification.log": "4195aad5b8ee9bea15ee2d4f5bed2bb1c52320ce69efc2c7c5702f7914dc2975"
+  },
+  "physical_startup_recovery_prior_reported": true,
+  "new_helper_applied_to_physical_sd": false,
+  "sd_modified": false,
+  "runtime_code_changed": false,
+  "runtime_candidate_accepted": false,
+  "installed_game_build_auto_detected": false,
+  "minimum_required_placeholder_subset_verified": false,
+  "limitations": [
+    "Known optional DLC path coverage only; blank placeholders contain no playable content.",
+    "No installed NSP, archive integrity, media health or performance validation.",
+    "The original Atmosphere assertion remains unidentified; another fatal needs separate analysis."
+  ],
+  "published": false
+}

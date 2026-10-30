@@ -5,6 +5,31 @@ using System.Windows;
 
 namespace ModPorter.App;
 public partial class MainWindow {
+    string? checkedLayoutSd;
+    private async void CheckGameLayout_Click(object sender, RoutedEventArgs e) {
+        checkedLayoutSd = null; RecoverGameLayoutButton.IsEnabled = false;
+        string? sd = PickFolder("Choose the mounted SD root to check GTA's DLC layout");
+        if (sd == null) return;
+        var settings = Settings;
+        await RunBusy("Checking known DLC paths without changing files…", async cancel => {
+            var layout = await GameLayoutService.RunAsync(settings.SdkPath, sd, cancel: cancel);
+            checkedLayoutSd = sd; RecoverGameLayoutButton.IsEnabled = layout.RecoveryAllowed;
+            DiagnosticReport.Text = layout.Text(); ToolTabs.SelectedIndex = 2;
+            StatusText.Text = layout.RecoveryAllowed ? "Missing DLC paths found · Review recovery guidance" : "Game layout checked · Review the reported scope and findings";
+        });
+    }
+    private async void RecoverGameLayout_Click(object sender, RoutedEventArgs e) {
+        if (checkedLayoutSd == null) return;
+        if (MessageBox.Show(this,
+            "Use this recovery for the build-9b485eb8 loose-RomFS profile only. Close GTA first.\n\nCreate blank placeholders at the known optional DLC paths that are still missing? Existing archives, base packs, settings and saves will be preserved. Placeholders provide path coverage, not playable DLC content. The additions will be recorded on the SD card.",
+            "Recover missing DLC paths", MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK) return;
+        string sd = checkedLayoutSd; var settings = Settings;
+        await RunBusy("Recovering missing DLC path coverage…", async cancel => {
+            var layout = await GameLayoutService.RunAsync(settings.SdkPath, sd, recover: true, cancel: cancel);
+            RecoverGameLayoutButton.IsEnabled = layout.RecoveryAllowed; DiagnosticReport.Text = layout.Text();
+            StatusText.Text = "DLC paths checked · Review the result, safely eject and test startup";
+        });
+    }
     private async void CheckCpp_Click(object sender, RoutedEventArgs e) {
         if (projectFile == null) { StatusText.Text = "Create or open a project first."; return; }
         string project = projectFile; var settings = Settings;
@@ -36,7 +61,7 @@ public partial class MainWindow {
         });
     }
     private async void ImportRuntimeReport_Click(object sender, RoutedEventArgs e) {
-        var file = new OpenFileDialog { Title = "Choose a Switch loader, runtime or mod status report", Filter = "Runtime reports|*.txt|All files|*.*" };
+        var file = new OpenFileDialog { Title = "Choose an Atmosphere fatal or Switch runtime report", Filter = "Switch reports|*.txt;*.bin|Runtime text report|*.txt|Atmosphere AFE2 fatal report|*.bin|All files|*.*" };
         if (file.ShowDialog(this) != true) return;
         await RunBusy("Reading runtime diagnostics…", async cancel => {
             var report = await Task.Run(() => RuntimeReportService.Read(file.FileName), cancel);

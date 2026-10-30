@@ -97,7 +97,7 @@ public partial class MainWindow {
             Height(pane, narrow ? 300 : bodyHeight);
         }
         Height(NativeResults, Math.Max(200, ViewHeight(NativeScroll, 52) - 92));
-        Height(DiagnosticReport, Math.Max(200, ViewHeight(DiagnosticsScroll, 52) - 58));
+        Height(DiagnosticReport, Math.Max(200, ViewHeight(DiagnosticsScroll, 52) - DiagnosticActions.ActualHeight - 16));
         Height(AssetLog, Math.Max(200, ViewHeight(AssetPageScroll) - AssetOutputFooter.ActualHeight - 110));
     }
 }

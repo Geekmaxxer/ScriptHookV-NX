@@ -54,7 +54,7 @@ def export(output):
             if path.is_file() and path.suffix.lower() in allowed and not any(part.startswith('.') or part in ('__pycache__', 'bin', 'obj') for part in path.relative_to(ROOT/folder).parts):
                 if path.name not in ('RESEARCH-WORKSPACE.md', 'native_caller_sample.cpp'): selected.append(path)
     selected.extend(ROOT/'tools'/name for name in PUBLIC_TOOLS)
-    selected.extend(ROOT/'tests'/name for name in ('bootstrap.py','README.md','test_portable.py','test_sd_permissions.py','ui_model_tests.cpp'))
+    selected.extend(ROOT/'tests'/name for name in ('bootstrap.py','README.md','test_portable.py','test_sd_permissions.py','test_game_layout.py','ui_model_tests.cpp'))
     selected.extend(p for p in (ROOT/'sdk/third_party').rglob('LICENSE*') if p.is_file())
     # Current verification pages link compact reports; preserve immutable source
     # snapshots only in the maintainer archive, not in the public source tree.
