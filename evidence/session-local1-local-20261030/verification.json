@@ -1,0 +1,223 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "candidate": "Explicit shared C++ session state",
+  "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+  "session_arm64": {
+    "passed": 29,
+    "failed": 0,
+    "checks": [
+      "Shared session example rejects no imports or unsupported initializers",
+      "Session slots are empty before explicit construction",
+      "First access constructs one registered owner allocation",
+      "Two translation units share the same type/tag slot",
+      "Repeated access preserves the object and ignores replacement arguments",
+      "Independent NROs retain separate session state",
+      "Distinct tags isolate objects of the same type",
+      "Shared state survives cooperative waits",
+      "Foreign-thread reset is refused without clearing the slot",
+      "Owner retains its original object after foreign-thread refusal",
+      "An unfinished native defers reset without losing ownership",
+      "Explicit reset destroys once and clears all translation-unit borrows",
+      "Empty reset is idempotent",
+      "Recursive constructor access is refused and the completed object is published",
+      "Kill drains both tags and all nested string allocations",
+      "Destructor reentry cannot create a replacement session",
+      "Stopping one owner preserves the other owner session",
+      "Reload creates a fresh object with new constructor arguments",
+      "Repeated Kill cleans the new session exactly once",
+      "Allocation failure publishes no object and invokes no constructor",
+      "Allocation failure permits a later successful retry",
+      "Resource exhaustion destroys the unpublished object without leaking",
+      "Missing memory service rejects the C++ plugin before entry",
+      "Missing resource service refuses before constructing state",
+      "Rejected initialization destroys session state before unmapping",
+      "Natural completion drains shared session state",
+      "Complete multi-source example shares state between main and worker",
+      "Example Kill reports worker progress and final nested allocation cleanup",
+      "Example reload recreates the shared session and cleans it again"
+    ],
+    "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "fixture_sha256": "d36d05c46f383b901098375aba4559f3a1127917270025ee83fb0706d8a03c35",
+    "example_sha256": "bc12513c5b17b4d2b85c52f9d6e3852b39eb8a42eff138b0fe991f6b2f055804",
+    "real_runtime_sdk_fixture_and_example_arm64_executed": true,
+    "os_ro_filesystem_game_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "quiet_capacity_arm64": {
+    "passed": 31,
+    "failed": 0,
+    "checks": [
+      "Compiled image and BSS independently exceed 2 MiB",
+      "Manual policy preserves explicit loading",
+      "Default image refusal precedes module allocation and RO admission",
+      "Independent BSS cap produces its precise refusal",
+      "Large extents preserve independent shared-budget refusal",
+      "All 36 real additional workers progress alongside the main script",
+      "Page-spaced reads and writes reach all large image/BSS pages",
+      "Nested parent, child and final-auditor registrations coexist",
+      "Fragmentation cycles preserve copied bytes without heap failures",
+      "Periodic report writes are batched while allocator cycles continue",
+      "Production render callback and native timing API execute",
+      "Per-run wall time and cumulative timing baseline are available",
+      "All measured operations preserve complete exclusive duration histograms",
+      "Callback interval histogram accounts for every adjacent timestamp",
+      "A modeled 60 ms write stall is attributed to report I/O",
+      "Actual script admission grows stacks and scheduler metadata",
+      "Whole-plugin cancellation stops all 37 cooperative entries",
+      "Nested cleanup destroys both children before their parent",
+      "Final audit proves owner heap and registrations reclaimed",
+      "Code and admitted stack storage remain resident after stop",
+      "Final cleanup is retained in a bounded run-history slot",
+      "Restart reuses the mappings and admitted stacks",
+      "Second lifetime produces fresh complete cleanup",
+      "Restart preserves the first report and resets per-run timing without resetting owner totals",
+      "Portable report review validates actual compiled probe output",
+      "The same bounded workload executes with all automatic settings",
+      "Automatic configuration preserves complete nested cleanup",
+      "Partial additional-script admission fails explicitly",
+      "Admission failure reclaims nested contexts and stops admitted workers",
+      "Cancellation during admission still drains nested registrations",
+      "Missing ownership service rejects initialization"
+    ],
+    "module_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "plugin_sha256": "cfb9888519d87119961381d1e8bf45084b51920e9302995f8e8af8911854960f",
+    "real_runtime_sdk_and_probe_arm64_executed": true,
+    "os_ro_filesystem_engine_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "service_package": {
+    "format": 1,
+    "kit": "Service acceptance batch 1",
+    "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "artifacts": {
+      "session-state": {
+        "nro_sha256": "bc12513c5b17b4d2b85c52f9d6e3852b39eb8a42eff138b0fe991f6b2f055804",
+        "image_bytes": 24576,
+        "bss_bytes": 4096,
+        "accounted_bytes": 61440
+      },
+      "recoverable-publication": {
+        "nro_sha256": "6ec20b1da1e9856e3f6b7d9933b727d03a7e0e1cdf6f94abb2b12a05ea36bba5",
+        "image_bytes": 20480,
+        "bss_bytes": 20480,
+        "accounted_bytes": 86016
+      },
+      "streamed-catalog": {
+        "nro_sha256": "f4d809307473e9cb3f22ece14da223761046be8b63a7d05106b3e6e4aec848de",
+        "image_bytes": 20480,
+        "bss_bytes": 36864,
+        "accounted_bytes": 118784
+      }
+    },
+    "runtime_module_included": false,
+    "shared_configuration_included": false,
+    "zip_sha256": "45912fea650e5c567d753f50ada8970ce2f06c9a92c9f2da190516a9189b47c6",
+    "zip_bytes": 23914,
+    "zip_readback_verified": true,
+    "game_files_required_for_build": false,
+    "installed": false,
+    "switch_runtime_verified": false,
+    "published": false
+  },
+  "source_sha256": {
+    "include/shv/session.h": "115eb0f238d8af1aac1cc896c5e71a3782dfb3edcef69f45f3f7981d66e63970",
+    "examples/session-state/main.cpp": "9907a783d02e157780fa7f5795e795e10198eb50340ede2d04fb65db55d7e91c",
+    "examples/session-state/state.hpp": "a52f30710a934b5f741ba730893c5eb7f6c86fe215d496295b32e04a8c565c5d",
+    "examples/session-state/worker.cpp": "a82fe2f12350b60c9f2114e7bfcd35fda4f847d4aca2598fd36b6a0151dbc579",
+    "examples/session-state/project.json": "7880fd4c2630a956f25ed49f3e002ded357cee163acd4e5629bcbf4ebe7d0ff8",
+    "tools/build_service_acceptance.py": "17997f6a8de95ee2171b7982390b5594e52c6f0250e223022f5713cb882d0e33",
+    "tests/test_session_local.py": "c6d7767ddff30bd9a0e5b269f4c9a16facf2496c428ab59bf5f53efaef2299cd",
+    "tests/test_service_batch.py": "19970a4a5255967bc25050bac38f2e54bd7bfdc38da3984ed89d69570d304119"
+  },
+  "production_runtime_changed": false,
+  "base_abi_changed": false,
+  "compiler_managed_global_initialization_enabled": false,
+  "physical_session_state_accepted": false,
+  "sd_modified": false,
+  "installed": false,
+  "committed": false,
+  "published": false,
+  "packaged_batch_arm64": {
+    "passed": 10,
+    "failed": 0,
+    "checks": [
+      "All three probes remain manual under compiled defaults",
+      "Three modules coexist within default resident and image limits",
+      "Shared session main and worker remain active after the file probes finish",
+      "Publication verifies complete data and retains the original backup",
+      "Nested catalog probe verifies the complete sample and directory metadata",
+      "Completed file operations retain no handles or mounts",
+      "Session stop drains nested storage while retaining module mappings",
+      "Repeated file runs preserve existing published and sampled data",
+      "Restart reuses all three resident mappings",
+      "Second shared session completes without surviving scripts or ownership"
+    ],
+    "kit_zip_sha256": "45912fea650e5c567d753f50ada8970ce2f06c9a92c9f2da190516a9189b47c6",
+    "artifacts": {
+      "session-state": {
+        "nro_sha256": "bc12513c5b17b4d2b85c52f9d6e3852b39eb8a42eff138b0fe991f6b2f055804",
+        "image_bytes": 24576,
+        "bss_bytes": 4096,
+        "accounted_bytes": 61440
+      },
+      "recoverable-publication": {
+        "nro_sha256": "6ec20b1da1e9856e3f6b7d9933b727d03a7e0e1cdf6f94abb2b12a05ea36bba5",
+        "image_bytes": 20480,
+        "bss_bytes": 20480,
+        "accounted_bytes": 86016
+      },
+      "streamed-catalog": {
+        "nro_sha256": "f4d809307473e9cb3f22ece14da223761046be8b63a7d05106b3e6e4aec848de",
+        "image_bytes": 20480,
+        "bss_bytes": 36864,
+        "accounted_bytes": 118784
+      }
+    },
+    "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "real_production_runtime_and_all_three_packaged_nros_executed": true,
+    "os_ro_filesystem_game_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "exported_sdk": {
+    "passed": true,
+    "all_three_artifacts_identical": true,
+    "all_kit_files_identical": true,
+    "unrelated_working_directory": true,
+    "source_and_output_paths_contain_spaces": true,
+    "package_tool_inventory_verified": true,
+    "guide_links_checked": 1,
+    "game_files_required": false
+  },
+  "public_repository_checks": {
+    "checks": [
+      "native-index-and-target-profile",
+      "repository-layout",
+      "portable-tools",
+      "sd-access-packaging",
+      "game-layout-recovery",
+      "capacity-profile-preservation",
+      "capacity-diagnostic-reports",
+      "nro-examples"
+    ],
+    "passed": true,
+    "scope": "Local source, profile, desktop and requested compiler checks",
+    "native_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "skipped": [
+      "desktop",
+      "host-ui-model"
+    ],
+    "switch_runtime_verified": false
+  },
+  "standalone_example_builds": 19,
+  "quiet_capacity_package": {
+    "probe_revision": 3,
+    "report_schema": 2,
+    "plugin_sha256": "cfb9888519d87119961381d1e8bf45084b51920e9302995f8e8af8911854960f",
+    "zip_sha256": "133bf219825bb98256bd40529325b25c1c8fdadaff6689ae7785f2c5029d79f5",
+    "zip_bytes": 31118,
+    "zip_readback_verified": true,
+    "runtime_module_included": false,
+    "installed": false
+  }
+}

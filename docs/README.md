@@ -26,6 +26,7 @@ pages; implementation plans and dated verification records are maintained separa
 - [Paged directory catalogs](reference/DIRECTORY-CATALOG.md)
 - [File mutation and recoverable publication](reference/FILE-PUBLICATION.md)
 - [Owned resources and managed heap lifetimes](reference/OWNED-RESOURCES.md)
+- [Shared C++ session state](reference/SESSION-STATE.md)
 - [Active Switch user profile](reference/USER-PROFILE.md)
 - [Controller UI](reference/CONTROLLER-UI.md) and [command-line tools](TOOLS.md)
 

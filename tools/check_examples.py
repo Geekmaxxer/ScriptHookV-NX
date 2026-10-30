@@ -25,7 +25,9 @@ def check(root, output, devkit=None):
         name=project.parent.name
         with (output/(name+'.log')).open('w',encoding='utf-8') as log,contextlib.redirect_stdout(log):
             build_project(project,output/name,devkit)
-        proof=inspect(output/name/'plugin.nro')
+        declared=json.loads(project.read_text(encoding='utf-8')).get('runtime_limits',{})
+        limits={key:declared[key] for key in ('module_image_mib','module_bss_mib','plugin_memory_mib') if key in declared}
+        proof=inspect(output/name/'plugin.nro',**limits)
         rows.append(dict(name=name,project_sha256=hashlib.sha256(project.read_bytes()).hexdigest(),**proof))
         print(name+': project built and structurally checked')
     report = dict(passed=len(rows), examples=rows, switch_runtime_verified=False)

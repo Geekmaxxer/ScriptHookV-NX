@@ -1,0 +1,14 @@
+{
+  "format": 1,
+  "kind": "nro",
+  "sources": ["main.cpp", "clock.s"],
+  "c_runtime": true,
+  "cxx_runtime": true,
+  "runtime_limits": {
+    "resident_limit": 16,
+    "script_slots": 48,
+    "plugin_memory_mib": 16,
+    "module_image_mib": 3,
+    "module_bss_mib": 3
+  }
+}

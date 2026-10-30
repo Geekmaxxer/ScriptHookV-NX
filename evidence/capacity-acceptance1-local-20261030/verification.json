@@ -1,0 +1,246 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "milestone": "capacity-acceptance1-local",
+  "status": "local-verification-complete-physical-pending",
+  "arm64": {
+    "passed": 23,
+    "failed": 0,
+    "checks": [
+      "Compiled image and BSS independently exceed 2 MiB",
+      "Manual policy preserves explicit loading",
+      "Default image refusal precedes module allocation and RO admission",
+      "Independent BSS cap produces its precise refusal",
+      "Large extents preserve independent shared-budget refusal",
+      "All 36 real additional workers progress alongside the main script",
+      "Page-spaced reads and writes reach all large image/BSS pages",
+      "Nested parent, child and final-auditor registrations coexist",
+      "Fragmentation cycles preserve copied bytes without heap failures",
+      "Production render callback and native timing API execute",
+      "Actual script admission grows stacks and scheduler metadata",
+      "Whole-plugin cancellation stops all 37 cooperative entries",
+      "Nested cleanup destroys both children before their parent",
+      "Final audit proves owner heap and registrations reclaimed",
+      "Code and admitted stack storage remain resident after stop",
+      "Restart reuses the mappings and admitted stacks",
+      "Second lifetime produces fresh complete cleanup",
+      "The same bounded workload executes with all automatic settings",
+      "Automatic configuration preserves complete nested cleanup",
+      "Partial additional-script admission fails explicitly",
+      "Admission failure reclaims nested contexts and stops admitted workers",
+      "Cancellation during admission still drains nested registrations",
+      "Missing ownership service rejects initialization"
+    ],
+    "module_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "plugin_sha256": "21732a21a11cbc2d41b25e186712bb80c35673c493eb6c83e15085c535b8e36d",
+    "real_runtime_sdk_and_probe_arm64_executed": true,
+    "os_ro_filesystem_engine_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "profile_preservation": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "Windows PowerShell on disposable host SD fixtures; no mounted card used"
+  },
+  "standalone_examples": {
+    "passed": 18,
+    "examples": [
+      {
+        "name": "scriptmain",
+        "sha256": "bde54454034dec9466233f053f0ea0e19994e56e8aacc3c0b0763a360ef60003",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "public-sample",
+        "sha256": "412ce17ee7544867f9c98389d6171c593c6e353dd59ed0a2a735ce5edd8b0036",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "controller-ui",
+        "sha256": "2421527ee024baf91794cdd91e761bcd386c92668c51234314374d18b3359ebd",
+        "image_bytes": 45056,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "hello",
+        "sha256": "7a2aed1f5cef8417ae05a453f99e5adf9cc067c5cf7f77f02f37eb99ec5e226f",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "native-provider",
+        "sha256": "5ea364e357282e2b24c0d496f3839789b0972ec62242426d0392588620204d40",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "overlay",
+        "sha256": "2bf944876829fb7ade532a055fe5b6f40fab041dcb3ca72b5f2bd029c0f6e45f",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "saved-counter",
+        "sha256": "8f02bd0fc854a8bb067dc7ac9fd2ac4d2d37f2311bc9125924bd59c1211caee8",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "sdk-parity",
+        "sha256": "6314586b073191c622ee636bd71adf3d5a9086a8fc91fa454876ec064a3599a8",
+        "image_bytes": 40960,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "vehicle-logger",
+        "sha256": "1609082535f55a83c40124dbee7bed40093a7661a33c2d8af00197c0a2650f51",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "capacity-acceptance",
+        "sha256": "21732a21a11cbc2d41b25e186712bb80c35673c493eb6c83e15085c535b8e36d",
+        "image_bytes": 2134016,
+        "bss_bytes": 2105344
+      },
+      {
+        "name": "container-registry",
+        "sha256": "667d58dad875079caaedb2cd6f398666447724716f6ef17f7e9d3f662d7b06d1",
+        "image_bytes": 192512,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "managed-resources",
+        "sha256": "f425bfb9ae55d8f55d91c6bf1862961dc3734eff8cb700a8adc3bb00595b0c4b",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "numeric-xml",
+        "sha256": "541d6c4cfe70b6bbe733fa868d09645e785e0c7a8d7cc7867f0791959662ac61",
+        "image_bytes": 184320,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "recoverable-data",
+        "sha256": "4443a7d27de5639942a32de11b0a716ebc26bac41a4305112994cbdb86794e41",
+        "image_bytes": 45056,
+        "bss_bytes": 4096
+      },
+      {
+        "name": "recoverable-publication",
+        "sha256": "6ec20b1da1e9856e3f6b7d9933b727d03a7e0e1cdf6f94abb2b12a05ea36bba5",
+        "image_bytes": 20480,
+        "bss_bytes": 20480
+      },
+      {
+        "name": "runtime-acceptance",
+        "sha256": "0f95626be6299c67661912651daf058ee0eb1e668173f8544e364e0fd9bb95bf",
+        "image_bytes": 204800,
+        "bss_bytes": 20480
+      },
+      {
+        "name": "streamed-catalog",
+        "sha256": "f4d809307473e9cb3f22ece14da223761046be8b63a7d05106b3e6e4aec848de",
+        "image_bytes": 20480,
+        "bss_bytes": 36864
+      },
+      {
+        "name": "user-profile",
+        "sha256": "ab48669becb60d0fff33957cf5c86df59f40d15b0cb914c46b63b394c77b2710",
+        "image_bytes": 20480,
+        "bss_bytes": 4096
+      }
+    ]
+  },
+  "module": {
+    "image_bytes": 2134016,
+    "bss_bytes": 2105344,
+    "accounted_bytes": 8482816,
+    "minimum_runtime_limits": {
+      "module_image_mib": 3,
+      "module_bss_mib": 3,
+      "plugin_memory_mib": 9
+    }
+  },
+  "compiler_stack": {
+    "maximum_individual_frame_bytes": 4272,
+    "complete_call_chain_bound": false
+  },
+  "package": {
+    "format": 1,
+    "plugin_sha256": "21732a21a11cbc2d41b25e186712bb80c35673c493eb6c83e15085c535b8e36d",
+    "expected_runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "module": {
+      "image_bytes": 2134016,
+      "bss_bytes": 2105344,
+      "accounted_bytes": 8482816,
+      "minimum_runtime_limits": {
+        "module_image_mib": 3,
+        "module_bss_mib": 3,
+        "plugin_memory_mib": 9
+      }
+    },
+    "profiles": {
+      "Defaults": {},
+      "Explicit": {
+        "resident_limit": 16,
+        "script_slots": 48,
+        "plugin_memory_mib": 16,
+        "module_image_mib": 3,
+        "module_bss_mib": 3
+      },
+      "Automatic": {
+        "resident_limit": 0,
+        "script_slots": 0,
+        "plugin_memory_mib": 0,
+        "module_image_mib": 0,
+        "module_bss_mib": 0
+      }
+    },
+    "files": {
+      "LICENSE": "fe5a3c544660aaff24049783d09cc44c30bcd19eb5c3af922997388e0766c79d",
+      "NOTICE": "933b76035cd1c5c10c25d4b5ef58dc4f346a87dbbfa65719c03acd8317cab74d",
+      "profile-manifest.json": "7c464c634b89a92f93b2934f50f0ed830c4ede47a6939da551e96e96acf8c35e",
+      "READ-ME-FIRST.md": "db7ba60e7ce990b4f5fa07b87652c3e7eeaca1c1991d213c690489252886e0be",
+      "Select-Profile.ps1": "554ad5a85a236e5f0c60dcd6ba56f91bb618566f6f7c887c9af90eac27607dd7",
+      "Set-Test-Profile.cmd": "27706ff64bc7d2899735fdbff7f1531b283b645a2feb22245319bfb9a1fdb239",
+      "THIRD-PARTY-NOTICES.txt": "c9c13f30df29396c328d95e82fcfe45f701190aaf07f18cdc1a248d92e715282",
+      "profiles/automatic.ini": "5a02c638009089a93044482e6d283f2dda86c37cd3718202fe1c3053564b2025",
+      "profiles/defaults.ini": "2e41a2335812f4a938e3c6dfa9da0eebfddf55dd9c8b99028d460a4bcab01788",
+      "profiles/explicit.ini": "6c90fd5c05ce9f0ebe7d648f44a4fcee93ba94b3092c0059a4194be3d8098c5b",
+      "INSTALL/switch/gtav-scripthook/plugins/capacity-acceptance.nro.manual": "21732a21a11cbc2d41b25e186712bb80c35673c493eb6c83e15085c535b8e36d"
+    },
+    "zip_sha256": "5bd36c716d1f5af3d5bb103de08b3f7857c5f87e546f6337a0c332b877d210f8",
+    "zip_bytes": 23442,
+    "zip_readback_verified": true,
+    "runtime_module_included": false,
+    "runtime_ini_automatically_installed": false,
+    "game_files_required_for_build": false,
+    "switch_runtime_verified": false,
+    "installed": false,
+    "published": false
+  },
+  "source_sha256": {
+    "examples/capacity-acceptance/main.cpp": "775df293ff4bd766065f83b337770b39ae699b655692a86c962801b9b5a66fa3",
+    "examples/capacity-acceptance/project.json": "cf58edbfc4255a19e93e687118e832f46f4b0a20f3a1858c60e3e83b1b4c0a52",
+    "examples/capacity-acceptance/Select-Profile.ps1": "554ad5a85a236e5f0c60dcd6ba56f91bb618566f6f7c887c9af90eac27607dd7",
+    "examples/capacity-acceptance/README.md": "fcd895d16dfd23d428d3daac186ca8926f678388ff2659478fd2b461206a5c58",
+    "tools/build_capacity_acceptance.py": "e901dd3b9f8f9519e8faa2df18b8d1d98123fa04b13c049676e29bc58a1b1cd5",
+    "tools/check_examples.py": "a7eff13b51926102d4e483fdb3d481e6df5a0fb08d4672c5d7c09e8da00bc904",
+    "tools/verify_repo.py": "aa927d30d37d6b3b7baa8bf0d05db2ca1a2a17b398ed887cbe7b023cb3d4ffb6",
+    "tools/export_source.py": "aa8b60ada401e95721427c9cfc0665159af1cb7b119aca7587adec3d6fe4c93d",
+    "mod-porter/package.py": "71c049f5e76b8ee67562d4e3ba2d3bc1d95e7e38886c6434ffb99d896fba6f31",
+    "tests/test_capacity_acceptance.py": "5e01367070b3498255232588debd49ee1b6509708013b0a5bc4b82b9af95fc6c",
+    "tests/test_capacity_profiles.py": "7b55c96c571644c7d70c0d0918c2113c1e535c5e560c8511b9ba09f9b40b790c"
+  },
+  "runtime_abi_and_target_sources_changed": false,
+  "previous_combined_hardware_acceptance_unchanged": true,
+  "new_probe_switch_runtime_verified": false,
+  "sd_modified": false,
+  "installed": false,
+  "published": false
+}

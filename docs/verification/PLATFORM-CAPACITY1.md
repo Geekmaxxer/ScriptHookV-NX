@@ -175,12 +175,22 @@ The [combined probe](COMBINED-ACCEPTANCE1.md) packages storage, numeric XML,
 managed cleanup, an additional script, a PNG callback and borrowed ped sampling
 for this sequence. It uses the existing Test1 runtime and leaves both original
 demo artifacts unchanged. Its [physical result](COMBINED-ACCEPTANCE1.md#physical-test1-result---2026-10-30)
-accepts the scoped workload and final-run cleanup. Capacity growth, stress and
-the second selected profile remain unaccepted.
+accepts the scoped workload and final-run cleanup. That combined result does not
+cover capacity growth, stress or the second selected profile.
+
+The next [controlled capacity kit](CAPACITY-ACCEPTANCE1.md) crosses the module
+extent and bootstrap stack thresholds on the same runtime. It supplies Defaults,
+Explicit and Automatic phases, preserves original configuration and captures
+available phase reports. Defaults refusal and the Explicit/Automatic workloads are now
+accepted: large extents, 36 workers, extra stack/metadata admission and final-run
+nested cleanup. Automatic mask `0x1f` and the same bounded allocation footprint
+are verified. Original configuration restoration and fresh startup are also
+verified. Test2 additionally accepts both instrumented lifetimes and identifies
+synchronous report-save stalls. Broader performance/soak acceptance remains open.
 
 - [x] Record the exact installed candidate, example and configuration identities.
 - [ ] Independently audit installed package contents if its game/SDK identity changes.
-- [ ] Start with the standard defaults and an existing accepted plugin.
+- [x] Start with compiled defaults and existing accepted plugins; verify expected large-image refusal.
 - [ ] Run the user-profile example with two different selected Switch profiles.
 - [x] Confirm profile output matches one selected Switch account.
 - [ ] Verify matching across the second selected account/save context.
@@ -188,8 +198,13 @@ the second selected profile remain unaccepted.
 - [x] Combine numeric XML, containers, files, callbacks/textures and existing mods.
 - [x] Record pause/resume and repeated Kill/Load for the combined workload.
 - [ ] Exercise loading, death, character transitions and broader nested cleanup.
+- [x] Accept the bounded Explicit workload's stack growth and nested child/parent reclamation.
 - [ ] Increase explicit capacities incrementally and record actual admission/errors.
-- [ ] Exercise automatic settings independently and preserve prior configuration.
+- [x] Exercise automatic settings independently and verify the preserved original backup.
+- [x] Verify restored original configuration bytes against the retained backup.
+- [x] Verify fresh normal startup with the restored configuration and expected large-probe refusal.
+- [x] Prepare locally verified operation timing and bounded run history for the capacity workload.
+- [x] Accept both Test2 diagnostic lifetimes and identify synchronous report-save stalls.
 - [ ] Measure peak RAM, frame cost, whole-stack use and an extended-session soak.
 - [ ] Verify candidate installation and rollback using exact artifact identities.
 
@@ -199,13 +214,25 @@ Switch acceptance.
 
 ## Development gate
 
-Further substantial scheduler/loader expansion, global initialization support and
-Menyoo compatibility claims should wait for the hardware sequence above. The
-combined probe now verifies a specific heap/library/storage/ownership workload
-on the exact Test1 runtime. That scoped result does not establish capacity growth,
-all transitions or the complete service matrix. Additional API work would
-otherwise enlarge the remaining untested integration surface.
+Substantial scheduler/loader changes require targeted integration acceptance.
+Compiler-managed global initialization and Menyoo compatibility remain separate
+contracts. The combined probe accepts a specific heap/library/storage/ownership
+workload on the exact Test1 runtime; Explicit/Automatic capacity runs add bounded
+stack/metadata growth, and Test2 supplies instrumented gameplay and cleanup.
+Resident-module growth, all transitions and the complete service matrix remain open.
+
+SDK adaptations built on these accepted runtime services can proceed with focused
+local checks. Group pending hardware cases into combined workloads and retain
+separate artifact identities. The next [service batch](../../examples/service-acceptance/README.md)
+combines shared C++ session state, publication and nested catalog access. Remaining
+measurement items do not establish acceptance for untested functionality.
 
 Fixes supported by local failures, documentation and test preparation can proceed
 within their own validation scope. Hardware failures must be recorded against
 the exact tested candidate before revising implementation or acceptance status.
+
+The [Test2 hardware result](CAPACITY-DIAGNOSTICS2.md) identifies report-save stalls
+on the unchanged runtime. Prior file readback confirms the original configuration was
+restored, and a fresh loader report verifies startup with the original limits.
+The large probe's `0x10023` refusal under those limits is expected. This closes
+the restoration step; the broader hardware acceptance gate remains open.

@@ -77,12 +77,15 @@ def run(*args):
 
 
 def copy_acceptance_example(destination):
-    """Keep the packaged probe builder usable in a lean SDK."""
-    project=destination/'examples/runtime-acceptance'
-    project.mkdir(parents=True,exist_ok=True)
-    for name in ('main.cpp','project.json'):
-        shutil.copy2(ROOT/'examples/runtime-acceptance'/name,project/name)
-    public_guide('../examples/runtime-acceptance/README.md',project/'README.md')
+    """Keep packaged acceptance projects complete in a lean SDK."""
+    for example in ('runtime-acceptance','capacity-acceptance','session-state',
+                    'recoverable-publication','streamed-catalog','service-acceptance'):
+        project=destination/'examples'/example
+        project.mkdir(parents=True,exist_ok=True)
+        for source in sorted((ROOT/'examples'/example).iterdir()):
+            if source.is_file() and source.suffix in ('.cpp','.hpp','.h','.s','.json','.ps1','.cmd'):
+                shutil.copy2(source,project/source.name)
+        public_guide('../examples/'+example+'/README.md',project/'README.md')
 
 
 def archive(folder, output):
@@ -114,7 +117,7 @@ def package(output):
         shutil.copytree(ROOT/name, stage/'SDK'/name)
     copy_distribution(stage/'SDK')
     (stage/'SDK/tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'build_capacity_acceptance.py', 'build_service_acceptance.py', 'capacity_diagnostics.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
         shutil.copy2(ROOT/'tools'/name, stage/'SDK/tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, stage/name)
@@ -173,7 +176,7 @@ def package(output):
         shutil.copytree(ROOT/name, source/name)
     copy_distribution(source)
     (source/'tools').mkdir()
-    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
+    for name in ('build_plugin.py', 'doctor.py', 'inspect_mod.py', 'native_query.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'build_capacity_acceptance.py', 'build_service_acceptance.py', 'capacity_diagnostics.py', 'create_mod.py', 'build_mod.py', 'native_bindings.py', 'runtime_limits.py', 'configure_runtime.py', 'check_examples.py', 'report_summary.py', 'run_ui_tests.py', 'sd_permissions.py'):
         shutil.copy2(ROOT/'tools'/name, source/'tools'/name)
     for name in ('LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name, source/name)

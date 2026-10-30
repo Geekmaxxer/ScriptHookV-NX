@@ -1,0 +1,131 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "candidate": "Capacity diagnostics Test2",
+  "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+  "plugin_sha256": "068aa886339028011348634dee4fda1916024b466764f799f2e2b4f942c51122",
+  "report_schema": 2,
+  "module": {
+    "image_bytes": 2138112,
+    "bss_bytes": 2113536,
+    "accounted_bytes": 8507392,
+    "minimum_runtime_limits": {
+      "module_image_mib": 3,
+      "module_bss_mib": 3,
+      "plugin_memory_mib": 9
+    }
+  },
+  "maximum_individual_compiler_frame_bytes": 1056,
+  "complete_call_chain_bound": false,
+  "local_arm64": {
+    "passed": 30,
+    "failed": 0,
+    "checks": [
+      "Compiled image and BSS independently exceed 2 MiB",
+      "Manual policy preserves explicit loading",
+      "Default image refusal precedes module allocation and RO admission",
+      "Independent BSS cap produces its precise refusal",
+      "Large extents preserve independent shared-budget refusal",
+      "All 36 real additional workers progress alongside the main script",
+      "Page-spaced reads and writes reach all large image/BSS pages",
+      "Nested parent, child and final-auditor registrations coexist",
+      "Fragmentation cycles preserve copied bytes without heap failures",
+      "Production render callback and native timing API execute",
+      "Per-run wall time and cumulative timing baseline are available",
+      "All measured operations preserve complete exclusive duration histograms",
+      "Callback interval histogram accounts for every adjacent timestamp",
+      "A modeled 60 ms write stall is attributed to report I/O",
+      "Actual script admission grows stacks and scheduler metadata",
+      "Whole-plugin cancellation stops all 37 cooperative entries",
+      "Nested cleanup destroys both children before their parent",
+      "Final audit proves owner heap and registrations reclaimed",
+      "Code and admitted stack storage remain resident after stop",
+      "Final cleanup is retained in a bounded run-history slot",
+      "Restart reuses the mappings and admitted stacks",
+      "Second lifetime produces fresh complete cleanup",
+      "Restart preserves the first report and resets per-run timing without resetting owner totals",
+      "Portable report review validates actual compiled probe output",
+      "The same bounded workload executes with all automatic settings",
+      "Automatic configuration preserves complete nested cleanup",
+      "Partial additional-script admission fails explicitly",
+      "Admission failure reclaims nested contexts and stops admitted workers",
+      "Cancellation during admission still drains nested registrations",
+      "Missing ownership service rejects initialization"
+    ],
+    "module_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "plugin_sha256": "068aa886339028011348634dee4fda1916024b466764f799f2e2b4f942c51122",
+    "real_runtime_sdk_and_probe_arm64_executed": true,
+    "os_ro_filesystem_engine_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "portable_report_tests": {
+    "passed": 11,
+    "failed": 0,
+    "fixtures_only": true
+  },
+  "profile_preservation_tests": {
+    "passed": 14,
+    "failed": 0,
+    "disposable_sd_fixtures": true
+  },
+  "package": {
+    "zip_sha256": "8a345a7289afe280ed11ac8e71924bbcb7a4b3ec72e9eed2aaaab164ad35270b",
+    "zip_bytes": 30826,
+    "zip_readback_verified": true,
+    "runtime_module_included": false,
+    "sd_installed": false
+  },
+  "production_source_files_unchanged": 126,
+  "phase_regions": [
+    "setup",
+    "extents",
+    "admission",
+    "verify_block",
+    "allocate_block",
+    "report_format",
+    "report",
+    "cleanup",
+    "trim"
+  ],
+  "timer_boundary": "Horizon GetSystemTick svc 0x1e, matching the pinned runtime",
+  "timer_hz": 19200000,
+  "modeled_latency_check": "One 60 ms modeled filesystem write delay is attributed to report I/O; this does not identify the physical dispatch spike",
+  "performance_acceptance_complete": false,
+  "process_memory_measured": false,
+  "whole_stack_high_water_measured": false,
+  "switch_runtime_verified": false,
+  "physical_test2_accepted": false,
+  "sd_modified": false,
+  "committed": false,
+  "published": false,
+  "public_repository_checks": {
+    "checks": [
+      "native-index-and-target-profile",
+      "repository-layout",
+      "portable-tools",
+      "sd-access-packaging",
+      "game-layout-recovery",
+      "capacity-profile-preservation",
+      "capacity-diagnostic-reports",
+      "nro-examples"
+    ],
+    "passed": true,
+    "scope": "Local source, profile, desktop and requested compiler checks",
+    "native_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "skipped": [
+      "desktop",
+      "host-ui-model"
+    ],
+    "switch_runtime_verified": false
+  },
+  "standalone_example_builds": 18,
+  "exported_sdk": {
+    "passed": true,
+    "plugin_sha256": "068aa886339028011348634dee4fda1916024b466764f799f2e2b4f942c51122",
+    "all_kit_files_identical": true,
+    "unrelated_working_directory": true,
+    "source_and_output_paths_contain_spaces": true,
+    "actual_package_tool_inventory_verified": true,
+    "game_files_required": false
+  }
+}

@@ -13,6 +13,9 @@ They do not download compilers, modify your SD card or execute an inspected mod.
 | `build_plugin.py` | Direct multi-source NRO builder, explicit header snapshots and unresolved-import rejection |
 | `check_examples.py` | Build and preflight all standalone NRO examples in a fresh output folder |
 | `build_runtime_acceptance.py` | Build a manual combined-service hardware probe and verified ZIP without bundling a runtime; see [acceptance record](verification/COMBINED-ACCEPTANCE1.md) |
+| `build_capacity_acceptance.py` | Build the Test3 large-module diagnostics kit with reduced periodic report writes; prior [Test2 evidence](verification/CAPACITY-DIAGNOSTICS2.md) remains separate |
+| `build_service_acceptance.py` | Group manual shared-session, publication and nested catalog probes into one [service batch](../examples/service-acceptance/README.md) |
+| `capacity_diagnostics.py` | Validate and summarize a schema 2 report without changing files or certifying hardware/performance |
 | `verify_repo.py` | Run full-source profile, portable-tool and optional mod-porter/NRO checks |
 | `run_ui_tests.py` | Test the bounded controller UI model with a host compiler or devkitA64/Unicorn |
 | `configure_runtime.py` | Generate an optional runtime.ini with independent resident, script and memory limits |

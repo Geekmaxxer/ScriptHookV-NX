@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_TOOLS = ('build_plugin.py', 'native_bindings.py', 'create_mod.py', 'build_mod.py', 'doctor.py',
     'native_query.py', 'inspect_mod.py', 'report_summary.py', 'check_examples.py', 'build.py',
     'generate_bindings.py', 'engine_bindings.py', 'nso.py', 'compare_core.py', 'package_runtime.py',
-    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'run_ui_tests.py', 'verify_repo.py', 'sd_permissions.py', 'check_repository.py')
+    'export_source.py', 'generate_natives.py', 'make_native_index.py', 'runtime_limits.py', 'configure_runtime.py', 'create_texture_demo.py', 'build_runtime_acceptance.py', 'build_capacity_acceptance.py', 'build_service_acceptance.py', 'capacity_diagnostics.py', 'run_ui_tests.py', 'verify_repo.py', 'sd_permissions.py', 'check_repository.py')
 ACCEPTANCES = (
     'native-caller-research/hardware-20261015/console-acceptance.json',
     'public-loader-test1-20261015/hardware-20261015/console-acceptance.json',
@@ -46,7 +46,7 @@ def export(output):
     extensions = {
         'runtime': {'.cpp', '.hpp', '.h', '.s', '.ld'}, 'include': {'.h', '.hpp'},
         'sdk': {'.cpp', '.c', '.h', '.hpp', '.s', '.ld', '.sch', '.json', '.example', '.md'}, 'targets': {'.hpp', '.json', '.md'},
-        'examples': {'.cpp', '.hpp', '.h', '.sc', '.md', '.py', '.ps1', '.cmd', '.json', '.txt'}, 'docs': {'.md'},
+        'examples': {'.cpp', '.hpp', '.h', '.s', '.sc', '.md', '.py', '.ps1', '.cmd', '.json', '.txt'}, 'docs': {'.md'},
         'mod-porter': {'.cs', '.csproj', '.props', '.xaml', '.manifest', '.py', '.md', '.cpp', '.hpp', '.txt', '.json', '.ini'},
     }
     for folder, allowed in extensions.items():
@@ -54,7 +54,7 @@ def export(output):
             if path.is_file() and path.suffix.lower() in allowed and not any(part.startswith('.') or part in ('__pycache__', 'bin', 'obj') for part in path.relative_to(ROOT/folder).parts):
                 if path.name not in ('RESEARCH-WORKSPACE.md', 'native_caller_sample.cpp'): selected.append(path)
     selected.extend(ROOT/'tools'/name for name in PUBLIC_TOOLS)
-    selected.extend(ROOT/'tests'/name for name in ('bootstrap.py','README.md','test_portable.py','test_sd_permissions.py','test_game_layout.py','ui_model_tests.cpp'))
+    selected.extend(ROOT/'tests'/name for name in ('bootstrap.py','README.md','test_portable.py','test_sd_permissions.py','test_game_layout.py','test_capacity_profiles.py','test_capacity_diagnostics.py','ui_model_tests.cpp'))
     selected.extend(p for p in (ROOT/'sdk/third_party').rglob('LICENSE*') if p.is_file())
     # Current verification pages link compact reports; preserve immutable source
     # snapshots only in the maintainer archive, not in the public source tree.

@@ -1,0 +1,15 @@
+{
+  "configuration_bytes_restored": true,
+  "configuration_sha256": "a2f9c211bb7dbd88ffa866b98f47c6b1b6542ac7a9941fb3456da3cfb73463b3",
+  "original_bytes": 416,
+  "automatic_phase_preserved": true,
+  "normal_startup_verified": false,
+  "loader_report_still_automatic": true,
+  "operator_confirmed_restart_not_yet_performed": true,
+  "sd_modified": false,
+  "format": 1,
+  "record": "Configuration restoration readback",
+  "date": "2026-10-30",
+  "evidence_boundary": "Mounted SD byte comparison; no post-restoration game launch",
+  "production_runtime_changed": false
+}

@@ -57,10 +57,17 @@ allocations. Trim succeeds without release errors. Disarm and Footprints remain
 running. Only the final run's detailed cleanup survives; the first run's report
 was overwritten. Broader nested ownership and transition failures remain open.
 
+The [Explicit capacity result](CAPACITY-ACCEPTANCE1.md#physical-defaults-and-explicit-results---2026-10-30)
+extends the positive cancellation case to two managed child registrations, their
+parent and a final auditor with 36 workers. Both children finish destruction
+before the parent's body, all owner allocations/registrations are reclaimed,
+and Trim succeeds. Nested failures and broader game transitions remain open.
+
 - [x] Verify exact runtime, example and configuration identities on Switch.
 - [x] Cancel and restart the combined managed workload across cooperative waits.
 - [x] Check final-run destructor/auditor results and absence of live registrations.
 - [x] Record coexistence with running Disarm and Footprints.
+- [x] Accept the two-child/parent registration hierarchy in the Explicit capacity workload.
 - [ ] Exercise game transitions, nested registrations and broader failure cleanup.
 - [ ] Measure callback latency, peak RAM, whole-stack use and extended-session behavior.
 - [ ] Accept updated runtime installation and rollback separately.

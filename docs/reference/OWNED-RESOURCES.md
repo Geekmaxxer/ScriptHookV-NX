@@ -126,3 +126,7 @@ The [complete example](../../examples/managed-resources/README.md) owns a dynami
 string and vector across waits and releases their nested storage on cancellation.
 This facility provides explicit registered ownership, not global constructor
 ordering, exception unwinding, hosted STL compatibility or arbitrary stack cleanup.
+
+For an object shared across source files and cooperative entries, use the explicit
+[SessionLocal contract](SESSION-STATE.md). It retains one registered object per
+type/tag and recreates it after cancellation, without a global dynamic constructor.

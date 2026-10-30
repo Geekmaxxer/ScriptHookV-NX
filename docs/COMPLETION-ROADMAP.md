@@ -41,7 +41,16 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify growing capacity tables, lazy stack admission and high-index ownership locally.
 - [x] Audit and verify the optional active-profile nickname interface locally.
 - [x] Build and locally verify a combined storage/XML, managed-lifetime and render/worker acceptance probe.
-- [ ] Complete the combined platform/capacity hardware acceptance sequence before further major runtime expansion.
+- [x] Prepare a large-module, 37-entry capacity test with preserved configuration and phase reports.
+- [x] Accept default image refusal and the explicit large-module, 37-entry nested-cleanup workload on Switch.
+- [x] Accept the bounded capacity workload under automatic settings on Switch.
+- [x] Verify original configuration restoration and normal startup.
+- [x] Verify restored configuration bytes and prepare a measured Test2 capacity probe locally.
+- [x] Accept Test2 timing/workload results and identify synchronous report-save stalls.
+- [x] Reduce diagnostic reporting overhead and provide shared C++ session state locally.
+- [x] Package shared-state, file publication and catalog checks as one service batch.
+- [ ] Accept the new shared-state and grouped file-service workload on Switch.
+- [ ] Complete remaining platform/capacity acceptance for substantial runtime changes.
 - [x] Accept the combined managed session's cancellation, restart and final cleanup on Switch.
 - [ ] Accept broader nested ownership, failure and transition cleanup on Switch.
 - [ ] Define broader global initialization, exception and static-local policies.

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "phase": "Defaults",
+  "status": "expected-physical-refusal-accepted",
+  "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+  "plugin_sha256": "21732a21a11cbc2d41b25e186712bb80c35673c493eb6c83e15085c535b8e36d",
+  "report_sha256": {
+    "loader-report.txt": "e24d0bd81c067d77b9883e9de1dec3a1919f0d5d0c422ece16429691575abc21",
+    "runtime.ini": "2e41a2335812f4a938e3c6dfa9da0eebfddf55dd9c8b99028d460a4bcab01788"
+  },
+  "image_bytes": 2134016,
+  "image_limit_bytes": 2097152,
+  "probe_loader": {
+    "slot": "0x2",
+    "policy": "0x1",
+    "resident": "0x0",
+    "running": "0x0",
+    "kill_queued": "0x0",
+    "stopped": "0x0",
+    "queued": "0x0",
+    "present": "0x1",
+    "step": "0x1",
+    "step_name": "read_and_validate",
+    "error": "0x10023",
+    "error_name": "module_image_limit_exceeded",
+    "additional_entries": "0x0",
+    "callbacks_active": "0x0",
+    "callback_failures": "0x0",
+    "texture_memory_bytes": "0x0",
+    "resource_count": "0x0",
+    "resource_failures": "0x0"
+  },
+  "loader_error": 0,
+  "configuration_error": 0,
+  "probe_initialized": false,
+  "probe_output_files_expected": false,
+  "no_crash_operator_reported": true,
+  "sd_modified": false,
+  "full_capacity_acceptance": false
+}

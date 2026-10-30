@@ -44,6 +44,7 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
   conversion and fallible C++ containers.
 - Unreleased chunked file access, isolated nested directories and paged catalogs.
 - Unreleased registered resource cleanup and managed heap objects across cancellation.
+- Unreleased explicitly initialized C++ session state shared across source files.
 - Unreleased active-profile nickname access and growing runtime capacity tables.
 
 See the [API reference](docs/reference/API-REFERENCE.md) for contracts and
@@ -60,8 +61,16 @@ verifies startup, manual demo loading, a nickname matching one selected Switch
 account and a reported managed run of at least 30 seconds. The later
 [combined workload](docs/verification/COMBINED-ACCEPTANCE1.md#physical-test1-result---2026-10-30)
 verifies storage/XML, worker/render callbacks, borrowed entities and final-run
-managed cleanup after restart. Additional profiles, capacity growth, transitions
-and measured performance/soak acceptance remain pending.
+managed cleanup after restart. The [Explicit capacity result](docs/verification/CAPACITY-ACCEPTANCE1.md)
+extends this to large image/BSS extents, 36 workers and nested child/parent cleanup;
+the same bounded workload is accepted under Automatic settings. Original
+configuration restoration and fresh startup are verified. Additional profiles,
+resident-module growth, transitions and
+measured performance/soak acceptance remain pending.
+The [Test2 hardware result](docs/verification/CAPACITY-DIAGNOSTICS2.md) accepts both
+instrumented workloads and cleanup, identifying synchronous report-save stalls.
+The next [service batch](examples/service-acceptance/README.md) groups new shared
+C++ state with publication and catalog checks on the unchanged runtime.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. A changed executable requires a renewed

@@ -6,6 +6,8 @@ one `shvPluginQuery`, with a side-effect-free query, short initialize and one
 cooperative main entry, plus optional [additional entries and callbacks](EXTENSIONS.md).
 Global constructors/destructors and unresolved imports
 are rejected by the builder/loader.
+For explicitly initialized shared C++ objects, see [session state](SESSION-STATE.md).
+That helper uses existing owned-resource cleanup and recreates state after Kill/Load.
 
 | API | Contract |
 | --- | --- |

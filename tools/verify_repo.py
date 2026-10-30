@@ -24,6 +24,8 @@ def verify(output,desktop=False,cxx=None,devkit=None):
     run('portable-tools',[sys.executable,ROOT/'tests/test_portable.py'])
     run('sd-access-packaging',[sys.executable,ROOT/'tests/test_sd_permissions.py'])
     run('game-layout-recovery',[sys.executable,ROOT/'tests/test_game_layout.py'])
+    run('capacity-profile-preservation',[sys.executable,ROOT/'tests/test_capacity_profiles.py'])
+    run('capacity-diagnostic-reports',[sys.executable,ROOT/'tests/test_capacity_diagnostics.py'])
     if desktop:
         run('desktop-tests',['dotnet','run','--project',ROOT/'mod-porter/ModPorter.Tests/ModPorter.Tests.csproj','-c','Release','--',ROOT,*([] if devkit else ['--no-toolchain'])])
         if sys.platform=='win32':run('desktop-ui-build',['dotnet','build',ROOT/'mod-porter/ModPorter.App/ModPorter.App.csproj','-c','Release','-v','quiet'])

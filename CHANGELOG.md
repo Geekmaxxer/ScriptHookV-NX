@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased shared session state and grouped acceptance - 2026-10-30
+
+- Add explicit per-type/tag C++ session state shared across translation units, with owned cleanup, failure refusal and fresh construction after Kill/Load.
+- Accept both physical Test2 workloads and final cleanup. Identify synchronous report-save stalls up to 122.480 ms; retain separate performance and memory acceptance limits.
+- Reduce periodic capacity status writes to once per 30 seconds and use one admission snapshot in the separate Test3 source revision.
+- Group shared-state, publication and nested catalog probes into one manual service kit on the unchanged Test1 runtime.
+
+## Unreleased capacity restoration verification - 2026-10-30
+
+- Verify original configuration bytes, effective limits and fresh startup with Disarm and Footprints running.
+- Record the expected `0x10023` refusal when the oversized capacity probe is loaded under restored limits; clarify that Restore verifies normal gameplay without loading that probe.
+- Preserve prior Test1/Test2 artifacts and acceptance records. Further performance, transition and capacity acceptance remains open.
+
+## Unreleased capacity performance diagnostics - 2026-10-30
+
+- Add Test2 operation durations, callback-interval histograms, per-run dispatch deltas and an eight-slot cleanup history on the unchanged Test1 runtime.
+- Preserve diagnostic history during profile switches and provide a bounded, read-only report reviewer.
+- Verify workload execution and modeled write-stall attribution locally. Physical timing, process memory and extended soak acceptance remain pending.
+- Verify restored original configuration bytes and preserved Automatic reports; a fresh normal launch remains pending.
+
+## Unreleased capacity acceptance workflow - 2026-10-30
+
+- Record scoped Switch acceptance of Defaults refusal and the Explicit/Automatic 37-entry large-module workloads, stack/metadata growth and nested final-run cleanup. Configuration restoration remains pending; retain the 78.6/96.4 ms maximum dispatch samples for performance investigation.
+
+- Add a manual probe with image/BSS extents above 2 MiB, 36 additional workers, bounded allocator cycles and nested managed ownership.
+- Exercise the existing Test1 runtime under defaults, explicit limits and automatic settings; preserve original configuration, capture phase reports and refuse unrelated edits.
+- Respect declared project image/BSS/budget settings when structurally checking examples, while retaining default inspection limits.
+- Retain separate local and physical acceptance. The production runtime, ABI and target bindings remain unchanged.
+
 ## Unreleased combined acceptance probe - 2026-10-30
 
 - Record scoped physical acceptance of the exact Test1 probe: matching run-2 reports, verified payload/XML, active callbacks and final owner heap/resource reclamation while Disarm and Footprints remain running. Capacity growth, broader transitions and performance/soak acceptance remain open.

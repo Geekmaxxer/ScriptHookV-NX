@@ -29,10 +29,20 @@ The PC 2699/1.61 content baseline is not an equivalent Switch ABI.
 - [x] Report measured module extents and minimum configuration requirements.
 - [x] Exercise large NROs, failure cleanup, coexistence and restart locally.
 - [x] Provide multiple cooperative scripts and callback timing diagnostics.
+- [x] Prepare a large-image/BSS, 37-entry and nested-ownership probe with preserved configuration phases.
+- [x] Accept large extents, 36 additional workers and extra stack admission under explicit settings on Switch.
+- [x] Accept the same bounded workload under automatic settings on Switch.
+- [x] Verify original configuration restoration and normal startup after the capacity phases.
+- [x] Verify restored bytes, effective limits and expected oversized-probe refusal after restart.
+- [x] Prepare per-operation timing, callback-interval histograms and bounded run history locally.
+- [x] Accept both Test2 hardware lifetimes and identify synchronous report-save stalls.
+- [x] Reduce diagnostic save frequency in a separately verified source revision.
 - [ ] Measure peak RAM, frame time and long sessions for large configurations on Switch.
 - [ ] Accept full-capacity concurrent workloads on hardware.
 
 Evidence: [large modules](verification/LARGE-MODULES1.md) and [limits](reference/RUNTIME-LIMITS.md).
+The [Test2 result](verification/CAPACITY-DIAGNOSTICS2.md) accepts the bounded workload
+and measurements. The quieter Test3 probe can join a later combined workload.
 A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 64 KiB; code remains resident until game exit.
 
@@ -44,6 +54,7 @@ A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 - [x] Provide strict decimal conversion and typed XML floating values.
 - [x] Provide nothrow objects and fallible vector/string/sorted-map helpers.
 - [x] Execute a combined numeric XML registry with move-only records locally.
+- [x] Accept bounded allocator cycles and nested owner reclamation in the physical Explicit probe.
 - [ ] Define broader hosted-container compatibility for concrete source ports.
 - [ ] Complete Horizon allocation/release and fragmentation acceptance.
 
@@ -85,9 +96,13 @@ independent versioned service; memory parsing does not remove filesystem limits.
 - [x] Pin registered contexts and verify release, transfer, nesting and stale handles locally.
 - [x] Drain registered cleanup after user stop and rejected initialization before heap discard.
 - [x] Execute a complete managed string/vector lifetime across Kill/Load locally.
+- [x] Provide explicitly initialized shared C++ session state across source files and entries.
+- [x] Verify per-type/tag ownership, failure cleanup, reentry and recreation after Kill/Load locally.
+- [ ] Accept shared session state with publication/catalog checks in one hardware batch.
 - [ ] Define global constructor ordering, exception unwinding and static-local policy.
 - [x] Accept the combined managed session's cancellation, restart and final owner cleanup on Switch.
-- [ ] Accept broader nested registrations and failure cleanup on Switch.
+- [x] Accept two managed children draining before their parent in the Explicit hardware probe.
+- [ ] Accept broader nested failures and transition cleanup on Switch.
 - [ ] Measure callbacks and initialization under substantial workloads.
 
 Normal scope exit runs destructors; Kill does not unwind suspended objects.
@@ -109,8 +124,9 @@ runtimes. Independent reverse engineering is not an original-source or ABI contr
 
 ## 7. Combined runtime acceptance
 
-The [platform/capacity acceptance sequence](verification/PLATFORM-CAPACITY1.md)
-is the next gate before further substantial runtime expansion.
+The [platform/capacity sequence](verification/PLATFORM-CAPACITY1.md) retains the
+remaining hardware requirements. SDK adaptations using accepted runtime services
+can proceed with targeted local checks and combined hardware batches.
 
 - [x] Build smaller combined container/numeric/XML/settings probes.
 - [x] Verify the retained runtime installation and compare both startup fatal reports.
@@ -135,6 +151,7 @@ is the next gate before further substantial runtime expansion.
 - [ ] Publish the accepted service matrix and remaining limitations.
 
 Probe and acceptance limits: [combined runtime verification](verification/COMBINED-ACCEPTANCE1.md).
+The next grouped check is the [shared-state and file-service batch](../examples/service-acceptance/README.md).
 
 ## 8. Menyoo source-port gate
 
