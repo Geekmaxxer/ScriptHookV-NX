@@ -1,4 +1,4 @@
-"""Build a combined manual session-state, publication and catalog acceptance kit."""
+"""Build the combined preset catalog/XML workflow as deferred service batch 4."""
 import argparse
 import contextlib
 import hashlib
@@ -11,7 +11,7 @@ from inspect_mod import inspect
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_RUNTIME = '930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f'
-PROJECTS = ('session-state', 'recoverable-publication', 'streamed-catalog')
+PROJECTS = ('session-state', 'recoverable-publication', 'streamed-catalog', 'xml-workflow')
 
 
 def sha(path):
@@ -42,14 +42,20 @@ def build(output, devkit=None, runtime=None):
     guide = (ROOT/'examples/service-acceptance/README.md').read_text(encoding='utf-8')
     guide = guide.replace('../../docs/verification/SESSION-LOCAL1.md',
         'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/SESSION-LOCAL1.md')
+    guide = guide.replace('../../docs/verification/FILE-TRANSFERS1.md',
+        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/FILE-TRANSFERS1.md')
+    guide = guide.replace('../../docs/verification/XML-WORKFLOW1.md',
+        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/XML-WORKFLOW1.md')
+    guide = guide.replace('../../docs/verification/CATALOG-SCAN1.md',
+        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/CATALOG-SCAN1.md')
     (stage/'READ-ME-FIRST.md').write_text(guide,encoding='utf-8')
-    manifest = dict(format=1,kit='Service acceptance batch 1',runtime_sha256=EXPECTED_RUNTIME,
+    manifest = dict(format=1,kit='Service acceptance batch 4',runtime_sha256=EXPECTED_RUNTIME,
                     artifacts=artifacts,runtime_module_included=False,shared_configuration_included=False)
     (stage/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     for name in ('LICENSE','NOTICE','THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name,stage/name)
     files = {p.relative_to(stage).as_posix():sha(p) for p in stage.rglob('*') if p.is_file()}
-    archive = output/'ScriptHookV-NX-Service-Acceptance-Batch1.zip'
+    archive = output/'ScriptHookV-NX-Service-Acceptance-Batch4.zip'
     with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as package:
         for name in sorted(files):package.write(stage/name,name)
     with zipfile.ZipFile(archive) as package:

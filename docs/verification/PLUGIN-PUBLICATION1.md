@@ -43,8 +43,9 @@ performed by these local models.
 
 ## Physical acceptance
 
-- [ ] Verify the exact runtime, SDK and plugin identities on the supported Switch.
-- [ ] Exercise publication, retained backups and explicit restoration on SD storage.
+- [x] Verify the exact runtime and publication-example identity on the supported Switch.
+- [x] Accept normal publication and retained backup contents on SD storage.
+- [ ] Accept explicit backup restoration on SD storage.
 - [ ] Exercise error/interruption recovery without overwriting retained data.
 - [ ] Test pause/loading/death/character transitions and concurrent plugins.
 - [ ] Measure preparation, rename/delete latency and extended-session behavior.
@@ -54,3 +55,8 @@ This workflow does not establish atomic replacement, content identity from size
 alone, filesystem transaction isolation or power-loss durability. See the
 [public contract](../reference/FILE-PUBLICATION.md) for required application
 validation and the single-writer policy.
+
+The [physical service batch 1](SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
+verifies the full 256 KiB published byte pattern, exact `old` backup, absent
+prepared file and successful repeated-load checklist. This covers normal
+publication and backup retention, not injected mutation failures or durability.

@@ -43,6 +43,9 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
 - Unreleased profiles for owner-accounted memory, C/XML libraries, decimal
   conversion and fallible C++ containers.
 - Unreleased chunked file access, isolated nested directories and paged catalogs.
+- Cooperative owner-backed read buffers and prepared writes for larger XML/configuration ports.
+- Fallible growable XML output and bounded file comparison for verified save workflows.
+- Cooperative preset catalogs with suffix filtering, sorted names and checked selection paths.
 - Unreleased registered resource cleanup and managed heap objects across cancellation.
 - Unreleased explicitly initialized C++ session state shared across source files.
 - Unreleased active-profile nickname access and growing runtime capacity tables.
@@ -69,8 +72,12 @@ resident-module growth, transitions and
 measured performance/soak acceptance remain pending.
 The [Test2 hardware result](docs/verification/CAPACITY-DIAGNOSTICS2.md) accepts both
 instrumented workloads and cleanup, identifying synchronous report-save stalls.
-The next [service batch](examples/service-acceptance/README.md) groups new shared
-C++ state with publication and catalog checks on the unchanged runtime.
+The [service batch 1 result](docs/verification/SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
+accepts shared state, publication/backup contents and nested catalog access.
+The next [service batch](examples/service-acceptance/README.md) merges pending
+large XML transfer with preset browsing, serialization, verification and backup
+restoration using the unchanged runtime. Hardware acceptance remains deferred
+while implementation continues; standalone batch 2 and batch 3 runs are unnecessary.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. A changed executable requires a renewed

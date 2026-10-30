@@ -223,9 +223,12 @@ Resident-module growth, all transitions and the complete service matrix remain o
 
 SDK adaptations built on these accepted runtime services can proceed with focused
 local checks. Group pending hardware cases into combined workloads and retain
-separate artifact identities. The next [service batch](../../examples/service-acceptance/README.md)
-combines shared C++ session state, publication and nested catalog access. Remaining
-measurement items do not establish acceptance for untested functionality.
+separate artifact identities. [Service batch 1](SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
+accepts shared C++ session state, normal publication and nested catalog access.
+The next [service batch](../../examples/service-acceptance/README.md) combines
+large XML transfer, serialization, verification and backup restoration in one
+workload. Remaining measurement items do not establish acceptance
+for untested functionality.
 
 Fixes supported by local failures, documentation and test preparation can proceed
 within their own validation scope. Hardware failures must be recorded against

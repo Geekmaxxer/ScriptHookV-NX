@@ -49,9 +49,32 @@ session-state worker example. Run with `--core <matching-core-directory>` and
 `--output <fresh-directory>`. The public [session record](../docs/verification/SESSION-LOCAL1.md)
 retains its exact local scope; private game/emulator inputs are excluded from exports.
 
-`test_service_batch.py` executes the exact three NROs produced by
+`test_service_batch.py` executes the exact four NROs produced by
 `build_service_acceptance.py` together under compiled defaults. It checks manual
-policy, publication/backup verification, nested catalog data, shared-state
-Kill/Load, retained mappings and closed file handles. It requires `--core`,
+policy, publication/backup verification, nested catalog data, large XML transfers,
+shared-state Kill/Load, retained mappings and closed file handles. It requires `--core`,
 `--artifact <service-kit-build-directory>` and `--output` with the same private
 runtime harness inputs. It does not install files or replace hardware acceptance.
+
+The maintainer-only `test_file_transfer.py` executes owned read buffers, exclusive
+prepared writes and the complete large XML example against the pinned runtime.
+It checks binary/empty input, bounds, allocation refusal, short/error reads, extent
+changes, existing/partial output preservation and cancellation/restart cleanup.
+Run with `--core <matching-core-directory>` and `--output <fresh-directory>`.
+Its private game/emulator inputs are excluded from public exports; the
+[file-transfer record](../docs/verification/FILE-TRANSFERS1.md) retains its exact scope.
+
+`test_xml_workflow.py` executes growable XML serialization, bounded comparison,
+output/allocation failures and the combined publication/restoration example.
+It preserves corrupt or interrupted disk states and verifies registered cleanup.
+Use `--core <matching-core-directory>` and `--output <fresh-directory>` with the
+same private harness inputs. The current packaged batch test uses the merged
+workflow instead of the earlier standalone XML probe; the
+[combined record](../docs/verification/XML-WORKFLOW1.md) identifies its scope.
+
+`test_catalog_scan.py` executes preset filtering, cooperative sorting, complete-result
+publication, checked selection paths, allocation/I/O failures and cancellation
+during each phase. It uses `--core <matching-core-directory>` and
+`--output <fresh-directory>` with the same private runtime adapters. The
+[catalog record](../docs/verification/CATALOG-SCAN1.md) preserves the local scope.
+The combined XML and packaged-batch suites also verify multi-page preset selection.

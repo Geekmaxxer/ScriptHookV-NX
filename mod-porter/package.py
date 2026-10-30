@@ -79,7 +79,7 @@ def run(*args):
 def copy_acceptance_example(destination):
     """Keep packaged acceptance projects complete in a lean SDK."""
     for example in ('runtime-acceptance','capacity-acceptance','session-state',
-                    'recoverable-publication','streamed-catalog','service-acceptance'):
+                    'recoverable-publication','streamed-catalog','large-xml-file','xml-workflow','service-acceptance'):
         project=destination/'examples'/example
         project.mkdir(parents=True,exist_ok=True)
         for source in sorted((ROOT/'examples'/example).iterdir()):

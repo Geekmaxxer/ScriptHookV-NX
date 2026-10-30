@@ -78,12 +78,22 @@ These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 - [x] Provide independently versioned, isolated rename without replacement and checked file deletion.
 - [x] Define and verify backup-preserving publication and explicit recovery for prepared files.
 - [x] Exercise complete large-candidate validation and publication with cooperative waits locally.
+- [x] Accept ordinary 256 KiB publication, retained backup and nested catalog data on Switch.
+- [x] Provide caller-bounded read buffers and exclusive prepared-file write tasks with explicit progress.
+- [x] Verify complete large XML loading, parsing, failure preservation and cancellation locally.
+- [x] Add bounded growable XML serialization and chunked byte verification.
+- [x] Combine large XML loading, verified save, publication and backup restoration in one workload locally.
+- [x] Provide complete-result catalog tasks with suffix filters, cooperative sorting and checked paths.
+- [x] Verify catalog allocation/I/O failures, cancellation and restart during every processing phase locally.
+- [x] Consolidate pending XML/save/recovery and multi-page preset selection in deferred service batch 4.
+- [ ] Accept the combined preset/XML/file-transfer workload on Switch in service batch 4.
 - [ ] Verify media errors and recovery on Switch storage.
 
 Evidence: [recoverable data](verification/RECOVERABLE-DATA1.md) and
 [bounded file services](verification/PLUGIN-FILES1.md) and
 [paged directory catalogs](verification/PLUGIN-DIRECTORY1.md) and
-[recoverable publication](verification/PLUGIN-PUBLICATION1.md). Chunked I/O uses an
+[recoverable publication](verification/PLUGIN-PUBLICATION1.md) and
+[cooperative preset catalogs](verification/CATALOG-SCAN1.md). Chunked I/O uses an
 independent versioned service; memory parsing does not remove filesystem limits.
 
 ## 5. Execution and initialization lifecycle
@@ -98,7 +108,7 @@ independent versioned service; memory parsing does not remove filesystem limits.
 - [x] Execute a complete managed string/vector lifetime across Kill/Load locally.
 - [x] Provide explicitly initialized shared C++ session state across source files and entries.
 - [x] Verify per-type/tag ownership, failure cleanup, reentry and recreation after Kill/Load locally.
-- [ ] Accept shared session state with publication/catalog checks in one hardware batch.
+- [x] Accept shared session state with publication/catalog checks in one hardware batch.
 - [ ] Define global constructor ordering, exception unwinding and static-local policy.
 - [x] Accept the combined managed session's cancellation, restart and final owner cleanup on Switch.
 - [x] Accept two managed children draining before their parent in the Explicit hardware probe.
@@ -151,7 +161,9 @@ can proceed with targeted local checks and combined hardware batches.
 - [ ] Publish the accepted service matrix and remaining limitations.
 
 Probe and acceptance limits: [combined runtime verification](verification/COMBINED-ACCEPTANCE1.md).
-The next grouped check is the [shared-state and file-service batch](../examples/service-acceptance/README.md).
+The next [service batch](../examples/service-acceptance/README.md) merges the pending
+file-transfer check with XML serialization, verification and backup restoration.
+Previously accepted probes remain optional; the standalone batch 2 check is deferred.
 
 ## 8. Menyoo source-port gate
 

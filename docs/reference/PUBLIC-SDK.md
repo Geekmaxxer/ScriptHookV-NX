@@ -39,6 +39,8 @@ creation, checked directories and chunked access to files up to 64 MiB. Check
 No file handle survives a call, and raw settings limits remain unchanged.
 The [catalog service](DIRECTORY-CATALOG.md) lists files and directories in bounded
 pages without retaining cursors; check `scriptCatalogAvailable()` independently.
+[Preset catalog tasks](PRESET-CATALOGS.md) provide owner-backed collection, suffix
+filtering, cooperative sorting and checked paths without extending that table.
 The [mutation and publication service](FILE-PUBLICATION.md) adds rename without
 replacement, checked deletion and backup-preserving publication helpers. Check
 `scriptFileMutationsAvailable()` and validate application content explicitly.

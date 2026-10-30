@@ -83,7 +83,10 @@ types and negative file sizes return `InvalidEntry`. I/O, ownership, path and
 extent errors retain their documented file-status values. A failed lookahead is
 an error, not evidence that the just-filled page was the final page.
 
-This service does not sort, recurse, delete, rename or transactionally replace
+The optional [preset catalog helper](PRESET-CATALOGS.md) supplies cooperative
+filtering and sorting in plugin code using the existing memory service.
+
+This low-level service does not sort, recurse, delete, rename or transactionally replace
 files. It supplies catalog metadata rather than a hosted `std::filesystem`
 implementation. See the [combined example](../../examples/streamed-catalog/README.md)
 and [verification record](../verification/PLUGIN-DIRECTORY1.md). Physical Switch

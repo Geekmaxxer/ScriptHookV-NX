@@ -40,7 +40,8 @@ records artifact identities, completed counts and the bounded target review.
 
 ## Remaining acceptance
 
-- [ ] Verify mixed catalogs and nested paths on actual Switch storage.
+- [x] Verify nested file access and sample metadata on actual Switch storage.
+- [ ] Verify mixed/multi-page catalogs on actual Switch storage.
 - [ ] Exercise directory changes between pages and explicit rescan behavior.
 - [ ] Test pause/loading/death/character changes with concurrent plugins.
 - [ ] Measure directory traversal cost and game-frame stalls at larger counts.
@@ -50,3 +51,7 @@ records artifact identities, completed counts and the bounded target review.
 The [public contract](../reference/DIRECTORY-CATALOG.md) documents current-order
 pagination, repeated skip cost, output invalidation and absence of snapshot or
 transaction guarantees.
+
+The [physical service batch 1](SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
+independently verifies the full 256 KiB nested sample and the completed metadata
+report. Its single-file catalog does not establish mixed or multi-page acceptance.

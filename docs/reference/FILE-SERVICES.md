@@ -69,6 +69,8 @@ behavior. An independent [catalog table](DIRECTORY-CATALOG.md) supplies director
 enumeration. A separate [mutation/publication service](FILE-PUBLICATION.md)
 supplies checked rename/delete and explicit backup recovery. Atomic large-file
 transactions and a hosted `stdio`/`fstream` implementation remain separate work.
+The SDK's [cooperative file-transfer helpers](FILE-TRANSFERS.md) provide bounded
+read buffers and explicit prepared output without changing these file-service limits.
 
 See the [streamed example](../../examples/streamed-catalog/README.md) and
 [verification scope](../verification/PLUGIN-FILES1.md). Physical Switch storage,

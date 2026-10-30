@@ -8,6 +8,12 @@ Global constructors/destructors and unresolved imports
 are rejected by the builder/loader.
 For explicitly initialized shared C++ objects, see [session state](SESSION-STATE.md).
 That helper uses existing owned-resource cleanup and recreates state after Kill/Load.
+For larger input/output data, [file-transfer tasks](FILE-TRANSFERS.md) provide
+explicit progress and owner-backed buffers on the existing file services.
+[Growable XML output and bounded file verification](XML-BUFFERS.md) build on the
+same services without adding a runtime table or changing flat settings limits.
+[Preset catalog tasks](PRESET-CATALOGS.md) add cooperative filtering, sorting and
+checked selection paths over the existing directory service.
 
 | API | Contract |
 | --- | --- |

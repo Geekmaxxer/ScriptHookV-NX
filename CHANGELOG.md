@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased cooperative preset catalogs - 2026-10-30
+
+- Add caller-bounded catalog tasks with suffix filtering, cooperative name sorting and checked relative selection paths.
+- Conceal incomplete results; report duplicate names, entry limits, unaddressable paths and allocation/I/O failures explicitly.
+- Verify cancellation and Kill/Load during traversal, sorting and validation locally.
+- Extend the XML save/recovery example with multi-page preset selection; retain all pending checks in deferred service batch 4.
+- Keep the runtime binary, shared configuration and earlier hardware evidence unchanged.
+
+## Unreleased merged XML workflow - 2026-10-30
+
+- Defer the standalone batch 2 hardware check and merge its large XML transfers with new save/recovery features in batch 3.
+- Add caller-bounded growable XML serialization with complete-output publication and explicit allocation failures.
+- Add chunked file-byte verification with bounded scratch storage and explicit mismatch/extent statuses.
+- Exercise verified prepared output, publication, original backup restoration, retained replacement and interruption preservation locally on the unchanged runtime.
+
+## Unreleased cooperative file transfers - 2026-10-30
+
+- Accept physical service batch 1: shared-state restart/cleanup, complete publication and nested catalog payloads, and retained backup bytes.
+- Add owner-backed read tasks and exclusive prepared-file writes with explicit progress, terminal errors, cancellation and final extent checks.
+- Exercise large XML loading/parsing, malformed-input preservation and complete cleanup locally on the unchanged runtime.
+- Package service batch 2 with a focused new XML check; repeating accepted batch 1 probes is optional.
+
 ## Unreleased shared session state and grouped acceptance - 2026-10-30
 
 - Add explicit per-type/tag C++ session state shared across translation units, with owned cleanup, failure refusal and fresh construction after Kill/Load.

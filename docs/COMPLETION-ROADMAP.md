@@ -49,7 +49,12 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Accept Test2 timing/workload results and identify synchronous report-save stalls.
 - [x] Reduce diagnostic reporting overhead and provide shared C++ session state locally.
 - [x] Package shared-state, file publication and catalog checks as one service batch.
-- [ ] Accept the new shared-state and grouped file-service workload on Switch.
+- [x] Accept the shared-state, publication and nested catalog workload on Switch.
+- [x] Provide cooperative owned read buffers and prepared-file write tasks with large XML parsing locally.
+- [x] Add growable XML output and bounded file verification with a combined save/restore example locally.
+- [x] Provide cooperative preset filtering/sorting and checked selection paths locally.
+- [x] Merge multi-page preset selection with XML/save/recovery in deferred service batch 4.
+- [ ] Accept the combined preset/XML load/save/restore workload on Switch.
 - [ ] Complete remaining platform/capacity acceptance for substantial runtime changes.
 - [x] Accept the combined managed session's cancellation, restart and final cleanup on Switch.
 - [ ] Accept broader nested ownership, failure and transition cleanup on Switch.

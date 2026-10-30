@@ -4,7 +4,8 @@ The SDK supplies `SessionLocal<T, Tag>` through the existing Test1 memory and
 owned-resource services. It provides explicitly initialized C++ state shared
 across translation units and cooperative entries, with registered cleanup and
 fresh construction after Kill/Load. Production runtime, ABI and target offsets
-are unchanged. New session-state behavior has local verification only.
+are unchanged. The batch 1 example now has scoped physical acceptance; broader
+failure/transition cases retain their separate local or pending status.
 
 ## Implementation and local checks
 
@@ -21,8 +22,8 @@ are unchanged. New session-state behavior has local verification only.
 - [x] Execute the complete two-source worker/string/vector example locally.
 - [x] Package the new example with publication and catalog checks in one service batch.
 - [x] Execute all three packaged NROs together under compiled defaults, including repeat loading and cleanup.
-- [ ] Accept the shared-state example on physical Switch hardware.
-- [ ] Accept publication and nested catalog examples from the same batch.
+- [x] Accept the shared-state example on physical Switch hardware.
+- [x] Accept publication and nested catalog examples from the same batch.
 
 The [local record](../../evidence/session-local1-local-20261030/verification.json)
 identifies exact artifacts, source hashes and completed checks. Tests execute the
@@ -42,3 +43,24 @@ runtime installation, NPDM and shared configuration unchanged.
 The [session contract](../reference/SESSION-STATE.md) defines explicit initialization,
 borrowed pointers, callback restrictions and ordering. Compiler-managed global
 initialization, exceptions and static-local destruction remain separate work.
+
+## Physical batch 1 result - 2026-10-30
+
+The [hardware record](../../evidence/service-batch1-console-20261030/acceptance.json)
+matches the existing Test1 runtime and all three packaged NROs. The loader reports
+five resident modules, Disarm/Footprints running, and all three service probes
+completed or stopped without plugin, configuration, loader or resource errors.
+The installed configuration remains Explicit 16/48/16/3/3.
+
+Session cleanup reports `run=2`, `destructors=2`, worker progress and complete
+owner cleanup. Both 262,144-byte publication/catalog payloads were independently
+compared byte for byte with the expected pattern. Publication retains the exact
+three-byte `old` backup and has no prepared file remaining. The operator completed
+the repeated-load checklist with no visible errors. Per-run counters for the file
+probes and the first session's detailed report were not retained.
+
+This accepts the bounded shared-state, publication and nested catalog workflow.
+Explicit backup restoration, mixed/multi-page catalogs, media failures, individual
+transition categories and power-loss durability remain separate checks. Current
+batch 3 merges the deferred large XML transfer check with serialization,
+verification and backup restoration; repeating batch 1 is optional.

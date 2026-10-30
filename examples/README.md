@@ -10,6 +10,10 @@ The source examples use unique plugin IDs and document their observable results.
 | `container-registry/` | Move-only records, dynamic labels, ID lookup and numeric XML |
 | `recoverable-data/` | Checked binary/XML records, fallback and explicit recovery |
 | `streamed-catalog/` | Chunked 256 KiB file access, nested directories and yielding |
+| `session-state/` | Explicit shared C++ state and registered worker cleanup |
+| `large-xml-file/` | Cooperative owned reads, prepared writes and large XML parsing |
+| `xml-workflow/` | Sorted preset browsing, large XML loading, verified saving and backup restoration |
+| `service-acceptance/` | Deferred combined hardware checklist and manual probe packaging |
 | `recoverable-publication/` | Prepared large-file validation, publication and retained backup |
 | `managed-resources/` | Registered string/vector ownership across cooperative waits and cancellation |
 | `user-profile/` | Current single-open-user nickname through the optional platform profile service |

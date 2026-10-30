@@ -1,0 +1,191 @@
+{
+  "format": 1,
+  "date": "2026-10-30",
+  "candidate": "Cooperative buffered file transfers",
+  "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+  "local_arm64": {
+    "passed": 32,
+    "failed": 0,
+    "checks": [
+      "Read begins with an unpublished owner-backed buffer",
+      "One read step advances at most its declared chunk",
+      "Beginning again preserves the active task",
+      "The final read is not published until a separate size check",
+      "Complete binary data and appended NUL are published without truncating embedded bytes",
+      "Repeated completed steps are harmless",
+      "A foreign reset cannot discard owned read storage",
+      "Reset releases only the read buffer and permits reuse",
+      "Empty files are complete after validation and retain a terminator",
+      "Invalid chunk size 0 is refused before allocation",
+      "Invalid chunk size 65537 is refused before allocation",
+      "The existing file service rejects traversal paths",
+      "An oversized source exceeds its caller-selected bound before allocation",
+      "Allocation failure exposes no partial buffer",
+      "A short read is terminal and remains unpublished",
+      "Read errors retain their file-service status",
+      "A changed final extent is rejected without publishing mixed data",
+      "Cancel releases the read allocation without changing the source",
+      "Prepared output is created exclusively without borrowing an input span",
+      "Chunked output completes with exact bytes and extent verification",
+      "Existing output is preserved without truncation",
+      "Cancelling output preserves the partial file for explicit recovery",
+      "Finish rejects incomplete output without deleting the file",
+      "Empty prepared files finish successfully",
+      "A write span cannot exceed the remaining file extent",
+      "Write errors are terminal and preserve data for inspection",
+      "Kill cancels a read without leaving owner resources or handles",
+      "Reload creates fresh task state and a single owning session",
+      "The complete example creates and parses a 256 KiB XML file",
+      "Natural completion frees the XML document and read buffer",
+      "Example restart verifies an existing file without rewriting it",
+      "Malformed existing XML is preserved and reported without leaking"
+    ],
+    "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "fixture_sha256": "8c1e1ee591937b3d34f917ade3d6219c8126c082afa971dae4c4bd7eb0a8f780",
+    "example_sha256": "3c059a8b1ec285c56ff0485b19f3bcfa001d74e008d3fa2edca3d86015050c9d",
+    "real_runtime_sdk_fixture_and_example_arm64_executed": true,
+    "os_ro_filesystem_game_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "source_sha256": {
+    "include/shv/file_transfer.h": "79f51e9d70b6a20923e0b9cee6016ce0703befc49b1ac94a1cc309a0c32d16bc",
+    "examples/large-xml-file/main.cpp": "cbfd7167b2bbe77cc74713e3a2667a5f13004ad5c86ad1a5bac95bade29efe01",
+    "examples/large-xml-file/project.json": "df0bba4ba72001e5442494be0b7efb6275714a960caa07b12f2e6cb015c6a2e9",
+    "tests/test_file_transfer.py": "bf23eeb0d2e93ed116cdf9375524c1c456d3a395af7970bc403946f46d844ea0",
+    "tests/fixtures/file_transfer_fixture.cpp": "71facfb41315a32c8cb0a62d28cd8d619e44c83a08536de3e75c1e20f8396465",
+    "tests/test_service_batch.py": "13ab1ee382045c194b11b5c218b6db72b6dd0ae74d429f851917307ca5433093",
+    "tools/build_service_acceptance.py": "48d5d6ad6f4972062adae27966147a11d880dc65d68e873c95cc5a35e5c2add0"
+  },
+  "service_package": {
+    "format": 1,
+    "kit": "Service acceptance batch 2",
+    "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "artifacts": {
+      "session-state": {
+        "nro_sha256": "bc12513c5b17b4d2b85c52f9d6e3852b39eb8a42eff138b0fe991f6b2f055804",
+        "image_bytes": 24576,
+        "bss_bytes": 4096,
+        "accounted_bytes": 61440
+      },
+      "recoverable-publication": {
+        "nro_sha256": "6ec20b1da1e9856e3f6b7d9933b727d03a7e0e1cdf6f94abb2b12a05ea36bba5",
+        "image_bytes": 20480,
+        "bss_bytes": 20480,
+        "accounted_bytes": 86016
+      },
+      "streamed-catalog": {
+        "nro_sha256": "f4d809307473e9cb3f22ece14da223761046be8b63a7d05106b3e6e4aec848de",
+        "image_bytes": 20480,
+        "bss_bytes": 36864,
+        "accounted_bytes": 118784
+      },
+      "large-xml-file": {
+        "nro_sha256": "3c059a8b1ec285c56ff0485b19f3bcfa001d74e008d3fa2edca3d86015050c9d",
+        "image_bytes": 40960,
+        "bss_bytes": 20480,
+        "accounted_bytes": 126976
+      }
+    },
+    "runtime_module_included": false,
+    "shared_configuration_included": false,
+    "zip_sha256": "19faf1ee71a64d384395bac6a3699a614e6524e981df648b3c35b7a3236b23af",
+    "zip_bytes": 40860,
+    "zip_readback_verified": true,
+    "game_files_required_for_build": false,
+    "installed": false,
+    "switch_runtime_verified": false,
+    "published": false
+  },
+  "existing_runtime_sdk_target_source_files_unchanged": 127,
+  "new_sdk_header": "include/shv/file_transfer.h",
+  "runtime_binary_changed": false,
+  "base_abi_changed": false,
+  "new_game_native_or_offset": false,
+  "physical_transfer_example_accepted": false,
+  "script_save_file_limits_changed": false,
+  "presentation_performance_measured": false,
+  "sd_modified": false,
+  "installed": false,
+  "committed": false,
+  "published": false,
+  "packaged_batch_arm64": {
+    "passed": 12,
+    "failed": 0,
+    "checks": [
+      "All packaged probes remain manual under compiled defaults",
+      "Four modules coexist within default resident and image limits",
+      "Shared session main and worker remain active after the file probes finish",
+      "Publication verifies complete data and retains the original backup",
+      "Nested catalog probe verifies the complete sample and directory metadata",
+      "Large XML transfer and parsing complete alongside existing service probes",
+      "Large XML natural completion releases its registered state and buffers",
+      "Completed file operations retain no handles or mounts",
+      "Session stop drains nested storage while retaining module mappings",
+      "Repeated file runs preserve existing published and sampled data",
+      "Restart reuses all four resident mappings",
+      "Second shared session completes without surviving scripts or ownership"
+    ],
+    "kit_zip_sha256": "19faf1ee71a64d384395bac6a3699a614e6524e981df648b3c35b7a3236b23af",
+    "artifacts": {
+      "session-state": {
+        "nro_sha256": "bc12513c5b17b4d2b85c52f9d6e3852b39eb8a42eff138b0fe991f6b2f055804",
+        "image_bytes": 24576,
+        "bss_bytes": 4096,
+        "accounted_bytes": 61440
+      },
+      "recoverable-publication": {
+        "nro_sha256": "6ec20b1da1e9856e3f6b7d9933b727d03a7e0e1cdf6f94abb2b12a05ea36bba5",
+        "image_bytes": 20480,
+        "bss_bytes": 20480,
+        "accounted_bytes": 86016
+      },
+      "streamed-catalog": {
+        "nro_sha256": "f4d809307473e9cb3f22ece14da223761046be8b63a7d05106b3e6e4aec848de",
+        "image_bytes": 20480,
+        "bss_bytes": 36864,
+        "accounted_bytes": 118784
+      },
+      "large-xml-file": {
+        "nro_sha256": "3c059a8b1ec285c56ff0485b19f3bcfa001d74e008d3fa2edca3d86015050c9d",
+        "image_bytes": 40960,
+        "bss_bytes": 20480,
+        "accounted_bytes": 126976
+      }
+    },
+    "runtime_sha256": "930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f",
+    "real_production_runtime_and_all_four_packaged_nros_executed": true,
+    "os_ro_filesystem_game_and_outer_scheduling_modeled": true,
+    "switch_runtime_verified": false
+  },
+  "exported_sdk": {
+    "passed": true,
+    "all_four_artifacts_identical": true,
+    "all_kit_files_identical": true,
+    "unrelated_working_directory": true,
+    "source_and_output_paths_contain_spaces": true,
+    "actual_package_tool_inventory_verified": true,
+    "guide_links_checked": 1,
+    "game_files_required": false
+  },
+  "public_repository_checks": {
+    "checks": [
+      "native-index-and-target-profile",
+      "repository-layout",
+      "portable-tools",
+      "sd-access-packaging",
+      "game-layout-recovery",
+      "capacity-profile-preservation",
+      "capacity-diagnostic-reports",
+      "nro-examples"
+    ],
+    "passed": true,
+    "scope": "Local source, profile, desktop and requested compiler checks",
+    "native_header_sha256": "0ffa63a8460a49ae5e1cf3123c97512ddb5e5e37a25732eca9b81c226707c233",
+    "skipped": [
+      "desktop",
+      "host-ui-model"
+    ],
+    "switch_runtime_verified": false
+  },
+  "standalone_example_builds": 20
+}

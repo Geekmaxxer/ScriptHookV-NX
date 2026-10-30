@@ -2,7 +2,8 @@
 
 This candidate adds optional file ABI 1 for isolated, bounded chunked access and
 explicit nested directories. It is unreleased. The accepted runtime and existing
-distribution packages are unchanged; physical Switch acceptance is pending.
+distribution packages are unchanged. Specific combined/file workflows now have
+scoped physical acceptance; broader storage, failure and performance checks remain open.
 
 ## Implementation
 
@@ -14,7 +15,7 @@ distribution packages are unchanged; physical Switch acceptance is pending.
 - [x] Close all handles and restore filesystem context before returning.
 - [x] Verify existing directory paths through the audited directory-open call.
 - [x] Provide a cooperative 256 KiB sample with explicit interruption behavior.
-- [ ] Provide bounded directory enumeration and large-file replacement policies.
+- [x] Provide independently versioned directory enumeration and large-file publication policies.
 - [ ] Complete storage/performance/transition acceptance on physical Switch.
 
 The implementation reuses the existing audited OpenFile, GetFileSize, ReadFile,
@@ -42,12 +43,21 @@ power-loss behavior or arbitrary gameplay compatibility.
 
 ## Hardware acceptance
 
-- [ ] Confirm the exact module/SDK/plugin hashes and installation rollback.
-- [ ] Read/write multi-chunk files in two plugin namespaces on Switch storage.
-- [ ] Exercise EOF, existing-file protection and interruption/restart policy.
+- [x] Confirm exact runtime/probe hashes for the accepted service batch.
+- [ ] Verify installation rollback separately.
+- [x] Read/write multi-chunk files in two plugin namespaces on Switch storage.
+- [x] Verify retained data and successful repeated-load behavior for the bounded examples.
+- [ ] Exercise additional EOF, conflict and interruption/restart failures on hardware.
 - [ ] Check pause/loading/death/character transitions and concurrent plugins.
 - [ ] Measure frame cost, creation/flush stalls and extended-session behavior.
 - [ ] Document media errors and recovery without claiming atomic multi-call I/O.
 
 See the [public contract](../reference/FILE-SERVICES.md) for exact limits and
 the [runtime roadmap](../PC-RUNTIME-ROADMAP.md) for remaining completion gates.
+
+The [physical service batch 1](SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
+independently verifies both complete 256 KiB byte patterns under publication and
+nested catalog namespaces, plus the publication backup. It does not establish
+media failure, power-loss durability or every boundary case. The separate SDK
+[file-transfer helpers](FILE-TRANSFERS1.md) add owned buffers and explicit progress
+on these same runtime services; their new XML example awaits physical acceptance.
