@@ -22,11 +22,15 @@ workflow. This page describes interfaces and requirements.
 | Owned resources | Independent optional table: registered cleanup and cancellation-safe managed heap ownership |
 | User profile | Independent optional table: current single-open-user nickname and explicit availability/error states |
 
-Candidate profiles have local verification and require new hardware acceptance.
+Candidate profiles have local verification and scoped hardware acceptance. New
+features and larger workloads retain their own physical acceptance requirements.
 See [memory](../verification/PLUGIN-MEMORY1.md), [C/XML](../verification/PLUGIN-LIBRARIES1.md),
 [numeric](../verification/PLUGIN-NUMERIC1.md) and [C++](../verification/PLUGIN-CXX1.md)
 for exact limits. Full hosted STL, Windows services and unsupported constructors
 are not supplied by a shared ABI number.
+
+The C profile also supplies [buffer formatting](FORMATTED-TEXT.md); the numeric
+profile adds decimal floating conversions. No new runtime table is required.
 
 The candidate heap also supports [recoverable binary/XML records](RECOVERABLE-DATA.md)
 through the existing file API. Alternating checked records preserve recovery

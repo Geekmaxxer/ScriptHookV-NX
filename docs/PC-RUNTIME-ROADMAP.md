@@ -55,10 +55,15 @@ A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 - [x] Provide nothrow objects and fallible vector/string/sorted-map helpers.
 - [x] Execute a combined numeric XML registry with move-only records locally.
 - [x] Accept bounded allocator cycles and nested owner reclamation in the physical Explicit probe.
+- [x] Provide allocation-free buffer formatting for common integer/string source-port paths.
+- [x] Provide numeric-profile decimal float formatting and independent ARM64 comparison coverage.
+- [x] Preserve XML numeric-profile requirements and explicit unsupported-format failures.
+- [ ] Accept the new formatted-text example in a later combined hardware batch.
 - [ ] Define broader hosted-container compatibility for concrete source ports.
 - [ ] Complete Horizon allocation/release and fragmentation acceptance.
 
-Evidence: [heap](verification/PLUGIN-MEMORY1.md), [C/XML](verification/PLUGIN-LIBRARIES1.md),
+Evidence: [formatted text](verification/FORMATTED-TEXT1.md),
+[heap](verification/PLUGIN-MEMORY1.md), [C/XML](verification/PLUGIN-LIBRARIES1.md),
 [numeric conversion](verification/PLUGIN-NUMERIC1.md) and [C++ containers](verification/PLUGIN-CXX1.md).
 These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 
@@ -85,8 +90,9 @@ These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 - [x] Combine large XML loading, verified save, publication and backup restoration in one workload locally.
 - [x] Provide complete-result catalog tasks with suffix filters, cooperative sorting and checked paths.
 - [x] Verify catalog allocation/I/O failures, cancellation and restart during every processing phase locally.
-- [x] Consolidate pending XML/save/recovery and multi-page preset selection in deferred service batch 4.
-- [ ] Accept the combined preset/XML/file-transfer workload on Switch in service batch 4.
+- [x] Consolidate XML/save/recovery and multi-page preset selection in service batch 4.
+- [x] Accept the combined preset/XML/file-transfer workload on Switch in service batch 4.
+- [x] Verify exact input/output bytes, restored original, 13 presets and final natural-completion cleanup.
 - [ ] Verify media errors and recovery on Switch storage.
 
 Evidence: [recoverable data](verification/RECOVERABLE-DATA1.md) and
@@ -161,9 +167,10 @@ can proceed with targeted local checks and combined hardware batches.
 - [ ] Publish the accepted service matrix and remaining limitations.
 
 Probe and acceptance limits: [combined runtime verification](verification/COMBINED-ACCEPTANCE1.md).
-The next [service batch](../examples/service-acceptance/README.md) merges the pending
-file-transfer check with XML serialization, verification and backup restoration.
-Previously accepted probes remain optional; the standalone batch 2 check is deferred.
+The accepted [service batch 4](verification/CATALOG-SCAN1.md) consolidates large
+XML transfers, preset catalogs, verified saving and backup restoration. Its
+normal workload needs no repetition. New formatter acceptance can join later
+features in a combined batch; broader transition and stress gates remain open.
 
 ## 8. Menyoo source-port gate
 

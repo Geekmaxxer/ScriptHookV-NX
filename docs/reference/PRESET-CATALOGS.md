@@ -78,5 +78,7 @@ helper does not recurse, watch directories, parse presets or modify files.
 
 The [combined example](../../examples/xml-workflow/README.md) and
 [verification record](../verification/CATALOG-SCAN1.md) cover paged selection
-alongside XML loading, verified saving and restoration. Physical acceptance of
-the combined workload remains deferred.
+alongside XML loading, verified saving and restoration. Batch 4 has scoped
+physical acceptance for four-page mixed traversal, filtering, sorted selection
+and the combined workflow. Directory changes, errors and performance remain
+separate acceptance requirements.

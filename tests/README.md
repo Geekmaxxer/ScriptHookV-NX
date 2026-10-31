@@ -78,3 +78,10 @@ during each phase. It uses `--core <matching-core-directory>` and
 `--output <fresh-directory>` with the same private runtime adapters. The
 [catalog record](../docs/verification/CATALOG-SCAN1.md) preserves the local scope.
 The combined XML and packaged-batch suites also verify multi-page preset selection.
+
+`test_formatted_text.py` executes integer/string and numeric-profile formatting
+with guarded buffers, independent integer/decimal reference results, overflow and
+unsupported-format checks, reusable variadic lists and repeated example execution.
+Run with `--core <matching-core-directory>` and `--output <fresh-directory>`.
+The [formatted-text record](../docs/verification/FORMATTED-TEXT1.md) preserves the
+local scope; runtime images/adapters remain private maintainer inputs.

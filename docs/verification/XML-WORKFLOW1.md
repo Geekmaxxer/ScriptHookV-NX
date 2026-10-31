@@ -3,7 +3,8 @@
 This milestone merges the pending large XML/file-transfer hardware check with
 new growable XML serialization, bounded file comparison and verified publication/
 backup restoration. It uses the unchanged Test1 runtime and adds no native
-signature, engine offset or runtime table. Physical acceptance remains pending.
+signature, engine offset or runtime table. Its normal workflow now has scoped
+physical acceptance through the later combined batch 4 artifact.
 
 ## Implementation and local checks
 
@@ -20,7 +21,7 @@ signature, engine offset or runtime table. Physical acceptance remains pending.
 - [x] Clean every buffer/document allocation on natural completion and interruption.
 - [x] Refuse conflicting or interrupted disk states on restart without deleting data.
 - [x] Execute all four packaged probes together under compiled defaults and repeat loading without remapping.
-- [ ] Accept the combined load/save/restore workload on physical Switch hardware.
+- [x] Accept the combined load/save/restore workload on physical Switch hardware through batch 4.
 
 The [local record](../../evidence/xml-workflow1-local-20261030/verification.json)
 identifies source hashes, exact artifacts and executed tests. Production runtime,
@@ -30,9 +31,9 @@ bounds, not measured hardware timing.
 
 ## Consolidated hardware sequence
 
-Batch 3 hardware acceptance is deferred into the later
-[preset catalog milestone](CATALOG-SCAN1.md). Its batch 4 kit includes this
-load/save/recovery sequence and new catalog selection checks. The local batch 3
+Batch 3 hardware checks were consolidated into the later
+[preset catalog milestone](CATALOG-SCAN1.md). The accepted batch 4 artifact includes
+this load/save/recovery sequence and catalog selection checks. The local batch 3
 record above retains its exact original artifacts and test scope.
 
 The current [service checklist](../../examples/service-acceptance/README.md) replaces the
@@ -41,10 +42,12 @@ completion, and retain its reports/input/original/published files. Previously
 accepted service probes remain optional. No repeat of the long capacity test is
 required. Batch 2 artifacts and local evidence are preserved as historical records.
 
-The standalone `large-xml-file` artifact remains locally verified. Acceptance of
-the new combined artifact would establish its tested transfer behaviors, not a
-retroactive hardware run of the old NRO. New serialization/comparison helpers
-also retain separate physical acceptance until the combined run is reviewed.
+The [batch 4 hardware record](../../evidence/service-batch4-console-20261030/acceptance.json)
+verifies two naturally completing runs, retained complete input/output, exact
+original restoration and final run-2 cleanup. Normal serialization/comparison
+and publication/restoration are accepted for that exact combined artifact.
+The standalone `large-xml-file` and batch 3 NROs retain their local evidence; no
+retroactive hardware run is implied. Physical failure/cancellation cases remain open.
 
 The [helper contracts](../reference/XML-BUFFERS.md) keep parsing/serialization,
 memory limits, synchronous storage delay and ownership explicit. The workflow

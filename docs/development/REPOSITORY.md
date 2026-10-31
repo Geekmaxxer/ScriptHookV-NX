@@ -34,7 +34,7 @@ older verification records retain the layout of the artifacts they describe.
 - `docs/development/`: builds, contributions, organization and maintenance.
 - `docs/verification/`: dated implementation/validation summaries.
 - `docs/archive/`: historical preview notes and maintainer research context.
-- The two root roadmap pages: checked implementation and acceptance milestones.
+- `docs/COMPLETION-ROADMAP.md` and `docs/PC-RUNTIME-ROADMAP.md`: checked implementation and acceptance milestones.
 
 An introduction explains the project and entry points. Reference pages describe
 contracts. Verification pages preserve artifact identities, test scope and open

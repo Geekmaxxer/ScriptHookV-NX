@@ -7,6 +7,7 @@ The source examples use unique plugin IDs and document their observable results.
 | --- | --- |
 | `tutorials/` | Basic plugins, settings, input/rendering and NSC providers |
 | `numeric-xml/` | Decimal validation and typed XML/settings workflow |
+| `formatted-text/` | Checked snprintf/vsnprintf, decimal fields and repeated variadic arguments |
 | `container-registry/` | Move-only records, dynamic labels, ID lookup and numeric XML |
 | `recoverable-data/` | Checked binary/XML records, fallback and explicit recovery |
 | `streamed-catalog/` | Chunked 256 KiB file access, nested directories and yielding |

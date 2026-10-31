@@ -3,9 +3,10 @@
 This manual example combines large XML input with owner-backed growable
 serialization, chunked output verification and backup publication/restoration.
 A cooperative preset catalog adds extension filtering, sorted selection and
-checked relative paths to the same pending hardware workload.
-It supersedes the pending standalone large-XML hardware check while retaining
-that example and all previous artifact records.
+checked relative paths to the combined hardware workload. The exact batch 4
+artifact has scoped physical acceptance for normal operation and final run-2
+cleanup. The standalone large-XML example and earlier artifact records remain
+available with their original scope.
 
 ```powershell
 python tools/build_mod.py --project examples/xml-workflow/project.json --output out/xml-workflow --devkitpro C:/devkitPro
@@ -38,8 +39,8 @@ the run and final owner cleanup. The result stages are 1 input preparation,
 2 input loading/parsing, 3 serialization, 4 original creation, 5 prepared output,
 6 publication, 7 restoration, 8 completed-state verification and 9 preset browsing.
 
-The deferred [service checklist](../service-acceptance/README.md) includes this
-probe loaded twice when hardware acceptance resumes. The
+The [service checklist](../service-acceptance/README.md) retains the accepted
+two-run sequence for reproduction. No repeat is required. The
 [catalog/workflow record](../../docs/verification/CATALOG-SCAN1.md)
 separates local execution from physical acceptance. File verification does not
 provide a transaction or protect against concurrent writers.

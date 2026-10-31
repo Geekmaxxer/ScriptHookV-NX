@@ -35,58 +35,33 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
 
 ## Capabilities
 
-- Typed and raw game-native invocation with availability and failure reporting.
-- Cooperative `ScriptMain`/`WAIT` execution, additional scripts and bounded cleanup.
-- Entity pools, borrowed entity/global access, controller callbacks, HUD rendering
-  and PNG textures through versioned SDK extensions.
-- Isolated settings, startup policies, diagnostics and optional process controls.
-- Unreleased profiles for owner-accounted memory, C/XML libraries, decimal
-  conversion and fallible C++ containers.
-- Unreleased chunked file access, isolated nested directories and paged catalogs.
-- Cooperative owner-backed read buffers and prepared writes for larger XML/configuration ports.
-- Fallible growable XML output and bounded file comparison for verified save workflows.
-- Cooperative preset catalogs with suffix filtering, sorted names and checked selection paths.
-- Unreleased registered resource cleanup and managed heap objects across cancellation.
-- Unreleased explicitly initialized C++ session state shared across source files.
-- Unreleased active-profile nickname access and growing runtime capacity tables.
+- Typed/raw native invocation, availability checks and per-call failure reporting.
+- Cooperative scripts, controller callbacks, HUD rendering, PNG textures and entity access.
+- Isolated settings, startup policies and runtime diagnostics.
+- Opt-in owner memory, C/XML and numeric libraries, buffer formatting and fallible C++ containers.
+- Bounded file transfers, sorted preset catalogs and verified save/publication workflows.
+- Registered cleanup, explicit shared session state and configurable plugin capacity.
 
 See the [API reference](docs/reference/API-REFERENCE.md) for contracts and
 [compatibility](docs/reference/COMPATIBILITY.md) for platform limitations.
 
 ## Project status
 
-The published baseline is **v1.4.1 Preview**, with **Mod Porter 0.9.1**. Its runtime
-has [scoped Switch gameplay acceptance](evidence/runtime-completion-test1-20261022/hardware-20261023/console-acceptance.json).
-Current development adds substantial source-port services; those candidates have
-local verification and scoped physical Switch acceptance; broader validation remains open.
-The latest [physical Test1 record](docs/verification/PLATFORM-CAPACITY1.md#physical-test1-demo-run)
-verifies startup, manual demo loading, a nickname matching one selected Switch
-account and a reported managed run of at least 30 seconds. The later
-[combined workload](docs/verification/COMBINED-ACCEPTANCE1.md#physical-test1-result---2026-10-30)
-verifies storage/XML, worker/render callbacks, borrowed entities and final-run
-managed cleanup after restart. The [Explicit capacity result](docs/verification/CAPACITY-ACCEPTANCE1.md)
-extends this to large image/BSS extents, 36 workers and nested child/parent cleanup;
-the same bounded workload is accepted under Automatic settings. Original
-configuration restoration and fresh startup are verified. Additional profiles,
-resident-module growth, transitions and
-measured performance/soak acceptance remain pending.
-The [Test2 hardware result](docs/verification/CAPACITY-DIAGNOSTICS2.md) accepts both
-instrumented workloads and cleanup, identifying synchronous report-save stalls.
-The [service batch 1 result](docs/verification/SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
-accepts shared state, publication/backup contents and nested catalog access.
-The next [service batch](examples/service-acceptance/README.md) merges pending
-large XML transfer with preset browsing, serialization, verification and backup
-restoration using the unchanged runtime. Hardware acceptance remains deferred
-while implementation continues; standalone batch 2 and batch 3 runs are unnecessary.
+The published baseline is **v1.4.1 Preview**, with **Mod Porter 0.9.1**.
+Current development adds source-port services with separate implementation,
+local-verification and hardware-acceptance records. The
+[verification matrix](docs/verification/README.md) identifies each tested scope;
+[Batch 4](docs/verification/CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30)
+accepts the combined preset/XML/save/restoration workload. New
+[buffer formatting](docs/reference/FORMATTED-TEXT.md) is locally verified and
+awaits a later combined hardware batch.
 
 The supported target is title `0100b00b51230000`, executable build
-`6e3e9b3af5746e74b615bd981080c9271bc22662`. A changed executable requires a renewed
-audit. Windows APIs, arbitrary PC memory patches, managed scripts and unlimited
-plugin workloads are outside the current compatibility contract.
-
-The [project roadmap](docs/COMPLETION-ROADMAP.md) tracks delivered functionality.
-The [runtime roadmap](docs/PC-RUNTIME-ROADMAP.md) tracks active implementation and
-acceptance gates. Full Menyoo porting follows those gates.
+`6e3e9b3af5746e74b615bd981080c9271bc22662`. Changed executables require renewed
+audits. Compatible PC mods require source adaptation and their own gameplay
+acceptance. The [project roadmap](docs/COMPLETION-ROADMAP.md) and
+[runtime roadmap](docs/PC-RUNTIME-ROADMAP.md) track open implementation and
+hardware gates. Full Menyoo porting follows those gates.
 
 ## Repository structure
 

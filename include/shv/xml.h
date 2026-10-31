@@ -5,16 +5,21 @@
 // clients. Declaration permits parsing; using them requires additional numeric
 // support and will fail the strict link. This profile does not fake conversion.
 extern "C" double strtod(const char*,char**);
-#if defined(SHVNX_PLUGIN_NUMERIC_RUNTIME) && SHVNX_PLUGIN_NUMERIC_RUNTIME
-#include "numeric.h"
 // Read C headers before scoped call substitution so their declarations are
 // never renamed. Only the pinned implementation's numeric calls are bridged.
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <new>
+#if defined(SHVNX_PLUGIN_NUMERIC_RUNTIME) && SHVNX_PLUGIN_NUMERIC_RUNTIME
+#include "numeric.h"
 #define strtod(text,end) ::ScriptHook::Numeric::Detail::XmlNumber(text,end)
 #define snprintf(out,cap,fmt,precision,value) ::ScriptHook::Numeric::Detail::XmlPrint(out,cap,fmt,precision,value)
+#else
+// The integer-only C formatter must not silently accept an XML floating setter.
+// This declaration intentionally has no implementation in the C-only profile.
+extern "C" int shvXmlFloatingRequiresNumericProfile(char*,size_t,const char*,int,double);
+#define snprintf(out,cap,fmt,precision,value) shvXmlFloatingRequiresNumericProfile(out,cap,fmt,precision,value)
 #endif
 // Supported profile: UTF-8 memory DOM, no STL/streams, exceptions or XPath.
 // Include this before upstream pugixml headers; build with c_runtime=true.
@@ -34,8 +39,8 @@ extern "C" double strtod(const char*,char**);
 #include "../../sdk/third_party/pugixml/pugixml.hpp"
 #if defined(SHVNX_PLUGIN_NUMERIC_RUNTIME) && SHVNX_PLUGIN_NUMERIC_RUNTIME
 #undef strtod
-#undef snprintf
 #endif
+#undef snprintf
 #ifdef SHVNX_XML_RESTORE_ASSERTS
 #undef NDEBUG
 #undef SHVNX_XML_RESTORE_ASSERTS

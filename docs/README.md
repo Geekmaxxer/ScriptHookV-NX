@@ -25,6 +25,7 @@ pages; implementation plans and dated verification records are maintained separa
 - [Bounded file streaming and directories](reference/FILE-SERVICES.md)
 - [Cooperative buffered file transfers](reference/FILE-TRANSFERS.md)
 - [Growable XML output and streamed verification](reference/XML-BUFFERS.md)
+- [Buffer formatting](reference/FORMATTED-TEXT.md)
 - [Paged directory catalogs](reference/DIRECTORY-CATALOG.md)
 - [Cooperative preset catalogs](reference/PRESET-CATALOGS.md)
 - [File mutation and recoverable publication](reference/FILE-PUBLICATION.md)

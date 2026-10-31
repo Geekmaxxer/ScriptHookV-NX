@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased buffer formatting - 2026-10-30
+
+- Add allocation-free C-profile `snprintf`/`vsnprintf` with checked count/truncation behavior and target-width integer arguments.
+- Add numeric-profile decimal float formatting through the pinned Ryu dependency, with explicit unsupported-format and precision failures.
+- Preserve C-only XML floating-setter rejection and test existing library/numeric behavior separately.
+- Provide a complete standalone example for a later combined hardware batch; retain accepted batch 4 artifacts.
+- Shorten the repository introduction and refresh the compatibility matrix without rewriting historical evidence.
+
+## Service batch 4 hardware acceptance - 2026-10-30
+
+- Accept the exact combined preset/XML probe on the unchanged Test1 runtime, with two naturally completing runs and final owner cleanup.
+- Independently verify all 262,144 input bytes, 98,376 serialized output bytes, the restored original and all 13 preset files.
+- Record four-page mixed catalog traversal, sorted selection and filtered metadata with no reported runtime/plugin errors.
+- Close the consolidated normal-operation gates while retaining separate media-error, interruption, transition and performance requirements.
+
 ## Unreleased cooperative preset catalogs - 2026-10-30
 
 - Add caller-bounded catalog tasks with suffix filtering, cooperative name sorting and checked relative selection paths.

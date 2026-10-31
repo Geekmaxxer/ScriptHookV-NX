@@ -4,7 +4,8 @@ The unreleased mutation service adds file rename and deletion inside a plugin's
 data namespace. An optional `FileReplacement` helper coordinates a prepared
 candidate, a current file and a retained backup. It supports application-validated
 data up to the file service's 64 MiB limit, using the existing audited filesystem
-bindings. Physical Switch storage and performance acceptance remain pending.
+bindings. Normal publication/backup retention and explicit XML backup restoration
+have scoped physical acceptance. Physical failure recovery and performance remain open.
 
 ## Mutation service
 

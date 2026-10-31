@@ -68,4 +68,6 @@ a single writer and validate relevant application data before publication.
 The [combined example](../../examples/xml-workflow/README.md) verifies prepared
 XML before [publication/restoration](FILE-PUBLICATION.md), preserving the original
 and the verified replacement. Its [verification record](../verification/XML-WORKFLOW1.md)
-identifies actual local coverage and pending hardware work.
+identifies local failure coverage and scoped batch 4 physical acceptance for
+normal serialization, comparison, publication and restoration. Physical failure
+recovery, timing and broader stress remain separate.

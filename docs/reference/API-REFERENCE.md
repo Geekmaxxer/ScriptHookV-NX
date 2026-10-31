@@ -15,6 +15,9 @@ same services without adding a runtime table or changing flat settings limits.
 [Preset catalog tasks](PRESET-CATALOGS.md) add cooperative filtering, sorting and
 checked selection paths over the existing directory service.
 
+For labels and diagnostics, the opt-in [buffer formatter](FORMATTED-TEXT.md)
+provides `snprintf` and `vsnprintf`; decimal floats require the numeric profile.
+
 | API | Contract |
 | --- | --- |
 | `SHV_NX_PLUGIN("id", ScriptMain)` | Define an entry with a compile-time checked 1-31 character ID |

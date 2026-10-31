@@ -1,5 +1,5 @@
 // Opt-in freestanding C subset. Allocation belongs to this NRO's memory service.
-// No errno, locale, stdio, hosted C++ runtime or global constructors are supplied.
+// No errno, locale, streams, hosted C++ runtime or global constructors are supplied.
 #include "plugin_memory.h"
 extern "C" {
 void* malloc(size_t n){return scriptAllocate(n,16,0);}

@@ -45,7 +45,7 @@ performed by these local models.
 
 - [x] Verify the exact runtime and publication-example identity on the supported Switch.
 - [x] Accept normal publication and retained backup contents on SD storage.
-- [ ] Accept explicit backup restoration on SD storage.
+- [x] Accept explicit backup restoration on SD storage through the batch 4 XML workflow.
 - [ ] Exercise error/interruption recovery without overwriting retained data.
 - [ ] Test pause/loading/death/character transitions and concurrent plugins.
 - [ ] Measure preparation, rename/delete latency and extended-session behavior.
@@ -60,3 +60,7 @@ The [physical service batch 1](SESSION-LOCAL1.md#physical-batch-1-result---2026-
 verifies the full 256 KiB published byte pattern, exact `old` backup, absent
 prepared file and successful repeated-load checklist. This covers normal
 publication and backup retention, not injected mutation failures or durability.
+The later [batch 4 result](CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30)
+adds verified 98,376-byte XML publication, exact original restoration and retained
+replacement verification on the second natural run. Mutation failures and
+interrupted restoration remain separate physical checks.

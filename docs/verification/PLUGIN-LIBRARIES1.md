@@ -54,10 +54,12 @@ must supply valid, terminated strings and sufficient destination storage; these
 functions preserve ordinary C caller obligations.
 
 This subset does not add global `new/delete`, `std::allocator`, hosted containers,
-exceptions, locale, printf/scanf, floating numeric conversion, C file handles,
+exceptions, locale, stream-based printf/scanf, floating numeric conversion, C file handles,
 threads or automatic static initialization. Unprovided operations still fail
 compilation or strict linking. The XML adapter's class-local deleting-destructor
 slot is not a general C++ allocation service.
+The later [buffer formatter](FORMATTED-TEXT1.md) adds a specified snprintf/vsnprintf
+subset; this milestone's original compiled evidence retains its recorded scope.
 
 ## XML memory profile
 

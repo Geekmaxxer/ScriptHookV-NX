@@ -60,7 +60,8 @@ the repeated-load checklist with no visible errors. Per-run counters for the fil
 probes and the first session's detailed report were not retained.
 
 This accepts the bounded shared-state, publication and nested catalog workflow.
-Explicit backup restoration, mixed/multi-page catalogs, media failures, individual
-transition categories and power-loss durability remain separate checks. Current
-batch 3 merges the deferred large XML transfer check with serialization,
-verification and backup restoration; repeating batch 1 is optional.
+Explicit backup restoration and mixed/multi-page catalogs were accepted later
+in [batch 4](CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30), alongside the
+consolidated large XML/save/recovery workload. Media failures, individual
+transition categories and power-loss durability remain separate checks. No
+repeat of batch 1 is required.

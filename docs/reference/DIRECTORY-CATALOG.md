@@ -89,5 +89,6 @@ filtering and sorting in plugin code using the existing memory service.
 This low-level service does not sort, recurse, delete, rename or transactionally replace
 files. It supplies catalog metadata rather than a hosted `std::filesystem`
 implementation. See the [combined example](../../examples/streamed-catalog/README.md)
-and [verification record](../verification/PLUGIN-DIRECTORY1.md). Physical Switch
-storage, transition behavior and performance acceptance remain pending.
+and [verification record](../verification/PLUGIN-DIRECTORY1.md). Nested metadata
+and a four-page mixed preset catalog have scoped physical acceptance. Directory
+changes, storage errors, transitions and traversal performance remain open.

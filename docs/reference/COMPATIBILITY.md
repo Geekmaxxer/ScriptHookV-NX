@@ -35,19 +35,19 @@ plugin that does not yield.
 
 ## Unreleased services
 
-| Service | Current verification | Remaining requirement |
+| Service | Recorded scope | Remaining requirement |
 | --- | --- | --- |
-| Configurable image/BSS caps | [Large-module local tests](../verification/LARGE-MODULES1.md) | Hardware capacity/performance |
-| Owner-accounted heap | [Allocation/lifetime tests](../verification/PLUGIN-MEMORY1.md) | Horizon allocation/fragmentation |
-| C/XML profile | [Compiled library tests](../verification/PLUGIN-LIBRARIES1.md) | Hardware workload acceptance |
-| Decimal numeric profile | [IEEE/format tests](../verification/PLUGIN-NUMERIC1.md) | Target performance/stack measurements |
-| Nothrow C++ and containers | [Object/container tests](../verification/PLUGIN-CXX1.md) | Broader port and hardware acceptance |
-| Recoverable data | [Record/recovery tests](../verification/RECOVERABLE-DATA1.md) | Actual media interruption/durability |
-| Bounded file services | [Chunk/path/lifecycle tests](../verification/PLUGIN-FILES1.md) | SD behavior and measured frame cost |
-| Paged directory catalogs | [Metadata/page/ownership tests](../verification/PLUGIN-DIRECTORY1.md) | Catalog cost and transition acceptance |
-| File mutation/publication | [State/recovery/failure tests](../verification/PLUGIN-PUBLICATION1.md) | Actual SD behavior and interruption acceptance |
-| Owned-resource lifecycle | [Pinning/cancellation tests](../verification/PLUGIN-RESOURCES1.md) | Combined ownership and transition acceptance |
-| Active profile and growing capacity | [Profile/capacity tests](../verification/PLATFORM-CAPACITY1.md) | Switch account selection, allocation and combined workload acceptance; Eden tested separately |
+| Configurable image/BSS caps | [Explicit/Automatic bounded workload accepted](../verification/CAPACITY-ACCEPTANCE1.md) | Full-capacity RAM, performance and long sessions |
+| Owner-accounted heap | [Allocation/cleanup workloads accepted](../verification/PLUGIN-MEMORY1.md) | Broader Horizon allocation/fragmentation |
+| C/XML profile | [Combined XML workload accepted](../verification/CATALOG-SCAN1.md) | Broader library and failure cases |
+| Decimal numeric profile | [IEEE/format tests and bounded XML acceptance](../verification/PLUGIN-NUMERIC1.md) | Target performance/stack measurements |
+| Buffer formatting | [C/numeric formatter verified locally](../verification/FORMATTED-TEXT1.md) | New formatter workload on hardware |
+| Nothrow C++ and containers | [Managed string/vector workloads accepted](../verification/PLUGIN-CXX1.md) | Broader source-port and ownership cases |
+| Recoverable records | [Record/recovery tests](../verification/RECOVERABLE-DATA1.md) | Actual media interruption/durability |
+| Bounded files and preset catalogs | [Large XML and four-page preset selection accepted](../verification/CATALOG-SCAN1.md) | Media errors, concurrent changes, traversal cost and transitions |
+| File mutation/publication | [Normal publication and explicit restoration accepted](../verification/PLUGIN-PUBLICATION1.md) | Interrupted mutations, actual SD failures and durability |
+| Owned-resource lifecycle | [Managed cancellation and nested cleanup accepted](../verification/PLUGIN-RESOURCES1.md) | Broader failures and transition acceptance |
+| Active profile and growing capacity | [One selected nickname and bounded growth accepted](../verification/PLATFORM-CAPACITY1.md) | Second selected profile, broader capacity and combinations; Eden remains separate |
 
 Candidates preserve ABI 1 layouts but require their optional services. Older
 runtimes may not provide those tables. New SDK functionality and examples do not

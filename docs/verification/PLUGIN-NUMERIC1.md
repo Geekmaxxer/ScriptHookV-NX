@@ -95,8 +95,10 @@ requires checking `Xml::Save` for output overflow.
 The bridge substitutes only the pinned implementation's numeric calls while its
 header is included, then removes those macros. C headers are included before the
 substitution. Upstream pugixml files remain unmodified. Generic C `strtod`,
-`snprintf`, printf/scanf, stdio file methods, streams and XPath remain unsupported;
-unprovided imports still fail strict linking. This is not a hosted stdlib facade.
+printf/scanf, stdio file methods, streams and XPath remain unsupported; unprovided
+imports still fail strict linking. The later [buffer formatter](FORMATTED-TEXT1.md)
+adds a specified snprintf/vsnprintf subset. The original numeric evidence predates
+that addition and retains its original compiled scope.
 
 ## Dependencies and execution
 

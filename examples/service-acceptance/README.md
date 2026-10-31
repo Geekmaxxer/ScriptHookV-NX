@@ -1,10 +1,10 @@
 # Service acceptance batch 4
 
-This deferred batch combines preset browsing with the pending large XML
-load/save/recovery checks. Its hardware run remains deferred while implementation
-continues. Use the sequence below when the next consolidated acceptance session
-is scheduled; standalone batch 2 and batch 3 runs are unnecessary. The existing
-Test1 runtime and shared configuration remain unchanged.
+The exact batch 4 artifact has scoped physical acceptance for preset browsing
+and the combined large XML load/save/recovery workflow. Both natural runs
+completed; retained files and final run-2 cleanup were independently reviewed.
+The sequence below is retained for reproduction. No repeat or standalone batch 2
+or batch 3 run is required. The Test1 runtime and shared configuration remain unchanged.
 
 ## One combined check
 
@@ -65,8 +65,8 @@ also stall the game thread. The workflow uses only its dedicated settings namesp
 and changes no save data, accounts or game entities.
 
 This batch does not establish power-loss durability, media-error recovery,
-whole-process RAM, full-capacity owner growth or presentation frame time. New
-features still require physical acceptance. See the
+whole-process RAM, full-capacity owner growth or presentation frame time.
+Failure, transition and stress cases retain separate physical requirements. See the
 [catalog/workflow record](../../docs/verification/CATALOG-SCAN1.md),
 [earlier XML workflow record](../../docs/verification/XML-WORKFLOW1.md) and
 [earlier file-transfer record](../../docs/verification/FILE-TRANSFERS1.md).

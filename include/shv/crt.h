@@ -1,5 +1,6 @@
 #pragma once
 #include <stddef.h>
+#include <stdarg.h>
 // Explicit declarations for the opt-in freestanding subset. GCC's freestanding
 // <cstdlib> intentionally omits hosted allocation declarations.
 #ifdef __cplusplus
@@ -20,6 +21,9 @@ char* strcpy(char*,const char*);
 char* strncpy(char*,const char*,size_t);
 char* strcat(char*,const char*);
 char* strncat(char*,const char*,size_t);
+// Buffer formatting only. See FORMATTED-TEXT.md for the supported conversions.
+int snprintf(char* output,size_t capacity,const char* format,...);
+int vsnprintf(char* output,size_t capacity,const char* format,va_list arguments);
 #ifdef __cplusplus
 }
 #endif

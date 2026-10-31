@@ -41,7 +41,7 @@ records artifact identities, completed counts and the bounded target review.
 ## Remaining acceptance
 
 - [x] Verify nested file access and sample metadata on actual Switch storage.
-- [ ] Verify mixed/multi-page catalogs on actual Switch storage.
+- [x] Verify mixed/multi-page catalogs on actual Switch storage through batch 4.
 - [ ] Exercise directory changes between pages and explicit rescan behavior.
 - [ ] Test pause/loading/death/character changes with concurrent plugins.
 - [ ] Measure directory traversal cost and game-frame stalls at larger counts.
@@ -54,4 +54,8 @@ transaction guarantees.
 
 The [physical service batch 1](SESSION-LOCAL1.md#physical-batch-1-result---2026-10-30)
 independently verifies the full 256 KiB nested sample and the completed metadata
-report. Its single-file catalog does not establish mixed or multi-page acceptance.
+report. Its single-file catalog did not establish mixed or multi-page acceptance.
+The later [batch 4 result](CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30)
+adds 14 sorted file/directory entries across four pages, case-insensitive XML
+filtering and checked selection. Concurrent directory changes and catalog errors
+retain separate acceptance requirements.

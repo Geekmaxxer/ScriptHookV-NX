@@ -82,7 +82,7 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     if numeric_runtime:flags+=['-DSHVNX_PLUGIN_NUMERIC_RUNTIME=1','-fstack-usage']
     if cxx_runtime:flags+=['-DSHVNX_PLUGIN_CXX_RUNTIME=1','-fstack-usage']
     units=[output/'sdk/plugin_api.cpp',output/'sdk/plugin_start.s']
-    if c_runtime:units.append(output/'sdk/plugin_crt.cpp')
+    if c_runtime:units.extend(output/'sdk'/name for name in ('plugin_crt.cpp','plugin_format.cpp'))
     if cxx_runtime:units.append(output/'sdk/plugin_cxx.cpp')
     if numeric_runtime:
         units.append(output/'sdk/plugin_numeric.cpp')

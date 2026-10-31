@@ -29,6 +29,8 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify owner-accounted allocation, alignment, realloc and Trim locally.
 - [x] Verify C allocation/string and pinned XML DOM libraries locally.
 - [x] Verify decimal conversion and typed XML floating data locally.
+- [x] Provide checked C-profile buffer formatting and numeric-profile decimal floats locally.
+- [ ] Accept the new formatted-text workload on physical Switch hardware.
 - [x] Verify nothrow objects and fallible vector/string/map workflows locally.
 - [x] Verify recoverable binary/XML storage and modeled recovery failures locally.
 - [ ] Accept actual storage interruption/recovery on Switch.
@@ -53,8 +55,9 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Provide cooperative owned read buffers and prepared-file write tasks with large XML parsing locally.
 - [x] Add growable XML output and bounded file verification with a combined save/restore example locally.
 - [x] Provide cooperative preset filtering/sorting and checked selection paths locally.
-- [x] Merge multi-page preset selection with XML/save/recovery in deferred service batch 4.
-- [ ] Accept the combined preset/XML load/save/restore workload on Switch.
+- [x] Merge multi-page preset selection with XML/save/recovery in service batch 4.
+- [x] Accept the combined preset/XML load/save/restore workload on Switch.
+- [x] Independently verify retained input/output, restored original, preset fixtures and final run-2 cleanup.
 - [ ] Complete remaining platform/capacity acceptance for substantial runtime changes.
 - [x] Accept the combined managed session's cancellation, restart and final cleanup on Switch.
 - [ ] Accept broader nested ownership, failure and transition cleanup on Switch.
