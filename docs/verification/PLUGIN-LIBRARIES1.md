@@ -44,7 +44,9 @@ are `malloc`, `calloc`, `realloc`, `free` and `aligned_alloc`. They call this NR
 bound memory service, preserving the existing owner, budget, alignment, overflow,
 zero-size and failure behavior. `realloc` failure preserves the original block;
 `aligned_alloc` also requires size to be a multiple of alignment. Allocation
-failure returns null. No `errno` service is provided.
+failure returns null without an errno report. Later
+[C parsing](NUMERIC-PARSING1.md) and math use a common per-NRO error value;
+that addition does not change the allocator's existing failure contract.
 
 The additional memory/string functions are `memmove`, `memcmp`, `memchr`, `strlen`,
 `strnlen`, `strcmp`, `strncmp`, `strcpy`, `strncpy`, `strcat`, `strncat`, `strchr`,
@@ -59,7 +61,8 @@ threads or automatic static initialization. Unprovided operations still fail
 compilation or strict linking. The XML adapter's class-local deleting-destructor
 slot is not a general C++ allocation service.
 The later [buffer formatter](FORMATTED-TEXT1.md) adds a specified snprintf/vsnprintf
-subset; this milestone's original compiled evidence retains its recorded scope.
+subset, and later [C parsing](NUMERIC-PARSING1.md) adds integer/prefix conversion
+and per-NRO errno. This milestone's original compiled evidence retains its scope.
 
 ## XML memory profile
 

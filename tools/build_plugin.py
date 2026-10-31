@@ -52,12 +52,14 @@ def toolchain(project, explicit=None):
         except FileNotFoundError:pass
     raise FileNotFoundError('Install devkitA64 and switch-tools, then set DEVKITPRO or pass --devkitpro')
 
-def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runtime=False,cxx_runtime=False):
+def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runtime=False,cxx_runtime=False,math_runtime=False):
     if type(c_runtime) is not bool:raise ValueError('c_runtime must be true or false')
     if type(numeric_runtime) is not bool:raise ValueError('numeric_runtime must be true or false')
     if numeric_runtime and not c_runtime:raise ValueError('numeric_runtime requires c_runtime=true')
     if type(cxx_runtime) is not bool:raise ValueError('cxx_runtime must be true or false')
     if cxx_runtime and not c_runtime:raise ValueError('cxx_runtime requires c_runtime=true')
+    if type(math_runtime) is not bool:raise ValueError('math_runtime must be true or false')
+    if math_runtime and not c_runtime:raise ValueError('math_runtime requires c_runtime=true')
     project=Path(__file__).resolve().parents[1]
     output=Path(output).resolve()
     if any(output.resolve().is_relative_to(project/folder) for folder in ('include','sdk')):
@@ -70,6 +72,12 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     headers=include_snapshot(includes)
     bundle(project)
     compiler,elf2nro=toolchain(project,devkit)
+    math_archive=None;math_archive_hash=None
+    if math_runtime:
+        selected=subprocess.check_output([str(compiler),'-print-file-name=libm.a'],text=True).strip()
+        math_archive=Path(selected).resolve()
+        if selected=='libm.a' or not math_archive.is_file():raise FileNotFoundError('The selected devkitA64 toolchain has no libm.a')
+        math_archive_hash=hashlib.sha256(math_archive.read_bytes()).hexdigest()
     output.mkdir(parents=True,exist_ok=False)
     copy_distribution(output,project)
     shutil.copytree(project/'include',output/'include');shutil.copytree(project/'sdk',output/'sdk')
@@ -81,8 +89,12 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     if c_runtime:flags+=['-DSHVNX_PLUGIN_C_RUNTIME=1','-ffunction-sections','-fdata-sections','-fno-devirtualize-speculatively']
     if numeric_runtime:flags+=['-DSHVNX_PLUGIN_NUMERIC_RUNTIME=1','-fstack-usage']
     if cxx_runtime:flags+=['-DSHVNX_PLUGIN_CXX_RUNTIME=1','-fstack-usage']
+    # GCC 16 gates <cmath>/<math.h> behind hosted header mode. This explicit
+    # profile permits those declarations; -nostdlib/-z,defs still constrain
+    # linkage, and builtins, exceptions, RTTI and implicit startup stay disabled.
+    if math_runtime:flags+=['-DSHVNX_PLUGIN_MATH_RUNTIME=1','-fstack-usage','-fno-freestanding','-fno-builtin']
     units=[output/'sdk/plugin_api.cpp',output/'sdk/plugin_start.s']
-    if c_runtime:units.extend(output/'sdk'/name for name in ('plugin_crt.cpp','plugin_format.cpp'))
+    if c_runtime:units.extend(output/'sdk'/name for name in ('plugin_crt.cpp','plugin_parse.cpp','plugin_format.cpp'))
     if cxx_runtime:units.append(output/'sdk/plugin_cxx.cpp')
     if numeric_runtime:
         units.append(output/'sdk/plugin_numeric.cpp')
@@ -99,7 +111,10 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
         obj=output/(str(i)+'.o');subprocess.run([str(compiler),*flags,*vendor_flags,'-c',str(source),'-o',str(obj)],check=True,cwd=output);objects.append(str(obj))
     elf=output/'plugin.elf'
     discard_unused=['-Wl,--gc-sections'] if c_runtime else []
-    subprocess.run([str(compiler),*flags,'-nostdlib','-nostartfiles','-shared',*objects,'-Wl,-T,'+str(output/'sdk/plugin_link.ld'),'-Wl,-Bsymbolic,-z,defs,--build-id=sha1,--hash-style=both',*discard_unused,'-o',str(elf)],check=True,cwd=output)
+    libraries=[str(math_archive)] if math_archive else []
+    subprocess.run([str(compiler),*flags,'-nostdlib','-nostartfiles','-shared',*objects,*libraries,'-Wl,-T,'+str(output/'sdk/plugin_link.ld'),'-Wl,-Bsymbolic,-z,defs,--build-id=sha1,--hash-style=both',*discard_unused,'-o',str(elf)],check=True,cwd=output)
+    if math_archive and hashlib.sha256(math_archive.read_bytes()).hexdigest()!=math_archive_hash:
+        raise ValueError('The selected libm archive changed during compilation; use a stable toolchain')
     nro=output/'plugin.nro';subprocess.run([str(elf2nro),str(elf),str(nro)],check=True)
     data=nro.read_bytes();assert data[0x10:0x14]==b'NRO0'
     size=struct.unpack_from('<I',data,0x18)[0];assert size==len(data) and size%4096==0
@@ -115,7 +130,12 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
             'sd_access':stage_sd_access(output,project)}
     report['numeric_runtime_enabled']=numeric_runtime
     report['cxx_runtime_enabled']=cxx_runtime
-    if numeric_runtime or cxx_runtime:
+    report['math_runtime_enabled']=math_runtime
+    if math_archive:
+        report['math_library']=dict(archive=math_archive.name,sha256=math_archive_hash,bytes=math_archive.stat().st_size,
+            compiler_version=subprocess.check_output([str(compiler),'--version'],text=True).splitlines()[0],source='Installed devkitA64 Newlib libm; archive is not bundled',
+            hosted_math_header_declarations=True,hosted_c_or_cxx_libraries_linked=False,errno_scope='One resident NRO; shared by its cooperative entries')
+    if numeric_runtime or cxx_runtime or math_runtime:
         frames=[]
         for usage in output.glob('*.su'):
             for line in usage.read_text().splitlines():
@@ -133,4 +153,5 @@ if __name__=='__main__':
     p.add_argument('--c-runtime',action='store_true',help='Link the optional owner-heap C allocation/string subset')
     p.add_argument('--numeric-runtime',action='store_true',help='Link numeric and XML floating support (requires --c-runtime)')
     p.add_argument('--cxx-runtime',action='store_true',help='Link owner-backed nothrow C++ allocation (requires --c-runtime)')
-    a=p.parse_args();build([s.resolve() for s in a.source],a.output.resolve(),a.devkitpro,a.include,a.c_runtime,a.numeric_runtime,a.cxx_runtime)
+    p.add_argument('--math-runtime',action='store_true',help='Link toolchain libm and per-plugin errno (requires --c-runtime)')
+    a=p.parse_args();build([s.resolve() for s in a.source],a.output.resolve(),a.devkitpro,a.include,a.c_runtime,a.numeric_runtime,a.cxx_runtime,a.math_runtime)

@@ -1,6 +1,7 @@
 #include "shv/numeric.h"
 #include "shv/crt.h"
 #include <string.h>
+#include <errno.h>
 #include "third_party/fast_float/include/fast_float/fast_float.h"
 #include "third_party/ryu/ryu/ryu.h"
 
@@ -86,3 +87,27 @@ int XmlPrint(char* output,size_t capacity,const char* format,int precision,doubl
 }
 }
 }
+
+namespace {
+bool DecimalSpace(char value) noexcept {
+    return value == ' ' || value == '\t' || value == '\n' || value == '\r' ||
+        value == '\f' || value == '\v';
+}
+
+template<class T> T DecimalPrefix(const char* input,char** end) noexcept {
+    if (end) *end = const_cast<char*>(input);
+    const char* first = input;
+    while (DecimalSpace(*first)) ++first;
+    if (*first == '+') { ++first; if (*first == '+' || *first == '-') return 0; }
+    T value{};
+    const auto parsed = fast_float::from_chars(first,first+strlen(first),value);
+    if (parsed.ec == std::errc::invalid_argument) return 0;
+    if (end) *end = const_cast<char*>(parsed.ptr);
+    if (parsed.ec == std::errc::result_out_of_range) errno = ERANGE;
+    return value;
+}
+}
+
+extern "C" double strtod(const char* input,char** end) { return DecimalPrefix<double>(input,end); }
+extern "C" float strtof(const char* input,char** end) { return DecimalPrefix<float>(input,end); }
+extern "C" double atof(const char* input) { return strtod(input,nullptr); }

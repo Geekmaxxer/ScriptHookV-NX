@@ -94,11 +94,12 @@ requires checking `Xml::Save` for output overflow.
 
 The bridge substitutes only the pinned implementation's numeric calls while its
 header is included, then removes those macros. C headers are included before the
-substitution. Upstream pugixml files remain unmodified. Generic C `strtod`,
-printf/scanf, stdio file methods, streams and XPath remain unsupported; unprovided
-imports still fail strict linking. The later [buffer formatter](FORMATTED-TEXT1.md)
-adds a specified snprintf/vsnprintf subset. The original numeric evidence predates
-that addition and retains its original compiled scope.
+substitution. Upstream pugixml files remain unmodified. The later
+[C parsing milestone](NUMERIC-PARSING1.md) adds a specified decimal strtod/strtof
+subset, while [buffer formatting](FORMATTED-TEXT1.md) adds snprintf/vsnprintf.
+Long-double parsing, printf/scanf, streams and XPath remain unsupported; unprovided
+imports still fail strict linking. The original numeric evidence predates those
+additions and retains its original compiled scope.
 
 ## Dependencies and execution
 

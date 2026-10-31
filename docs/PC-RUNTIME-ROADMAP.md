@@ -2,7 +2,7 @@
 
 The runtime workstream expands support for substantial PC source ports on the
 identified GTA V Switch executable. Full Menyoo porting follows the implementation
-and acceptance gates below. Updated 2026-10-30.
+and acceptance gates below. Updated 2026-10-31.
 
 Checked implementation/local-validation items do not imply hardware acceptance.
 The public baseline remains identified in the [project roadmap](COMPLETION-ROADMAP.md).
@@ -58,11 +58,21 @@ A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 - [x] Provide allocation-free buffer formatting for common integer/string source-port paths.
 - [x] Provide numeric-profile decimal float formatting and independent ARM64 comparison coverage.
 - [x] Preserve XML numeric-profile requirements and explicit unsupported-format failures.
-- [ ] Accept the new formatted-text example in a later combined hardware batch.
+- [x] Provide opt-in toolchain math with recorded archive/compiler identity.
+- [x] Verify float/double math, exceptional results and per-NRO errno isolation locally.
+- [x] Combine geometry and pending formatter checks in one complete example.
+- [x] Provide signed/unsigned C-style integer parsing with explicit end/error/range behavior.
+- [x] Provide numeric-profile decimal prefix conversion with direct float rounding.
+- [x] Share C-profile errno with libm and remove the redundant math-only source unit.
+- [x] Merge pending math/formatter checks with parsing in one library-services workload.
+- [x] Package one manual batch 5 NRO, preserve notices and verify standalone SDK reproduction.
+- [ ] Accept the consolidated parsing/math/formatter workload in a later hardware batch.
 - [ ] Define broader hosted-container compatibility for concrete source ports.
 - [ ] Complete Horizon allocation/release and fragmentation acceptance.
 
-Evidence: [formatted text](verification/FORMATTED-TEXT1.md),
+Evidence: [C-style parsing](verification/NUMERIC-PARSING1.md),
+[math profile](verification/MATH-PROFILE1.md),
+[formatted text](verification/FORMATTED-TEXT1.md),
 [heap](verification/PLUGIN-MEMORY1.md), [C/XML](verification/PLUGIN-LIBRARIES1.md),
 [numeric conversion](verification/PLUGIN-NUMERIC1.md) and [C++ containers](verification/PLUGIN-CXX1.md).
 These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
@@ -169,8 +179,9 @@ can proceed with targeted local checks and combined hardware batches.
 Probe and acceptance limits: [combined runtime verification](verification/COMBINED-ACCEPTANCE1.md).
 The accepted [service batch 4](verification/CATALOG-SCAN1.md) consolidates large
 XML transfers, preset catalogs, verified saving and backup restoration. Its
-normal workload needs no repetition. New formatter acceptance can join later
-features in a combined batch; broader transition and stress gates remain open.
+normal workload needs no repetition. Pending parsing/math/formatter checks are
+merged in the library-services example for a later combined hardware batch;
+broader transition and stress gates remain open.
 
 ## 8. Menyoo source-port gate
 

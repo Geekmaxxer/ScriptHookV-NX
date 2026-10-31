@@ -17,6 +17,10 @@ checked selection paths over the existing directory service.
 
 For labels and diagnostics, the opt-in [buffer formatter](FORMATTED-TEXT.md)
 provides `snprintf` and `vsnprintf`; decimal floats require the numeric profile.
+The separate [math profile](MATH-PROFILE.md) adds standard float/double geometry
+and numerical operations from the selected toolchain.
+[C-style numeric parsing](NUMERIC-PARSING.md) supplies integer base/end/range
+contracts and a numeric-profile decimal prefix API.
 
 | API | Contract |
 | --- | --- |

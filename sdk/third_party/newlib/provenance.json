@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "upstream": "https://github.com/devkitPro/newlib",
+  "notice_commit": "b14e2e7d15a8f4ef4829d797692b42541c61e0ed",
+  "notice_source": "https://raw.githubusercontent.com/devkitPro/newlib/b14e2e7d15a8f4ef4829d797692b42541c61e0ed/COPYING.NEWLIB",
+  "scope": "License notice for optional toolchain libm linkage; no upstream implementation or archive is vendored",
+  "archive_selected_from_installed_compiler": true,
+  "archive_identity_recorded_per_build": true,
+  "sha256": {
+    "LICENSE.txt": "f3afe48e4bc6ed8466a42e9dacb6be1d8f9cbf5aac15cb8e474a5ccde8b40ef6"
+  }
+}

@@ -15,7 +15,9 @@ The script completes naturally and writes
 `profile=demo count=2699 value=+12.50%`. Loading again increments `run` without
 retaining heap state. There is no gameplay effect or visible overlay.
 
-The example is locally verified; its physical acceptance can join a later
-combined batch. The accepted batch 4 XML probe does not need repetition.
+The example is locally verified. Its pending hardware checks are included in
+the later [library-services workload](../library-services/README.md) alongside
+math and parsing. That run remains deferred; no separate formatter run or repeat
+of accepted batch 4 is required.
 See the [format contract](../../docs/reference/FORMATTED-TEXT.md) for supported
 conversions, failure behavior and precision limits.

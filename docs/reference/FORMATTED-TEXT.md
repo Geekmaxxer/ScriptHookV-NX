@@ -61,8 +61,8 @@ Unsupported formats, a null format, floating use without the numeric profile,
 floating precision above 64, field/count overflow beyond `INT_MAX` and `INT_MIN`
 dynamic width return `-1`. When output is non-null and capacity is nonzero,
 failure clears its first byte. A null output with nonzero capacity returns `-1`
-without writing. `%n` is rejected before accessing its pointer. No errno state
-is supplied. Earlier bytes beyond a cleared terminator need not be erased.
+without writing. `%n` is rejected before accessing its pointer. Formatting
+does not report errors through errno. Earlier bytes beyond a cleared terminator need not be erased.
 
 Callers must provide readable format/argument storage, a writable buffer of the
 declared capacity and correct variadic types. Overlapping inputs/outputs and

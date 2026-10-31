@@ -19,6 +19,33 @@ from report_summary import summarize
 from runtime_limits import definitions, build_defaults, render, validate, module_requirements, HEADER
 
 class PortableTests(unittest.TestCase):
+    def test_math_runtime_project_option(self):
+        with tempfile.TemporaryDirectory() as name:
+            folder=Path(name)/'mod';create('hello','math-example',folder);path=folder/'project.json';base=json.loads(path.read_text())
+            for enabled in (True,False):
+                path.write_text(json.dumps({**base,'c_runtime':True,'math_runtime':enabled}))
+                self.assertEqual(inputs(path)[0]['math_runtime'],enabled)
+            for value in (1,'true',{},None):
+                path.write_text(json.dumps({**base,'c_runtime':True,'math_runtime':value}))
+                with self.assertRaises(ValueError):inputs(path)
+            for extra in ({'math_runtime':True},{'math_runtime':True,'c_runtime':True,'kind':'nsc'}):
+                path.write_text(json.dumps({**base,**extra}))
+                with self.assertRaises(ValueError):inputs(path)
+    def test_math_runtime_build_validation(self):
+        from build_plugin import build
+        with tempfile.TemporaryDirectory() as name:
+            for kwargs in ({'math_runtime':'yes'},{'math_runtime':True}):
+                out=Path(name)/'out'
+                with self.assertRaises(ValueError):build([],out,**kwargs)
+                self.assertFalse(out.exists())
+    def test_math_notice_provenance(self):
+        root=HEADER.parent.parent/'sdk/third_party/newlib'
+        meta=json.loads((root/'provenance.json').read_text())
+        self.assertEqual(len(meta['notice_commit']),40)
+        for relative,digest in meta['sha256'].items():
+            self.assertEqual(hashlib.sha256((root/relative).read_bytes()).hexdigest(),digest)
+        self.assertIn('Permission',(root/'LICENSE.txt').read_text())
+        self.assertFalse(list(root.glob('*.a')))
     def test_cxx_runtime_project_option(self):
         with tempfile.TemporaryDirectory() as name:
             folder=Path(name)/'mod';create('hello','cxx-example',folder);path=folder/'project.json';base=json.loads(path.read_text())

@@ -38,7 +38,8 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
 - Typed/raw native invocation, availability checks and per-call failure reporting.
 - Cooperative scripts, controller callbacks, HUD rendering, PNG textures and entity access.
 - Isolated settings, startup policies and runtime diagnostics.
-- Opt-in owner memory, C/XML and numeric libraries, buffer formatting and fallible C++ containers.
+- Opt-in owner memory, C/XML libraries, checked numeric parsing, buffer formatting,
+  toolchain math and fallible C++ containers.
 - Bounded file transfers, sorted preset catalogs and verified save/publication workflows.
 - Registered cleanup, explicit shared session state and configurable plugin capacity.
 
@@ -52,9 +53,10 @@ Current development adds source-port services with separate implementation,
 local-verification and hardware-acceptance records. The
 [verification matrix](docs/verification/README.md) identifies each tested scope;
 [Batch 4](docs/verification/CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30)
-accepts the combined preset/XML/save/restoration workload. New
-[buffer formatting](docs/reference/FORMATTED-TEXT.md) is locally verified and
-awaits a later combined hardware batch.
+accepts the combined preset/XML/save/restoration workload. New parsing, math
+and formatter checks are consolidated in the
+[library-services example](examples/library-services/README.md); its hardware
+run remains deferred while implementation continues.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. Changed executables require renewed

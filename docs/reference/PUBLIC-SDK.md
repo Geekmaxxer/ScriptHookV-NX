@@ -13,8 +13,9 @@ workflow. This page describes interfaces and requirements.
 | --- | --- |
 | Baseline | Accepted runtime: natives, cooperative scripts, settings and process controls |
 | Extensions | Matched runtime: pools, borrowed pointers, additional scripts and graphics/input |
-| C/XML | Candidate memory service: owner-backed C functions and XML DOM |
-| Numeric | C profile plus numeric option: decimal conversion and XML floats |
+| C/XML | Candidate memory service: owner-backed C functions, integer parsing and XML DOM |
+| Numeric | C profile plus numeric option: strict/prefix decimal conversion and XML floats |
+| Math | C profile plus math option: selected toolchain libm and per-NRO errno |
 | C++ | C profile plus C++ option: nothrow objects and fallible containers |
 | Files | Optional file table: bounded offset I/O and isolated nested directories |
 | Catalogs | Independent optional catalog table: paged directory metadata |
@@ -30,7 +31,11 @@ for exact limits. Full hosted STL, Windows services and unsupported constructors
 are not supplied by a shared ABI number.
 
 The C profile also supplies [buffer formatting](FORMATTED-TEXT.md); the numeric
-profile adds decimal floating conversions. No new runtime table is required.
+profile adds decimal floating conversions. The separate
+[math profile](MATH-PROFILE.md) links the selected toolchain's math routines.
+Neither addition requires a new runtime table. The
+[C parsing API](NUMERIC-PARSING.md) also supplies target-width integer and decimal
+prefix conversions, using one C-profile errno value per NRO.
 
 The candidate heap also supports [recoverable binary/XML records](RECOVERABLE-DATA.md)
 through the existing file API. Alternating checked records preserve recovery

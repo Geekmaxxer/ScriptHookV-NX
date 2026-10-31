@@ -32,7 +32,9 @@ automatic constructors, long-double formatting or a general standard library.
 The XML adapter keeps its numeric bridge separate from the general formatter;
 integer-only XML modules still reject floating setters at strict linking.
 
-The [standalone example](../../examples/formatted-text/README.md) can join a later
-combined hardware batch. No repeat of accepted batch 4 is required. Its archive
-and acceptance record remain immutable. No game, runtime or SD installation is
+The [standalone example](../../examples/formatted-text/README.md) remains available.
+Its checks now join math and numeric parsing in
+[library-services](../../examples/library-services/README.md), with one deferred
+hardware workload covering all three additions. No repeat of accepted batch 4
+is required. Its archive and acceptance record remain immutable. No game, runtime or SD installation is
 performed by this milestone.

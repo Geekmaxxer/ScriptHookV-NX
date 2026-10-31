@@ -43,6 +43,10 @@ def inputs(project):
         raise ValueError('cxx_runtime must be a boolean on an NRO project')
     if data.get('cxx_runtime',False) and not data.get('c_runtime',False):
         raise ValueError('cxx_runtime requires c_runtime=true')
+    if 'math_runtime' in data and (type(data['math_runtime']) is not bool or data['kind']!='nro'):
+        raise ValueError('math_runtime must be a boolean on an NRO project')
+    if data.get('math_runtime',False) and not data.get('c_runtime',False):
+        raise ValueError('math_runtime requires c_runtime=true')
     return data, sources, includes
 
 def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, reference=None):
@@ -50,7 +54,7 @@ def build_project(project, output, devkit=None, menu_sdk=None, dev_ng=None, refe
         raise FileExistsError('Use a new output directory to preserve prior builds')
     data, sources, includes = inputs(project)
     if data['kind'] == 'nro':
-        build(sources, output, devkit, includes,c_runtime=data.get('c_runtime',False),numeric_runtime=data.get('numeric_runtime',False),cxx_runtime=data.get('cxx_runtime',False))
+        build(sources, output, devkit, includes,c_runtime=data.get('c_runtime',False),numeric_runtime=data.get('numeric_runtime',False),cxx_runtime=data.get('cxx_runtime',False),math_runtime=data.get('math_runtime',False))
         shutil.copy2(project, output/'project.json')
         report=json.loads((output/'plugin-build.json').read_text())
         requested=data.get('runtime_limits',{})

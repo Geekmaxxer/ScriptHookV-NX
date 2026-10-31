@@ -42,6 +42,8 @@ plugin that does not yield.
 | C/XML profile | [Combined XML workload accepted](../verification/CATALOG-SCAN1.md) | Broader library and failure cases |
 | Decimal numeric profile | [IEEE/format tests and bounded XML acceptance](../verification/PLUGIN-NUMERIC1.md) | Target performance/stack measurements |
 | Buffer formatting | [C/numeric formatter verified locally](../verification/FORMATTED-TEXT1.md) | New formatter workload on hardware |
+| Float/double math | [Toolchain math and per-NRO errors verified locally](../verification/MATH-PROFILE1.md) | Consolidated library workload, stack and performance |
+| C-style numeric parsing | [Integer/decimal/end/error checks verified locally](../verification/NUMERIC-PARSING1.md) | Consolidated parsing/math/formatter workload on hardware |
 | Nothrow C++ and containers | [Managed string/vector workloads accepted](../verification/PLUGIN-CXX1.md) | Broader source-port and ownership cases |
 | Recoverable records | [Record/recovery tests](../verification/RECOVERABLE-DATA1.md) | Actual media interruption/durability |
 | Bounded files and preset catalogs | [Large XML and four-page preset selection accepted](../verification/CATALOG-SCAN1.md) | Media errors, concurrent changes, traversal cost and transitions |

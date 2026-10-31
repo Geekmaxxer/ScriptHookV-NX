@@ -8,6 +8,8 @@ The source examples use unique plugin IDs and document their observable results.
 | `tutorials/` | Basic plugins, settings, input/rendering and NSC providers |
 | `numeric-xml/` | Decimal validation and typed XML/settings workflow |
 | `formatted-text/` | Checked snprintf/vsnprintf, decimal fields and repeated variadic arguments |
+| `math-profile/` | Float/double geometry, error handling and combined formatter checks |
+| `library-services/` | Consolidated numeric parsing, geometry, error-state and formatter acceptance |
 | `container-registry/` | Move-only records, dynamic labels, ID lookup and numeric XML |
 | `recoverable-data/` | Checked binary/XML records, fallback and explicit recovery |
 | `streamed-catalog/` | Chunked 256 KiB file access, nested directories and yielding |

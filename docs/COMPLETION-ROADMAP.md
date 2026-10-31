@@ -2,7 +2,7 @@
 
 This roadmap tracks ScriptHookV-NX, its SDK and delivery tools. The
 [runtime roadmap](PC-RUNTIME-ROADMAP.md) contains the active substantial-plugin
-workstream. Updated 2026-10-30.
+workstream. Updated 2026-10-31.
 
 ## Progress conventions
 
@@ -30,7 +30,12 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify C allocation/string and pinned XML DOM libraries locally.
 - [x] Verify decimal conversion and typed XML floating data locally.
 - [x] Provide checked C-profile buffer formatting and numeric-profile decimal floats locally.
-- [ ] Accept the new formatted-text workload on physical Switch hardware.
+- [x] Provide opt-in float/double math and per-NRO error handling with local reference checks.
+- [x] Combine the math and formatter workloads for one later hardware batch.
+- [x] Provide integer/base and decimal-prefix parsing with end-pointer and error checks locally.
+- [x] Consolidate pending parsing/math/formatter checks in one library-services workload.
+- [x] Package and locally verify the consolidated manual service batch 5.
+- [ ] Accept the consolidated library-services workload on physical Switch hardware.
 - [x] Verify nothrow objects and fallible vector/string/map workflows locally.
 - [x] Verify recoverable binary/XML storage and modeled recovery failures locally.
 - [ ] Accept actual storage interruption/recovery on Switch.

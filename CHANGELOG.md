@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased numeric parsing and consolidated library acceptance - 2026-10-31
+
+- Add C-profile signed/unsigned integer parsing with bases, end pointers, saturation and shared per-NRO errno state.
+- Add numeric-profile decimal strtod/strtof/atof with explicit prefix/range behavior and direct binary32 conversion.
+- Consolidate the former math-only error hook into the C parser and remove its redundant source unit.
+- Merge pending formatter/math checks with parsing in one manual service batch 5, including complete binary-kit notices; hardware testing remains deferred.
+- Preserve runtime binaries, accepted archives and historical evidence; new plugin builds require their own acceptance.
+
+## Unreleased math profile - 2026-10-31
+
+- Add explicit NRO math support through the selected devkitA64 libm, with recorded archive identity and no bundled archive.
+- Provide NRO-local errno state and verify float/double geometry, numerical functions, error paths and owner isolation in ARM64.
+- Keep strict linking and lifecycle checks while permitting the compiler's math header declarations.
+- Combine math and pending formatter checks in one complete example for a later hardware batch.
+- Preserve runtime binaries, accepted artifacts and existing project defaults.
+
 ## Unreleased buffer formatting - 2026-10-30
 
 - Add allocation-free C-profile `snprintf`/`vsnprintf` with checked count/truncation behavior and target-width integer arguments.

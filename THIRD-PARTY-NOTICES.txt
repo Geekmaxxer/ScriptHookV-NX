@@ -115,3 +115,14 @@ SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
 FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
+
+
+Newlib - optional toolchain math library
+https://github.com/devkitPro/newlib
+
+The math_runtime option links libm from the selected devkitA64 installation.
+No archive or upstream implementation is bundled with this SDK. The builder
+records the exact archive hash and compiler version for each math-enabled build.
+Full upstream copyright/license notices and notice provenance are retained in
+sdk/third_party/newlib/LICENSE.txt and sdk/third_party/newlib/provenance.json.
+Preserve applicable notices when redistributing a mod that links the library.

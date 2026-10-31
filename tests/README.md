@@ -49,12 +49,13 @@ session-state worker example. Run with `--core <matching-core-directory>` and
 `--output <fresh-directory>`. The public [session record](../docs/verification/SESSION-LOCAL1.md)
 retains its exact local scope; private game/emulator inputs are excluded from exports.
 
-`test_service_batch.py` executes the exact four NROs produced by
-`build_service_acceptance.py` together under compiled defaults. It checks manual
-policy, publication/backup verification, nested catalog data, large XML transfers,
-shared-state Kill/Load, retained mappings and closed file handles. It requires `--core`,
-`--artifact <service-kit-build-directory>` and `--output` with the same private
-runtime harness inputs. It does not install files or replace hardware acceptance.
+`test_service_batch.py` executes the exact consolidated batch 5 NRO produced by
+`build_service_acceptance.py` under compiled defaults. It checks manual policy,
+combined parsing/math/formatter reports, repeated natural completion, retained
+mappings, closed file handles and complete binary-kit notices. It requires
+`--core`, `--artifact <service-kit-build-directory>` and `--output` with the same
+private runtime harness inputs. Historical batch results retain their original
+artifacts and suite scope; this runner does not install files or replace hardware acceptance.
 
 The maintainer-only `test_file_transfer.py` executes owned read buffers, exclusive
 prepared writes and the complete large XML example against the pinned runtime.
@@ -85,3 +86,18 @@ unsupported-format checks, reusable variadic lists and repeated example executio
 Run with `--core <matching-core-directory>` and `--output <fresh-directory>`.
 The [formatted-text record](../docs/verification/FORMATTED-TEXT1.md) preserves the
 local scope; runtime images/adapters remain private maintainer inputs.
+
+`test_math_profile.py` executes the selected toolchain libm in two NROs with
+independent errno state. Deterministic float/double reference samples cover the
+documented function families, exceptional paths, decomposition outputs and
+restart. It also verifies the combined geometry/formatter example and strict
+refusal of hosted stream imports. Use `--core <matching-core-directory>` and
+`--output <fresh-directory>`. The [math record](../docs/verification/MATH-PROFILE1.md)
+retains the exact archive identity and local scope.
+
+`test_numeric_parsing.py` executes integer/decimal prefix conversion in separate
+C and numeric NROs. Independent reference models cover bases, extrema, saturation,
+end offsets and errno, including a direct binary32 rounding boundary. The suite
+also verifies repeated execution of the consolidated library-services example.
+Use `--core <matching-core-directory>` and `--output <fresh-directory>`. The
+[parsing record](../docs/verification/NUMERIC-PARSING1.md) retains its exact scope.

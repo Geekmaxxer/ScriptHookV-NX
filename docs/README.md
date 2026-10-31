@@ -26,6 +26,8 @@ pages; implementation plans and dated verification records are maintained separa
 - [Cooperative buffered file transfers](reference/FILE-TRANSFERS.md)
 - [Growable XML output and streamed verification](reference/XML-BUFFERS.md)
 - [Buffer formatting](reference/FORMATTED-TEXT.md)
+- [Opt-in math profile](reference/MATH-PROFILE.md)
+- [C-style numeric parsing](reference/NUMERIC-PARSING.md)
 - [Paged directory catalogs](reference/DIRECTORY-CATALOG.md)
 - [Cooperative preset catalogs](reference/PRESET-CATALOGS.md)
 - [File mutation and recoverable publication](reference/FILE-PUBLICATION.md)

@@ -1,4 +1,4 @@
-"""Build the combined preset catalog/XML workflow as deferred service batch 4."""
+"""Build the consolidated parsing/math/formatter workload as deferred batch 5."""
 import argparse
 import contextlib
 import hashlib
@@ -11,7 +11,7 @@ from inspect_mod import inspect
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_RUNTIME = '930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f'
-PROJECTS = ('session-state', 'recoverable-publication', 'streamed-catalog', 'xml-workflow')
+PROJECTS = ('library-services',)
 
 
 def sha(path):
@@ -39,23 +39,28 @@ def build(output, devkit=None, runtime=None):
         shutil.copy2(artifact/'plugin.nro',destination)
         metadata = json.loads((artifact/'plugin-build.json').read_text())
         artifacts[name] = {key:metadata[key] for key in ('nro_sha256','image_bytes','bss_bytes','accounted_bytes')}
+        if metadata.get('math_runtime_enabled'):
+            artifacts[name]['math_library'] = metadata['math_library']
     guide = (ROOT/'examples/service-acceptance/README.md').read_text(encoding='utf-8')
-    guide = guide.replace('../../docs/verification/SESSION-LOCAL1.md',
-        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/SESSION-LOCAL1.md')
-    guide = guide.replace('../../docs/verification/FILE-TRANSFERS1.md',
-        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/FILE-TRANSFERS1.md')
-    guide = guide.replace('../../docs/verification/XML-WORKFLOW1.md',
-        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/XML-WORKFLOW1.md')
-    guide = guide.replace('../../docs/verification/CATALOG-SCAN1.md',
-        'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/CATALOG-SCAN1.md')
+    for name in ('NUMERIC-PARSING1.md','CATALOG-SCAN1.md'):
+        guide = guide.replace('../../docs/verification/'+name,
+            'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/'+name)
     (stage/'READ-ME-FIRST.md').write_text(guide,encoding='utf-8')
-    manifest = dict(format=1,kit='Service acceptance batch 4',runtime_sha256=EXPECTED_RUNTIME,
+    manifest = dict(format=1,kit='Service acceptance batch 5',runtime_sha256=EXPECTED_RUNTIME,
                     artifacts=artifacts,runtime_module_included=False,shared_configuration_included=False)
     (stage/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     for name in ('LICENSE','NOTICE','THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name,stage/name)
+    # Preserve libm's complete notices without bundling its binary archive.
+    notices = stage/'third-party/newlib'
+    notices.mkdir(parents=True)
+    for name in ('LICENSE.txt','provenance.json'):
+        shutil.copy2(ROOT/'sdk/third_party/newlib'/name,notices/name)
+    notice_file = stage/'THIRD-PARTY-NOTICES.txt'
+    notice_file.write_text(notice_file.read_text(encoding='utf-8').replace(
+        'sdk/third_party/newlib/','third-party/newlib/'),encoding='utf-8')
     files = {p.relative_to(stage).as_posix():sha(p) for p in stage.rglob('*') if p.is_file()}
-    archive = output/'ScriptHookV-NX-Service-Acceptance-Batch4.zip'
+    archive = output/'ScriptHookV-NX-Service-Acceptance-Batch5.zip'
     with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as package:
         for name in sorted(files):package.write(stage/name,name)
     with zipfile.ZipFile(archive) as package:

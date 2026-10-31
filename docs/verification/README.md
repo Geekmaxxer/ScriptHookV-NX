@@ -27,6 +27,8 @@ are separate stages. Historical records remain immutable.
 | Growable XML serialization and streamed byte verification | [Combined XML workflow](XML-WORKFLOW1.md) | 98,376-byte output, publication/restoration and final run-2 cleanup accepted |
 | Cooperative preset filtering, sorting and checked selection | [Preset catalog workflow](CATALOG-SCAN1.md) | 14 sorted entries, four pages, filter and selected XML accepted |
 | Buffer formatting and numeric decimal fields | [Formatted text](FORMATTED-TEXT1.md) | Local ARM64 verification; new workload pending a later combined batch |
+| Float/double math and per-plugin errors | [Math profile](MATH-PROFILE1.md) | Local ARM64/reference checks; consolidated library workload deferred |
+| C integer and decimal-prefix parsing | [Numeric parsing](NUMERIC-PARSING1.md) | Local end/range/reference checks; consolidated library workload deferred |
 
 The 2026-10-30 [physical Test1 run](PLATFORM-CAPACITY1.md#physical-test1-demo-run)
 verifies exact installed artifacts, successful startup, manual demo loading, one
