@@ -17,7 +17,6 @@
 #include "../script/script_manager.hpp"
 namespace ScriptHook {
 namespace {
-size_t catalog_limit(){const auto n=RuntimeConfig::Residents();return n<16?16:n;}
 enum Policy : uint32_t { Disabled, Manual, Auto };
 struct Nro {uint32_t start,mod,reserved[2],magic,version,size,flags,text,text_bytes,ro,ro_bytes,data,data_bytes,bss,reserved2;uint8_t rest[64];};
 static_assert(sizeof(Nro)==0x80);
@@ -49,6 +48,7 @@ SlotStore<Candidate,16> candidates;size_t candidate_count;
 DirectoryEntry directory[16];
 alignas(8) uint8_t manifest_buffer[65536];
 uint32_t stage,error,skipped,last_action_error;
+uint32_t scan_generation,scan_error;
 uint32_t discovered,disabled;
 size_t plugin_entries,binding_entries;
 uint32_t last_frame;bool frame_seen,reported;
@@ -580,21 +580,14 @@ bool better(const Candidate& a,const Candidate& b){
 void discover_plugin(const DirectoryEntry& entry,void*){
     Candidate next{};if(!parse_name(entry.name,next.canonical,next.policy))return;
     copy(next.filename,entry.name);++discovered;if(next.policy==Disabled)++disabled;
-    // Never sort/copy the resident Plugin objects: api.plugin, scripts and
-    // native registrations retain their address for the whole process.
-    for(size_t i=0;i<count;++i){auto& p=plugins[i];if(!same_id(p.canonical,next.canonical))continue;
-        if(p.present&&!same_id(p.filename,next.filename)){p.conflict=true;return;}
-        p.present=true;p.policy=next.policy;copy(p.filename,next.filename);return;
-    }
+    // Build a separate snapshot. A directory failure must not make the live
+    // catalogue appear deleted or apply only part of a suffix change.
     for(size_t i=0;i<candidate_count;++i)if(same_id(candidates[i].canonical,next.canonical)){
         candidates[i].conflict=true;return;
     }
     size_t at=candidate_count;
-    if(candidate_count<catalog_limit()){
-        if(!candidates.Ensure(candidate_count)){error=0x10002;return;}
-        ++candidate_count;
-    }
-    else {++skipped;if(!better(next,candidates[candidate_count-1]))return;at=candidate_count-1;}
+    if(!candidates.Ensure(candidate_count)){error=0x10002;return;}
+    ++candidate_count;
     while(at&&better(next,candidates[at-1])){candidates[at]=candidates[at-1];--at;}
     candidates[at]=next;
 }
@@ -606,7 +599,6 @@ void discover_binding(const DirectoryEntry& entry,void* context){
 bool any_queued(){for(const auto& p:plugins)if(p.queued||p.kill_queued)return true;return false;}
 void scan(){
     error=0;discovered=disabled=skipped=0;plugin_entries=binding_entries=0;candidate_count=0;
-    for(size_t i=0;i<count;++i){plugins[i].present=false;plugins[i].conflict=false;}
     {
         Storage disk;if(!disk.mounted){error=disk.error;return;}
         size_t bytes=0;if(disk.Read("native-bindings.bin",manifest_buffer,sizeof(manifest_buffer),bytes)){
@@ -616,20 +608,25 @@ void scan(){
         if(!disk.Scan("plugins",directory,16,discover_plugin,nullptr,plugin_entries)){error=disk.error;return;}
     }
     if(error==0x10002)return;
+    for(size_t i=0;i<count;++i){plugins[i].present=false;plugins[i].conflict=false;}
+    // Reconcile every existing owner before looking for reusable rows. Resident
+    // objects keep their addresses and catalogue indices across rescans.
+    for(size_t i=0;i<candidate_count;++i){auto& next=candidates[i];
+        for(size_t j=0;j<count;++j){auto& p=plugins[j];
+            if(!same_id(p.canonical,next.canonical))continue;
+            p.present=true;p.policy=next.policy;p.conflict=next.conflict;
+            copy(p.filename,next.filename);next.canonical[0]=0;break;
+        }
+    }
     for(size_t i=0;i<candidate_count;++i){
+        if(!candidates[i].canonical[0])continue;
         size_t slot=count;
-        if(count==catalog_limit()){
-            // Reclaim only unpublished catalog rows. Resident tokens never
-            // move. Missing files and low-priority disabled/manual entries
-            // must not permanently crowd new Auto plugins out of the list.
-            for(size_t j=0;j<count;++j){const auto& p=plugins[j];
-                if(p.loaded||p.registered||p.published||p.image||p.queued)continue;
-                if(!p.present){slot=j;break;}
-                if(p.policy<candidates[i].policy&&(slot==count||p.policy<plugins[slot].policy))slot=j;
-            }
-            if(slot==count){++skipped;continue;}
-            if(plugins[slot].present)++skipped;
-        } else {if(!plugins.Ensure(count)){error=0x10002;return;}++count;}
+        // Reuse missing, unpublished rows at any catalogue size. Published
+        // owner tokens never move, including after removal from the SD card.
+        for(size_t j=0;j<count;++j){const auto& p=plugins[j];
+            if(!p.present&&!p.loaded&&!p.registered&&!p.published&&!p.image&&!p.queued){slot=j;break;}
+        }
+        if(slot==count){if(!plugins.Ensure(count)){error=0x10002;return;}++count;}
         auto& p=plugins[slot];auto retained=p.additional;p={};p.additional=retained;for(auto& fn:p.additional)fn=nullptr;copy(p.filename,candidates[i].filename);copy(p.canonical,candidates[i].canonical);
         p.policy=candidates[i].policy;p.present=true;p.conflict=candidates[i].conflict;
         p.queued=p.policy==Auto&&!p.conflict;
@@ -662,7 +659,9 @@ void PluginLoader::Tick(){
         p.stopping=false;reported=false;
     }
     if(!stage||rescan_requested){
-        rescan_requested=false;scan();reported=false;stage=any_queued()?1:3;
+        rescan_requested=false;scan();scan_error=error;
+        if(++scan_generation==0)++scan_generation;
+        reported=false;stage=any_queued()?1:3;
         if(stage==3)Report();
         return;
     }
@@ -705,7 +704,8 @@ void PluginLoader::Report(){
     append("loader_stage_name=");append(stage==3?"complete":stage==2?"loading_plugins":stage==1?"initializing_loader":"discovering_plugins");append("\n");
     field("loader_error",error);append("loader_error_name=");append(error_name(error,0));append("\n");
     field("plugins_found",count);field("plugins_discovered",discovered);field("plugins_loaded",resident_count());field("plugins_skipped",skipped);field("plugins_disabled",disabled);
-    field("plugin_directory_entries",plugin_entries);field("binding_directory_entries",binding_entries);field("directory_entry_limit",4096);field("native_manifests",NativeManifest::Count());
+    field("plugin_scan_generation",scan_generation);field("plugin_scan_error",scan_error);
+    field("plugin_directory_entries",plugin_entries);field("binding_directory_entries",binding_entries);field("native_manifests",NativeManifest::Count());
     field("resident_limit",RuntimeConfig::Residents());field("plugin_memory_budget",RuntimeConfig::MemoryBytes());field("plugin_memory_accounted",memory_used());field("last_action_error",last_action_error);
     field("module_image_limit",RuntimeConfig::ModuleImageBytes());field("module_bss_limit",RuntimeConfig::ModuleBssBytes());
     uint32_t cleanup_count=0,cleanup_errors=0;for(const auto& p:plugins){cleanup_count+=p.cleanup_calls;cleanup_errors+=p.cleanup_failures;}
@@ -736,6 +736,10 @@ void PluginLoader::Report(){
     reported=true;Storage disk;(void)disk.Write("loader-report.txt",report,n);
 }
 uint32_t PluginLoader::Count(){return uint32_t(count);}
+bool PluginLoader::IsListed(uint32_t idx){return idx<count&&(plugins[idx].present||plugins[idx].loaded||plugins[idx].registered||plugins[idx].published||plugins[idx].image);}
+uint32_t PluginLoader::ScanGeneration(){return scan_generation;}
+uint32_t PluginLoader::ScanError(){return scan_error;}
+bool PluginLoader::ScanPending(){return rescan_requested||!stage;}
 void PluginLoader::RecordTime(void* owner,uint32_t kind,uint64_t ticks){
     if(kind>=4)return;
     for(auto& p:plugins)if(owner==&p){

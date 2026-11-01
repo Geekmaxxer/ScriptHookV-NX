@@ -11,6 +11,10 @@ public:
 
     // In-Menu Plugin Manager API
     static uint32_t Count();
+    static bool IsListed(uint32_t idx);
+    static uint32_t ScanGeneration();
+    static uint32_t ScanError();
+    static bool ScanPending();
     static const char* GetFilename(uint32_t idx);
     static const char* GetId(uint32_t idx);
     static bool GetInfo(uint32_t idx, uint32_t& status, uint32_t& memKb, uint32_t& step, uint32_t& err);

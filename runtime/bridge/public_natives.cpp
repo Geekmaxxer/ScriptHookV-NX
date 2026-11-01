@@ -105,6 +105,14 @@ struct ManagerCall {
     }
 };
 void plugin_count(void* raw) {ManagerCall c;if(c.Read(raw,0))*c.context.result=PluginLoader::Count();}
+void plugin_listed(void* raw) {ManagerCall c;if(c.Read(raw,1))*c.context.result=PluginLoader::IsListed(c.Index());}
+void plugin_scan(void* raw) {
+    ManagerCall c;if(!c.Read(raw,3)||!c.Outputs(0,2))return;
+    *reinterpret_cast<uint64_t*>(c.values[0])=PluginLoader::ScanGeneration();
+    *reinterpret_cast<uint64_t*>(c.values[1])=PluginLoader::ScanPending();
+    *reinterpret_cast<uint64_t*>(c.values[2])=PluginLoader::ScanError();
+    *c.context.result=1;
+}
 void plugin_name(void* raw) {ManagerCall c;if(c.Read(raw,1))*c.context.result=reinterpret_cast<uintptr_t>(PluginLoader::GetFilename(c.Index()));}
 void plugin_id(void* raw) {ManagerCall c;if(c.Read(raw,1))*c.context.result=reinterpret_cast<uintptr_t>(PluginLoader::GetId(c.Index()));}
 void plugin_status(void* raw) {
@@ -141,6 +149,8 @@ bool RegisterPublicNatives() {
            NativeTable::RegisterCustom(0x5348564e584c4431ULL,load)&&
            NativeTable::RegisterCustom(0x5348564e58415631ULL,available)&&
            NativeTable::RegisterCustom(0x5348564e58504331ULL,plugin_count)&&
+           NativeTable::RegisterCustom(0x5348564e58505657ULL,plugin_listed)&&
+           NativeTable::RegisterCustom(0x5348564e58505332ULL,plugin_scan)&&
            NativeTable::RegisterCustom(0x5348564e58504e31ULL,plugin_name)&&
            NativeTable::RegisterCustom(0x5348564e58504931ULL,plugin_id)&&
            NativeTable::RegisterCustom(0x5348564e58505331ULL,plugin_status)&&

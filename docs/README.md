@@ -17,10 +17,13 @@ pages; implementation plans and dated verification records are maintained separa
 
 ## API and compatibility
 
+Current local revision evidence: [plugin catalogue and menu integration](verification/PLUGIN-CATALOGUE1.md).
+
 - [Plugin API](reference/API-REFERENCE.md) and [SDK reference](reference/PUBLIC-SDK.md)
 - [Native caller](reference/NATIVE-CALLER.md) and [cooperative execution](reference/COOPERATIVE-RUNTIME.md)
 - [Optional extensions](reference/EXTENSIONS.md) and [SDK helpers](reference/SDK-HELPERS.md)
 - [Runtime limits](reference/RUNTIME-LIMITS.md) and [compatibility](reference/COMPATIBILITY.md)
+- [Plugin catalogue and rescan status](reference/PLUGIN-CATALOGUE.md)
 - [Recoverable binary/XML records](reference/RECOVERABLE-DATA.md)
 - [Bounded file streaming and directories](reference/FILE-SERVICES.md)
 - [Cooperative buffered file transfers](reference/FILE-TRANSFERS.md)

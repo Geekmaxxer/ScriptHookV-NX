@@ -45,6 +45,9 @@ commented template is supplied in `sdk/runtime.ini.example`.
 
 ## Allocation and lifetime
 
+Installed-plugin catalogue size is independent of resident admission. Catalogue
+metadata grows on demand; see [plugin catalogue and rescanning](PLUGIN-CATALOGUE.md).
+
 Loader/catalog records, scheduler entries, additional-entry lists and heap/resource
 owner records grow through stable metadata pages. Existing owner tokens, handler
 addresses and suspended contexts remain valid when a table grows. New pages are

@@ -2,7 +2,7 @@
 
 This roadmap tracks ScriptHookV-NX, its SDK and delivery tools. The
 [runtime roadmap](PC-RUNTIME-ROADMAP.md) contains the active substantial-plugin
-workstream. Updated 2026-10-31.
+workstream. Updated 2026-11-01.
 
 ## Progress conventions
 
@@ -11,6 +11,10 @@ An unchecked item remains open. Local checks establish only their documented
 scope; hardware acceptance belongs to the exact tested artifact and configuration.
 
 ## Runtime foundation
+
+- [x] Separate installed-plugin catalogue growth from resident admission and verify 160 entries locally.
+- [x] Expose completed-scan status and preserve catalogue owners on failed rescans.
+- [ ] Accept the revised v1.4.1 catalogue runtime with the matched MEGATARD v1.1 menu on hardware.
 
 - [x] Audit the executable and enforce build fingerprints before hooks.
 - [x] Implement typed/raw invocation, native output layouts and failure reporting.

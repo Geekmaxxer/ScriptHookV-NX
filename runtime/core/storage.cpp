@@ -284,7 +284,7 @@ bool Storage::Scan(const char* relative,DirectoryEntry* entries,size_t capacity,
         if(error)break;
         if(got<0||uint64_t(got)>capacity){error=0x10011;break;}
         if(!got)break;
-        if(uint64_t(got)>4096-count){error=0x1000f;break;}
+        if(uint64_t(got)>SIZE_MAX-count){error=0x1000f;break;}
         count+=size_t(got);
         for(size_t i=0;i<size_t(got);++i)visit(entries[i],context);
     }

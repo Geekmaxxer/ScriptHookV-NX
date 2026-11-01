@@ -31,7 +31,7 @@ The official default script stack pool size is **1424**; do not guess arbitrary
 stack sizes such as 4096/8192. Never install `.pc.nsc`, rename the compiled NSC,
 or create an RPF resource entry for it.
 
-SHVNX_SAVE/LOAD counts are **INT words**, up to 256, not byte sizes. Namespace
+SHVNX_SAVE/LOAD counts are **INT words**, up to 2048, not byte sizes. Namespace
 zero uses the calling script's name hash. A shared explicit namespace is an
 intentional API decision; otherwise distinct scripts keep separate settings.
 Generic NSC journals live at `settings/nsc-<eight-digit-hash>/a.bin` and `b.bin`.

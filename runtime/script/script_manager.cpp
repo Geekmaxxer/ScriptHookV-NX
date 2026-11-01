@@ -246,6 +246,10 @@ void ScriptManager::ReleaseReserved(uint32_t token) {
 }
 void ScriptManager::Unregister(ScriptFunction function) {
     Mutation lock; if (!lock.held) return;
+    // Reserved slots have no function and are not included in info.active.
+    // A failed module load must not cancel that reservation or decrement an
+    // unrelated resident's active count through Unregister(nullptr).
+    if (!function) return;
     for (auto& entry : scripts) if (entry.state != Free && entry.function == function) {
         if (entry.state == Running) entry.cancel = true; else release(entry, true);
         break;

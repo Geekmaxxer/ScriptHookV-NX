@@ -2,7 +2,7 @@
 
 The runtime workstream expands support for substantial PC source ports on the
 identified GTA V Switch executable. Full Menyoo porting follows the implementation
-and acceptance gates below. Updated 2026-10-31.
+and acceptance gates below. Updated 2026-11-01.
 
 Checked implementation/local-validation items do not imply hardware acceptance.
 The public baseline remains identified in the [project roadmap](COMPLETION-ROADMAP.md).
@@ -20,6 +20,11 @@ Evidence: [native caller](reference/NATIVE-CALLER.md) and [extensions](reference
 The PC 2699/1.61 content baseline is not an equivalent Switch ABI.
 
 ## 2. Module capacity and scheduling
+
+- [x] Grow installed-plugin catalogues independently of resident admission; verify 160 rows locally.
+- [x] Preserve owner identity through suffix changes, removals and failed rescans.
+- [x] Report queued/completed scan generations and filter missing unpublished rows.
+- [ ] Accept the revised catalogue runtime and matched MEGATARD v1.1 menu on hardware.
 
 - [x] Provide configurable image/BSS extent limits; retain 2 MiB defaults.
 - [x] Support automatic and larger positive values for all five runtime settings.

@@ -1,5 +1,14 @@
 # Changelog
 
+## Plugin catalogue revision - 2026-11-01
+
+- Separate installed-plugin catalogue growth from resident-module admission and remove the fixed directory-entry cutoff from loader scans.
+- Reconcile complete scan snapshots, preserve owners on directory failure, and expose scan generations, pending/error status and row visibility to NSC managers.
+- Reuse missing unpublished rows while retaining removed resident mappings and stable owner tokens.
+- Ignore null script unregistration during failed loads so reserved slots cannot decrement unrelated active-script accounting.
+- Verify 160-entry catalogues with default resident settings, failed-scan recovery and the exact paged NSC persistence record sizes locally.
+- Prepare local v1.4.1 Preview catalogue revision 1 packages for MEGATARD Menu v1.1; physical acceptance of the revised binary remains open.
+
 ## Unreleased numeric parsing and consolidated library acceptance - 2026-10-31
 
 - Add C-profile signed/unsigned integer parsing with bases, end pointers, saturation and shared per-NRO errno state.

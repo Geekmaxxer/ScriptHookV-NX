@@ -78,14 +78,14 @@ are recognized; the current toolchain was tested on Windows.
 Copy `out/my-plugin/plugin.nro` to
 `sd:/switch/gtav-scripthook/plugins/my-plugin.nro`, then restart GTA.
 The published Capacity Test 1 baseline allows eight resident NROs (four in earlier
-runtimes). The current unreleased candidate grows catalog/owner records on demand;
+runtimes). Catalogue revision 1 grows catalog/owner records on demand;
 see [runtime configuration](RUNTIME-LIMITS.md) for admission and allocation behavior.
 Auto candidates load one per frame after obtaining a valid
 game script context. `.nro.manual` waits for Load Now; `.nro.disabled` cannot load
 until its policy changes. Suffixes are case-insensitive. Catalog order is stable;
 duplicate policy filenames for one canonical module are reported as conflicts.
-Discovery is bounded to 4,096 entries per directory and reports limit/read errors
-instead of loading a partial selection. Filenames must use
+Discovery reads directory pages to completion and retains the previous catalogue
+on a directory read error. Filenames must use
 ASCII letters, digits, underscores, hyphens and periods, with at most 63 characters
 including the policy suffix. The canonical filename including `.nro` is limited
 to 54 characters so policy suffixes fit; do not use leading/repeated periods.
@@ -162,7 +162,7 @@ imports fail at link time. The SDK versions its caller, runtime and plugin inter
 
 | Function | Purpose |
 | --- | --- |
-| `SHVNX_SAVE(buffer[0], count, namespace=0)` | Save up to 256 INTs using alternating CRC-protected records |
+| `SHVNX_SAVE(buffer[0], count, namespace=0)` | Save up to 2048 INTs using alternating CRC-protected records |
 | `SHVNX_LOAD(buffer[0], count, namespace=0)` | Restore INTs; returns the number read, or zero |
 | `SHVNX_AVAILABLE(hashLow, hashHigh)` | Check a native handler without invoking it |
 
@@ -213,6 +213,8 @@ provides the same manual loading controls as MEGATARD.
 | `SHVNX_SET_PLUGIN_POLICY(slot, policy)` | Persist mode by a checked rename; no implicit unload or load |
 | `SHVNX_GET_PLUGIN_ACTION_ERROR()` | Read the last action's result code; zero means accepted |
 | `SHVNX_RELOAD_PLUGINS()` | Queue a merge rescan; retain existing mappings and published natives |
+| `SHVNX_IS_PLUGIN_LISTED(slot)` | Filter missing unpublished rows while retaining resident mappings |
+| `SHVNX_GET_PLUGIN_SCAN(generation, pending, error)` | Distinguish queued requests, completed scans and directory failures |
 | `SHVNX_IS_PLUGIN_RUNNING(slot)` | True for an actual Ready/Running/Sleeping cooperative script |
 | `SHVNX_KILL_PLUGIN(slot)` | Cancel that script at the next scheduler boundary; preserve startup mode and mapped code |
 
@@ -223,8 +225,9 @@ after the scheduler has run. The legacy `SHVNX_TOGGLE_PLUGIN` cycles startup
 policies only. Kill Process stops a plugin's scheduled entry and releases its
 cooperative stack. It keeps mapped code and custom handlers alive; it does not
 unwind destructors or undo previous game changes. Restart GTA to replace resident code. Eight resident modules in Capacity Test 1
-share an 8 MiB accounting budget by default; the catalog contains up to 16
-entries. The current source supports [startup overrides](RUNTIME-LIMITS.md).
+share an 8 MiB accounting budget by default. Catalogue metadata grows separately
+from resident admission; see [catalogue behavior](PLUGIN-CATALOGUE.md) and
+[startup overrides](RUNTIME-LIMITS.md).
 
 Status outputs require three distinct writable eight-byte VM slots. Names and
 status strings belong to the core; copy names if retaining them across rescans.

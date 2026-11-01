@@ -6,6 +6,10 @@ NATIVE FUNC BOOL SHVNX_AVAILABLE(INT hashLow, INT hashHigh) = "0x5348564e5841563
 
 // Plugin Manager Natives (ScriptHookV-NX subsdk5 bridge)
 NATIVE FUNC INT SHVNX_GET_PLUGIN_COUNT() = "0x5348564e58504331"
+// Catalogue visibility retains removed resident modules; missing unmapped rows
+// are omitted. Scan completion is distinct from loading queued Auto modules.
+NATIVE FUNC BOOL SHVNX_IS_PLUGIN_LISTED(INT index) = "0x5348564e58505657"
+NATIVE FUNC BOOL SHVNX_GET_PLUGIN_SCAN(INT &generation, INT &pending, INT &error) = "0x5348564e58505332"
 NATIVE FUNC STRING SHVNX_GET_PLUGIN_NAME(INT index) = "0x5348564e58504e31"
 NATIVE FUNC STRING SHVNX_GET_PLUGIN_ID(INT index) = "0x5348564e58504931"
 NATIVE FUNC BOOL SHVNX_GET_PLUGIN_STATUS(INT index, INT &outStatus, INT &outMemKb, INT &outStep) = "0x5348564e58505331"
