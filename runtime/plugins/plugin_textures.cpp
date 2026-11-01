@@ -2,6 +2,7 @@
 #include "plugin_loader.hpp"
 #include "../core/engine_api.hpp"
 #include "../core/storage.hpp"
+#include "../core/slot_store.hpp"
 #include "natives.h"
 
 namespace {
@@ -58,10 +59,29 @@ void* image_reallocate(void* pointer,size_t bytes){
 
 namespace ScriptHook {
 namespace {
-constexpr size_t max_textures=64,max_instances=128;
+constexpr size_t max_instances=128;
 struct Texture {void* owner;uintptr_t texture;size_t bytes;char name[64],id[32];};
 struct Instance {void* owner;uint64_t expires;ShvNxTextureDraw draw;bool one_frame;};
-Texture textures[max_textures];Instance instances[max_instances];bool loading;size_t active_instances;
+SlotStore<Texture,16,32> textures;
+size_t texture_count,texture_metadata_bytes;
+Instance instances[max_instances];bool loading;size_t active_instances;
+
+// Stable records keep existing IDs valid when another metadata page is admitted.
+// Successfully admitted pages remain available even if the following upload fails.
+bool prepare_texture_slot() {
+    if(texture_count>=INT32_MAX)return false;
+    if(texture_count<textures.Capacity())return true;
+    constexpr size_t charge=(sizeof(decltype(textures)::Page)+4095)&~size_t(4095);
+    if(!PluginLoader::ReserveExtraMemory(charge))return false;
+    const auto before=RuntimeConfig::MetadataBytes();
+    const bool ready=textures.Ensure(texture_count);
+    const auto retained=RuntimeConfig::MetadataBytes()-before;
+    // A rejected OS allocation consumes nothing. An admitted mapping which
+    // fails validation remains retained by RuntimeConfig and stays accounted.
+    if(!retained)PluginLoader::ReleaseExtraMemory(charge);
+    else texture_metadata_bytes+=charge;
+    return ready;
+}
 bool same(const char* a,const char* b){while(*a&&*a==*b){++a;++b;}return *a==*b;}
 uint32_t big32(const uint8_t* p){return (uint32_t(p[0])<<24)|(uint32_t(p[1])<<16)|(uint32_t(p[2])<<8)|p[3];}
 bool png(const uint8_t* data,size_t bytes){
@@ -94,9 +114,10 @@ float sine_turns(float turns){
 }
 int PluginTextures::Create(void* owner,const char* id,const char* name){
     if(!owner||!id||!name||loading||!EngineApi::Context())return 0;
-    Texture* free=nullptr;size_t owned=0;
-    for(auto& t:textures){if(t.owner==owner){++owned;if(same(t.id,id)&&same(t.name,name))return int(&t-textures)+1;}if(!t.owner&&!free)free=&t;}
-    if(!free||owned>=16)return 0;
+    for(size_t i=0;i<texture_count;++i){const auto& t=textures[i];
+        if(t.owner==owner&&same(t.id,id)&&same(t.name,name))return int(i)+1;
+    }
+    if(texture_count>=INT32_MAX)return 0;
     struct Busy {Busy(){loading=true;}~Busy(){loading=false;}} busy;
     char path[128]{};size_t at=0;
     for(const char* s="assets/";*s;++s)path[at++]=*s;
@@ -115,17 +136,20 @@ int PluginTextures::Create(void* owner,const char* id,const char* name){
     const size_t size=size_t(width)*size_t(height)*4;
     const size_t charge=2*((size+4095)&~size_t(4095))+4096;
     if(!PluginLoader::ReserveExtraMemory(charge)){image_free(pixels);return 0;}
+    if(!prepare_texture_slot()){PluginLoader::ReleaseExtraMemory(charge);image_free(pixels);return 0;}
     for(size_t i=0;i<size;i+=4){const auto r=pixels[i];pixels[i]=pixels[i+2];pixels[i+2]=r;}
     const auto texture=EngineApi::CreateTexture(pixels,uint32_t(width),uint32_t(height));image_free(pixels);
     if(!texture){PluginLoader::ReleaseExtraMemory(charge);return 0;}
+    auto* free=&textures[texture_count];
     *free={};free->owner=owner;free->texture=texture;free->bytes=charge;
     for(size_t i=0;name[i]&&i+1<sizeof(free->name);++i)free->name[i]=name[i];
     for(size_t i=0;id[i]&&i+1<sizeof(free->id);++i)free->id[i]=id[i];
-    return int(free-textures)+1;
+    ++texture_count;
+    return int(texture_count);
 }
 bool PluginTextures::Draw(void* owner,const ShvNxTextureDraw* pointer){
     ShvNxTextureDraw d{};
-    if(!EngineApi::Context()||!Memory::Read(reinterpret_cast<uintptr_t>(pointer),d)||d.id<=0||size_t(d.id)>max_textures||
+    if(!owner||!EngineApi::Context()||!Memory::Read(reinterpret_cast<uintptr_t>(pointer),d)||d.id<=0||size_t(d.id)>texture_count||
        textures[d.id-1].owner!=owner||d.index<0||d.index>=64||d.time<0)return false;
     const float values[]={d.sizeX,d.sizeY,d.centerX,d.centerY,d.posX,d.posY,d.rotation,d.heightScale,d.r,d.g,d.b,d.a};
     for(float value:values)if(!__builtin_isfinite(value)||value<-4096.f||value>4096.f)return false;
@@ -138,7 +162,9 @@ bool PluginTextures::Draw(void* owner,const ShvNxTextureDraw* pointer){
 }
 void PluginTextures::Stop(void* owner){if(!owner)return;for(auto& i:instances)if(i.owner==owner){i={};--active_instances;}}
 bool PluginTextures::Active(void* owner){if(!active_instances)return false;if(!owner)return true;for(const auto& i:instances)if(i.owner==owner)return true;return false;}
-size_t PluginTextures::Bytes(void* owner){size_t bytes=0;for(const auto& t:textures)if(t.owner==owner)bytes+=t.bytes;return bytes;}
+size_t PluginTextures::Bytes(void* owner){size_t bytes=0;for(size_t i=0;i<texture_count;++i)if(textures[i].owner==owner)bytes+=textures[i].bytes;return bytes;}
+size_t PluginTextures::Count(void* owner){size_t count=0;for(size_t i=0;i<texture_count;++i)if(!owner||textures[i].owner==owner)++count;return count;}
+size_t PluginTextures::MetadataBytes(){return texture_metadata_bytes;}
 void PluginTextures::Frame(){
     if(!active_instances)return;
     const auto now=sh_get_tick();Instance* ordered[max_instances]{};size_t count=0;

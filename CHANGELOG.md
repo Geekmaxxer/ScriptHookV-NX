@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased growing texture cache - 2026-11-01
+
+- Replace fixed per-plugin/global PNG cache counts with stable records admitted through budget-accounted metadata pages.
+- Preserve positive texture IDs and owner isolation through growth and Kill/Load; retain explicit refusal when resources are unavailable.
+- Report cached image counts and retained metadata bytes without changing public ABI layouts or audited engine bindings.
+- Verify 160-image caching, allocation/upload failures, budget recovery and concurrent owners locally.
+- Add an 80-image visual example and generated palettes; combine its candidate runtime with the pending library-services probe for hardware acceptance.
+- Preserve the published runtime, original service batch 5, accepted evidence and MG Menu distribution.
+
 ## Plugin catalogue revision - 2026-11-01
 
 - Separate installed-plugin catalogue growth from resident-module admission and remove the fixed directory-entry cutoff from loader scans.

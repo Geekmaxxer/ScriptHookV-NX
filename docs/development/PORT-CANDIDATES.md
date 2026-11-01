@@ -18,10 +18,11 @@ port needs explicit work:
 - Replace the x86 byte-pattern write in setupGlobals; do not transplant it.
 - Replace optional Gears.asi/TurboFix module lookups and PC vehicle field access
   with verified Switch data or explicitly unavailable features.
-- Select a skin and plan its resource use. The upstream skin loader requests
-  more textures than the current 16-texture per-plugin cache. Combining or
-  adapting sprites requires a rendering/resource design; the 89-file repository
-  count is not the number simultaneously loaded.
+- Select a skin and measure its resource use. The growing-texture candidate
+  removes the earlier 16-per-plugin/64-overall cache gates and verifies 160
+  records locally. The draw-instance, image and shared memory limits still apply;
+  the 89-file repository count is not the number simultaneously loaded. Skin
+  footprint, layout and rendering remain port-specific acceptance work.
 
 Start with a native-backed speed/unit display, a bounded texture set, controller
 configuration and saved settings. Then add RPM/gears/turbo/NOS only when their

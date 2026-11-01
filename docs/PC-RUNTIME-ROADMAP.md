@@ -145,6 +145,10 @@ Evidence: [owned-resource contract](reference/OWNED-RESOURCES.md) and
 
 - [x] Provide pools, generation-checked pointers and bounded globals.
 - [x] Provide controller input, optional USB keyboard, HUD callbacks and PNG textures.
+- [x] Grow stable texture cache records with shared-budget metadata accounting; verify 160 PNGs locally.
+- [x] Verify high-ID ownership, admission/upload failures, retained Kill/Load IDs and an 80-image example locally.
+- [x] Prepare a combined graphics/library candidate with manual probes and preserved rollback requirements.
+- [ ] Accept the growing cache, visual probe and pending library workload together on Switch.
 - [x] Provide audited single-open-user nickname access with explicit availability and ambiguity states.
 - [ ] Pin a substantial port and inventory required native/memory/resource behavior.
 - [ ] Add verified target adapters for missing engine and streaming services.
@@ -152,6 +156,9 @@ Evidence: [owned-resource contract](reference/OWNED-RESOURCES.md) and
 
 PC ScriptHookV exposes natives; it does not replace Windows, DirectX or library
 runtimes. Independent reverse engineering is not an original-source or ABI contract.
+The [texture candidate](verification/TEXTURE-CATALOG1.md) preserves existing API
+layouts and engine bindings. GPU footprint, physical rendering and performance
+remain acceptance gates before further graphics expansion or stable promotion.
 
 ## 7. Combined runtime acceptance
 

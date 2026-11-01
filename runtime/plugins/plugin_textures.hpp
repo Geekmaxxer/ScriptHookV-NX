@@ -8,6 +8,8 @@ public:
     static void Stop(void* owner);
     static bool Active(void* owner=nullptr);
     static size_t Bytes(void* owner);
+    static size_t Count(void* owner=nullptr);
+    static size_t MetadataBytes();
     static void Frame();
 };
 }

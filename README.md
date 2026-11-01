@@ -42,6 +42,7 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
   toolchain math and fallible C++ containers.
 - Bounded file transfers, sorted preset catalogs and verified save/publication workflows.
 - Registered cleanup, explicit shared session state and configurable plugin capacity.
+- Growing PNG texture caches with stable IDs and shared memory accounting.
 
 See the [API reference](docs/reference/API-REFERENCE.md) for contracts and
 [compatibility](docs/reference/COMPATIBILITY.md) for platform limitations.
@@ -57,6 +58,10 @@ accepts the combined preset/XML/save/restoration workload. New parsing, math
 and formatter checks are consolidated in the
 [library-services example](examples/library-services/README.md); its hardware
 run remains deferred while implementation continues.
+
+The [graphics candidate](docs/verification/TEXTURE-CATALOG1.md) removes fixed
+texture-cache counts and provides an 80-image probe. It groups its pending
+hardware check with the library workload and does not change the published baseline.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. Changed executables require renewed

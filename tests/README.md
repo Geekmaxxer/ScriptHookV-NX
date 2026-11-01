@@ -101,3 +101,12 @@ end offsets and errno, including a direct binary32 rounding boundary. The suite
 also verifies repeated execution of the consolidated library-services example.
 Use `--core <matching-core-directory>` and `--output <fresh-directory>`. The
 [parsing record](../docs/verification/NUMERIC-PARSING1.md) retains its exact scope.
+
+`test_texture_catalog.py` executes growing metadata, 160 PNGs, high-ID drawing,
+cross-plugin ownership, budget exhaustion, allocation/upload failures and
+Kill/Load. Use `--build <matching-core-directory> --output <fresh-directory>`.
+`test_texture_catalog_example.py` executes the complete example with
+`--build <matching-core-directory> --plugin <built-example-directory>`. Both
+retain the existing private target adapters and model GPU operations. The
+[texture record](../docs/verification/TEXTURE-CATALOG1.md) separates local checks
+from physical rendering and memory/performance acceptance.

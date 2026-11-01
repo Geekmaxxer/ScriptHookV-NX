@@ -9,6 +9,7 @@ are separate stages. Historical records remain immutable.
 | Capability | Implementation and local evidence | Physical acceptance |
 | --- | --- | --- |
 | Growing plugin catalogue and completed rescans | [Catalogue revision](PLUGIN-CATALOGUE1.md) | Local verification; matched MEGATARD v1.1 pair pending |
+| Growing texture cache and retained IDs | [Texture candidate](TEXTURE-CATALOG1.md) | Local 160-image and failure checks; combined graphics/library candidate pending |
 | Large module configuration | [Capacity candidate](LARGE-MODULES1.md) | Explicit large image/BSS accepted; broader configurations pending |
 | Owner-accounted allocation | [Memory service](PLUGIN-MEMORY1.md) | Probe allocation/free/Trim accepted; stress pending |
 | C subset and XML DOM | [Library profile](PLUGIN-LIBRARIES1.md) | Combined XML workload accepted; broader library cases pending |

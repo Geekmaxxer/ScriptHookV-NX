@@ -119,14 +119,30 @@ Positive duration persists until expiry or stop. Reusing an ID/index updates
 that instance; layers sort ascending. `drawTextureChecked` accepts the equivalent
 `ShvNxTextureDraw` structure and returns whether it was queued.
 
-There are at most 16 cached textures per plugin, 64 overall and 128 simultaneous
-draw instances. Decode buffers and conservatively charged GPU resources share
-the configured plugin budget (8 MiB by default), so large textures can fail
-before dimension limits. The charge is not a measured total GPU footprint.
+The growing-texture candidate admits stable cache records as needed rather than
+enforcing the former 16-per-plugin/64-overall limits. Sixteen records are inline;
+additional pages hold 32 records each. Their page-aligned storage, decode buffers
+and conservatively charged GPU resources share the configured plugin budget
+(8 MiB by default). Positive signed texture IDs, available memory and allocation
+results bound admission. A failed create returns zero and publishes no ID.
+Successfully admitted metadata pages remain accounted and reusable after an
+upload failure. A rejected allocation does not consume its budget reservation.
+The charge is not a measured total GPU footprint.
+
+There are still 128 simultaneous draw instances and 64 instance indices per
+texture. Cached images do not all need to be drawn at once. The candidate keeps
+the extension/API layouts, PNG limits and audited engine calls unchanged. Its
+[local verification](../verification/TEXTURE-CATALOG1.md) covers 160 images in one
+plugin; larger caches and the rebuilt runtime require their own physical acceptance.
 Cached textures stay resident until GTA exits; repeated creates and restarts
 reuse them. Kill removes queued draws, not cached GPU resources. To replace an
 image file during testing, restart GTA. Rendering stops submitting sprites when
 the target's HUD rectangle buffer is full.
+
+Loader reports contain global and per-plugin `textures_cached` counts,
+per-plugin `texture_memory_bytes`, and global `texture_metadata_bytes` for the
+additional retained pages. Metadata bytes also appear in `runtime_metadata_bytes`
+and are already included in `plugin_memory_accounted`; do not add them twice.
 
 ## Controller and keyboard callbacks
 

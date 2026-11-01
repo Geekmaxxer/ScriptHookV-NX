@@ -707,6 +707,7 @@ void PluginLoader::Report(){
     field("plugin_scan_generation",scan_generation);field("plugin_scan_error",scan_error);
     field("plugin_directory_entries",plugin_entries);field("binding_directory_entries",binding_entries);field("native_manifests",NativeManifest::Count());
     field("resident_limit",RuntimeConfig::Residents());field("plugin_memory_budget",RuntimeConfig::MemoryBytes());field("plugin_memory_accounted",memory_used());field("last_action_error",last_action_error);
+    field("textures_cached",PluginTextures::Count());field("texture_metadata_bytes",PluginTextures::MetadataBytes());
     field("module_image_limit",RuntimeConfig::ModuleImageBytes());field("module_bss_limit",RuntimeConfig::ModuleBssBytes());
     uint32_t cleanup_count=0,cleanup_errors=0;for(const auto& p:plugins){cleanup_count+=p.cleanup_calls;cleanup_errors+=p.cleanup_failures;}
     field("cleanup_callbacks",cleanup_count);field("cleanup_failures",cleanup_errors);
@@ -727,6 +728,7 @@ void PluginLoader::Report(){
         field("step",p.step);append("step_name=");append(step_name(p.step));append("\n");field("error",p.error);append("error_name=");append(error_name(p.error,p.step));append("\n");
         field("additional_entries",p.additional_count);field("callbacks_active",PluginCallbacks::Active(const_cast<Plugin*>(&p)));
         field("callback_failures",PluginCallbacks::Failures(const_cast<Plugin*>(&p)));field("texture_memory_bytes",PluginTextures::Bytes(const_cast<Plugin*>(&p)));
+        field("textures_cached",PluginTextures::Count(const_cast<Plugin*>(&p)));
         field("resource_count",PluginResources::Count(const_cast<Plugin*>(&p)));field("resource_failures",PluginResources::Failures(const_cast<Plugin*>(&p)));}
     // Leave room for a complete clipping field even when the body reaches its cap.
     const char* tail=clipped?"report_clipped=1\n":"report_clipped=0\n";while(*tail&&n+1<sizeof(report))report[n++]=*tail++;

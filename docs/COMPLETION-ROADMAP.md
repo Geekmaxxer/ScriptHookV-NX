@@ -28,6 +28,9 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 
 - [x] Provide entity pools, borrowed pointers and bounded global access.
 - [x] Provide controller/render callbacks, additional scripts and PNG textures.
+- [x] Replace fixed texture cache counts with stable, budget-accounted pages and verify 160 records locally.
+- [x] Provide an 80-image visual example and combine it with pending library checks in one candidate kit.
+- [ ] Accept the growing-texture runtime and combined graphics/library workload on Switch.
 - [x] Record [combined extension gameplay acceptance](../evidence/sdk-parity-test1-20261022/hardware-20261022/console-acceptance.json).
 - [x] Verify configurable large-module image/BSS caps locally.
 - [x] Verify owner-accounted allocation, alignment, realloc and Trim locally.
