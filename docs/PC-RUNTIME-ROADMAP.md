@@ -71,14 +71,24 @@ A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 - [x] Share C-profile errno with libm and remove the redundant math-only source unit.
 - [x] Merge pending math/formatter checks with parsing in one library-services workload.
 - [x] Package one manual batch 5 NRO, preserve notices and verify standalone SDK reproduction.
-- [ ] Accept the consolidated parsing/math/formatter workload in a later hardware batch.
+- [x] Accept the consolidated parsing/math/formatter normal-completion workload in physical Batch 7.
 - [ ] Define broader hosted-container compatibility for concrete source ports.
-- [ ] Complete Horizon allocation/release and fragmentation acceptance.
+- [x] Provide owner-backed hash maps with move-only records and allocation-free string-view lookup.
+- [x] Verify collision chains, 6,144 keys, alias refusal, allocation failures and managed restart locally.
+- [x] Consolidate registry, graphics and library probes in deferred service batch 6 on the unchanged texture runtime.
+- [x] Accept the combined registry normal-completion workload in physical Batch 7.
+- [ ] Define hosted STL and initialization contracts independently.
+- [x] Grow stable heap allocation/arena records and the pointer index through budget-accounted metadata.
+- [x] Verify 8,000 simultaneous allocations across two owners and 160 arenas under an explicit 16 MiB budget.
+- [x] Verify metadata failure/retry, tombstone rebuilds, realloc, owner isolation and rejected-initialization cleanup.
+- [x] Provide a managed 4,096-buffer probe and merge all pending hardware checks in deferred service batch 7.
+- [x] Accept record/index growth and completed combined probes on Switch under explicit 16 MiB settings.
+- [ ] Complete Horizon allocation/release, larger arena profiles and fragmentation acceptance.
 
 Evidence: [C-style parsing](verification/NUMERIC-PARSING1.md),
 [math profile](verification/MATH-PROFILE1.md),
 [formatted text](verification/FORMATTED-TEXT1.md),
-[heap](verification/PLUGIN-MEMORY1.md), [C/XML](verification/PLUGIN-LIBRARIES1.md),
+[heap](verification/PLUGIN-MEMORY1.md), [growing heap metadata](verification/HEAP-CAPACITY1.md), [C/XML](verification/PLUGIN-LIBRARIES1.md),
 [numeric conversion](verification/PLUGIN-NUMERIC1.md) and [C++ containers](verification/PLUGIN-CXX1.md).
 These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 
@@ -134,6 +144,10 @@ independent versioned service; memory parsing does not remove filesystem limits.
 - [x] Accept the combined managed session's cancellation, restart and final owner cleanup on Switch.
 - [x] Accept two managed children draining before their parent in the Explicit hardware probe.
 - [ ] Accept broader nested failures and transition cleanup on Switch.
+- [x] Grow stable cleanup records through shared-budget admission and preserve direct heap pins.
+- [x] Verify 1,024 contexts, independent peers, metadata/budget failures and nested cleanup deferral locally.
+- [x] Prepare one 512-object completion/cancellation probe in deferred service batch 8.
+- [ ] Accept growing resource registrations and cleanup on Switch.
 - [ ] Measure callbacks and initialization under substantial workloads.
 
 Normal scope exit runs destructors; Kill does not unwind suspended objects.
@@ -148,7 +162,8 @@ Evidence: [owned-resource contract](reference/OWNED-RESOURCES.md) and
 - [x] Grow stable texture cache records with shared-budget metadata accounting; verify 160 PNGs locally.
 - [x] Verify high-ID ownership, admission/upload failures, retained Kill/Load IDs and an 80-image example locally.
 - [x] Prepare a combined graphics/library candidate with manual probes and preserved rollback requirements.
-- [ ] Accept the growing cache, visual probe and pending library workload together on Switch.
+- [x] Accept the bounded 80-image visual probe and combined library workload in physical Batch 7.
+- [ ] Accept broader cache/render transitions and measured physical performance.
 - [x] Provide audited single-open-user nickname access with explicit availability and ambiguity states.
 - [ ] Pin a substantial port and inventory required native/memory/resource behavior.
 - [ ] Add verified target adapters for missing engine and streaming services.
@@ -194,6 +209,14 @@ XML transfers, preset catalogs, verified saving and backup restoration. Its
 normal workload needs no repetition. Pending parsing/math/formatter checks are
 merged in the library-services example for a later combined hardware batch;
 broader transition and stress gates remain open.
+
+[Batch 7 acceptance](verification/SERVICE-BATCH7.md) closes the bounded
+normal-completion and visual checks under its exact configuration. Cancellation,
+transitions, rollback and performance remain separately open.
+The next [resource-growth candidate](verification/RESOURCE-CAPACITY1.md) groups
+its completion/cancellation probe and broader observations in one deferred
+[service batch 8](../examples/service-acceptance/README.md) session. Accepted
+Batch 4 and Batch 7 probes need no separate repeat installations.
 
 ## 8. Menyoo source-port gate
 

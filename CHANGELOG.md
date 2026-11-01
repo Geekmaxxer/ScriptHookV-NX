@@ -1,5 +1,38 @@
 # Changelog
 
+## Unreleased growing resource registrations - 2026-11-01
+
+- Replace the fixed per-owner cleanup-registration limit with stable, budget-accounted record pages.
+- Preserve handle identity, pinning and reverse order through growth, record reuse and nested child release.
+- Track pins directly in heap records and drain the newest entry without repeated registry-wide selection scans.
+- Preserve a 64-call cleanup nesting bound before consuming deferred child registrations.
+- Verify metadata/budget failure recovery, 1,024 pinned contexts, 256 peer registrations and rejected-initialization cleanup locally.
+- Package a complete 512-object resource probe in deferred batch 8; preserve accepted Batch 7 artifacts and configuration.
+
+## Service batch 7 hardware acceptance - 2026-11-01
+
+- Verify the exact kernel, NPDM, four manual NROs and all 80 PNGs on the mounted physical Switch card.
+- Accept completed library, hash-registry, 4,096-buffer heap and 80-image visual workloads under explicit 16/48/16/3/3 settings.
+- Confirm final owner cleanup, retained texture IDs, visual rotation/transparency and no reported loader/resource failures.
+- Keep cancellation, transitions, rollback, default/larger profiles and measured performance separately open.
+
+## Unreleased growing heap metadata and service batch 7 - 2026-11-01
+
+- Grow stable allocation/arena records and the pointer index through checked shared-budget admission.
+- Preserve live pointers during reindexing, return failed mapping reservations and reclaim all admitted records after rejected initialization.
+- Report retained heap metadata and admitted capacities separately from owned payload statistics.
+- Verify 8,000 simultaneous allocations across two owners, 160 arenas, failure/retry, reuse, realloc and cancellation locally.
+- Add a cooperative 4,096-buffer probe and consolidate all pending library, registry and texture hardware checks in deferred batch 7.
+- Preserve defaults, public ABI, audited target bindings, published releases and historical kits.
+
+## Unreleased hash-map registries and service batch 6 - 2026-11-01
+
+- Add fallible owner-backed hash maps with move-only records and explicit-byte string lookup.
+- Preserve contents on allocation failure; refuse unsafe insertion aliases and repair wrapped collision chains after erasure.
+- Verify dictionary-model behavior, large registries, alignment, nested cleanup and cancellation/restart locally.
+- Add a complete cooperative registry workload and combine it with pending texture and parsing/math/formatter probes in deferred batch 6.
+- Keep the texture runtime byte-identical, preserve historical kits and require one later combined hardware session.
+
 ## Unreleased growing texture cache - 2026-11-01
 
 - Replace fixed per-plugin/global PNG cache counts with stable records admitted through budget-accounted metadata pages.

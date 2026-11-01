@@ -54,6 +54,10 @@ Full CRT/STL, exceptions and constructors remain separate
 
 ## Capacity and lifetime
 
+The limits below describe the dated Test 1 artifact. The subsequent
+[growing-heap candidate](HEAP-CAPACITY1.md) admits additional record/arena/index
+metadata under shared-budget accounting; earlier acceptance retains its scope.
+
 Small allocations share reusable 64 KiB arenas; large requests use page-rounded
 arenas. Charge each arena once to the existing shared plugin budget alongside
 images/textures. Heap pages have no extra mapped-copy charge. Requested payload

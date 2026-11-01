@@ -18,7 +18,8 @@ Menyoo feature parity or hosted graphics compatibility.
 - [x] Build an 80-image example with cancellation and repeated completion checks.
 - [x] Prepare a combined graphics/library candidate with manual startup policies.
 - [x] Reproduce the runtime, probe and all 80 PNGs from the source ZIP outside the workspace.
-- [ ] Accept visual output, physical allocation, transitions and performance on Switch.
+- [x] Accept the bounded 80-image allocation/display workload and visual output in physical Batch 7.
+- [ ] Accept broader transitions, capacity and measured performance on Switch.
 
 The [local record](../../evidence/texture-catalog1-local-20261101/verification.json)
 identifies the runtime, probes, source hashes, regression results and candidate
@@ -46,7 +47,22 @@ operation preemptible or guarantee a frame-time bound.
 See the [extension contract](../reference/EXTENSIONS.md) for ownership, queue and
 report-field details. Substantial mods still require native/memory/asset audits.
 
-## Consolidated hardware acceptance
+## Physical Batch 7 result
+
+[Batch 7 acceptance](SERVICE-BATCH7.md) verifies all 80 installed assets,
+run=2, failed=0, 360 frames and both retained-ID checks. Visual acceptance covers
+five pages, rotation/transparency and no stale sprites. Broader transitions and
+measured GPU/RAM/frame-time behavior remain open. No standalone graphics run
+is required.
+
+## Original consolidated hardware sequence
+
+The pending installation check is now included in
+[service batch 7](../../examples/service-acceptance/README.md), alongside library,
+hash-registry and growing-heap probes. Graphics candidate 1 and batch 6 remain
+archived; separate runs of those kits are not required. The visual probe and
+assets remain byte-identical; batch 7 uses the separately verified
+[growing-heap runtime](HEAP-CAPACITY1.md).
 
 The candidate kit groups the [80-image probe](../../examples/texture-catalog/README.md)
 and the existing [library-services workload](../../examples/library-services/README.md).
@@ -55,10 +71,10 @@ tiles, attribution and an explicit rollback guide. Shared settings, runtime.ini,
 game archives and the MG Menu distribution are excluded. The original batch 5
 package and published runtime remain unchanged.
 
-Use one later session for both probes. Before replacing the runtime, preserve the
+Use one later session for all four probes. Before replacing the runtime, preserve the
 installed module and NPDM with GTA closed. Check two natural runs, texture
 rotation/transparency and five pages, then cancellation/restart. Preserve both
-result files and the loader report against exact artifact identities.
+probe result files and the loader report against exact artifact identities.
 
 Further graphics expansion and stable promotion should wait for this candidate's
 physical allocation/rendering, transition and performance results. The runtime

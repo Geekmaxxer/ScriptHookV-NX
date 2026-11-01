@@ -61,15 +61,18 @@ orphan scripts or reservations registered before the first valid game tick.
 
 Resident and script counts are independent. A plugin can own several entries;
 completed/stopped NROs remain resident. Plugin image/BSS backing, registration
-pages, heap arenas and textures share `plugin_memory_mib` accounting. Additional
-core metadata pages and script stacks are reported separately. This budget is not
+pages, heap arenas, additional heap/resource metadata and textures share
+`plugin_memory_mib` accounting. Other core metadata pages and script stacks are
+reported separately. [Heap metadata](HEAP-CAPACITY.md) also appears in the core
+metadata counter; [resource-registry metadata](OWNED-RESOURCES.md) does likewise.
+These overlapping views must not be added together. This budget is not
 an estimate of total process or GPU memory. Free heap payload does not release
 unused pool capacity until `scriptTrimMemory()`.
 
 Public slot/reservation indices use their existing 32-bit encodings. NRO fields
 retain their binary-format widths, byte accounting uses 64-bit sizes, and directory
 traversal retains its separate 4096-entry validation bound. Callback, texture,
-heap-record and other service-specific contracts remain independently defined.
+[heap-record](HEAP-CAPACITY.md) and other service-specific contracts remain independently defined.
 
 ## Generate and review configuration
 
@@ -116,6 +119,10 @@ are reported in bytes; default/ceiling MiB fields use MiB. Values are hexadecima
 - `script_stack_allocated_bytes`: retained bootstrap and additional stack storage.
 - `runtime_metadata_bytes` / `runtime_metadata_error`: additional core metadata
   page storage and the most recent metadata allocation result.
+- `heap_metadata_bytes`, `heap_block_capacity`, `heap_arena_capacity` and
+  `heap_lookup_capacity`: retained additional heap metadata and admitted table capacities.
+- `resource_metadata_bytes`: retained additional cleanup record/owner pages; each
+  plugin section includes its admitted `resource_capacity`.
 - `report_clipped`: whether the bounded report omitted part of a larger catalog.
 
 A stack or metadata admission failure does not rewrite the requested configuration.

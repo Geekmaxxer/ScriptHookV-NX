@@ -34,6 +34,7 @@ Current local revision evidence: [plugin catalogue and menu integration](verific
 - [Paged directory catalogs](reference/DIRECTORY-CATALOG.md)
 - [Cooperative preset catalogs](reference/PRESET-CATALOGS.md)
 - [File mutation and recoverable publication](reference/FILE-PUBLICATION.md)
+- [Heap capacity and accounting](reference/HEAP-CAPACITY.md)
 - [Owned resources and managed heap lifetimes](reference/OWNED-RESOURCES.md)
 - [Shared C++ session state](reference/SESSION-STATE.md)
 - [Active Switch user profile](reference/USER-PROFILE.md)

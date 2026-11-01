@@ -110,3 +110,28 @@ Kill/Load. Use `--build <matching-core-directory> --output <fresh-directory>`.
 retain the existing private target adapters and model GPU operations. The
 [texture record](../docs/verification/TEXTURE-CATALOG1.md) separates local checks
 from physical rendering and memory/performance acceptance.
+
+`test_hash_map.py` compares production ARM64 containers with independent Python
+dictionary and lifetime models. Use `--core <matching-core> --plugin <built-hash-fixture>
+--output <fresh-directory>`. It covers wrapped collisions, move-only string/record
+ownership, explicit-byte queries, aliased arguments and allocation failures.
+`test_service_batch6.py` executes the exact packaged registry/library probes,
+checks cancellation/restart and verifies retained graphics identities. Its flags
+are `--core`, `--artifact`, `--previous-graphics` and `--output`. Physical acceptance
+remains combined and deferred; see [hash-map verification](../docs/verification/HASH-MAP1.md).
+
+`test_heap_capacity.py` exercises stable record/arena growth, pointer-index
+rebuilds, metadata failure/retry, two-owner isolation, realloc and rejected
+initialization beyond the initial record extent. Use `--core`, `--plugin
+<built-heap-capacity-fixture>` and `--output` with the private target adapters.
+`test_service_batch7.py` extends the combined probe execution to the managed
+4,096-buffer workload on the new kernel; its flags match the batch 6 runner.
+The [heap-capacity record](../docs/verification/HEAP-CAPACITY1.md) retains the
+8,000-record/160-arena local scope and separate physical acceptance gates.
+
+`test_resource_capacity.py` exercises growing registration pages, budget/mapping
+refusal, direct heap pins, 1,024 contexts, peer isolation, record reuse, bounded
+nested cleanup and rejected initialization. Use `--core`, `--plugin` and `--output`
+with the private adapters. `test_service_batch8.py` runs the exact packaged
+512-object workload twice, cancels construction/verification and verifies restart.
+Use `--core`, `--artifact` and `--output`; see [resource verification](../docs/verification/RESOURCE-CAPACITY1.md).

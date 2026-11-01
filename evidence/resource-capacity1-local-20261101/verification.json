@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-01",
+  "milestone": "Growing resource registrations and deferred service batch 8",
+  "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+  "public_abi_layouts_changed": false,
+  "game_bindings_changed": false,
+  "runtime_defaults_changed": false,
+  "source_sha256": {
+    "runtime/plugins/plugin_resources.cpp": "eb579c488e736a50cb5dbae82116d4e23969045ef81a0d7b01509ddbdcd65359",
+    "runtime/plugins/plugin_resources.hpp": "0903b59d60397758d6bf283feaf713e5efe590aae26886ab7977814fa042ebee",
+    "runtime/plugins/plugin_heap.cpp": "de726926feffdd8bdd6f23f665d171eda2972ad7b4629f8be356a3595af779cf",
+    "runtime/plugins/plugin_heap.hpp": "f99f2fd62135c15a9b94dcb86974e9d4bafa95a1cfa7a212cf66392594d012c4",
+    "runtime/plugins/plugin_loader.cpp": "80b7e0af3e96749f1319504064e2487cd4e3bc83dd0579e92492dd62aabcf88a",
+    "include/plugin_resources.h": "29aea9fc07c2672d51453dfbcb808c78f5965a79353d29eade74ce0cf959dae2",
+    "tests/test_plugin_resources.py": "c3eeee5e51796042afa0890809f2b0de9945b4c516802372f1ac24968def6310",
+    "tests/test_resource_capacity.py": "b9fc9d58e90b6a4ce30caab0eb2f609beac92d1ee13e8c44fd5747131ad093b5",
+    "tests/test_service_batch8.py": "e51019fc820e83f2c9fe2bec2da2839b5a1e3a211ccc0060e02dcaf2b5d8d3b3",
+    "tests/fixtures/plugin_resource_capacity_fixture.cpp": "07410530c95ac2fad6450095352fd8a2b806bda40ea9f20ce711c2444d07a387",
+    "examples/resource-registry/main.cpp": "8d93ef4b29e73f3e1ec5d54b17d87cadf83b31ef85cd155c828af84fbb0ba7cb",
+    "examples/resource-registry/project.json": "df0bba4ba72001e5442494be0b7efb6275714a960caa07b12f2e6cb015c6a2e9",
+    "tools/build_service_acceptance.py": "2ddc32628d2e531ddb97b4418ed7d4953e3572f5f56d1924759085aeb521d683"
+  },
+  "checks_passed": 813,
+  "portable_tests_passed": 39,
+  "reports": {
+    "resource_growth": {
+      "passed": 21,
+      "report_sha256": "bdffd28390b761300458f2f648a8d7248de9ef6cab757e76f384ff8f4df21d70",
+      "checks": [
+        "A refused record page preserves all 64 live registrations",
+        "A refused metadata mapping returns its budget reservation",
+        "Retry admits multiple stable pages without changing existing handles",
+        "Shared-budget exhaustion refuses growth without consuming existing records",
+        "Registration recovers after the shared budget becomes available",
+        "Null-context registrations above the original extent drain once",
+        "Restart reuses admitted metadata without another charge",
+        "1024 owned resource contexts retain exact payloads and heap pins",
+        "A second owner independently holds 256 registrations",
+        "High-index contexts refuse free and realloc while pinned",
+        "Foreign owners cannot consume grown handles or query their pins",
+        "Forget unpins a high-index context without running cleanup",
+        "Reused records issue fresh handles and preserve stale-ticket refusal",
+        "Grown reverse cleanup follows registration order after record reuse",
+        "Owner drain preserves every peer registration and pin",
+        "The peer drains independently with complete owner cleanup",
+        "Nested cleanup defers the 65th simultaneous callback before consumption",
+        "Deferred nested contexts remain pinned and active",
+        "A later drain completes the deferred nested chain exactly once",
+        "Rejected initialization drains all 192 grown registrations before unloading",
+        "Rejected initialization retains only accounted reusable resource metadata"
+      ]
+    },
+    "resource_regression": {
+      "passed": 145,
+      "report_sha256": "cb6a606c7ac6849dcfe612fcbc6c78aa82574cc707d19e4cc9b8c65d2aa6a659"
+    },
+    "heap_regression": {
+      "passed": 528,
+      "report_sha256": "cca5a74e234ffa57a019696c339a2fed05e7e7351edf68017933745b1887aca6"
+    },
+    "heap_growth": {
+      "passed": 18,
+      "report_sha256": "6e309a246fff75dbada68618e0cf3fbd19152b2b7bf7705aee3fd5b7356011fb"
+    },
+    "scheduler": {
+      "passed": 75,
+      "report_sha256": "b6f84a39c033389ed15ab205676ee67be2dc10c61c2da464038de5134cd653bf"
+    },
+    "png": {
+      "passed": 15,
+      "report_sha256": "38a20c6a73192db12e1cdd91823bf8c57bb09c64296ea94701b572eee23ae4ff"
+    },
+    "packaged_probe": {
+      "passed": 11,
+      "report_sha256": "db04fa1efa4d212ee84c36a8f3706041b8f58682fab0d3feef824f6b626909c0",
+      "checks": [
+        "Batch 8 identifies the matching growing-resource kernel",
+        "The kit contains one exact manual NRO and preserved rollback metadata",
+        "The probe remains manual before explicit loading",
+        "All 512 contexts complete with 513 registrations and reverse cleanup",
+        "A second natural lifetime completes with fresh records",
+        "Second completion reuses resource metadata and leaves no live registrations",
+        "Kill during construction preserves reverse order and final cleanup",
+        "Restart after construction cancellation completes a new lifetime",
+        "Kill during verification drains all 512 pinned contexts exactly once",
+        "Restart after verification cancellation completes without retained owner data",
+        "Repeated runs leave no resource or modeled filesystem failures"
+      ]
+    }
+  },
+  "package": {
+    "kit": "Service acceptance batch 8",
+    "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+    "artifacts": {
+      "resource-registry": {
+        "nro_sha256": "9084539914ace5886d4619f9d322d0bd865f93667a727ece4453b94b7ac68f40",
+        "image_bytes": 24576,
+        "bss_bytes": 12288,
+        "accounted_bytes": 77824
+      }
+    },
+    "files": {
+      "LICENSE": "fe5a3c544660aaff24049783d09cc44c30bcd19eb5c3af922997388e0766c79d",
+      "manifest.json": "bc99b08a34c58d8cd8fbfce5f64a03c88d7baa101caaa688015372f96479e2ac",
+      "NOTICE": "933b76035cd1c5c10c25d4b5ef58dc4f346a87dbbfa65719c03acd8317cab74d",
+      "READ-ME-FIRST.md": "343eca7511aa834aafd4c6c5540ef91c09373d63fe65806c8de21241932c0bae",
+      "THIRD-PARTY-NOTICES.txt": "e181aca5a5840ae7a39c7a03891d9d0b0c37a97347d777804eeda519e62bfdb4",
+      "RUNTIME-CANDIDATE/Check-Game-Layout.cmd": "09d906709bf152c33a9156d003939ff9ec057fb69ee00daf10d524f38896712c",
+      "RUNTIME-CANDIDATE/Check-Game-Layout.ps1": "c21d30b60c0befeea3856b1e240bd56741c2e2fb41a28e3557d7e5e101530869",
+      "RUNTIME-CANDIDATE/GAME-STARTUP.md": "a8bc6f7957c0ca280bd620295424b8b97703b1c242a009dd5050427a8f5f94c3",
+      "RUNTIME-CANDIDATE/Install-SD-Access.cmd": "e20d6b743bba4abaffc5ad074c59ed816c8058225de083418620145c3d1daf1b",
+      "RUNTIME-CANDIDATE/Install-SD-Access.ps1": "d5db8108b2c8a74b93181cdff0845fed8b46cd11d26836a8ad38089b670a048c",
+      "RUNTIME-CANDIDATE/SD-ACCESS.md": "55d0d1d519725221499cb7e88f8c8da893bed47e0f8056f46f913376265cd32f",
+      "third-party/newlib/LICENSE.txt": "f3afe48e4bc6ed8466a42e9dacb6be1d8f9cbf5aac15cb8e474a5ccde8b40ef6",
+      "third-party/newlib/provenance.json": "304d5c0d13f6b8e867c9cc4812f0db1d710634708561682cf8ed70d877d561a0",
+      "RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/main.npdm": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+      "RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/subsdk5": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+      "INSTALL/switch/gtav-scripthook/plugins/resource-registry.nro.manual": "9084539914ace5886d4619f9d322d0bd865f93667a727ece4453b94b7ac68f40"
+    },
+    "zip_sha256": "1078eed564153129104906d5b9e0676a04763f9663f3ba7384cd15f0559f1520",
+    "zip_bytes": 138606,
+    "zip_readback_verified": true,
+    "shared_configuration_included": false
+  },
+  "unchanged_target_adapters": {
+    "native-fixture/fixture.uncompressed.nso": "7bfd204074f5f418b9eaee712c46d7d152af4fd18195787e14c1e8b97ba299f9",
+    "runtime-fixture/fixture.nso": "eca01de9df96cff8f5c3ad47d8e409b932dd05197cfdb9fea96c9f02526c22e1"
+  },
+  "earlier_physical_acceptance": {
+    "batch": 7,
+    "acceptance_sha256": "dbd0ad1057de77ebfa89982886286c5509df14c0de53286962f0f65bd58a5aa5",
+    "runtime_sha256": "e65509d418d98a687049fff452ad3e863455b114cdec821eb674e4165f76abfc",
+    "applies_to_current_candidate": false
+  },
+  "scope": "Production ARM64 resources, pins, heap, callback, scheduler, loader and PNG/example code. OS allocation/release, RO, filesystem, GPU and outer scheduling are modeled. 1024 owned contexts and 256 peer registrations are local stress coverage; no physical timing or stack bound is inferred.",
+  "acceptance_limits": [
+    "Growing-resource candidate needs its own physical acceptance",
+    "64 active nested cleanup calls per owner; deeper release is refused before consumption",
+    "Admitted metadata remains resident/accounted until game exit; owner payload and shared metadata counts differ",
+    "Explicit handle lookup scans live registrations; cleanup and growth remain synchronous",
+    "Physical RAM, frame time, stack use, fragmentation, low-memory behavior and extended sessions remain open",
+    "Hosted STL, global constructors, exceptions and Menyoo gameplay remain separate contracts"
+  ],
+  "harness_correction": "The first packaged-probe run completed its workloads but used incorrect adapter field names for the final filesystem assertion. The corrected runner uses the established handles/mounts/directories collections and passes on the unchanged kernel and NRO.",
+  "installed": false,
+  "published": false,
+  "switch_runtime_verified": false,
+  "source_export_reproduction": {
+    "completed": true,
+    "source_zip_inventory_verified": true,
+    "outside_workspace": true,
+    "portable_tests_passed": 39,
+    "runtime_byte_reproducible": true,
+    "all_batch8_files_byte_reproducible": true,
+    "probe_nro_byte_reproducible": true,
+    "asset_files": 0,
+    "kernel_source_snapshot_unchanged": true,
+    "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+    "source_files_verified": 580,
+    "kit_files_verified": 16,
+    "switch_runtime_verified": false
+  }
+}

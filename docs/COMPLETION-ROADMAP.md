@@ -30,7 +30,7 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Provide controller/render callbacks, additional scripts and PNG textures.
 - [x] Replace fixed texture cache counts with stable, budget-accounted pages and verify 160 records locally.
 - [x] Provide an 80-image visual example and combine it with pending library checks in one candidate kit.
-- [ ] Accept the growing-texture runtime and combined graphics/library workload on Switch.
+- [x] Accept the bounded 80-image workload and visual output on the Batch 7 runtime on Switch.
 - [x] Record [combined extension gameplay acceptance](../evidence/sdk-parity-test1-20261022/hardware-20261022/console-acceptance.json).
 - [x] Verify configurable large-module image/BSS caps locally.
 - [x] Verify owner-accounted allocation, alignment, realloc and Trim locally.
@@ -42,8 +42,21 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Provide integer/base and decimal-prefix parsing with end-pointer and error checks locally.
 - [x] Consolidate pending parsing/math/formatter checks in one library-services workload.
 - [x] Package and locally verify the consolidated manual service batch 5.
-- [ ] Accept the consolidated library-services workload on physical Switch hardware.
+- [x] Accept the consolidated library-services workload on physical Switch hardware in Batch 7.
 - [x] Verify nothrow objects and fallible vector/string/map workflows locally.
+- [x] Provide fallible hash maps, move-only string keys and heterogeneous byte lookup locally.
+- [x] Verify collision repair, large registries, ownership and allocation-failure preservation locally.
+- [x] Merge the registry probe and pending texture/library checks into deferred service batch 6.
+- [x] Grow stable heap records/arenas and the pointer index under shared-budget admission.
+- [x] Verify 8,000 simultaneous allocations, 160 arenas and metadata-failure recovery locally.
+- [x] Merge all pending probes in deferred service batch 7 with a managed 4,096-buffer workload.
+- [x] Accept the four Batch 7 normal-completion workloads on Switch under explicit settings.
+- [x] Grow cleanup registrations through stable budget-accounted records with direct heap pin tracking.
+- [x] Verify 1,024 contexts, 256 peer registrations, budget/metadata failures and bounded nested cleanup locally.
+- [x] Prepare a 512-object combined completion/cancellation probe in deferred service batch 8.
+- [ ] Accept resource growth on Switch in one later combined session.
+- [ ] Complete Batch 7 cancellation/transition/rollback and measured-performance gates.
+- [ ] Accept larger arena configurations, fragmentation and measured long-session behavior on hardware.
 - [x] Verify recoverable binary/XML storage and modeled recovery failures locally.
 - [ ] Accept actual storage interruption/recovery on Switch.
 - [x] Provide bounded chunked I/O and isolated nested data directories locally.

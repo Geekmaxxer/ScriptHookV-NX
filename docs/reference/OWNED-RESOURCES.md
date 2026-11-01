@@ -5,8 +5,10 @@ cooperative stacks. It can destroy a registered heap object after whole-plugin
 cancellation, even when its local owner was suspended inside `WAIT`. Normal C++
 scope exit remains unchanged; cancellation still discards suspended stack frames.
 
-The service has local ARM64 verification and requires new physical Switch
-acceptance. See the [verification record](../verification/PLUGIN-RESOURCES1.md).
+Bounded ownership workloads have physical acceptance. The subsequent
+[growing-resource candidate](../verification/RESOURCE-CAPACITY1.md) has local
+ARM64 verification and requires its own physical acceptance. Earlier results
+retain their exact [artifact scope](../verification/PLUGIN-RESOURCES1.md).
 
 ## Availability and ABI
 
@@ -16,8 +18,16 @@ Include `script.h` or `plugin_resources.h` and check
 extension, memory and file contracts retain their existing layouts. Older
 runtimes may omit this service; a plugin that requires it must reject initialization.
 
-Each resident plugin can hold 64 registrations. Operations belong to its loader
-thread. A cleanup function must reside in that plugin's executable text.
+Each owner starts with 64 inline registrations. The current candidate admits
+additional stable pages of 64 records against the shared plugin memory budget;
+allocation or budget failure refuses a new registration without changing live
+handles or pins. Successfully admitted pages remain accounted and reusable until
+game exit. Additional owner pages use the same accounting. Older runtime artifacts
+retain their original 64-record limit. `SHV_NX_RESOURCES_PER_OWNER` is retained as
+a compatibility spelling for the initial extent, not a runtime capacity query.
+
+Operations belong to the loader thread. A cleanup function must reside in that
+plugin's executable text.
 Registrations receive nonzero 64-bit handles, are owner-specific and never reuse
 a consumed handle during the process lifetime. Exhaustion returns zero.
 
@@ -68,7 +78,9 @@ to cleanup timing diagnostics. It cannot preempt a loop or recover from invalid
 memory access.
 
 New registrations are refused while stopping, draining or executing a resource
-callback. A callback may release an existing child registration; consumed entries
+callback. At most 64 cleanup calls may be active for one owner; a deeper nested
+release is refused before consumption and leaves that child's context pinned.
+The caller must retain responsibility for deferred work. A callback may release an existing child registration; consumed entries
 cannot run twice. Forgetting another registration explicitly transfers its
 cleanup responsibility out of the drain.
 
@@ -82,7 +94,15 @@ operation performed by the callback.
 Loader reports include `resource_count` and `resource_failures`. The latter counts
 registry-level registration refusals and invoked callback violations; it is not
 an aggregate of all rejected API calls. Inspect remaining counts when accepting
-a workload.
+a workload. The candidate also reports per-owner `resource_capacity` and global
+`resource_metadata_bytes`, in hexadecimal. These additional mappings appear in
+both `plugin_memory_accounted` and `runtime_metadata_bytes`; the counters overlap
+and must not be summed. Per-owner heap charges exclude shared registry metadata.
+
+The registry maintains reverse order through stable links and reuses consumed
+records. Heap records track pins directly, avoiding a registry scan on every
+free/realloc. Explicit handle lookup scans live registrations. Growth and cleanup
+remain synchronous; these data structures establish no measured frame-time bound.
 
 ## Managed heap objects
 

@@ -42,7 +42,10 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
   toolchain math and fallible C++ containers.
 - Bounded file transfers, sorted preset catalogs and verified save/publication workflows.
 - Registered cleanup, explicit shared session state and configurable plugin capacity.
+- Growing cleanup registrations with stable handles and direct heap pin tracking.
+- Growing heap records, arenas and pointer indexes with shared-budget admission.
 - Growing PNG texture caches with stable IDs and shared memory accounting.
+- Fallible hash-map registries with move-only keys and allocation-free string lookup.
 
 See the [API reference](docs/reference/API-REFERENCE.md) for contracts and
 [compatibility](docs/reference/COMPATIBILITY.md) for platform limitations.
@@ -54,14 +57,12 @@ Current development adds source-port services with separate implementation,
 local-verification and hardware-acceptance records. The
 [verification matrix](docs/verification/README.md) identifies each tested scope;
 [Batch 4](docs/verification/CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30)
-accepts the combined preset/XML/save/restoration workload. New parsing, math
-and formatter checks are consolidated in the
-[library-services example](examples/library-services/README.md); its hardware
-run remains deferred while implementation continues.
-
-The [graphics candidate](docs/verification/TEXTURE-CATALOG1.md) removes fixed
-texture-cache counts and provides an 80-image probe. It groups its pending
-hardware check with the library workload and does not change the published baseline.
+accepts the combined preset/XML/save/restoration workload.
+[Batch 7](docs/verification/SERVICE-BATCH7.md) accepts the bounded library,
+80-image, registry and heap-record workloads under the recorded configuration.
+The next [resource-growth candidate](docs/verification/RESOURCE-CAPACITY1.md)
+has local verification and a single deferred hardware batch. The published
+baseline remains unchanged.
 
 The supported target is title `0100b00b51230000`, executable build
 `6e3e9b3af5746e74b615bd981080c9271bc22662`. Changed executables require renewed

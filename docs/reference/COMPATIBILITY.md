@@ -38,16 +38,19 @@ plugin that does not yield.
 | Service | Recorded scope | Remaining requirement |
 | --- | --- | --- |
 | Configurable image/BSS caps | [Explicit/Automatic bounded workload accepted](../verification/CAPACITY-ACCEPTANCE1.md) | Full-capacity RAM, performance and long sessions |
+| Growing heap records/arenas/index | [Batch 7 record/index workload accepted under explicit settings](../verification/SERVICE-BATCH7.md) | Larger arena profiles, timing and fragmentation |
 | Owner-accounted heap | [Allocation/cleanup workloads accepted](../verification/PLUGIN-MEMORY1.md) | Broader Horizon allocation/fragmentation |
 | C/XML profile | [Combined XML workload accepted](../verification/CATALOG-SCAN1.md) | Broader library and failure cases |
 | Decimal numeric profile | [IEEE/format tests and bounded XML acceptance](../verification/PLUGIN-NUMERIC1.md) | Target performance/stack measurements |
-| Buffer formatting | [C/numeric formatter verified locally](../verification/FORMATTED-TEXT1.md) | New formatter workload on hardware |
-| Float/double math | [Toolchain math and per-NRO errors verified locally](../verification/MATH-PROFILE1.md) | Consolidated library workload, stack and performance |
-| C-style numeric parsing | [Integer/decimal/end/error checks verified locally](../verification/NUMERIC-PARSING1.md) | Consolidated parsing/math/formatter workload on hardware |
+| Buffer formatting | [C/numeric formatter verified locally](../verification/FORMATTED-TEXT1.md) | [Batch 7 workload accepted](../verification/SERVICE-BATCH7.md); broader cases and measurements |
+| Float/double math | [Toolchain math and per-NRO errors verified locally](../verification/MATH-PROFILE1.md) | Batch 7 workload accepted; stack and performance |
+| C-style numeric parsing | [Integer/decimal/end/error checks verified locally](../verification/NUMERIC-PARSING1.md) | Batch 7 workload accepted; broader cases and measurements |
 | Nothrow C++ and containers | [Managed string/vector workloads accepted](../verification/PLUGIN-CXX1.md) | Broader source-port and ownership cases |
+| Owner-backed hash maps | [Dictionary/collision/failure checks verified locally](../verification/HASH-MAP1.md) | Batch 7 workload accepted; broader source-port cases |
 | Recoverable records | [Record/recovery tests](../verification/RECOVERABLE-DATA1.md) | Actual media interruption/durability |
 | Bounded files and preset catalogs | [Large XML and four-page preset selection accepted](../verification/CATALOG-SCAN1.md) | Media errors, concurrent changes, traversal cost and transitions |
 | File mutation/publication | [Normal publication and explicit restoration accepted](../verification/PLUGIN-PUBLICATION1.md) | Interrupted mutations, actual SD failures and durability |
+| Growing cleanup registry | [1,024 contexts and failure recovery verified locally](../verification/RESOURCE-CAPACITY1.md) | Deferred Batch 8 physical acceptance |
 | Owned-resource lifecycle | [Managed cancellation and nested cleanup accepted](../verification/PLUGIN-RESOURCES1.md) | Broader failures and transition acceptance |
 | Active profile and growing capacity | [One selected nickname and bounded growth accepted](../verification/PLATFORM-CAPACITY1.md) | Second selected profile, broader capacity and combinations; Eden remains separate |
 

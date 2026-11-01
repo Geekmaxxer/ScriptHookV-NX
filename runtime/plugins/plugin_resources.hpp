@@ -12,5 +12,7 @@ public:
     static uint32_t Count(void* owner);
     static uint64_t Failures(void* owner);
     static bool Drain(void* owner);
+    static size_t MetadataBytes();
+    static size_t Capacity(void* owner);
 };
 }

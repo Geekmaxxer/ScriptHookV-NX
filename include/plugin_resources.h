@@ -2,7 +2,11 @@
 #include "main.h"
 
 #define SHV_NX_RESOURCES_ABI_VERSION 1u
-#define SHV_NX_RESOURCES_PER_OWNER 64u
+#define SHV_NX_RESOURCE_INITIAL_CAPACITY 64u
+#define SHV_NX_RESOURCE_CLEANUP_DEPTH_LIMIT 64u
+// Compatibility spelling for the initial extent. Current runtimes can admit
+// additional records; older artifacts retain their original 64-record limit.
+#define SHV_NX_RESOURCES_PER_OWNER SHV_NX_RESOURCE_INITIAL_CAPACITY
 
 #ifdef __cplusplus
 extern "C" {

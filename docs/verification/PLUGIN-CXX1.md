@@ -100,8 +100,9 @@ These helpers are not aliases for standard containers. FlatMap insertion/erasure
 is linear; growth and shifts can invalidate addresses. Vector/string growth and
 vector insertion/erasure also invalidate affected pointers. Clear destroys elements
 and retains capacity; Reset frees the buffer. Empty heap arenas may remain until
-Trim. The shared heap still has 2,048 live-block and 128-arena limits across modules,
-plus its configured budget; individual dynamic strings consume additional records.
+Trim. This record's heap artifact has 2,048 live-block and 128-arena limits across
+modules; the subsequent [growing-heap candidate](HEAP-CAPACITY1.md) expands them
+through budget-accounted metadata. Individual dynamic strings consume records.
 No container promises unbounded size or measured frame-time cost.
 
 ## Lifetime and complete workflow

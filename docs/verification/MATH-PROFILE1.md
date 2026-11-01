@@ -17,7 +17,7 @@ math functions execute inside each newly built plugin.
 - [x] Check decomposition/scaling outputs and qualified C++ math calls.
 - [x] Verify ordinary hosted file streams remain unresolved.
 - [x] Execute a combined math/formatter example with exact report verification.
-- [ ] Accept the combined geometry/formatter workload on physical Switch hardware.
+- [x] Accept the combined geometry/formatter workload on physical Switch hardware. See [Batch 7 scope](SERVICE-BATCH7.md).
 
 The [local record](../../evidence/math-profile1-local-20261031/verification.json)
 identifies archive/compiler hashes, exact NROs, test counts and numerical tolerances.
@@ -36,10 +36,10 @@ License text is retained with notice provenance; no new game import or offset
 is introduced.
 
 The original [math example](../../examples/math-profile/README.md) remains
-available. Its pending geometry/error and formatter checks now join parsing in
+available. Its geometry/error and formatter checks joined parsing in
 [library-services](../../examples/library-services/README.md). The later
 [parsing milestone](NUMERIC-PARSING1.md) moves errno ownership into the common C
-profile without changing its per-NRO scope. One deferred hardware workload covers
-the consolidated additions. Standalone formatter/math and accepted batch 4 probes
+profile without changing its per-NRO scope. The consolidated workload has
+[physical Batch 7 acceptance](SERVICE-BATCH7.md). Standalone formatter/math and accepted batch 4 probes
 do not need separate runs. Stack use, performance, alternate FP state and
 coexistence retain their physical requirements.

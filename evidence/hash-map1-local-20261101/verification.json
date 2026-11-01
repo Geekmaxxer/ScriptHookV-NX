@@ -1,0 +1,1580 @@
+{
+  "date": "2026-11-01",
+  "milestone": "Fallible hash maps and consolidated service batch 6",
+  "runtime_sha256": "6ad28d6e9943ff7f80e6576a7265a6c59e3b318156f5f656e1b077d69583dde7",
+  "runtime_binary_unchanged": true,
+  "public_abi_layouts_changed": false,
+  "game_bindings_changed": false,
+  "source_sha256": {
+    "include/shv/hash_map.h": "20a49c1dab32a49923f4eb68cb789d2e7929388ecda9c53d38d05e8179d97275",
+    "tests/fixtures/plugin_hash_map_fixture.cpp": "2551c0bd701f8d32ff73c9f54daa1ce3ac6d9a28e398f698c8b8b1eb79694f14",
+    "tests/test_hash_map.py": "ddb47f7d00cc4ef8c0848e737c42315705256829f7ab6ea6f2414fb9d7a11816",
+    "tests/test_service_batch6.py": "a3d2d3bf1a93f7bc4f9496457eaa0aa0661068ae00897b247a36619dad07f4e8",
+    "examples/hash-registry/main.cpp": "74228f8fab287dae5dc2820630630982d604192d1a144d58babe155284aef091",
+    "examples/hash-registry/project.json": "df0bba4ba72001e5442494be0b7efb6275714a960caa07b12f2e6cb015c6a2e9",
+    "tools/build_service_acceptance.py": "0d791d5b2a54d76eaf0d1ed8ec3366c04b732489953f0be1d47e855d42e73b0b"
+  },
+  "checks_passed": 675,
+  "reports": {
+    "hash_maps": {
+      "passed": 654,
+      "checks": [
+        "Two modules bind independent map owners",
+        "Empty lookup and bucket access have no allocation side effects",
+        "Integer key width boundary 0",
+        "Integer key width boundary 18446744073709551615",
+        "Integer key width boundary 9223372036854775808",
+        "Integer key width boundary 4294967295",
+        "Integer key width boundary 2699",
+        "Independent dictionary sequence 0",
+        "Independent dictionary sequence 1",
+        "Independent dictionary sequence 2",
+        "Independent dictionary sequence 3",
+        "Independent dictionary sequence 4",
+        "Independent dictionary sequence 5",
+        "Independent dictionary sequence 6",
+        "Independent dictionary sequence 7",
+        "Independent dictionary sequence 8",
+        "Independent dictionary sequence 9",
+        "Independent dictionary sequence 10",
+        "Independent dictionary sequence 11",
+        "Independent dictionary sequence 12",
+        "Independent dictionary sequence 13",
+        "Independent dictionary sequence 14",
+        "Independent dictionary sequence 15",
+        "Independent dictionary sequence 16",
+        "Independent dictionary sequence 17",
+        "Independent dictionary sequence 18",
+        "Independent dictionary sequence 19",
+        "Independent dictionary sequence 20",
+        "Independent dictionary sequence 21",
+        "Independent dictionary sequence 22",
+        "Independent dictionary sequence 23",
+        "Independent dictionary sequence 24",
+        "Independent dictionary sequence 25",
+        "Independent dictionary sequence 26",
+        "Independent dictionary sequence 27",
+        "Independent dictionary sequence 28",
+        "Independent dictionary sequence 29",
+        "Independent dictionary sequence 30",
+        "Independent dictionary sequence 31",
+        "Independent dictionary sequence 32",
+        "Independent dictionary sequence 33",
+        "Independent dictionary sequence 34",
+        "Independent dictionary sequence 35",
+        "Independent dictionary sequence 36",
+        "Independent dictionary sequence 37",
+        "Independent dictionary sequence 38",
+        "Independent dictionary sequence 39",
+        "Independent dictionary sequence 40",
+        "Independent dictionary sequence 41",
+        "Independent dictionary sequence 42",
+        "Independent dictionary sequence 43",
+        "Independent dictionary sequence 44",
+        "Independent dictionary sequence 45",
+        "Independent dictionary sequence 46",
+        "Independent dictionary sequence 47",
+        "Independent dictionary sequence 48",
+        "Independent dictionary sequence 49",
+        "Independent dictionary sequence 50",
+        "Independent dictionary sequence 51",
+        "Independent dictionary sequence 52",
+        "Independent dictionary sequence 53",
+        "Independent dictionary sequence 54",
+        "Independent dictionary sequence 55",
+        "Independent dictionary sequence 56",
+        "Independent dictionary sequence 57",
+        "Independent dictionary sequence 58",
+        "Independent dictionary sequence 59",
+        "Independent dictionary sequence 60",
+        "Independent dictionary sequence 61",
+        "Independent dictionary sequence 62",
+        "Independent dictionary sequence 63",
+        "Independent dictionary sequence 64",
+        "Independent dictionary sequence 65",
+        "Independent dictionary sequence 66",
+        "Independent dictionary sequence 67",
+        "Independent dictionary sequence 68",
+        "Independent dictionary sequence 69",
+        "Independent dictionary sequence 70",
+        "Independent dictionary sequence 71",
+        "Independent dictionary sequence 72",
+        "Independent dictionary sequence 73",
+        "Independent dictionary sequence 74",
+        "Independent dictionary sequence 75",
+        "Independent dictionary sequence 76",
+        "Independent dictionary sequence 77",
+        "Independent dictionary sequence 78",
+        "Independent dictionary sequence 79",
+        "Independent dictionary sequence 80",
+        "Independent dictionary sequence 81",
+        "Independent dictionary sequence 82",
+        "Independent dictionary sequence 83",
+        "Independent dictionary sequence 84",
+        "Independent dictionary sequence 85",
+        "Independent dictionary sequence 86",
+        "Independent dictionary sequence 87",
+        "Independent dictionary sequence 88",
+        "Independent dictionary sequence 89",
+        "Independent dictionary sequence 90",
+        "Independent dictionary sequence 91",
+        "Independent dictionary sequence 92",
+        "Independent dictionary sequence 93",
+        "Independent dictionary sequence 94",
+        "Independent dictionary sequence 95",
+        "Independent dictionary sequence 96",
+        "Independent dictionary sequence 97",
+        "Independent dictionary sequence 98",
+        "Independent dictionary sequence 99",
+        "Independent dictionary sequence 100",
+        "Independent dictionary sequence 101",
+        "Independent dictionary sequence 102",
+        "Independent dictionary sequence 103",
+        "Independent dictionary sequence 104",
+        "Independent dictionary sequence 105",
+        "Independent dictionary sequence 106",
+        "Independent dictionary sequence 107",
+        "Independent dictionary sequence 108",
+        "Independent dictionary sequence 109",
+        "Independent dictionary sequence 110",
+        "Independent dictionary sequence 111",
+        "Independent dictionary sequence 112",
+        "Independent dictionary sequence 113",
+        "Independent dictionary sequence 114",
+        "Independent dictionary sequence 115",
+        "Independent dictionary sequence 116",
+        "Independent dictionary sequence 117",
+        "Independent dictionary sequence 118",
+        "Independent dictionary sequence 119",
+        "Independent dictionary sequence 120",
+        "Independent dictionary sequence 121",
+        "Independent dictionary sequence 122",
+        "Independent dictionary sequence 123",
+        "Independent dictionary sequence 124",
+        "Independent dictionary sequence 125",
+        "Independent dictionary sequence 126",
+        "Independent dictionary sequence 127",
+        "Independent dictionary sequence 128",
+        "Independent dictionary sequence 129",
+        "Independent dictionary sequence 130",
+        "Independent dictionary sequence 131",
+        "Independent dictionary sequence 132",
+        "Independent dictionary sequence 133",
+        "Independent dictionary sequence 134",
+        "Independent dictionary sequence 135",
+        "Independent dictionary sequence 136",
+        "Independent dictionary sequence 137",
+        "Independent dictionary sequence 138",
+        "Independent dictionary sequence 139",
+        "Independent dictionary sequence 140",
+        "Independent dictionary sequence 141",
+        "Independent dictionary sequence 142",
+        "Independent dictionary sequence 143",
+        "Independent dictionary sequence 144",
+        "Independent dictionary sequence 145",
+        "Independent dictionary sequence 146",
+        "Independent dictionary sequence 147",
+        "Independent dictionary sequence 148",
+        "Independent dictionary sequence 149",
+        "Independent dictionary sequence 150",
+        "Independent dictionary sequence 151",
+        "Independent dictionary sequence 152",
+        "Independent dictionary sequence 153",
+        "Independent dictionary sequence 154",
+        "Independent dictionary sequence 155",
+        "Independent dictionary sequence 156",
+        "Independent dictionary sequence 157",
+        "Independent dictionary sequence 158",
+        "Independent dictionary sequence 159",
+        "Independent dictionary sequence 160",
+        "Independent dictionary sequence 161",
+        "Independent dictionary sequence 162",
+        "Independent dictionary sequence 163",
+        "Independent dictionary sequence 164",
+        "Independent dictionary sequence 165",
+        "Independent dictionary sequence 166",
+        "Independent dictionary sequence 167",
+        "Independent dictionary sequence 168",
+        "Independent dictionary sequence 169",
+        "Independent dictionary sequence 170",
+        "Independent dictionary sequence 171",
+        "Independent dictionary sequence 172",
+        "Independent dictionary sequence 173",
+        "Independent dictionary sequence 174",
+        "Independent dictionary sequence 175",
+        "Independent dictionary sequence 176",
+        "Independent dictionary sequence 177",
+        "Independent dictionary sequence 178",
+        "Independent dictionary sequence 179",
+        "Independent dictionary sequence 180",
+        "Independent dictionary sequence 181",
+        "Independent dictionary sequence 182",
+        "Independent dictionary sequence 183",
+        "Independent dictionary sequence 184",
+        "Independent dictionary sequence 185",
+        "Independent dictionary sequence 186",
+        "Independent dictionary sequence 187",
+        "Independent dictionary sequence 188",
+        "Independent dictionary sequence 189",
+        "Independent dictionary sequence 190",
+        "Independent dictionary sequence 191",
+        "Independent dictionary sequence 192",
+        "Independent dictionary sequence 193",
+        "Independent dictionary sequence 194",
+        "Independent dictionary sequence 195",
+        "Independent dictionary sequence 196",
+        "Independent dictionary sequence 197",
+        "Independent dictionary sequence 198",
+        "Independent dictionary sequence 199",
+        "Independent dictionary sequence 200",
+        "Independent dictionary sequence 201",
+        "Independent dictionary sequence 202",
+        "Independent dictionary sequence 203",
+        "Independent dictionary sequence 204",
+        "Independent dictionary sequence 205",
+        "Independent dictionary sequence 206",
+        "Independent dictionary sequence 207",
+        "Independent dictionary sequence 208",
+        "Independent dictionary sequence 209",
+        "Independent dictionary sequence 210",
+        "Independent dictionary sequence 211",
+        "Independent dictionary sequence 212",
+        "Independent dictionary sequence 213",
+        "Independent dictionary sequence 214",
+        "Independent dictionary sequence 215",
+        "Independent dictionary sequence 216",
+        "Independent dictionary sequence 217",
+        "Independent dictionary sequence 218",
+        "Independent dictionary sequence 219",
+        "Independent dictionary sequence 220",
+        "Independent dictionary sequence 221",
+        "Independent dictionary sequence 222",
+        "Independent dictionary sequence 223",
+        "Independent dictionary sequence 224",
+        "Independent dictionary sequence 225",
+        "Independent dictionary sequence 226",
+        "Independent dictionary sequence 227",
+        "Independent dictionary sequence 228",
+        "Independent dictionary sequence 229",
+        "Independent dictionary sequence 230",
+        "Independent dictionary sequence 231",
+        "Independent dictionary sequence 232",
+        "Independent dictionary sequence 233",
+        "Independent dictionary sequence 234",
+        "Independent dictionary sequence 235",
+        "Independent dictionary sequence 236",
+        "Independent dictionary sequence 237",
+        "Independent dictionary sequence 238",
+        "Independent dictionary sequence 239",
+        "Independent dictionary sequence 240",
+        "Independent dictionary sequence 241",
+        "Independent dictionary sequence 242",
+        "Independent dictionary sequence 243",
+        "Independent dictionary sequence 244",
+        "Independent dictionary sequence 245",
+        "Independent dictionary sequence 246",
+        "Independent dictionary sequence 247",
+        "Independent dictionary sequence 248",
+        "Independent dictionary sequence 249",
+        "Independent dictionary sequence 250",
+        "Independent dictionary sequence 251",
+        "Independent dictionary sequence 252",
+        "Independent dictionary sequence 253",
+        "Independent dictionary sequence 254",
+        "Independent dictionary sequence 255",
+        "Independent dictionary sequence 256",
+        "Independent dictionary sequence 257",
+        "Independent dictionary sequence 258",
+        "Independent dictionary sequence 259",
+        "Independent dictionary sequence 260",
+        "Independent dictionary sequence 261",
+        "Independent dictionary sequence 262",
+        "Independent dictionary sequence 263",
+        "Independent dictionary sequence 264",
+        "Independent dictionary sequence 265",
+        "Independent dictionary sequence 266",
+        "Independent dictionary sequence 267",
+        "Independent dictionary sequence 268",
+        "Independent dictionary sequence 269",
+        "Independent dictionary sequence 270",
+        "Independent dictionary sequence 271",
+        "Independent dictionary sequence 272",
+        "Independent dictionary sequence 273",
+        "Independent dictionary sequence 274",
+        "Independent dictionary sequence 275",
+        "Independent dictionary sequence 276",
+        "Independent dictionary sequence 277",
+        "Independent dictionary sequence 278",
+        "Independent dictionary sequence 279",
+        "Independent dictionary sequence 280",
+        "Independent dictionary sequence 281",
+        "Independent dictionary sequence 282",
+        "Independent dictionary sequence 283",
+        "Independent dictionary sequence 284",
+        "Independent dictionary sequence 285",
+        "Independent dictionary sequence 286",
+        "Independent dictionary sequence 287",
+        "Independent dictionary sequence 288",
+        "Independent dictionary sequence 289",
+        "Independent dictionary sequence 290",
+        "Independent dictionary sequence 291",
+        "Independent dictionary sequence 292",
+        "Independent dictionary sequence 293",
+        "Independent dictionary sequence 294",
+        "Independent dictionary sequence 295",
+        "Independent dictionary sequence 296",
+        "Independent dictionary sequence 297",
+        "Independent dictionary sequence 298",
+        "Independent dictionary sequence 299",
+        "Reserve allocation failure preserves contents and live accounting",
+        "Reserve overflow refuses before mutating existing entries",
+        "Transactional copy populates an independent destination",
+        "Changing the source does not change its copied registry",
+        "Move assignment replaces the destination and empties the source",
+        "Self copy and self move preserve entries",
+        "Duplicate borrowed key is harmless",
+        "A new key borrowed from an existing value is explicitly refused",
+        "Insertion refuses a value borrowed from its own bucket storage",
+        "6144 inserted keys are all independently found after multiple rehashes",
+        "Insertion allocation failure adds no partial key or value",
+        "Failed copy preserves the existing destination table",
+        "Constant-hash wrapped collision sequence 0",
+        "Constant-hash wrapped collision sequence 1",
+        "Constant-hash wrapped collision sequence 2",
+        "Constant-hash wrapped collision sequence 3",
+        "Constant-hash wrapped collision sequence 4",
+        "Constant-hash wrapped collision sequence 5",
+        "Constant-hash wrapped collision sequence 6",
+        "Constant-hash wrapped collision sequence 7",
+        "Constant-hash wrapped collision sequence 8",
+        "Constant-hash wrapped collision sequence 9",
+        "Constant-hash wrapped collision sequence 10",
+        "Constant-hash wrapped collision sequence 11",
+        "Constant-hash wrapped collision sequence 12",
+        "Constant-hash wrapped collision sequence 13",
+        "Constant-hash wrapped collision sequence 14",
+        "Constant-hash wrapped collision sequence 15",
+        "Constant-hash wrapped collision sequence 16",
+        "Constant-hash wrapped collision sequence 17",
+        "Constant-hash wrapped collision sequence 18",
+        "Constant-hash wrapped collision sequence 19",
+        "Constant-hash wrapped collision sequence 20",
+        "Constant-hash wrapped collision sequence 21",
+        "Constant-hash wrapped collision sequence 22",
+        "Constant-hash wrapped collision sequence 23",
+        "Constant-hash wrapped collision sequence 24",
+        "Constant-hash wrapped collision sequence 25",
+        "Constant-hash wrapped collision sequence 26",
+        "Constant-hash wrapped collision sequence 27",
+        "Constant-hash wrapped collision sequence 28",
+        "Constant-hash wrapped collision sequence 29",
+        "Constant-hash wrapped collision sequence 30",
+        "Constant-hash wrapped collision sequence 31",
+        "Constant-hash wrapped collision sequence 32",
+        "Constant-hash wrapped collision sequence 33",
+        "Constant-hash wrapped collision sequence 34",
+        "Constant-hash wrapped collision sequence 35",
+        "Constant-hash wrapped collision sequence 36",
+        "Constant-hash wrapped collision sequence 37",
+        "Constant-hash wrapped collision sequence 38",
+        "Constant-hash wrapped collision sequence 39",
+        "Constant-hash wrapped collision sequence 40",
+        "Constant-hash wrapped collision sequence 41",
+        "Constant-hash wrapped collision sequence 42",
+        "Constant-hash wrapped collision sequence 43",
+        "Constant-hash wrapped collision sequence 44",
+        "Constant-hash wrapped collision sequence 45",
+        "Constant-hash wrapped collision sequence 46",
+        "Constant-hash wrapped collision sequence 47",
+        "Constant-hash wrapped collision sequence 48",
+        "Constant-hash wrapped collision sequence 49",
+        "Constant-hash wrapped collision sequence 50",
+        "Constant-hash wrapped collision sequence 51",
+        "Constant-hash wrapped collision sequence 52",
+        "Constant-hash wrapped collision sequence 53",
+        "Constant-hash wrapped collision sequence 54",
+        "Constant-hash wrapped collision sequence 55",
+        "Constant-hash wrapped collision sequence 56",
+        "Constant-hash wrapped collision sequence 57",
+        "Constant-hash wrapped collision sequence 58",
+        "Constant-hash wrapped collision sequence 59",
+        "Constant-hash wrapped collision sequence 60",
+        "Constant-hash wrapped collision sequence 61",
+        "Constant-hash wrapped collision sequence 62",
+        "Constant-hash wrapped collision sequence 63",
+        "Constant-hash wrapped collision sequence 64",
+        "Constant-hash wrapped collision sequence 65",
+        "Constant-hash wrapped collision sequence 66",
+        "Constant-hash wrapped collision sequence 67",
+        "Constant-hash wrapped collision sequence 68",
+        "Constant-hash wrapped collision sequence 69",
+        "Constant-hash wrapped collision sequence 70",
+        "Constant-hash wrapped collision sequence 71",
+        "Constant-hash wrapped collision sequence 72",
+        "Constant-hash wrapped collision sequence 73",
+        "Constant-hash wrapped collision sequence 74",
+        "Constant-hash wrapped collision sequence 75",
+        "Constant-hash wrapped collision sequence 76",
+        "Constant-hash wrapped collision sequence 77",
+        "Constant-hash wrapped collision sequence 78",
+        "Constant-hash wrapped collision sequence 79",
+        "Constant-hash wrapped collision sequence 80",
+        "Constant-hash wrapped collision sequence 81",
+        "Constant-hash wrapped collision sequence 82",
+        "Constant-hash wrapped collision sequence 83",
+        "Constant-hash wrapped collision sequence 84",
+        "Constant-hash wrapped collision sequence 85",
+        "Constant-hash wrapped collision sequence 86",
+        "Constant-hash wrapped collision sequence 87",
+        "Constant-hash wrapped collision sequence 88",
+        "Constant-hash wrapped collision sequence 89",
+        "Constant-hash wrapped collision sequence 90",
+        "Constant-hash wrapped collision sequence 91",
+        "Constant-hash wrapped collision sequence 92",
+        "Constant-hash wrapped collision sequence 93",
+        "Constant-hash wrapped collision sequence 94",
+        "Constant-hash wrapped collision sequence 95",
+        "Constant-hash wrapped collision sequence 96",
+        "Constant-hash wrapped collision sequence 97",
+        "Constant-hash wrapped collision sequence 98",
+        "Constant-hash wrapped collision sequence 99",
+        "Constant-hash wrapped collision sequence 100",
+        "Constant-hash wrapped collision sequence 101",
+        "Constant-hash wrapped collision sequence 102",
+        "Constant-hash wrapped collision sequence 103",
+        "Constant-hash wrapped collision sequence 104",
+        "Constant-hash wrapped collision sequence 105",
+        "Constant-hash wrapped collision sequence 106",
+        "Constant-hash wrapped collision sequence 107",
+        "Constant-hash wrapped collision sequence 108",
+        "Constant-hash wrapped collision sequence 109",
+        "Constant-hash wrapped collision sequence 110",
+        "Constant-hash wrapped collision sequence 111",
+        "Constant-hash wrapped collision sequence 112",
+        "Constant-hash wrapped collision sequence 113",
+        "Constant-hash wrapped collision sequence 114",
+        "Constant-hash wrapped collision sequence 115",
+        "Constant-hash wrapped collision sequence 116",
+        "Constant-hash wrapped collision sequence 117",
+        "Constant-hash wrapped collision sequence 118",
+        "Constant-hash wrapped collision sequence 119",
+        "Constant-hash wrapped collision sequence 120",
+        "Constant-hash wrapped collision sequence 121",
+        "Constant-hash wrapped collision sequence 122",
+        "Constant-hash wrapped collision sequence 123",
+        "Constant-hash wrapped collision sequence 124",
+        "Constant-hash wrapped collision sequence 125",
+        "Constant-hash wrapped collision sequence 126",
+        "Constant-hash wrapped collision sequence 127",
+        "Constant-hash wrapped collision sequence 128",
+        "Constant-hash wrapped collision sequence 129",
+        "Constant-hash wrapped collision sequence 130",
+        "Constant-hash wrapped collision sequence 131",
+        "Constant-hash wrapped collision sequence 132",
+        "Constant-hash wrapped collision sequence 133",
+        "Constant-hash wrapped collision sequence 134",
+        "Constant-hash wrapped collision sequence 135",
+        "Constant-hash wrapped collision sequence 136",
+        "Constant-hash wrapped collision sequence 137",
+        "Constant-hash wrapped collision sequence 138",
+        "Constant-hash wrapped collision sequence 139",
+        "Constant-hash wrapped collision sequence 140",
+        "Constant-hash wrapped collision sequence 141",
+        "Constant-hash wrapped collision sequence 142",
+        "Constant-hash wrapped collision sequence 143",
+        "Constant-hash wrapped collision sequence 144",
+        "Constant-hash wrapped collision sequence 145",
+        "Constant-hash wrapped collision sequence 146",
+        "Constant-hash wrapped collision sequence 147",
+        "Constant-hash wrapped collision sequence 148",
+        "Constant-hash wrapped collision sequence 149",
+        "Constant-hash wrapped collision sequence 150",
+        "Constant-hash wrapped collision sequence 151",
+        "Constant-hash wrapped collision sequence 152",
+        "Constant-hash wrapped collision sequence 153",
+        "Constant-hash wrapped collision sequence 154",
+        "Constant-hash wrapped collision sequence 155",
+        "Constant-hash wrapped collision sequence 156",
+        "Constant-hash wrapped collision sequence 157",
+        "Constant-hash wrapped collision sequence 158",
+        "Constant-hash wrapped collision sequence 159",
+        "Constant-hash wrapped collision sequence 160",
+        "Constant-hash wrapped collision sequence 161",
+        "Constant-hash wrapped collision sequence 162",
+        "Constant-hash wrapped collision sequence 163",
+        "Constant-hash wrapped collision sequence 164",
+        "Constant-hash wrapped collision sequence 165",
+        "Constant-hash wrapped collision sequence 166",
+        "Constant-hash wrapped collision sequence 167",
+        "Constant-hash wrapped collision sequence 168",
+        "Constant-hash wrapped collision sequence 169",
+        "Constant-hash wrapped collision sequence 170",
+        "Constant-hash wrapped collision sequence 171",
+        "Constant-hash wrapped collision sequence 172",
+        "Constant-hash wrapped collision sequence 173",
+        "Constant-hash wrapped collision sequence 174",
+        "Constant-hash wrapped collision sequence 175",
+        "Constant-hash wrapped collision sequence 176",
+        "Constant-hash wrapped collision sequence 177",
+        "Constant-hash wrapped collision sequence 178",
+        "Constant-hash wrapped collision sequence 179",
+        "Constant-hash wrapped collision sequence 180",
+        "Constant-hash wrapped collision sequence 181",
+        "Constant-hash wrapped collision sequence 182",
+        "Constant-hash wrapped collision sequence 183",
+        "Constant-hash wrapped collision sequence 184",
+        "Constant-hash wrapped collision sequence 185",
+        "Constant-hash wrapped collision sequence 186",
+        "Constant-hash wrapped collision sequence 187",
+        "Constant-hash wrapped collision sequence 188",
+        "Constant-hash wrapped collision sequence 189",
+        "Constant-hash wrapped collision sequence 190",
+        "Constant-hash wrapped collision sequence 191",
+        "Constant-hash wrapped collision sequence 192",
+        "Constant-hash wrapped collision sequence 193",
+        "Constant-hash wrapped collision sequence 194",
+        "Constant-hash wrapped collision sequence 195",
+        "Constant-hash wrapped collision sequence 196",
+        "Constant-hash wrapped collision sequence 197",
+        "Constant-hash wrapped collision sequence 198",
+        "Constant-hash wrapped collision sequence 199",
+        "Constant-hash wrapped collision sequence 200",
+        "Constant-hash wrapped collision sequence 201",
+        "Constant-hash wrapped collision sequence 202",
+        "Constant-hash wrapped collision sequence 203",
+        "Constant-hash wrapped collision sequence 204",
+        "Constant-hash wrapped collision sequence 205",
+        "Constant-hash wrapped collision sequence 206",
+        "Constant-hash wrapped collision sequence 207",
+        "Constant-hash wrapped collision sequence 208",
+        "Constant-hash wrapped collision sequence 209",
+        "Constant-hash wrapped collision sequence 210",
+        "Constant-hash wrapped collision sequence 211",
+        "Constant-hash wrapped collision sequence 212",
+        "Constant-hash wrapped collision sequence 213",
+        "Constant-hash wrapped collision sequence 214",
+        "Constant-hash wrapped collision sequence 215",
+        "Constant-hash wrapped collision sequence 216",
+        "Constant-hash wrapped collision sequence 217",
+        "Constant-hash wrapped collision sequence 218",
+        "Constant-hash wrapped collision sequence 219",
+        "Constant-hash wrapped collision sequence 220",
+        "Constant-hash wrapped collision sequence 221",
+        "Constant-hash wrapped collision sequence 222",
+        "Constant-hash wrapped collision sequence 223",
+        "Constant-hash wrapped collision sequence 224",
+        "Constant-hash wrapped collision sequence 225",
+        "Constant-hash wrapped collision sequence 226",
+        "Constant-hash wrapped collision sequence 227",
+        "Constant-hash wrapped collision sequence 228",
+        "Constant-hash wrapped collision sequence 229",
+        "Constant-hash wrapped collision sequence 230",
+        "Constant-hash wrapped collision sequence 231",
+        "Constant-hash wrapped collision sequence 232",
+        "Constant-hash wrapped collision sequence 233",
+        "Constant-hash wrapped collision sequence 234",
+        "Constant-hash wrapped collision sequence 235",
+        "Constant-hash wrapped collision sequence 236",
+        "Constant-hash wrapped collision sequence 237",
+        "Constant-hash wrapped collision sequence 238",
+        "Constant-hash wrapped collision sequence 239",
+        "Constant-hash wrapped collision sequence 240",
+        "Constant-hash wrapped collision sequence 241",
+        "Constant-hash wrapped collision sequence 242",
+        "Constant-hash wrapped collision sequence 243",
+        "Constant-hash wrapped collision sequence 244",
+        "Constant-hash wrapped collision sequence 245",
+        "Constant-hash wrapped collision sequence 246",
+        "Constant-hash wrapped collision sequence 247",
+        "Constant-hash wrapped collision sequence 248",
+        "Constant-hash wrapped collision sequence 249",
+        "Collision deletion retains every remaining key 49",
+        "Collision deletion retains every remaining key -35",
+        "Collision deletion retains every remaining key -20",
+        "Collision deletion retains every remaining key 32",
+        "Collision deletion retains every remaining key -48",
+        "Collision deletion retains every remaining key -2",
+        "Collision deletion retains every remaining key -4",
+        "Collision deletion retains every remaining key -28",
+        "Collision deletion retains every remaining key 10",
+        "Collision deletion retains every remaining key -21",
+        "Collision deletion retains every remaining key -15",
+        "Collision deletion retains every remaining key 54",
+        "Collision deletion retains every remaining key 3",
+        "Collision deletion retains every remaining key -38",
+        "Collision deletion retains every remaining key 19",
+        "Collision deletion retains every remaining key 45",
+        "Collision deletion retains every remaining key -19",
+        "Collision deletion retains every remaining key 41",
+        "Collision deletion retains every remaining key -52",
+        "Collision deletion retains every remaining key 26",
+        "Collision deletion retains every remaining key 47",
+        "Collision deletion retains every remaining key 57",
+        "Collision deletion retains every remaining key 7",
+        "Collision deletion retains every remaining key 24",
+        "Collision deletion retains every remaining key -11",
+        "Collision deletion retains every remaining key -37",
+        "Collision deletion retains every remaining key 29",
+        "Collision deletion retains every remaining key -51",
+        "Collision deletion retains every remaining key 0",
+        "Collision deletion retains every remaining key -25",
+        "Collision deletion retains every remaining key -10",
+        "Collision deletion retains every remaining key -7",
+        "Collision deletion retains every remaining key 60",
+        "Collision deletion retains every remaining key -17",
+        "Collision deletion retains every remaining key 40",
+        "Collision deletion retains every remaining key -13",
+        "Collision deletion retains every remaining key -59",
+        "Collision deletion retains every remaining key -8",
+        "Collision deletion retains every remaining key -26",
+        "Collision deletion retains every remaining key 37",
+        "Collision deletion retains every remaining key -49",
+        "Collision deletion retains every remaining key 9",
+        "Collision deletion retains every remaining key -46",
+        "Collision deletion retains every remaining key 5",
+        "Collision deletion retains every remaining key -5",
+        "Collision deletion retains every remaining key 55",
+        "Collision deletion retains every remaining key 52",
+        "Collision deletion retains every remaining key 27",
+        "Collision deletion retains every remaining key 59",
+        "Collision deletion retains every remaining key 18",
+        "Collision deletion retains every remaining key -14",
+        "Collision deletion retains every remaining key -45",
+        "Collision deletion retains every remaining key 25",
+        "Collision deletion retains every remaining key -44",
+        "Collision deletion retains every remaining key -47",
+        "Collision deletion retains every remaining key 2",
+        "Collision deletion retains every remaining key 63",
+        "Collision deletion retains every remaining key 42",
+        "Collision deletion retains every remaining key -24",
+        "Erased move-only values balance every lifetime",
+        "Move-only string key inserts explicit bytes b''",
+        "String view lookup allocates nothing b''",
+        "Move-only string key inserts explicit bytes b'entry'",
+        "String view lookup allocates nothing b'entry'",
+        "Move-only string key inserts explicit bytes b'entry\\x00suffix'",
+        "String view lookup allocates nothing b'entry\\x00suffix'",
+        "Move-only string key inserts explicit bytes b'entry\\x00other'",
+        "String view lookup allocates nothing b'entry\\x00other'",
+        "Move-only string key inserts explicit bytes b'\\xe4\\xb8\\x96\\xe7\\x95\\x8c'",
+        "String view lookup allocates nothing b'\\xe4\\xb8\\x96\\xe7\\x95\\x8c'",
+        "Move-only string key inserts explicit bytes b'xxxxxxxxxxxxxxxxxxxx'",
+        "String view lookup allocates nothing b'xxxxxxxxxxxxxxxxxxxx'",
+        "Duplicate insertion does not consume moved string arguments",
+        "Two moved arguments cannot consume the same external string",
+        "String bytes survive rehash b''",
+        "String bytes survive rehash b'entry'",
+        "String bytes survive rehash b'entry\\x00suffix'",
+        "String bytes survive rehash b'entry\\x00other'",
+        "String bytes survive rehash b'\\xe4\\xb8\\x96\\xe7\\x95\\x8c'",
+        "String bytes survive rehash b'xxxxxxxxxxxxxxxxxxxx'",
+        "Embedded-NUL deletion does not alias another string key",
+        "Over-aligned map values retain 256-byte alignment",
+        "The second module cannot see the first module registry",
+        "Managed cancellation destroys all nested map allocations",
+        "Reload recreates empty maps with the resident code retained"
+      ],
+      "record_sha256": "5e837733909586ee78d084161b2051ae0841187f2b2a88e298a16c6f23159760"
+    },
+    "combined_batch": {
+      "passed": 14,
+      "checks": [
+        "Batch 6 retains the previously checked growing-texture runtime bytes",
+        "Three workload identities are recorded and match their actual NROs",
+        "The texture probe is byte-identical to its complete local workload test",
+        "All 80 texture fixtures retain their verified byte identities",
+        "The pending library probe retains its earlier tested binary",
+        "All three probes remain manual in the same catalogue",
+        "The exact packaged library workload completes with expected bytes",
+        "The library probe repeats naturally without changing modules",
+        "The packaged registry completes and all owned allocations are reclaimed",
+        "A second registry run completes with fresh state and retained code",
+        "Kill during construction drains nested maps before the final audit",
+        "Restart after cancellation completes the same registry",
+        "Combined registry/library runs leave no filesystems or resource errors active",
+        "The candidate supplies rollback metadata without replacing configuration"
+      ],
+      "record_sha256": "5e6ec4555078f0b12372b727068d0d77228b2f0d73fc74fd33b68d9edd70b6a9"
+    },
+    "compile_and_packaging_refusals": {
+      "passed": 7,
+      "checks": [
+        "throwing-hash",
+        "stateful-hash",
+        "throwing-move",
+        "implicit-floating-hash",
+        "copy-move-only-key",
+        "mutable-key",
+        "Mismatched runtime is refused before staging"
+      ],
+      "record_sha256": "f9bb2942236c01bf164c780a3106c354dfd1fc90d0bdacf542e5b8ddf46c103f"
+    }
+  },
+  "portable_tests_passed": 39,
+  "fixture_sha256": "e2d76091f9f4d52a68d4e7fba2ab12f7efa68f44af21ac531ba2b5cf6bcf6cc4",
+  "max_record_count_checked": 6144,
+  "registry_stack_usage": {
+    "max_frame_bytes": 544,
+    "frames": [
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:12:17:bool shvPluginBindProfile(const ShvNxProfile*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:17:6:bool scriptProfileAvailable()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:18:20:ShvNxProfileStatus scriptGetUserProfile(ShvNxUserProfile*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:25:17:bool shvPluginBindResources(const ShvNxResources*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:31:6:bool scriptResourcesAvailable()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:32:21:ShvNxResourceHandle scriptResourceRegister(ShvNxResourceCleanup, void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:35:6:bool scriptResourceRelease(ShvNxResourceHandle)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:36:6:bool scriptResourceForget(ShvNxResourceHandle)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:37:6:bool scriptResourceActive(ShvNxResourceHandle)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:38:6:bool scriptResourcePinned(const void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:39:10:uint32_t scriptResourceCount()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:40:17:bool shvPluginBindFileMutations(const ShvNxFileMutations*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:46:6:bool scriptFileMutationsAvailable()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:47:17:ShvNxFileStatus scriptFileRename(const char*, const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:50:17:ShvNxFileStatus scriptFileDelete(const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:53:17:bool shvPluginBindCatalog(const ShvNxCatalog*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:59:6:bool scriptCatalogAvailable()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:60:17:ShvNxFileStatus scriptDirectoryList(const char*, uint32_t, ShvNxDirectoryEntry*, uint32_t, ShvNxDirectoryPage*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:64:17:bool shvPluginBindFiles(const ShvNxFiles*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:70:6:bool scriptFilesAvailable()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:71:17:ShvNxFileStatus scriptFileSize(const char*, uint64_t*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:74:17:ShvNxFileStatus scriptFileReadAt(const char*, uint64_t, void*, size_t, size_t*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:77:17:ShvNxFileStatus scriptFileWriteAt(const char*, uint64_t, const void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:80:17:ShvNxFileStatus scriptFileCreate(const char*, uint64_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:83:17:ShvNxFileStatus scriptDirectoryCreate(const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:86:17:bool shvPluginBindMemory(const ShvNxMemory*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:90:6:bool scriptMemoryAvailable()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:91:7:void* scriptAllocate(size_t, size_t, uint32_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:92:7:void* scriptCalloc(size_t, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:93:7:void* scriptReallocate(void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:94:6:bool scriptFree(void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:95:8:size_t scriptAllocationSize(const void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:96:6:bool scriptGetMemoryStats(ShvNxMemoryStats*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:97:6:bool scriptTrimMemory()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:98:17:bool shvPluginBindExtensions(const ShvNxExtensions*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:104:6:bool shvBindApi(const ShvNxApi*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:111:6:bool nativeInvokeContext(uint64_t, void*, uint32_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:112:18:NativeCallStatus getNativeCallStatus()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:113:10:uint64_t getLastNativeHash()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:114:6:bool nativeIsAvailable(uint64_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:115:6:void scriptWait(uint32_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:116:6:bool scriptRegisterAdditionalThread(ScriptFunction)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:117:6:bool scriptUnregisterChecked(ScriptFunction)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:118:6:void scriptRegister(ScriptFunction)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:119:6:bool scriptRegisterChecked(ScriptFunction)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:120:6:void scriptUnregister(ScriptFunction)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:121:6:void scriptUnregisterAll()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:122:10:uint64_t getScriptHookCapabilities()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:123:5:int worldGetAllPeds(int*, int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:124:5:int worldGetAllVehicles(int*, int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:125:5:int worldGetAllObjects(int*, int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:126:5:int worldGetAllPickups(int*, int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:127:11:uint64_t* getGlobalPtr(int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:128:7:BYTE* getScriptHandleBaseAddress(int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:129:6:bool controlHandlerRegister(ControlHandler, uint32_t, uint32_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:130:6:bool controlHandlerUnregister(ControlHandler, uint32_t, uint32_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:131:6:bool renderCallbackRegister(RenderCallback)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:132:6:bool renderCallbackUnregister(RenderCallback)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:133:6:bool presentCallbackRegisterChecked(PresentCallback)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:134:6:void presentCallbackRegister(PresentCallback)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:135:6:void presentCallbackUnregister(PresentCallback)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:136:6:bool keyboardHandlerRegisterChecked(KeyboardHandler)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:137:6:void keyboardHandlerRegister(KeyboardHandler)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:138:6:void keyboardHandlerUnregister(KeyboardHandler)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:139:5:int createTexture(const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:140:6:bool drawTextureChecked(const ShvNxTextureDraw*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:141:6:void drawTexture(int, int, int, int, float, float, float, float, float, float, float, float, float, float, float, float)",
+        "bytes": 80,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:144:6:bool registerCustomNative(uint64_t, NativeHandler)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:145:6:bool scriptSaveFile(const char*, const void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:146:6:bool scriptReadFile(const char*, void*, size_t, size_t*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:147:6:void nativeInit(uint64_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:148:6:void nativePush64(uint64_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:149:11:uint64_t* nativeCall()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:150:7:void* nativeGetCallContext()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:151:11:uint64_t* nativeCallChecked(uint64_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:152:15:void (* getNativeHandler(uint64_t))(void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:153:10:uint32_t getNativeCallerAbiVersion()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:154:10:uint32_t getScriptRuntimeAbiVersion()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:155:7:void* memset(void*, int, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_api.cpp:156:7:void* memcpy(void*, const void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:5:7:void* malloc(size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:6:7:void* calloc(size_t, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:7:7:void* realloc(void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:8:6:void free(void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:9:7:void* aligned_alloc(size_t, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:10:7:void* memmove(void*, const void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:16:5:int memcmp(const void*, const void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:17:7:void* memchr(const void*, int, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:18:8:size_t strlen(const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:19:8:size_t strnlen(const char*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:20:5:int strcmp(const char*, const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:21:5:int strncmp(const char*, const char*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:22:7:char* strcpy(char*, const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:23:7:char* strncpy(char*, const char*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:24:7:char* strcat(char*, const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:25:7:char* strncat(char*, const char*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:26:7:char* strchr(const char*, int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:27:7:char* strrchr(const char*, int)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_crt.cpp:28:7:char* strstr(const char*, const char*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:29:15:0(const char*, char**, int, uint64_t, uint64_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:72:17:int* __errno()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:73:17:long int strtol(const char*, char**, int)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:76:26:long unsigned int strtoul(const char*, char**, int)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:79:22:long long int strtoll(const char*, char**, int)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:82:31:long long unsigned int strtoull(const char*, char**, int)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:85:16:int atoi(const char*)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:86:17:long int atol(const char*)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_parse.cpp:87:22:long long int atoll(const char*)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_format.cpp:109:6:bool {anonymous}::Field(Output&, const Spec&, const char*, size_t, const char*, size_t, size_t, bool)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_format.cpp:121:6:bool {anonymous}::Integer(Output&, Spec, uint64_t, bool, unsigned int, bool, bool, bool)",
+        "bytes": 96,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_format.cpp:263:16:int vsnprintf(char*, size_t, const char*, va_list)",
+        "bytes": 192,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_format.cpp:272:16:)",
+        "bytes": 256,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:9:7:void* operator new(size_t, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:10:7:void* operator new [](size_t, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:11:7:void* operator new(size_t, std::align_val_t, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:12:7:void* operator new [](size_t, std::align_val_t, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:13:6:void operator delete(void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:14:6:void operator delete [](void*)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:15:6:void operator delete(void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:16:6:void operator delete [](void*, size_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:17:6:void operator delete(void*, std::align_val_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:18:6:void operator delete [](void*, std::align_val_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:19:6:void operator delete(void*, size_t, std::align_val_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:20:6:void operator delete [](void*, size_t, std::align_val_t)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:21:6:void operator delete(void*, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:22:6:void operator delete [](void*, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:23:6:void operator delete(void*, std::align_val_t, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\sdk\\plugin_cxx.cpp:24:6:void operator delete [](void*, std::align_val_t, const std::nothrow_t&)",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\0-main.cpp:96:1:bool shvNxPluginInitialize(const ShvNxApi*)",
+        "bytes": 16,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\include/shv/memory.h:17:23:bool ScriptHook::Memory::Delete(T*&) [with T = {anonymous}::Registry]",
+        "bytes": 64,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\include/shv/managed.h:58:17:static void ScriptHook::Memory::Managed<T>::Destroy(void*) [with T = {anonymous}::Registry]",
+        "bytes": 48,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\0-main.cpp:96:1:const ShvNxPlugin* shvPluginQuery()",
+        "bytes": 0,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\include/shv/text.h:33:17:ScriptHook::Util::TextBuffer<Capacity>& ScriptHook::Util::TextBuffer<Capacity>::UInt(uint32_t) [with long unsigned int Capacity = 384]",
+        "bytes": 32,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\0-main.cpp:18:6:void {anonymous}::SaveReport()",
+        "bytes": 544,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\0-main.cpp:31:6:void {anonymous}::FinalAudit(void*)",
+        "bytes": 96,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\include/shv/hash_map.h:160:10:bool ScriptHook::Containers::HashMap<K, V, Hasher, KeyEqual>::TryReserve(size_t) [with K = ScriptHook::Containers::String; V = unsigned int; Hasher = ScriptHook::Containers::Hash<ScriptHook::Containers::String>; KeyEqual = ScriptHook::Containers::Equal<ScriptHook::Containers::String>]",
+        "bytes": 64,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\include/shv/hash_map.h:118:49:ScriptHook::Containers::HashInsertResult ScriptHook::Containers::HashMap<K, V, Hasher, KeyEqual>::Insert(A&&, B&&) [with A = ScriptHook::Containers::String; B = const unsigned int&; K = ScriptHook::Containers::String; V = unsigned int; Hasher = ScriptHook::Containers::Hash<ScriptHook::Containers::String>; KeyEqual = ScriptHook::Containers::Equal<ScriptHook::Containers::String>]",
+        "bytes": 80,
+        "kind": "static"
+      },
+      {
+        "function": "/shvnx-plugin\\0-main.cpp:41:6:void {anonymous}::Main()",
+        "bytes": 288,
+        "kind": "static"
+      }
+    ],
+    "complete_call_chain_bound": false
+  },
+  "package": {
+    "format": 1,
+    "kit": "Service acceptance batch 6",
+    "runtime_sha256": "6ad28d6e9943ff7f80e6576a7265a6c59e3b318156f5f656e1b077d69583dde7",
+    "artifacts": {
+      "library-services": {
+        "nro_sha256": "fb479f7528f8b7d27256caa9facc21a5ab18253c0e3103203a6702e94de10543",
+        "image_bytes": 200704,
+        "bss_bytes": 4096,
+        "accounted_bytes": 413696,
+        "math_library": {
+          "archive": "libm.a",
+          "sha256": "d643526cdeeca73d4bd1f7d9c8a268673299926383b5e2e14c5f6d57bc727d57",
+          "bytes": 931640,
+          "compiler_version": "aarch64-none-elf-g++.exe (devkitA64) 16.1.0",
+          "source": "Installed devkitA64 Newlib libm; archive is not bundled",
+          "hosted_math_header_declarations": true,
+          "hosted_c_or_cxx_libraries_linked": false,
+          "errno_scope": "One resident NRO; shared by its cooperative entries"
+        }
+      },
+      "hash-registry": {
+        "nro_sha256": "ba9cc9f82736193160f2070db42ed2045a2d9aedf3136cd9334e4b2ad37b21e7",
+        "image_bytes": 32768,
+        "bss_bytes": 4096,
+        "accounted_bytes": 77824
+      },
+      "texture-catalog": {
+        "nro_sha256": "68fbed66bb79beca40b586047400586beb8ac7df04741123d1230c521b66d011",
+        "image_bytes": 24576,
+        "bss_bytes": 4096,
+        "accounted_bytes": 61440
+      }
+    },
+    "runtime_module_included": true,
+    "shared_configuration_included": false,
+    "texture_assets": 80,
+    "sd_access": {
+      "npdm_path": "atmosphere/contents/0100b00b51230000/exefs/main.npdm",
+      "npdm_sha256": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+      "sd_access_included": true,
+      "custom_npdm_installer_included": true
+    },
+    "files": {
+      "LICENSE": "fe5a3c544660aaff24049783d09cc44c30bcd19eb5c3af922997388e0766c79d",
+      "manifest.json": "e77be816cb8d9cc89f033f6d10852b8389e6246dd82cc5a9a557a9d0b01814b6",
+      "NOTICE": "933b76035cd1c5c10c25d4b5ef58dc4f346a87dbbfa65719c03acd8317cab74d",
+      "READ-ME-FIRST.md": "34b6ff8366d0225ed8bbd582abbae5b73bb557d324603047cd4be7412530fdd6",
+      "THIRD-PARTY-NOTICES.txt": "e181aca5a5840ae7a39c7a03891d9d0b0c37a97347d777804eeda519e62bfdb4",
+      "RUNTIME-CANDIDATE/Check-Game-Layout.cmd": "09d906709bf152c33a9156d003939ff9ec057fb69ee00daf10d524f38896712c",
+      "RUNTIME-CANDIDATE/Check-Game-Layout.ps1": "c21d30b60c0befeea3856b1e240bd56741c2e2fb41a28e3557d7e5e101530869",
+      "RUNTIME-CANDIDATE/GAME-STARTUP.md": "a8bc6f7957c0ca280bd620295424b8b97703b1c242a009dd5050427a8f5f94c3",
+      "RUNTIME-CANDIDATE/Install-SD-Access.cmd": "e20d6b743bba4abaffc5ad074c59ed816c8058225de083418620145c3d1daf1b",
+      "RUNTIME-CANDIDATE/Install-SD-Access.ps1": "d5db8108b2c8a74b93181cdff0845fed8b46cd11d26836a8ad38089b670a048c",
+      "RUNTIME-CANDIDATE/SD-ACCESS.md": "55d0d1d519725221499cb7e88f8c8da893bed47e0f8056f46f913376265cd32f",
+      "third-party/newlib/LICENSE.txt": "f3afe48e4bc6ed8466a42e9dacb6be1d8f9cbf5aac15cb8e474a5ccde8b40ef6",
+      "third-party/newlib/provenance.json": "304d5c0d13f6b8e867c9cc4812f0db1d710634708561682cf8ed70d877d561a0",
+      "RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/main.npdm": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+      "RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/subsdk5": "6ad28d6e9943ff7f80e6576a7265a6c59e3b318156f5f656e1b077d69583dde7",
+      "INSTALL/switch/gtav-scripthook/plugins/hash-registry.nro.manual": "ba9cc9f82736193160f2070db42ed2045a2d9aedf3136cd9334e4b2ad37b21e7",
+      "INSTALL/switch/gtav-scripthook/plugins/library-services.nro.manual": "fb479f7528f8b7d27256caa9facc21a5ab18253c0e3103203a6702e94de10543",
+      "INSTALL/switch/gtav-scripthook/plugins/texture-catalog.nro.manual": "68fbed66bb79beca40b586047400586beb8ac7df04741123d1230c521b66d011",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile00.png": "2411f79a3b79537056edfdb44be5ad4e6fb18d3ce0b70ffcdb1740e073270dd1",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile01.png": "6616bb3588fd94cccf12e2f821129575e571fc299e7d52d6dfe24dd4cc8f1d84",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile02.png": "e4590a164043f4112aa50a839423918d789229a4277355d89598a57a4d53e9de",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile03.png": "9ffe0aa1367eae24572e08f2959079dd706d5ceb3f3ae3ecfda0729bed2c5411",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile04.png": "4878235f2bec09d043865723bf8f6f0cddb622ee23efd48ec3a31b6038d3e593",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile05.png": "77db2e0e0a0ba22a53c1dbb0a753fbf33b9acf10967f541999417edfdc7d13e5",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile06.png": "a0da7fbc6556fcb74a762ae66f17962cebde3fa2a367c0bf32a306e6fea1bd8d",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile07.png": "ca94ccc5c5fb0cacafa69f61a8162c2f04ac76247212885958b236181601c070",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile08.png": "36e1c6c8ff32eb32670d7137c3a39df939f30751d5aae4db822c6c32b3596861",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile09.png": "8cf755381dc33742c1ead25e73d932dbcc07d5901f1cf58298bc9256c85a7d11",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile10.png": "44d6e300e44e8d6ad6d79a11259134c0b7575ce9b2b4d2ea5a44729026ada032",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile11.png": "a92eec071d945bc27d8b3098235335065516f33346bfcab7c1a0862758eea6bc",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile12.png": "6c0fc055e8d9b1c56a32038251bcda7e31e92aeffbbf18048c4bd45c68cdf766",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile13.png": "d72988d95eeda6c972bb66e9e2107f2f2ca69651d88e0a42291ae09cab2e08e6",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile14.png": "0717903a3e92526fddb01c40f26005c4bd4501f9ffabb3c36cb05a499abca500",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile15.png": "5d754341e454729dc500e14fb381287d493d6e7287c6661b4de3a3c4612920eb",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile16.png": "e419ede4f2ba808f96ba4e5f72aa97325d3a28b5c9c1aca941964977fad5f153",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile17.png": "b4ef9456c980ee4a030dd404c5b189d759c789dc47fee36199991dc7ff90c6f9",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile18.png": "9f41c769c91d60c832b29d900d132337e9a3eccf4aace7bfd80a21f36265ddf9",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile19.png": "a15d1272a2f4f38653d1c132e28644f537255107355f16caaa111b3b45bf7853",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile20.png": "dcf4313789fa14c2802d28737caef6a4984ad6897d77425eb601823f50793bff",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile21.png": "7a082f05bb781d3c2096fcb01069d2003bd1a85ba573c80521e4203df47c900e",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile22.png": "c1d82de1e28340fcac2cb00445a12893c2a569eccf385309c2f856aa72e6949a",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile23.png": "ba3fcdcc31cd8a95f16e0e8f1f8d4eac8ebebc8bb6b14d2d6c3066fcc5653caf",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile24.png": "383210a0493f0889ce43a1ae5964c2ba4c8f2e42d6aa66339f2464dcbc0068bb",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile25.png": "c611262c2b479b1df5f883dae47002063f83ab1a2706703c3fded6b12ca68dd2",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile26.png": "0e8ea9407891dd2dc4c6462db72809477fe14238b091b1860ba0cdf52d39b00c",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile27.png": "0e35365f5f3653b46114b119795149fd5ffd6d5a6719aa81e2562eccbc104d74",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile28.png": "c8ce27412db5fb4f9fe7ba6abdf12d2c2cfa6707413794dd1557984403721663",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile29.png": "c7a4fc7e14bb91ddc4c9aab784ebd23a82f68064da41130ed2b4dd5f20bd1a21",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile30.png": "bf4a252b3d7c1eeafe51c2010afe8ed6734ed683b0f367dc0f474de6899b27ee",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile31.png": "0a401a796fa310bdab8808ed189a5d0f77310b1220840528a8cf840b0875b273",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile32.png": "0dd6a951b876690508c320ae2b744967b94f5f68cedddafae44281fc275e9e09",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile33.png": "1164a06f7dcaaebd99e11b5d60d26c3282e3e10ab8d3a441e5c98b392ca1375c",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile34.png": "d29a3e7a1853ab3f5a46b70386c07c5224fc299d601ac94dec1baa1ade33a309",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile35.png": "cd13b37647cf303c2ca5393ff246ee671220c429cc5c87be499130fec9fdb6b4",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile36.png": "9a95a6400fb058a606fd44a944c0b183143a32889057e9d7aab9f5ce4df8be2c",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile37.png": "ed4bcfcf3b37638937d978b096b58700ed880d9eaabf7f07328eae660c1fcee3",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile38.png": "62b35ff3d0392c5f065a1f8323f9b54d6699970fab7f865300f54468f99521a5",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile39.png": "111f23e20fd8825481a914f2be473b0109ff66971cf1f6167ec7f80b36e90883",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile40.png": "917004c988589300af2d0057df8639614d721e1a7f4237f17bf308c0913b81fe",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile41.png": "2b8782c1bd8f987e78af2d27f5145190f00f57ad710feeaf091adc682035de3d",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile42.png": "61ea5d98212ee9c5b1eec42745788d5dd30c2c84832e029d22c643cd9b1ad00d",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile43.png": "b52cbc89716df03930800518171496a1134b9eadcaf3563a2ba1b0502c1b79ac",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile44.png": "ab2bf43464a62b239a2deda68a4e9a771ecd1b75a9b0d847fdb60449fb5b1923",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile45.png": "d02c3cc057b9ef14fa0c5822d118d98d0a1cd9417754468fbd39f628048d1301",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile46.png": "0c02f71886a594e75fe2828c9924806df301723285b49e8c429b6cf4ae76f31d",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile47.png": "7c70c68dbab9239de2a553e079bb964405a22749cba0e94dbb50bc4ba6963f9f",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile48.png": "4cbd4fe2dad150a93a752618381767eabedaa42a041a771c45c80b82fe64fd01",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile49.png": "91fe0bd8829fb1fd6ccdda3de8efca0f5dbd78d0c5ad1b66e98d835a3e413f0b",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile50.png": "c5044aff0563fc4744c147e910baa14a0f9da679ed78cb64ed2ad1e0ea166605",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile51.png": "3beaf93be97f39c22edeaf04693af67942bc1089970a16df1366881e509fb21b",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile52.png": "6d2b63386fff5d7b7823b533e2a6ad4e021c0d21d82c8ba9cc645b137c39356d",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile53.png": "dd16dbf686692da51510f9a4f6e2b5e274e8154a69c0fb53e105ed7b4f08c9d2",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile54.png": "aa45332f0f2a98ffd632ac6db7b16c30aa5e35f77f7dfb2a198eeff7186e5924",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile55.png": "fe1affe329e68c4a71575652b92ba4aa65caf7e286f7257070a7ee0dd2024b2e",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile56.png": "6155c7436c1d7aec9f556b0e7e41999ab36f3575c19164f6e67cf3edd9b665a7",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile57.png": "35c7c2d36643dffb2f4915d188f470e8b26a00e52d8b44ea93116941dfa2ad57",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile58.png": "902a686697a5cd19c7643a6767c9605dfadd856ebb678683aa91916e78ea6a14",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile59.png": "84ef4361afbe22445efad4f338c00e3109458594ce0b47e01b7319312f3df96a",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile60.png": "8de1a8fc66693636b77f1e2b97d8e53f8c7811bd6f3d3e82877b289e0ee59222",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile61.png": "ab9e1ec41f87cbb3adcb41d3e8d56bc73e3740d7a95619529f01ae2aa291d935",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile62.png": "ee2b6a44ca450b573c3aa66f28cc62f5e12a25cece8b7d539ac6818389613ab9",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile63.png": "daf35766fab16a40007b2549199311879390184f67398d266c053e4d792f19f0",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile64.png": "f10d78ef4213f507a00330ff5f966d89579c03de26f4236c709d874c5df4916a",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile65.png": "206a47c261e495374bc0410fd9643f4662a9cfe449160527746ebb20a0b8b9cf",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile66.png": "e77dbadec127012b487396eb690007f57d52beb08ac8e075203ca790eb0ba919",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile67.png": "18fcac8243ad5b668db1d4c1a57a57e2ec2917cc67385d5cb9e126f970a7d525",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile68.png": "e6db6a3a73afb1629a081cbfc11f81e3bb587c4119fdb58dfd7a0a4496d06f5e",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile69.png": "559df378fbe8512e06ccf61127bf16b55b69a5e35db57e1ecbf7d455bde18dc2",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile70.png": "fd4dcc8670d409ba4c1577a889e18e75458a49da1548017aee355c5f0bcc06dc",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile71.png": "d48f82f66a5af9a39f197726c380a532925c91c1188ead7f390a19b9d36e619d",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile72.png": "a23faa15ab72de9cb0cb267475c4086af25ae3e747b0d1ab9bbc7044312af473",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile73.png": "55c8abe9207a907bcd3308022b29fe2e5647c7b2794011ce54825028651f048b",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile74.png": "69c9ae029a688ecd9c3a588f5b089d8c03de156b1d3d7646e022da8832fced1a",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile75.png": "70e8e55f42b121339095598b741e14744d1361ff139f334e1d2f9dd03b2a36b0",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile76.png": "400fc3a623085c25177c89b6147e64136b7f87887558f53f5485fedaf496d971",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile77.png": "0a3d69c820901798c50f9d000606f1967a9e5e9159ba7e1037dafdcb02b39779",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile78.png": "9280f1d99e12fdf7842c8197d602d2314d0a8aae05ab9dad6a899feb42efa84f",
+      "INSTALL/switch/gtav-scripthook/assets/texture-catalog-example/tile79.png": "7b95a48209f2dde3aa72535cb73f8f6f8de3271974e91e0f5dee705248db04f1"
+    },
+    "zip_sha256": "770964079aac81a16f5afdd9a8e674851ea9ffedf7fbdd6663c01a70fe45720b",
+    "zip_bytes": 258696,
+    "zip_readback_verified": true,
+    "game_files_required_for_build": false,
+    "installed": false,
+    "switch_runtime_verified": false,
+    "published": false
+  },
+  "isolated_source_reproduction": {
+    "source_zip_inventory_verified": true,
+    "outside_workspace": true,
+    "portable_tests_passed": 39,
+    "runtime_byte_reproducible": true,
+    "all_batch6_files_byte_reproducible": true,
+    "all_three_nros_byte_reproducible": true,
+    "assets_byte_reproducible": 80,
+    "runtime_sha256": "6ad28d6e9943ff7f80e6576a7265a6c59e3b318156f5f656e1b077d69583dde7",
+    "switch_runtime_verified": false
+  },
+  "hardware_schedule": "Deferred: one combined texture/library/registry installation and session; no separate preceding graphics or library run.",
+  "scope": "Compiled ARM64 SDK helpers, NRO, owner allocator and resource cleanup with independent dictionary/lifetime/byte checks. Horizon, RO, filesystem, GPU and outer game ticks are modeled.",
+  "physical_switch_accepted": false,
+  "installed": false,
+  "committed": false,
+  "published": false
+}

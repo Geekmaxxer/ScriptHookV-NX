@@ -1,4 +1,4 @@
-"""Build the consolidated parsing/math/formatter workload as deferred batch 5."""
+"""Build deferred batch 8: growing resource registry acceptance."""
 import argparse
 import contextlib
 import hashlib
@@ -8,10 +8,11 @@ import shutil
 import zipfile
 from build_mod import build_project
 from inspect_mod import inspect
+from sd_permissions import stage as stage_sd_access
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_RUNTIME = '930d3043c61ee457da833d698836886e20a103a5eab68158d7d786439fbf128f'
-PROJECTS = ('library-services',)
+EXPECTED_RUNTIME = 'fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa'
+PROJECTS = ('resource-registry',)
 
 
 def sha(path):
@@ -21,8 +22,8 @@ def sha(path):
 def build(output, devkit=None, runtime=None):
     if output.exists():
         raise FileExistsError('Choose a fresh output directory')
-    if runtime is not None and sha(runtime) != EXPECTED_RUNTIME:
-        raise ValueError('The selected runtime is not the pinned Test1 candidate')
+    if runtime is None or sha(runtime) != EXPECTED_RUNTIME:
+        raise ValueError('Provide the exact growing-resource candidate with --runtime')
     output.mkdir(parents=True)
     stage = output/'KIT'
     plugins = stage/'INSTALL/switch/gtav-scripthook/plugins'
@@ -42,12 +43,16 @@ def build(output, devkit=None, runtime=None):
         if metadata.get('math_runtime_enabled'):
             artifacts[name]['math_library'] = metadata['math_library']
     guide = (ROOT/'examples/service-acceptance/README.md').read_text(encoding='utf-8')
-    for name in ('NUMERIC-PARSING1.md','CATALOG-SCAN1.md'):
+    for name in ('RESOURCE-CAPACITY1.md', 'SERVICE-BATCH7.md'):
         guide = guide.replace('../../docs/verification/'+name,
             'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/'+name)
     (stage/'READ-ME-FIRST.md').write_text(guide,encoding='utf-8')
-    manifest = dict(format=1,kit='Service acceptance batch 5',runtime_sha256=EXPECTED_RUNTIME,
-                    artifacts=artifacts,runtime_module_included=False,shared_configuration_included=False)
+    sd_access = stage_sd_access(stage/'RUNTIME-CANDIDATE', ROOT)
+    runtime_destination = stage/'RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/subsdk5'
+    shutil.copy2(runtime, runtime_destination)
+    manifest = dict(format=1,kit='Service acceptance batch 8',runtime_sha256=EXPECTED_RUNTIME,
+                    artifacts=artifacts,runtime_module_included=True,shared_configuration_included=False,
+                    asset_files=0,sd_access=sd_access)
     (stage/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     for name in ('LICENSE','NOTICE','THIRD-PARTY-NOTICES.txt'):
         shutil.copy2(ROOT/name,stage/name)
@@ -60,7 +65,7 @@ def build(output, devkit=None, runtime=None):
     notice_file.write_text(notice_file.read_text(encoding='utf-8').replace(
         'sdk/third_party/newlib/','third-party/newlib/'),encoding='utf-8')
     files = {p.relative_to(stage).as_posix():sha(p) for p in stage.rglob('*') if p.is_file()}
-    archive = output/'ScriptHookV-NX-Service-Acceptance-Batch5.zip'
+    archive = output/'ScriptHookV-NX-Service-Acceptance-Batch8.zip'
     with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as package:
         for name in sorted(files):package.write(stage/name,name)
     with zipfile.ZipFile(archive) as package:
@@ -77,7 +82,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',required=True,type=Path)
     parser.add_argument('--devkitpro',type=Path)
-    parser.add_argument('--runtime',type=Path,help='Verify an existing runtime; it is not bundled')
+    parser.add_argument('--runtime',required=True,type=Path,help='Exact growing-resource candidate module to verify and include')
     args=parser.parse_args()
     try:
         result=build(args.output.resolve(),args.devkitpro,args.runtime)

@@ -8,6 +8,8 @@ Global constructors/destructors and unresolved imports
 are rejected by the builder/loader.
 For explicitly initialized shared C++ objects, see [session state](SESSION-STATE.md).
 That helper uses existing owned-resource cleanup and recreates state after Kill/Load.
+The [growing resource registry](OWNED-RESOURCES.md) admits additional cleanup
+records under the shared budget while preserving handles and context pinning.
 For larger input/output data, [file-transfer tasks](FILE-TRANSFERS.md) provide
 explicit progress and owner-backed buffers on the existing file services.
 [Growable XML output and bounded file verification](XML-BUFFERS.md) build on the
@@ -21,6 +23,10 @@ The separate [math profile](MATH-PROFILE.md) adds standard float/double geometry
 and numerical operations from the selected toolchain.
 [C-style numeric parsing](NUMERIC-PARSING.md) supplies integer base/end/range
 contracts and a numeric-profile decimal prefix API.
+[Owner-backed hash maps](HASH-MAP.md) add fallible associative registries,
+move-only string keys and allocation-free explicit-byte lookup.
+[Heap capacity and accounting](HEAP-CAPACITY.md) defines the candidate's growing
+record/arena/index storage without changing public memory ABI 1.
 
 | API | Contract |
 | --- | --- |

@@ -9,8 +9,11 @@ are separate stages. Historical records remain immutable.
 | Capability | Implementation and local evidence | Physical acceptance |
 | --- | --- | --- |
 | Growing plugin catalogue and completed rescans | [Catalogue revision](PLUGIN-CATALOGUE1.md) | Local verification; matched MEGATARD v1.1 pair pending |
-| Growing texture cache and retained IDs | [Texture candidate](TEXTURE-CATALOG1.md) | Local 160-image and failure checks; combined graphics/library candidate pending |
+| Growing texture cache and retained IDs | [Texture candidate](TEXTURE-CATALOG1.md) | Batch 7 80-image workload/visual output accepted; broader transitions/performance pending |
+| Fallible hash maps and owned registries | [Hash-map candidate](HASH-MAP1.md) | Batch 7 bounded registry workload accepted; broader cases pending |
 | Large module configuration | [Capacity candidate](LARGE-MODULES1.md) | Explicit large image/BSS accepted; broader configurations pending |
+| Growing heap records, arenas and pointer index | [Heap-capacity candidate](HEAP-CAPACITY1.md) | Batch 7 record/index probe accepted under explicit 16 MiB; broader arena/performance work pending |
+| Growing cleanup registrations and direct pins | [Resource candidate](RESOURCE-CAPACITY1.md) | Local 1,024-context/failure checks; deferred Batch 8 |
 | Owner-accounted allocation | [Memory service](PLUGIN-MEMORY1.md) | Probe allocation/free/Trim accepted; stress pending |
 | C subset and XML DOM | [Library profile](PLUGIN-LIBRARIES1.md) | Combined XML workload accepted; broader library cases pending |
 | Decimal conversion and XML floats | [Numeric profile](PLUGIN-NUMERIC1.md) | 128-record XML roundtrip accepted; remaining cases pending |
@@ -28,9 +31,9 @@ are separate stages. Historical records remain immutable.
 | Cooperative buffered reads and prepared output | [File-transfer helpers](FILE-TRANSFERS1.md) | Combined 256 KiB XML transfer accepted; failures/cancellation remain local |
 | Growable XML serialization and streamed byte verification | [Combined XML workflow](XML-WORKFLOW1.md) | 98,376-byte output, publication/restoration and final run-2 cleanup accepted |
 | Cooperative preset filtering, sorting and checked selection | [Preset catalog workflow](CATALOG-SCAN1.md) | 14 sorted entries, four pages, filter and selected XML accepted |
-| Buffer formatting and numeric decimal fields | [Formatted text](FORMATTED-TEXT1.md) | Local ARM64 verification; new workload pending a later combined batch |
-| Float/double math and per-plugin errors | [Math profile](MATH-PROFILE1.md) | Local ARM64/reference checks; consolidated library workload deferred |
-| C integer and decimal-prefix parsing | [Numeric parsing](NUMERIC-PARSING1.md) | Local end/range/reference checks; consolidated library workload deferred |
+| Buffer formatting and numeric decimal fields | [Formatted text](FORMATTED-TEXT1.md) | Batch 7 consolidated workload accepted; broader cases pending |
+| Float/double math and per-plugin errors | [Math profile](MATH-PROFILE1.md) | Batch 7 consolidated workload accepted; stack/performance pending |
+| C integer and decimal-prefix parsing | [Numeric parsing](NUMERIC-PARSING1.md) | Batch 7 consolidated workload accepted; broader cases pending |
 
 The 2026-10-30 [physical Test1 run](PLATFORM-CAPACITY1.md#physical-test1-demo-run)
 verifies exact installed artifacts, successful startup, manual demo loading, one
@@ -52,6 +55,11 @@ shared state, normal publication and nested catalog access. The later
 [batch 4 result](CATALOG-SCAN1.md#physical-batch-4-result---2026-10-30) accepts the
 consolidated XML/save/recovery and multi-page preset workflow. Exact retained
 contents and second-run cleanup were verified; full performance signoff remains open.
+
+The [Batch 7 result](SERVICE-BATCH7.md) accepts the four exact normal-completion
+workloads and visual output under explicit 16/48/16/3/3 settings. Active
+cancellation, transitions, rollback and measured performance remain separate.
+The subsequent resource-growth kernel retains its own pending acceptance.
 
 ## Accepted baseline
 

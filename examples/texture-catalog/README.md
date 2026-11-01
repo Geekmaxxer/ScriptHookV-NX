@@ -21,16 +21,20 @@ NRO to `plugins/texture-catalog.nro.manual`. The project does not include game a
 
 ## Combined acceptance
 
-- [ ] With the candidate runtime installed, run the manual probe to completion.
-- [ ] Confirm five distinct tile palettes, rotation, transparency and no stale sprites.
-- [ ] Load again; confirm the same appearance and natural completion.
-- [ ] Preserve `settings/texture-catalog-example/result.txt` and `loader-report.txt`.
-- [ ] Verify `run=2`, `failed=0`, `loaded=80`, `completed_frames=360`,
+The prepared workload has [physical Batch 7 acceptance](../../docs/verification/SERVICE-BATCH7.md).
+The checklist below records its normal/visual results; modified artifacts require
+their own acceptance. Cancellation and broader measurements remain separate.
+
+- [x] With the candidate runtime installed, run the manual probe to completion.
+- [x] Confirm five distinct tile palettes, rotation, transparency and no stale sprites.
+- [x] Load again; confirm the same appearance and natural completion.
+- [x] Preserve `settings/texture-catalog-example/result.txt` and `loader-report.txt`.
+- [x] Verify `run=2`, `failed=0`, `loaded=80`, `completed_frames=360`,
       both ID checks equal 1, and `stop_count=2` after final cleanup.
 - [ ] Check Kill during loading/display and restart within the same consolidated
       session; the cancelled run may legitimately have fewer than 360 frames.
 
-Run the pending library-services workload in the same acceptance session. The
+The library-services workload completed in the same accepted batch. The
 probe changes no entities or game saves. GPU allocation, visual output, physical
 timing and long-session behavior remain hardware acceptance requirements. Local
 ARM64 tests exercise decoding and catalogue behavior with modeled GPU operations.

@@ -49,7 +49,9 @@ Function argument expressions still follow normal C++ evaluation rules.
 ## Lifetime and failure behavior
 
 Each live object consumes one owned-resource registration and an exact owner-heap
-allocation, plus any nested allocations. There are 64 registrations per owner.
+allocation, plus any nested allocations. The original runtime admits 64
+registrations per owner; the [growing-resource candidate](OWNED-RESOURCES.md)
+admits additional stable pages under the shared budget.
 Registration failure destroys the unpublished object and releases its allocation.
 Later access can retry after a recoverable allocation failure. Fallible setup of
 the object's contents remains explicit and must check its own results.

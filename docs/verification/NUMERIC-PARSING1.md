@@ -18,7 +18,7 @@ Rebuilt plugins contain new code and require their own hardware acceptance.
 - [x] Combine parsing, math and formatter checks in one complete acceptance example.
 - [x] Build and execute the exact manual batch 5 NRO with verified binary-kit notices.
 - [x] Reproduce every batch 5 kit file from the lean SDK.
-- [ ] Accept the consolidated library-services workload on physical Switch hardware.
+- [x] Accept the consolidated library-services workload on physical Switch hardware. See [Batch 7 scope](SERVICE-BATCH7.md).
 
 The [local record](../../evidence/numeric-parsing1-local-20261031/verification.json)
 identifies source hashes, exact artifacts, reference comparisons and regressions.
@@ -26,15 +26,20 @@ Production runtime, SDK parsers, math and example ARM64 instructions execute wit
 modeled OS, RO, game/filesystem boundaries and outer scheduling. These checks
 do not establish physical timing, peak memory, stack use or alternate FP state.
 
-## Consolidated pending hardware check
+## Consolidated hardware result
 
-The pending math and formatter hardware checks are merged with parsing in
+[Service batch 7](SERVICE-BATCH7.md) accepts the consolidated workload with
+run=2, failed=0, every verified field set, zero owned allocations and the exact
+formatted run string on the matched physical kernel. The batch 5 artifacts below retain their
+historical scope and do not require a separate installation or test session.
+
+The math and formatter hardware checks were merged with parsing in
 [library-services](../../examples/library-services/README.md), packaged in
-[service batch 5](../../examples/service-acceptance/README.md). Its single
+the original service batch 5. Its single
 two-run workload covers integer/decimal conversion, parser and libm errors,
 geometry, reusable variadic formatting, truncation and rejected-format behavior.
-The run remains deferred while implementation continues; no standalone math or
-formatter test is requested. Accepted batch 4 does not require repetition.
+The bounded workload is accepted; no standalone math or formatter run is needed.
+Broader cases and measurements retain their separate scope. Accepted batch 4 does not require repetition.
 
 The [parsing contract](../reference/NUMERIC-PARSING.md) retains explicit ASCII,
 decimal-subset, ownership and synchronous-execution limits. Standard streams,

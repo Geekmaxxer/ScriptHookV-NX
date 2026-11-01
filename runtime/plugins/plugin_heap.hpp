@@ -11,5 +11,11 @@ public:
     static bool Trim(void* owner);
     // Only loader failure before publication/scheduling may invalidate live data.
     static bool Discard(void* owner);
+    static size_t MetadataBytes();
+    static bool ResourcePinned(void* owner, const void* pointer);
+    static bool SetResourcePin(void* owner, const void* pointer, bool pinned);
+    static size_t BlockCapacity();
+    static size_t ArenaCapacity();
+    static size_t LookupCapacity();
 };
 }

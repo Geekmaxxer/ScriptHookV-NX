@@ -1,45 +1,76 @@
-# Service acceptance batch 5
+# Service acceptance batch 8
 
-This batch merges the pending math and formatter checks with numeric parsing in
-one **library-services** NRO. Its hardware run remains deferred while implementation
-continues. The sequence below is retained for the next consolidated acceptance
-session. No standalone formatter/math run or repetition of accepted batch 4 is
-required. Preserve the working Test1 runtime, configuration, game files and saves.
+Batch 8 verifies the growing cleanup registry with one manual resource-registry
+probe. The four Batch 7 workloads completed on physical Switch hardware; their
+accepted results and exact runtime remain recorded separately. They do not need
+separate repeat installations for this batch.
 
-## One combined sequence
+## Build and contents
 
-1. With GTA closed, copy `INSTALL/switch` to the SD root. The NRO is manual;
-   no runtime or capacity-profile replacement is included.
-2. Start GTA and select Load Now for **library-services**. Allow natural completion;
-   the script yields between 32 geometry samples and has no visible overlay.
-3. Load **library-services** once more and allow completion, then close GTA.
-4. Retain `loader-report.txt` and `settings/library-services-example/result.txt`.
-   The final report should contain:
+```powershell
+python tools/build.py --output out/batch8-core --devkitpro C:/devkitPro
+python tools/build_service_acceptance.py --runtime out/batch8-core/subsdk5 --output out/batch8 --devkitpro C:/devkitPro
+```
 
-   - `run=2`, `failed=0`, `owned_allocations=0`.
-   - `integer_verified=1`, `decimal_verified=1`, `errno_verified=1`.
-   - `geometry_verified=1`, `math_errors_verified=1`.
-   - `format_verified=1`, `truncation_verified=1`, `rejection_verified=1`.
-   - `formatted=run=2 parsed=2699 distance=13.00`.
+The builder verifies the exact growing-resource kernel, compiles the manual NRO,
+preserves dependency notices and checks ZIP inventory/readback. No game files are
+required. Runtime/NPDM preservation tools are under `RUNTIME-CANDIDATE/`; the probe
+is under `INSTALL/switch/`. No shared runtime.ini, settings, game archives, bindings
+or automatic installer are included. Current configuration is preserved.
 
-The probe checks base detection, consumed prefixes, overflow, direct float
-rounding, math errors, formatted output and variadic-list reuse. It allocates
-no owner heap buffer and changes no game entity or save data. A result is still
-reviewed against exact installed artifact hashes and the loader snapshot.
+The new kernel changes internal resource records and heap pin tracking; it has
+local verification and requires its own physical acceptance. Batch 7 acceptance
+does not automatically transfer to this modified artifact. The published runtime
+remains unchanged.
 
-## Contents and scope
+## One combined session
 
-`manifest.json` identifies the required existing runtime, NRO extents and selected
-math archive. The kit contains no runtime module, NPDM, game archive, shared
-`runtime.ini` or automatic installer. Newlib notices are under `third-party/newlib/`.
-The original batch 4 ZIP and its physical acceptance record remain immutable;
-earlier accepted probes do not need reinstalling for this batch.
+1. Close GTA fully. Back up the installed title `exefs/subsdk5` and `main.npdm`
+   outside the installation tree. Retain the accepted runtime for rollback.
+2. Use RUNTIME-CANDIDATE for this exact candidate. Follow its SD-ACCESS.md procedure
+   for a customized NPDM so existing capabilities are preserved.
+3. Copy INSTALL/switch to the SD root. Preserve configuration, other plugins,
+   bindings, game files and saves. Fully restart GTA once.
+4. Load **resource-registry** twice to natural completion. It has no visible
+   overlay. Each run registers and checks 512 individually pinned objects, then
+   destroys them in reverse registration order and records the final audit.
+5. Preserve the completed report before optional Kill during construction or
+   verification changes its counters. Within the same session, Kill while it is
+   active and Load again; cleanup must finish and the next lifetime must complete.
+6. Include normal gameplay, existing mods, pause/resume and any loading, death or
+   character transitions that can be observed in this session. A longer session
+   can collect timing/coexistence observations without another SD transfer.
+7. Close GTA and preserve the result and loader report. To roll back, restore the
+   backed-up exefs files with GTA closed and fully restart. Record rollback scope
+   separately from probe completion.
 
-Physical timing, whole-process RAM, stack use, alternate floating-point state,
-media failures and broader transitions remain separate acceptance requirements.
-Repeated natural completion does not test power-loss durability or arbitrary
-thread behavior. Preserve failed results for inspection rather than deleting
-them to obtain a passing report.
+One resident slot is required. There is no SD removal between steps. Earlier
+accepted probes may remain installed; replacing them is unnecessary. Do not
+remove media or damage files during play. Keep failures with their exact action
+sequence and artifact identities.
 
-See the [consolidated verification record](../../docs/verification/NUMERIC-PARSING1.md)
-and [accepted batch 4 scope](../../docs/verification/CATALOG-SCAN1.md).
+## Expected reports
+
+Paths are relative to `switch/gtav-scripthook/`.
+
+| Report | Expected after two natural runs |
+| --- | --- |
+| `settings/resource-registry-example/result.txt` | run=2, failed=0, completed=1, registered=512, verified=512, destroyed=512, peak_resources=513, reverse_order_verified=1, owner_cleanup_complete=1, owned_allocations=0, registered_resources=0 |
+| `loader-report.txt` | Matching runtime/configuration, probe resident and inactive, no unexpected load/resource failures, probe resource_capacity at least 513, retained resource_metadata_bytes |
+
+Loader numeric quantities are hexadecimal. Record capacity and shared metadata
+remain resident for reuse after cleanup; live owner allocation/registration counts
+must return to zero. Partial cancellation may report completed=0 and fewer
+verified objects while preserving correct reverse order and final cleanup.
+
+## Acceptance limits
+
+The probe changes no game entities or saves. It verifies a bounded workload and
+cannot establish arbitrary mod compatibility. Larger configurations, nested
+failures, low memory, peak RAM, frame time, stack use, fragmentation, storage
+failures and extended sessions remain independently scoped. Group observations
+in this later session; no standalone repeat of accepted XML Batch 4 or the
+Batch 7 library, texture, registry and heap workloads is requested.
+
+See [resource growth](../../docs/verification/RESOURCE-CAPACITY1.md) and
+[Batch 7 acceptance](../../docs/verification/SERVICE-BATCH7.md).
