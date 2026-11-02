@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-02",
+  "runtime_sha256": "174ad27581792b81a496f9dd4ca1cd0181841c6a2a3aff670db5178539307ddc",
+  "output_nro_sha256": "4f59cabe19c05db32174010b2fc8d85a3e83c99500a1dc04609e810a79b507ea",
+  "tests": {
+    "output": {
+      "passed": 154,
+      "result_sha256": "49fe2e3761fe065a8936368e24433432a368a9cbf7a902d9df9eefbfd4dfd97a"
+    },
+    "input_regression": {
+      "passed": 111,
+      "result_sha256": "563c2ae1b0210d68f3bd697748667567bb262df364e2b89131f9b520b97f54b8"
+    },
+    "file_services": {
+      "passed": 77,
+      "result_sha256": "872efebad971c49f9c5bd21b9fd9e904a37081be8812111b6b70603fb6c87717"
+    },
+    "scheduler": {
+      "passed": 75,
+      "result_sha256": "1b2f464e6c9a38dcb17a2df59a4be7272733424d92c2e559e5725068629e97b7"
+    },
+    "combined_profiles": {
+      "passed": 3,
+      "result_sha256": "4a18730cd7204f99e183039b99bebb84710c3c7527b7af3647ac3428147478ea"
+    },
+    "combined_candidate": {
+      "passed": 20,
+      "result_sha256": "0a00e4a26b903d819dd6d3cdbb66a88f6a2e9fc1504368fad3a7f1c7a16a451b"
+    }
+  },
+  "arm64_checks_passed": 440,
+  "portable_tests_passed": 44,
+  "portable_exit_code": 0,
+  "source_hashes": {
+    "runtime/core/storage.cpp": "1d05755f32f2ab07f7b09f7824b3398e073d7a2923370756cef00a14bbd894bf",
+    "runtime/core/storage.hpp": "a256800efc3a5e995448c4b35275225e5e27a1cc85d7433558a3c3b756c7a750",
+    "runtime/plugins/plugin_loader.cpp": "8693b6b2baa002c66b7bc2886fafe882f22d328ef6db667c792715d2980baad5",
+    "include/plugin_file_mutations.h": "62f0771e82845d4a6690ba3a3d93fef557667429b874d4aa6c06dfea26d3b088",
+    "include/shv/stdio.h": "7ca0a12eb9c92e36db580d827c2398fdaa284d3ad92b69395bbc247b516e2af3",
+    "sdk/plugin_api.cpp": "562c97143d473b006c1bbe3c8688a6798cf6d38c958aa07795f5e2216f39d818",
+    "sdk/plugin_stdio.cpp": "6583507817199eff5f61f2420a46fdb1e2ced9bf320a5f65e15252cdb4246677",
+    "examples/write-streams/main.cpp": "70fdda707c69f3a0813741edda430182679b9750445052a8f7f47c527a110080",
+    "examples/write-streams/project.json": "653507e2b1f361d4255cd98de10e61a4645acb09125087f65f043c252e652bbc",
+    "tests/test_write_streams.py": "197b12cd5c9b9cd9bcc02cf4553920282a250e076595ea7e07a2dc63bc78c92a",
+    "tests/test_service_batch9.py": "ee6184a6265bc7688c35ef6193d7c1228098fc77a01c86625dd69ab11078f106",
+    "tests/test_stdio.py": "404aaf4bc914d66e6c4d56111d8d619fab7cf85a142c650bcb4e65c6d7e5890b",
+    "tests/fixtures/plugin_stdio_fixture.cpp": "6db4b5dfc0d64ed45cd9bb6af9aee280a1114d66df12a236dc706084b1f83f9c"
+  },
+  "backward_compatibility": [
+    "New SDK reads and rename/delete execute on the accepted Batch 8 kernel",
+    "24-byte old mutation table accepts new SDK; resize unavailable without side effects",
+    "Four exact unchanged Batch 8 NROs complete alongside Batch 9 on the new kernel"
+  ],
+  "models": [
+    "Independent mixed bytearray reads/writes and XML/JSON parsing",
+    "Raw file extensions deliberately nonzero; SDK holes explicitly zeroed",
+    "Injected allocation, resize/readback and write failures; retained bytes and owner state checked"
+  ],
+  "scope": "Compiled production ARM64 with modeled OS, FS, RO and outer ticks. No physical SD latency, power-loss durability or full Menyoo claim.",
+  "isolated_reproduction_completed": true,
+  "switch_runtime_verified": false,
+  "isolated_reproduction": {
+    "source_zip_inventory_verified": true,
+    "outside_workspace": true,
+    "runtime_byte_reproducible": true,
+    "all_batch9_files_byte_reproducible": true,
+    "output_nro_byte_reproducible": true,
+    "source_files_verified": 616,
+    "kit_files_verified": 18
+  },
+  "complete_sdk_examples_built_and_structurally_checked": 32,
+  "example_results_sha256": "d0b23647d6a36758cb3fa8dec3b67c383a03be116e9b41e5779a2fea5d589842"
+}

@@ -2,7 +2,7 @@
 
 The runtime workstream expands support for substantial PC source ports on the
 identified GTA V Switch executable. Full Menyoo porting follows the implementation
-and acceptance gates below. Updated 2026-11-01.
+and acceptance gates below. Updated 2026-11-02.
 
 Checked implementation/local-validation items do not imply hardware acceptance.
 The public baseline remains identified in the [project roadmap](COMPLETION-ROADMAP.md).
@@ -76,7 +76,7 @@ A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 - [x] Provide move-only inline/heap callables, explicit cloning and RTTI-free target identity.
 - [x] Verify independent sequence/lifetime models, 6,144 values, failure preservation and cross-source targets.
 - [x] Add a complete 768-action cancellation/restart workflow to the existing deferred Batch 8.
-- [ ] Accept the captured-action workflow on Switch alongside pending resource/stream checks.
+- [x] Accept the captured-action normal-completion workflow in physical Batch 8.
 - [ ] Define broader hosted-container compatibility for concrete source ports.
 - [x] Provide owner-backed hash maps with move-only records and allocation-free string-view lookup.
 - [x] Verify collision chains, 6,144 keys, alias refusal, allocation failures and managed restart locally.
@@ -133,7 +133,12 @@ These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 - [x] Verify numeric/type/byte models, nesting and allocation limits, context moves and 2,000 records locally.
 - [x] Provide cooperative JSON file loading with retained prior results after transfer/parse failure or cancellation.
 - [x] Merge a complete verified JSON publication/restoration probe into the pending four-probe Batch 8.
-- [ ] Accept the combined JSON/stream/resource/action workload on Switch.
+- [x] Accept the combined JSON/stream/resource/action normal workload and restored fixture bytes in physical Batch 8.
+- [x] Extend the sized mutation table with optional, checked file resizing using existing target bindings.
+- [x] Provide C output/update/append streams, explicit hole zeroing and checked formatted file output.
+- [x] Support the pinned XML DOM's direct save_file through stdio and the C++ profile.
+- [x] Verify independent bytes, failures, old-runtime compatibility and five-probe coexistence locally.
+- [ ] Accept writable streams and remaining broader observations in one consolidated Switch session.
 - [ ] Verify media errors and recovery on Switch storage.
 
 Evidence: [recoverable data](verification/RECOVERABLE-DATA1.md) and
@@ -164,7 +169,7 @@ independent versioned service; memory parsing does not remove filesystem limits.
 - [x] Grow stable cleanup records through shared-budget admission and preserve direct heap pins.
 - [x] Verify 1,024 contexts, independent peers, metadata/budget failures and nested cleanup deferral locally.
 - [x] Prepare one 512-object completion/cancellation probe in deferred service batch 8.
-- [ ] Accept growing resource registrations and cleanup on Switch.
+- [x] Accept the 512-object growing-registration normal-completion workload in physical Batch 8.
 - [ ] Measure callbacks and initialization under substantial workloads.
 
 Normal scope exit runs destructors; Kill does not unwind suspended objects.
@@ -230,10 +235,10 @@ broader transition and stress gates remain open.
 [Batch 7 acceptance](verification/SERVICE-BATCH7.md) closes the bounded
 normal-completion and visual checks under its exact configuration. Cancellation,
 transitions, rollback and performance remain separately open.
-The next [resource-growth candidate](verification/RESOURCE-CAPACITY1.md) groups
-its resource/stream/action/JSON probes and broader observations in one deferred
-[service batch 8](../examples/service-acceptance/README.md) session. Accepted
-Batch 4 and Batch 7 probes need no separate repeat installations.
+The [Batch 8 result](verification/SERVICE-BATCH8.md) accepts the four exact
+normal-completion workloads and byte-verified restoration. Broader observations
+remain open and join the next [consolidated checklist](../examples/service-acceptance/README.md).
+Accepted Batch 4, 7 and 8 normal workloads need no separate repeat installations.
 
 ## 8. Menyoo source-port gate
 

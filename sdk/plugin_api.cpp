@@ -38,7 +38,7 @@ bool scriptResourceActive(ShvNxResourceHandle handle) { return api && resources 
 bool scriptResourcePinned(const void* pointer) { return api && resources && resources->pinned(api->plugin, pointer); }
 uint32_t scriptResourceCount() { return api && resources ? resources->count(api->plugin) : 0; }
 SHV_NX_API bool shvPluginBindFileMutations(const ShvNxFileMutations* value) {
-    if (!value || value->abi != SHV_NX_FILE_MUTATIONS_ABI_VERSION || value->size < sizeof(ShvNxFileMutations) ||
+    if (!value || value->abi != SHV_NX_FILE_MUTATIONS_ABI_VERSION || value->size < offsetof(ShvNxFileMutations, resize_file) ||
         !value->rename_file || !value->delete_file) return false;
     mutations = value;
     return true;
@@ -49,6 +49,12 @@ ShvNxFileStatus scriptFileRename(const char* from, const char* to) {
 }
 ShvNxFileStatus scriptFileDelete(const char* path) {
     return api && mutations ? mutations->delete_file(api->plugin, path) : ShvNxFile_Unavailable;
+}
+bool scriptFileResizeAvailable() {
+    return api && mutations && mutations->size >= sizeof(ShvNxFileMutations) && mutations->resize_file;
+}
+ShvNxFileStatus scriptFileResize(const char* path, uint64_t bytes) {
+    return scriptFileResizeAvailable() ? mutations->resize_file(api->plugin, path, bytes) : ShvNxFile_Unavailable;
 }
 SHV_NX_API bool shvPluginBindCatalog(const ShvNxCatalog* value) {
     if (!value || value->abi != SHV_NX_CATALOG_ABI_VERSION || value->size < sizeof(ShvNxCatalog) || !value->list)

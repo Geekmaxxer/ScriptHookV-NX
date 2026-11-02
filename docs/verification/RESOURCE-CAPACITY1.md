@@ -1,5 +1,16 @@
 # Growing resource registrations
 
+## Physical Batch 8 result - 2026-11-02
+
+The [combined acceptance](SERVICE-BATCH8.md) verifies this exact probe's latest
+normal completion and final owner cleanup under explicit 16/48/16/3/3 settings.
+Repeated loads and normal gameplay performance are operator observations. Earlier
+per-run files and the final test-session loader report were not retained.
+Cancellation, broader transitions, profile/media failures and measured performance
+remain separately open. Historical local records retain their original scope.
+
+## Original implementation record
+
 Date: 2026-11-01. Unreleased runtime candidate. Stable resource pages replace the
 fixed 64-registration admission limit. Public ABI 1 layouts, target bindings and
 compiled configuration defaults remain unchanged. The

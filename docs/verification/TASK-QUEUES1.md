@@ -1,5 +1,16 @@
 # Deques, captured actions and expanded Batch 8
 
+## Physical Batch 8 result - 2026-11-02
+
+The [combined acceptance](SERVICE-BATCH8.md) verifies this exact probe's latest
+normal completion and final owner cleanup under explicit 16/48/16/3/3 settings.
+Repeated loads and normal gameplay performance are operator observations. Earlier
+per-run files and the final test-session loader report were not retained.
+Cancellation, broader transitions, profile/media failures and measured performance
+remain separately open. Historical local records retain their original scope.
+
+## Original implementation record
+
 Date: 2026-11-01. This SDK batch adds an owner-backed ring deque and a fallible
 move-only void-callable wrapper. The pending resource kernel, its resource probe
 and the read-stream probe retain their exact binary identities. No public ABI,

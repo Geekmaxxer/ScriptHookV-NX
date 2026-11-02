@@ -7,6 +7,7 @@ The source examples use unique plugin IDs and document their observable results.
 | --- | --- |
 | `tutorials/` | Basic plugins, settings, input/rendering and NSC providers |
 | `numeric-xml/` | Decimal validation and typed XML/settings workflow |
+| `write-streams/` | Binary/update/append C output, hole zeroing, checked file formatting and direct XML save/load |
 | `formatted-text/` | Checked snprintf/vsnprintf, decimal fields and repeated variadic arguments |
 | `math-profile/` | Float/double geometry, error handling and combined formatter checks |
 | `library-services/` | Consolidated numeric parsing, geometry, error-state and formatter acceptance |

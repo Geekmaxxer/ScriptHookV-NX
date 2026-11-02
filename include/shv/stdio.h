@@ -1,11 +1,13 @@
 #pragma once
+#include <stdarg.h>
 #include <stdio.h>
 
-// Opt-in, read-only freestanding streams. Only the documented read/seek/close
+// Opt-in freestanding streams. Only the documented read/write/seek/close
 // functions are implemented; toolchain FILE declarations are opaque pointer types.
 // The implementation does not create a Newlib FILE object. Do not access FILE
 // internals or pass these pointers to another library's stdio implementation.
-// No OS handle is retained across calls. See docs/reference/READ-STREAMS.md.
+// No OS handle is retained across calls. Output uses synchronous flushed writes;
+// cancellation discards no buffered output. See docs/reference/READ-STREAMS.md.
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,6 +15,13 @@ extern "C" {
 FILE* fopen(const char* path, const char* mode);
 int fclose(FILE* stream);
 size_t fread(void* output, size_t element_bytes, size_t count, FILE* stream);
+size_t fwrite(const void* input, size_t element_bytes, size_t count, FILE* stream);
+int fputc(int value, FILE* stream);
+int putc(int value, FILE* stream);
+int fputs(const char* text, FILE* stream);
+int fflush(FILE* stream);
+int vfprintf(FILE* stream, const char* format, va_list arguments);
+int fprintf(FILE* stream, const char* format, ...);
 int fgetc(FILE* stream);
 int getc(FILE* stream);
 char* fgets(char* output, int capacity, FILE* stream);

@@ -160,3 +160,11 @@ Unicode/depth limits and cooperative file-load failure preservation. Use `--core
 JSON publication/restoration and cancellation/retry/error-preservation cases.
 The portable suite verifies dependency hashes and project/build option rules.
 See [JSON verification](../docs/verification/JSON-SERVICES1.md).
+
+`test_write_streams.py` executes output against independent bytearray/XML models,
+injected write/resize failures, nonzero raw extensions and old-runtime/sized-table
+compatibility. Use `--core`, `--plugin`, `--old-core` and `--output`. The fixture
+requires C, C++ and stdio profiles. `test_service_batch9.py` executes the exact
+output kit plus four unchanged Batch 8 NROs on its new kernel; use `--core`,
+`--artifact`, `--previous` and `--output`. Private adapters remain maintainer-only.
+See [writable-stream verification](../docs/verification/WRITE-STREAMS1.md).

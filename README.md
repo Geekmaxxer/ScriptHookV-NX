@@ -41,7 +41,7 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
 - Opt-in owner memory, C/XML libraries, checked numeric parsing, buffer formatting,
   toolchain math and fallible C++ containers.
 - JSON configuration/presets with bounded documents, typed edits and verified file workflows.
-- Buffered read-only C streams with seeking, line input and registered cleanup.
+- Buffered C input, synchronous output/update/append, checked formatted files and registered cleanup.
 - Bounded file transfers, sorted preset catalogs and verified save/publication workflows.
 - Registered cleanup, explicit shared session state and configurable plugin capacity.
 - Fallible ring queues and captured actions with explicit ownership and cancellation cleanup.
@@ -65,7 +65,8 @@ accepts the combined preset/XML/save/restoration workload.
 80-image, registry and heap-record workloads under the recorded configuration.
 The next [resource-growth candidate](docs/verification/RESOURCE-CAPACITY1.md)
 has local verification and a single deferred hardware batch, now combined with
-[read-only C streams](docs/verification/READ-STREAMS1.md) and
+[C stream input](docs/verification/READ-STREAMS1.md),
+[writable streams and direct XML saving](docs/verification/WRITE-STREAMS1.md) and
 [captured-action queues](docs/verification/TASK-QUEUES1.md) and
 [JSON presets](docs/verification/JSON-SERVICES1.md). The published
 baseline remains unchanged.

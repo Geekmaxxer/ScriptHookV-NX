@@ -17,7 +17,8 @@ if (size_t(required) >= sizeof(label)) return;   // Output was truncated.
 This example requires `c_runtime=true` and `numeric_runtime=true`. Integer,
 character and string formatting needs only the C profile. Standard `<cstdio>`
 declarations and qualified `std::snprintf` calls can refer to the same functions;
-other hosted stdio operations remain unavailable.
+the opt-in [C stream profile](READ-STREAMS.md) separately supplies fprintf/vfprintf.
+Standard console streams and other undocumented stdio operations remain unavailable.
 
 ## Supported conversions
 

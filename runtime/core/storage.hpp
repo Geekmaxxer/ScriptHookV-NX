@@ -29,6 +29,7 @@ public:
     ShvNxFileStatus ReadRange(const char* relative, uint64_t offset, void* out, size_t capacity, size_t& bytes);
     ShvNxFileStatus WriteRange(const char* relative, uint64_t offset, const void* data, size_t bytes);
     ShvNxFileStatus CreateSized(const char* relative, uint64_t bytes);
+    ShvNxFileStatus ResizeBounded(const char* relative, uint64_t bytes);
     bool Rename(const char* fromRelative, const char* toRelative);
     bool Delete(const char* relative);
     ShvNxFileStatus RenameBounded(const char* from, const char* to);

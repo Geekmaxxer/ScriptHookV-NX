@@ -142,6 +142,27 @@ ShvNxFileStatus Storage::CreateSized(const char* name, uint64_t bytes) {
     error = main_call<uint32_t(*)(const char*,int64_t)>(binding::create_file)(path, int64_t(bytes));
     return file_result(error);
 }
+ShvNxFileStatus Storage::ResizeBounded(const char* name, uint64_t bytes) {
+    char path[192]{};
+    if (!mounted) return ShvNxFile_IoError;
+    if (!full_path(path, name)) return ShvNxFile_InvalidArgument;
+    if (bytes > SHV_NX_FILE_MAX_BYTES) return ShvNxFile_OutOfRange;
+    uint64_t handle = 0;
+    error = main_call<uint32_t(*)(uint64_t*,const char*,int32_t)>(binding::open_file)(&handle, path, 2);
+    if (error) return file_result(error);
+    const FileClose close{handle};
+    int64_t size = 0;
+    error = sdk_call<uint32_t(*)(int64_t*,uint64_t)>(binding::fs_size)(&size, handle);
+    if (error) return file_result(error);
+    if (size < 0 || uint64_t(size) > SHV_NX_FILE_MAX_BYTES) return ShvNxFile_OutOfRange;
+    if (uint64_t(size) == bytes) return ShvNxFile_Ok;
+    // Existing audited binding, also used by Storage::Write. No new target API.
+    error = main_call<uint32_t(*)(uint64_t,int64_t)>(binding::set_file_size)(handle, int64_t(bytes));
+    if (error) return file_result(error);
+    error = sdk_call<uint32_t(*)(int64_t*,uint64_t)>(binding::fs_size)(&size, handle);
+    if (error) return file_result(error);
+    return size >= 0 && uint64_t(size) == bytes ? ShvNxFile_Ok : ShvNxFile_VerificationFailed;
+}
 bool Storage::Rename(const char* fromRelative, const char* toRelative) {
     char fromFull[192]{}; char toFull[192]{};
     rename_attempted=false;rename_result=UINT32_MAX;rename_postcheck=0;

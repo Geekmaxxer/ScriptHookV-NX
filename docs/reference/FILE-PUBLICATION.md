@@ -10,13 +10,17 @@ have scoped physical acceptance. Physical failure recovery and performance remai
 ## Mutation service
 
 Include `plugin_file_mutations.h` or `script.h`. Check
-`scriptFileMutationsAvailable()` explicitly. The independent 24-byte
-`ShvNxFileMutations` ABI 1 table preserves the file, catalog and base plugin tables.
+`scriptFileMutationsAvailable()` explicitly. The independent ABI 1 table retains
+its original 24-byte rename/delete prefix. The writable-stream candidate appends
+an optional eight-byte resize callback; new SDKs accept legacy-sized tables and
+old SDKs accept the extended table. File, catalog and base plugin layouts remain
+unchanged. Check `scriptFileResizeAvailable()` separately before resizing.
 
 | Operation | Behavior |
 | --- | --- |
 | `scriptFileRename(from, to)` | Move a file without replacing an existing destination |
 | `scriptFileDelete(path)` | Explicitly delete one file and verify its absence |
+| `scriptFileResize(path, bytes)` | Explicitly shrink/extend an existing file to at most 64 MiB and verify its resulting extent |
 
 Both paths follow the [file service's bounds and grammar](FILE-SERVICES.md) and
 remain under `settings/<plugin-id>/`. Names are validated before mutation, calls
@@ -29,6 +33,12 @@ destination length and exact source absence; deletion verifies exact absence.
 `VerificationFailed` means the mutation reported success but its postconditions
 could not be confirmed. Only the audited filesystem missing-path result proves
 absence. Other I/O failures are not equivalent to a missing file.
+
+Resize discards truncated bytes and provides no initialized-content guarantee
+for extension bytes. It creates no file, parent directory or backup. A no-op
+resize still verifies the existing bounded extent. Missing optional resize
+capability returns `Unavailable` without mutation. The
+[C stream adapter](READ-STREAMS.md) implements zero-filled holes explicitly.
 
 **Any mutation error can follow a completed or partially applied operation.**
 Inspect the current paths before retrying. Postchecks establish observed path and

@@ -68,7 +68,9 @@ The original flat `scriptReadFile`/`scriptSaveFile` contracts and the
 behavior. An independent [catalog table](DIRECTORY-CATALOG.md) supplies directory
 enumeration. A separate [mutation/publication service](FILE-PUBLICATION.md)
 supplies checked rename/delete and explicit backup recovery. Atomic large-file
-transactions and a hosted `stdio`/`fstream` implementation remain separate work.
+transactions and a hosted `fstream` implementation remain separate work. The
+optional [C stream adapter](READ-STREAMS.md) adds checked reads/output/update/append;
+output uses the separate mutation table's explicit resize capability.
 The SDK's [cooperative file-transfer helpers](FILE-TRANSFERS.md) provide bounded
 read buffers and explicit prepared output without changing these file-service limits.
 

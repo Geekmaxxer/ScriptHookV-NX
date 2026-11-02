@@ -1,5 +1,16 @@
 # JSON configuration and expanded service batch 8
 
+## Physical Batch 8 result - 2026-11-02
+
+The [combined acceptance](SERVICE-BATCH8.md) verifies this exact probe's latest
+normal completion and final owner cleanup under explicit 16/48/16/3/3 settings.
+Repeated loads and normal gameplay performance are operator observations. Earlier
+per-run files and the final test-session loader report were not retained.
+Cancellation, broader transitions, profile/media failures and measured performance
+remain separately open. Historical local records retain their original scope.
+
+## Original implementation record
+
 Date: 2026-11-01. This SDK batch adds pinned JSON parsing/writing, owner-accounted
 document/buffer limits, mutable copies and cooperative file loading. The pending
 kernel, target bindings, ABI layouts and defaults remain unchanged. Earlier

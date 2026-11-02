@@ -143,7 +143,7 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     report['stdio_runtime_enabled']=stdio_runtime
     report['json_runtime_enabled']=json_runtime
     if json_runtime:report['json_library']=json.loads((output/'sdk/third_party/yyjson/provenance.json').read_text())
-    if stdio_runtime:report['stdio_contract']='Read-only namespaced byte streams; owned-resource cleanup; no retained OS handles'
+    if stdio_runtime:report['stdio_contract']='Namespaced read/write/update/append byte streams; output requires optional resize; owned cleanup; no retained OS handles'
     if math_archive:
         report['math_library']=dict(archive=math_archive.name,sha256=math_archive_hash,bytes=math_archive.stat().st_size,
             compiler_version=subprocess.check_output([str(compiler),'--version'],text=True).splitlines()[0],source='Installed devkitA64 Newlib libm; archive is not bundled',
@@ -167,6 +167,6 @@ if __name__=='__main__':
     p.add_argument('--numeric-runtime',action='store_true',help='Link numeric and XML floating support (requires --c-runtime)')
     p.add_argument('--cxx-runtime',action='store_true',help='Link owner-backed nothrow C++ allocation (requires --c-runtime)')
     p.add_argument('--math-runtime',action='store_true',help='Link toolchain libm and per-plugin errno (requires --c-runtime)')
-    p.add_argument('--stdio-runtime',action='store_true',help='Link read-only namespaced C streams (requires --c-runtime)')
+    p.add_argument('--stdio-runtime',action='store_true',help='Link namespaced C streams (requires --c-runtime; output also requires runtime resize)')
     p.add_argument('--json-runtime',action='store_true',help='Link pinned JSON parsing/writing (requires --c-runtime)')
     a=p.parse_args();build([s.resolve() for s in a.source],a.output.resolve(),a.devkitpro,a.include,a.c_runtime,a.numeric_runtime,a.cxx_runtime,a.math_runtime,a.stdio_runtime,a.json_runtime)

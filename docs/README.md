@@ -26,7 +26,7 @@ Current local revision evidence: [plugin catalogue and menu integration](verific
 - [Plugin catalogue and rescan status](reference/PLUGIN-CATALOGUE.md)
 - [Recoverable binary/XML records](reference/RECOVERABLE-DATA.md)
 - [JSON documents and presets](reference/JSON-SERVICES.md)
-- [Read-only C streams](reference/READ-STREAMS.md)
+- [C file streams](reference/READ-STREAMS.md)
 - [Bounded file streaming and directories](reference/FILE-SERVICES.md)
 - [Cooperative buffered file transfers](reference/FILE-TRANSFERS.md)
 - [Growable XML output and streamed verification](reference/XML-BUFFERS.md)

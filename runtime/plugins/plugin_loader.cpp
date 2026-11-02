@@ -357,6 +357,14 @@ ShvNxFileStatus file_directory(void* token, const char* name) {
     if (disk.DirectoryChecked(path)) return ShvNxFile_Ok;
     return disk.error == 0x202 ? ShvNxFile_NotFound : ShvNxFile_IoError;
 }
+ShvNxFileStatus file_resize(void* token, const char* name, uint64_t bytes) {
+    char path[128]{};
+    const auto status = file_owner(token, name, path);
+    if (status != ShvNxFile_Ok) return status;
+    Storage disk;
+    if (!file_root(*static_cast<Plugin*>(token), disk)) return ShvNxFile_IoError;
+    return disk.ResizeBounded(path, bytes);
+}
 ShvNxFileStatus file_rename(void* token, const char* from, const char* to) {
     char source[128]{}, destination[128]{};
     auto status = file_owner(token, from, source);
@@ -477,7 +485,7 @@ void load(Plugin& p){
     p.memory={sizeof(ShvNxMemory),SHV_NX_MEMORY_ABI_VERSION,heap_allocate,heap_reallocate,heap_free,heap_size,heap_stats,heap_trim};
     p.files={sizeof(ShvNxFiles),SHV_NX_FILES_ABI_VERSION,file_size,file_read,file_write,file_create,file_directory};
     p.catalog={sizeof(ShvNxCatalog),SHV_NX_CATALOG_ABI_VERSION,catalog_list};
-    p.mutations={sizeof(ShvNxFileMutations),SHV_NX_FILE_MUTATIONS_ABI_VERSION,file_rename,file_delete};
+    p.mutations={sizeof(ShvNxFileMutations),SHV_NX_FILE_MUTATIONS_ABI_VERSION,file_rename,file_delete,file_resize};
     p.resources={sizeof(ShvNxResources),SHV_NX_RESOURCES_ABI_VERSION,resource_register,resource_release,resource_forget,resource_active,resource_pinned,resource_count};
     p.profile={sizeof(ShvNxProfile),SHV_NX_PROFILE_ABI_VERSION,profile_get};
     uintptr_t bind_profile=0;

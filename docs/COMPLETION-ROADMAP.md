@@ -2,7 +2,7 @@
 
 This roadmap tracks ScriptHookV-NX, its SDK and delivery tools. The
 [runtime roadmap](PC-RUNTIME-ROADMAP.md) contains the active substantial-plugin
-workstream. Updated 2026-11-01.
+workstream. Updated 2026-11-02.
 
 ## Progress conventions
 
@@ -65,7 +65,11 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Verify strict syntax, Unicode, numeric bounds, mutable edits and 2,000-record workflows locally.
 - [x] Provide cooperative JSON file loading that retains prior complete data after failure/cancellation.
 - [x] Add verified JSON publication/restoration to the existing four-probe Batch 8.
-- [ ] Accept resource growth, streams, captured actions and JSON presets in one later Switch session.
+- [x] Accept the four Batch 8 normal-completion workloads and exact restored fixture bytes on Switch.
+- [x] Provide optional explicit file resizing and writable/update/append C streams.
+- [x] Provide checked formatted file output and direct XML save_file through the stream adapter.
+- [x] Verify writable-stream failure/legacy compatibility and five-probe coexistence locally.
+- [ ] Accept writable streams and broader pending observations in one consolidated Switch session.
 - [ ] Complete Batch 7 cancellation/transition/rollback and measured-performance gates.
 - [ ] Accept larger arena configurations, fragmentation and measured long-session behavior on hardware.
 - [x] Verify recoverable binary/XML storage and modeled recovery failures locally.

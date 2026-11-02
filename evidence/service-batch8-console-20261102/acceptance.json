@@ -1,0 +1,201 @@
+{
+  "date": "2026-11-02",
+  "batch": 8,
+  "physical_switch": true,
+  "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+  "npdm_sha256": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+  "kit_zip_sha256": "82f677abb7808c52556b14bea0c169c90149bcb52c04060cc15b520325da340d",
+  "configuration": {
+    "resident_limit": 16,
+    "script_slots": 48,
+    "plugin_memory_mib": 16,
+    "module_image_mib": 3,
+    "module_bss_mib": 3
+  },
+  "probes": {
+    "resource-registry": {
+      "nro_sha256": "9084539914ace5886d4619f9d322d0bd865f93667a727ece4453b94b7ac68f40",
+      "result": {
+        "run": "3",
+        "failed": "0",
+        "completed": "1",
+        "registered": "512",
+        "verified": "512",
+        "destroyed": "512",
+        "peak_resources": "513",
+        "reverse_order_verified": "1",
+        "owner_cleanup_complete": "1",
+        "owned_allocations": "0",
+        "registered_resources": "0"
+      }
+    },
+    "read-streams": {
+      "nro_sha256": "f3ef1e8138182ce31e9ce467b015467b0932f87d98f0e45da9a7b3ebe00063d0",
+      "result": {
+        "run": "2",
+        "failed": "0",
+        "completed": "1",
+        "binary_verified": "1",
+        "text_verified": "1",
+        "seek_verified": "1",
+        "xml_verified": "1",
+        "owner_cleanup_complete": "1",
+        "owned_allocations": "0",
+        "registered_resources": "0"
+      }
+    },
+    "task-queue": {
+      "nro_sha256": "47e42b165ea576d5bdc1405f2453f2ba2c5f02c6fa814e8d35339bba275e5280",
+      "result": {
+        "run": "2",
+        "failed": "0",
+        "completed": "1",
+        "queued": "768",
+        "executed": "768",
+        "sum": "295296",
+        "peak_queue": "512",
+        "wrapped_verified": "1",
+        "relocation_verified": "1",
+        "live_captures": "0",
+        "owner_cleanup_complete": "1",
+        "owned_allocations": "0",
+        "registered_resources": "0"
+      }
+    },
+    "json-presets": {
+      "nro_sha256": "f908160e8b957de70e4c73ea5e5ebb3043a294a15ec306ef80b62d5c9718b518",
+      "result": {
+        "run": "2",
+        "failed": "0",
+        "stage": "10",
+        "completed": "1",
+        "parsed": "1",
+        "serialized": "1",
+        "publication_verified": "1",
+        "restored": "1",
+        "owner_cleanup_complete": "1",
+        "owned_allocations": "0",
+        "registered_resources": "0"
+      }
+    }
+  },
+  "raw_report_sha256": {
+    "switch/gtav-scripthook/loader-report.txt": "4c71aed54c847ebb62de6512f0cfc65d1e0ee73ab2a46c42a2d65ef80d71b2f9",
+    "switch/gtav-scripthook/runtime.ini": "6c90fd5c05ce9f0ebe7d648f44a4fcee93ba94b3092c0059a4194be3d8098c5b",
+    "switch/gtav-scripthook/settings/json-presets-example/result.txt": "59ce96f9368bd4a3334d4f87302758fd75c83b1bf1b247c201edbca3b811f2bd",
+    "switch/gtav-scripthook/settings/read-streams-example/result.txt": "d4922c5ce59baee3965bcd3f57514494aca41642ac10e667995607d9da39b74f",
+    "switch/gtav-scripthook/settings/resource-registry-example/result.txt": "02a740f2be1885113c000cddbe5dc97dc606a5beb491b9fa5dff452fd6838ca3",
+    "switch/gtav-scripthook/settings/task-queue-example/result.txt": "e8f47c4b32e601b026d5ede42f6df8c41505c3a1e3899e07ef01a512a6412662"
+  },
+  "timestamps_local": {
+    "switch/gtav-scripthook/loader-report.txt": "2026-11-02T08:30:22",
+    "switch/gtav-scripthook/runtime.ini": "2026-10-30T15:02:50",
+    "switch/gtav-scripthook/settings/json-presets-example/result.txt": "2026-11-02T06:39:42",
+    "switch/gtav-scripthook/settings/read-streams-example/result.txt": "2026-11-02T06:37:16",
+    "switch/gtav-scripthook/settings/resource-registry-example/result.txt": "2026-11-02T06:32:30",
+    "switch/gtav-scripthook/settings/task-queue-example/result.txt": "2026-11-02T06:39:00"
+  },
+  "data_files": {
+    "read-streams-example/fixtures/data.bin": {
+      "bytes": 16387,
+      "sha256": "1930f2910c06f9e14d8222c3ccb80125e46d17a23a91a5bf51c9655a5fddca0a",
+      "independently_verified": true
+    },
+    "read-streams-example/fixtures/lines.txt": {
+      "bytes": 18,
+      "sha256": "d22e7de51007040c3dbadd8bb67c50ec9d63f7dc9fb24eee232f8d0a83ee7d53",
+      "independently_verified": true
+    },
+    "read-streams-example/fixtures/settings.xml": {
+      "bytes": 40,
+      "sha256": "5d9aa549b7b783a1f85b4312213edc5d6ff3419a849e89c0742479731ae20ceb",
+      "independently_verified": true
+    },
+    "json-presets-example/current.json": {
+      "bytes": 8276,
+      "sha256": "3935f4751d15aa6d3f40fca2d2fa18ddbda02db2dae31f20990a863c1820750e",
+      "independently_verified": true
+    }
+  },
+  "loader": {
+    "loader_stage": "0x3",
+    "extension_abi": "0x1",
+    "engine_api_verified": "0x1",
+    "settings_layout": "0x2",
+    "loader_stage_name": "complete",
+    "loader_error": "0x0",
+    "loader_error_name": "none",
+    "plugins_found": "0x12",
+    "plugins_discovered": "0x12",
+    "plugins_loaded": "0x2",
+    "plugins_skipped": "0x0",
+    "plugins_disabled": "0x2",
+    "plugin_scan_generation": "0x1",
+    "plugin_scan_error": "0x0",
+    "plugin_directory_entries": "0x12",
+    "binding_directory_entries": "0x1",
+    "native_manifests": "0x1",
+    "resident_limit": "0x10",
+    "plugin_memory_budget": "0x1000000",
+    "plugin_memory_accounted": "0x1a000",
+    "last_action_error": "0x0",
+    "textures_cached": "0x0",
+    "texture_metadata_bytes": "0x0",
+    "resource_metadata_bytes": "0x0",
+    "heap_metadata_bytes": "0x0",
+    "heap_block_capacity": "0x800",
+    "heap_arena_capacity": "0x80",
+    "heap_lookup_capacity": "0x1000",
+    "module_image_limit": "0x300000",
+    "module_bss_limit": "0x300000",
+    "cleanup_callbacks": "0x0",
+    "cleanup_failures": "0x0",
+    "script_slot_limit": "0x30",
+    "script_stack_bytes": "0x10000",
+    "runtime_config_state": "0x2",
+    "runtime_config_error": "0x0",
+    "runtime_config_applied_mask": "0x1f",
+    "runtime_config_invalid_mask": "0x0",
+    "runtime_config_automatic_mask": "0x0",
+    "runtime_metadata_bytes": "0x9000",
+    "runtime_metadata_error": "0x0",
+    "runtime_config_stack_error": "0x0",
+    "script_stack_allocated_bytes": "0x100000",
+    "default_resident_limit": "0x8",
+    "default_script_slots": "0x10",
+    "default_plugin_memory_mib": "0x8",
+    "resident_limit_ceiling": "0xffffffff",
+    "script_slots_ceiling": "0xffffffff",
+    "plugin_memory_mib_ceiling": "0xfffffffffff",
+    "default_module_image_mib": "0x2",
+    "default_module_bss_mib": "0x2",
+    "module_image_mib_ceiling": "0xfffffffffff",
+    "module_bss_mib_ceiling": "0xfffffffffff",
+    "policy_request_slot": "0xffffffff",
+    "policy_requested": "0xffffffff",
+    "policy_previous": "0xffffffff",
+    "policy_effective": "0xffffffff",
+    "policy_rename_attempted": "0x0",
+    "policy_rename_result": "0xffffffff",
+    "policy_readback_flags": "0x0",
+    "plugins_running": "0x2"
+  },
+  "loader_scope": "Later startup snapshot: only Disarm and Footprints loaded; no final test-session loader report retained.",
+  "json_prepared_and_backup_absent": true,
+  "operator_observations": [
+    "Each of four manual probes loaded at least twice and allowed to run.",
+    "Gameplay performance remained normal; no measured frame-time data supplied."
+  ],
+  "accepted_scope": [
+    "Exact installed identities and explicit 16/48/16/3/3 configuration",
+    "Latest normal-completion reports and zero reported owner allocations/resources",
+    "512-object reverse cleanup, read/seek/XML streams, 768 captured actions and JSON publication/restoration",
+    "Independent byte verification of stream fixtures and restored original JSON"
+  ],
+  "open_scope": [
+    "Active cancellation, broader transitions and rollback for this kernel",
+    "Final test-session loader capacities and concurrent states",
+    "Default/larger profiles, physical media errors and interrupted publication",
+    "Measured peak RAM, stack, frame time, fragmentation and extended soak"
+  ]
+}

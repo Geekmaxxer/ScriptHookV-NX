@@ -13,10 +13,11 @@ are separate stages. Historical records remain immutable.
 | Fallible hash maps and owned registries | [Hash-map candidate](HASH-MAP1.md) | Batch 7 bounded registry workload accepted; broader cases pending |
 | Large module configuration | [Capacity candidate](LARGE-MODULES1.md) | Explicit large image/BSS accepted; broader configurations pending |
 | Growing heap records, arenas and pointer index | [Heap-capacity candidate](HEAP-CAPACITY1.md) | Batch 7 record/index probe accepted under explicit 16 MiB; broader arena/performance work pending |
-| JSON documents and verified presets | [JSON profile](JSON-SERVICES1.md) | Local parser/writer/limit/transfer/publication checks; merged in four-probe Batch 8 |
-| Ring queues and move-only captured actions | [Queue/callable batch](TASK-QUEUES1.md) | Local independent-model/type/failure checks; merged into three-probe Batch 8 |
-| Read-only C streams and direct XML load_file | [Stream profile](READ-STREAMS1.md) | Local read/seek/failure/lifecycle checks; merged into deferred Batch 8 |
-| Growing cleanup registrations and direct pins | [Resource candidate](RESOURCE-CAPACITY1.md) | Local 1,024-context/failure checks; deferred Batch 8 |
+| Writable/update/append C streams and direct XML saving | [Output profile](WRITE-STREAMS1.md) | Local byte/failure/legacy-runtime checks; deferred Batch 9 |
+| JSON documents and verified presets | [JSON profile](JSON-SERVICES1.md) | Batch 8 normal completion and exact restored JSON accepted; interruption/media gates pending |
+| Ring queues and move-only captured actions | [Queue/callable batch](TASK-QUEUES1.md) | Batch 8 768-action normal workload and owner cleanup accepted; broader cases pending |
+| Read-only C streams and direct XML load_file | [Stream profile](READ-STREAMS1.md) | Batch 8 read/seek/XML workload and exact fixtures accepted; media gates pending |
+| Growing cleanup registrations and direct pins | [Resource candidate](RESOURCE-CAPACITY1.md) | Batch 8 512-object reverse cleanup accepted; broader failures pending |
 | Owner-accounted allocation | [Memory service](PLUGIN-MEMORY1.md) | Probe allocation/free/Trim accepted; stress pending |
 | C subset and XML DOM | [Library profile](PLUGIN-LIBRARIES1.md) | Combined XML workload accepted; broader library cases pending |
 | Decimal conversion and XML floats | [Numeric profile](PLUGIN-NUMERIC1.md) | 128-record XML roundtrip accepted; remaining cases pending |
@@ -62,7 +63,9 @@ contents and second-run cleanup were verified; full performance signoff remains 
 The [Batch 7 result](SERVICE-BATCH7.md) accepts the four exact normal-completion
 workloads and visual output under explicit 16/48/16/3/3 settings. Active
 cancellation, transitions, rollback and measured performance remain separate.
-The subsequent resource-growth kernel retains its own pending acceptance.
+The [Batch 8 result](SERVICE-BATCH8.md) accepts bounded resource/stream/action/JSON
+normal workloads on its exact growing-resource kernel. Its later startup loader
+snapshot does not establish final test-session capacities.
 
 ## Accepted baseline
 

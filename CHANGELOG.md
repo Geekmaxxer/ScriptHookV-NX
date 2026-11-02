@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased writable C streams - 2026-11-02
+
+- Add optional checked resizing through a backward-compatible sized mutation-table tail using existing audited filesystem bindings.
+- Provide binary/text output, update/append modes, exclusive creation, explicit zero-filled holes and synchronous flushed writes.
+- Add checked formatted file output and direct XML save_file with owner cleanup and no retained OS handles.
+- Keep new-SDK read streams usable on older runtimes; output reports an unavailable capability before modifying files.
+- Pass 440 ARM64 and 44 portable checks, including exact five-probe coexistence, byte models, failure cleanup and legacy mutation callbacks.
+- Consolidate output and broader pending observations in one manual Batch 9 candidate.
+
+## Service batch 8 hardware acceptance - 2026-11-02
+
+- Match the installed kernel, NPDM and four probes against the exact prepared kit.
+- Accept normal resource/stream/action/JSON completion and zero final reported owner allocations/resources under explicit 16/48/16/3/3 settings.
+- Independently verify stream fixtures and restored JSON bytes, with no prepared or backup JSON remaining.
+- Record normal gameplay as an operator observation; retain cancellation, transitions, profiles and measured performance as separate gates.
+
 ## Unreleased JSON configuration and presets - 2026-11-01
 
 - Add an opt-in JSON profile with pinned, unmodified yyjson 0.13.0 and preserved MIT notices/provenance.
