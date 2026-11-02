@@ -47,6 +47,9 @@ plugin that does not yield.
 | C-style numeric parsing | [Integer/decimal/end/error checks verified locally](../verification/NUMERIC-PARSING1.md) | Batch 7 workload accepted; broader cases and measurements |
 | Nothrow C++ and containers | [Managed string/vector workloads accepted](../verification/PLUGIN-CXX1.md) | Broader source-port and ownership cases |
 | Owner-backed hash maps | [Dictionary/collision/failure checks verified locally](../verification/HASH-MAP1.md) | Batch 7 workload accepted; broader source-port cases |
+| Read-only C streams | [Binary/text/XML and cleanup verified locally](../verification/READ-STREAMS1.md) | Combined Batch 8 physical acceptance and storage latency |
+| Fallible queues and captured actions | [Wrapped/cross-source/failure checks verified locally](../verification/TASK-QUEUES1.md) | Three-probe Batch 8 physical acceptance and substantial-workload timing |
+| JSON documents and presets | [Independent data/type/limit and file-workflow checks verified locally](../verification/JSON-SERVICES1.md) | Four-probe Batch 8 physical acceptance, stack/RAM and storage timing |
 | Recoverable records | [Record/recovery tests](../verification/RECOVERABLE-DATA1.md) | Actual media interruption/durability |
 | Bounded files and preset catalogs | [Large XML and four-page preset selection accepted](../verification/CATALOG-SCAN1.md) | Media errors, concurrent changes, traversal cost and transitions |
 | File mutation/publication | [Normal publication and explicit restoration accepted](../verification/PLUGIN-PUBLICATION1.md) | Interrupted mutations, actual SD failures and durability |

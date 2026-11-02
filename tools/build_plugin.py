@@ -52,7 +52,7 @@ def toolchain(project, explicit=None):
         except FileNotFoundError:pass
     raise FileNotFoundError('Install devkitA64 and switch-tools, then set DEVKITPRO or pass --devkitpro')
 
-def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runtime=False,cxx_runtime=False,math_runtime=False):
+def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runtime=False,cxx_runtime=False,math_runtime=False,stdio_runtime=False,json_runtime=False):
     if type(c_runtime) is not bool:raise ValueError('c_runtime must be true or false')
     if type(numeric_runtime) is not bool:raise ValueError('numeric_runtime must be true or false')
     if numeric_runtime and not c_runtime:raise ValueError('numeric_runtime requires c_runtime=true')
@@ -60,6 +60,10 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     if cxx_runtime and not c_runtime:raise ValueError('cxx_runtime requires c_runtime=true')
     if type(math_runtime) is not bool:raise ValueError('math_runtime must be true or false')
     if math_runtime and not c_runtime:raise ValueError('math_runtime requires c_runtime=true')
+    if type(stdio_runtime) is not bool:raise ValueError('stdio_runtime must be true or false')
+    if stdio_runtime and not c_runtime:raise ValueError('stdio_runtime requires c_runtime=true')
+    if type(json_runtime) is not bool:raise ValueError('json_runtime must be true or false')
+    if json_runtime and not c_runtime:raise ValueError('json_runtime requires c_runtime=true')
     project=Path(__file__).resolve().parents[1]
     output=Path(output).resolve()
     if any(output.resolve().is_relative_to(project/folder) for folder in ('include','sdk')):
@@ -89,6 +93,8 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     if c_runtime:flags+=['-DSHVNX_PLUGIN_C_RUNTIME=1','-ffunction-sections','-fdata-sections','-fno-devirtualize-speculatively']
     if numeric_runtime:flags+=['-DSHVNX_PLUGIN_NUMERIC_RUNTIME=1','-fstack-usage']
     if cxx_runtime:flags+=['-DSHVNX_PLUGIN_CXX_RUNTIME=1','-fstack-usage']
+    if stdio_runtime:flags+=['-DSHVNX_PLUGIN_STDIO_RUNTIME=1','-fstack-usage']
+    if json_runtime:flags+=['-DSHVNX_PLUGIN_JSON_RUNTIME=1','-fstack-usage']
     # GCC 16 gates <cmath>/<math.h> behind hosted header mode. This explicit
     # profile permits those declarations; -nostdlib/-z,defs still constrain
     # linkage, and builtins, exceptions, RTTI and implicit startup stay disabled.
@@ -96,6 +102,8 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     units=[output/'sdk/plugin_api.cpp',output/'sdk/plugin_start.s']
     if c_runtime:units.extend(output/'sdk'/name for name in ('plugin_crt.cpp','plugin_parse.cpp','plugin_format.cpp'))
     if cxx_runtime:units.append(output/'sdk/plugin_cxx.cpp')
+    if stdio_runtime:units.append(output/'sdk/plugin_stdio.cpp')
+    if json_runtime:units.append(output/'sdk/third_party/yyjson/yyjson.c')
     if numeric_runtime:
         units.append(output/'sdk/plugin_numeric.cpp')
         units.extend(output/'sdk/third_party/ryu/ryu'/name for name in ('d2s.c','f2s.c','d2fixed.c'))
@@ -108,6 +116,7 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
         # Only this bridge parses them; no hosted library is linked. All live
         # dependencies still pass -nostdlib/-z,defs and lifecycle preflight.
         if source==output/'sdk/plugin_numeric.cpp':vendor_flags=['-fno-freestanding','-fno-builtin','-DNDEBUG']
+        if source==output/'sdk/third_party/yyjson/yyjson.c':vendor_flags=['-DNDEBUG','-include',str(output/'include/shv/json_config.h')]
         obj=output/(str(i)+'.o');subprocess.run([str(compiler),*flags,*vendor_flags,'-c',str(source),'-o',str(obj)],check=True,cwd=output);objects.append(str(obj))
     elf=output/'plugin.elf'
     discard_unused=['-Wl,--gc-sections'] if c_runtime else []
@@ -131,11 +140,15 @@ def build(sources,output,devkit=None,includes=None,c_runtime=False,numeric_runti
     report['numeric_runtime_enabled']=numeric_runtime
     report['cxx_runtime_enabled']=cxx_runtime
     report['math_runtime_enabled']=math_runtime
+    report['stdio_runtime_enabled']=stdio_runtime
+    report['json_runtime_enabled']=json_runtime
+    if json_runtime:report['json_library']=json.loads((output/'sdk/third_party/yyjson/provenance.json').read_text())
+    if stdio_runtime:report['stdio_contract']='Read-only namespaced byte streams; owned-resource cleanup; no retained OS handles'
     if math_archive:
         report['math_library']=dict(archive=math_archive.name,sha256=math_archive_hash,bytes=math_archive.stat().st_size,
             compiler_version=subprocess.check_output([str(compiler),'--version'],text=True).splitlines()[0],source='Installed devkitA64 Newlib libm; archive is not bundled',
             hosted_math_header_declarations=True,hosted_c_or_cxx_libraries_linked=False,errno_scope='One resident NRO; shared by its cooperative entries')
-    if numeric_runtime or cxx_runtime or math_runtime:
+    if numeric_runtime or cxx_runtime or math_runtime or stdio_runtime or json_runtime:
         frames=[]
         for usage in output.glob('*.su'):
             for line in usage.read_text().splitlines():
@@ -154,4 +167,6 @@ if __name__=='__main__':
     p.add_argument('--numeric-runtime',action='store_true',help='Link numeric and XML floating support (requires --c-runtime)')
     p.add_argument('--cxx-runtime',action='store_true',help='Link owner-backed nothrow C++ allocation (requires --c-runtime)')
     p.add_argument('--math-runtime',action='store_true',help='Link toolchain libm and per-plugin errno (requires --c-runtime)')
-    a=p.parse_args();build([s.resolve() for s in a.source],a.output.resolve(),a.devkitpro,a.include,a.c_runtime,a.numeric_runtime,a.cxx_runtime,a.math_runtime)
+    p.add_argument('--stdio-runtime',action='store_true',help='Link read-only namespaced C streams (requires --c-runtime)')
+    p.add_argument('--json-runtime',action='store_true',help='Link pinned JSON parsing/writing (requires --c-runtime)')
+    a=p.parse_args();build([s.resolve() for s in a.source],a.output.resolve(),a.devkitpro,a.include,a.c_runtime,a.numeric_runtime,a.cxx_runtime,a.math_runtime,a.stdio_runtime,a.json_runtime)

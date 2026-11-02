@@ -61,3 +61,11 @@ builds also report individual compiler stack frames; this is not a full stack bo
 Add `"cxx_runtime": true` or `--cxx-runtime` alongside the C profile for
 [nothrow C++ objects and fallible containers](verification/PLUGIN-CXX1.md). Numeric support is
 independent. The C++ profile also reports compiler stack frames.
+Add `"stdio_runtime": true` or `--stdio-runtime` alongside the C profile for
+[read-only C streams](reference/READ-STREAMS.md). This requires existing memory,
+file and resource services when opening a stream. Write/append/update modes and
+used unsupported stdio symbols are refused; the profile creates no new kernel ABI.
+Add `"json_runtime": true` or `--json-runtime` with the C profile for
+[JSON documents and presets](reference/JSON-SERVICES.md). Numeric/math options
+are independent. The JSON build records its pinned dependency source identities
+and individual compiler stack frames; it retains strict linking/lifecycle checks.

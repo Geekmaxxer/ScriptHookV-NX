@@ -23,8 +23,14 @@ The separate [math profile](MATH-PROFILE.md) adds standard float/double geometry
 and numerical operations from the selected toolchain.
 [C-style numeric parsing](NUMERIC-PARSING.md) supplies integer base/end/range
 contracts and a numeric-profile decimal prefix API.
+[JSON documents and presets](JSON-SERVICES.md) add an opt-in parser/writer,
+owner-accounted mutable copies and cooperative file loading.
+[Read-only C streams](READ-STREAMS.md) add opt-in buffered file/line input and
+checked seeking over the existing file/resource services.
 [Owner-backed hash maps](HASH-MAP.md) add fallible associative registries,
 move-only string keys and allocation-free explicit-byte lookup.
+[Queues and captured actions](TASK-QUEUES.md) add fallible both-ended storage and
+move-only void callables with inline/heap targets and explicit cloning.
 [Heap capacity and accounting](HEAP-CAPACITY.md) defines the candidate's growing
 record/arena/index storage without changing public memory ABI 1.
 

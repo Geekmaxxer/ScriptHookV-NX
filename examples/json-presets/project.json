@@ -1,0 +1,8 @@
+{
+  "format": 1,
+  "kind": "nro",
+  "sources": ["main.cpp"],
+  "c_runtime": true,
+  "cxx_runtime": true,
+  "json_runtime": true
+}

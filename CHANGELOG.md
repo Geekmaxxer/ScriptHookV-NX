@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased JSON configuration and presets - 2026-11-01
+
+- Add an opt-in JSON profile with pinned, unmodified yyjson 0.13.0 and preserved MIT notices/provenance.
+- Provide owner-accounted documents, mutable copies, typed fields and serialized buffers with failure preservation and explicit memory limits.
+- Preserve prior complete data across malformed input, UTF-8/depth errors, budget refusal and platform allocation failures.
+- Add cooperative file loading that retains the last complete document through cancellation, parse or transfer failure.
+- Verify independent JSON/type/byte models, numeric limits, 2,000 records, context moves and combined profile behavior locally.
+- Add a complete verified JSON publication/restoration workload to the existing deferred Batch 8, preserving its kernel and earlier three probe binaries.
+
+## Unreleased captured-action queues - 2026-11-01
+
+- Add owner-backed ring deques with fallible growth, both-ended operations and explicit transactional copying.
+- Preserve wrapped order and self-borrowed inputs across relocation; verify independent sequence models and 6,144 retained values.
+- Add move-only void callables with inline/over-aligned heap targets, explicit cloning, RTTI-free target queries and allocation-failure preservation.
+- Verify cross-source identity, move-only string captures, target lifetime accounting and compile-time type-policy refusals.
+- Add a complete 768-action ownership/cancellation workload to the existing deferred Batch 8.
+- Keep its kernel and both earlier probe binaries unchanged; preserve previous kits and shared configuration.
+
+## Unreleased read-only C streams - 2026-11-01
+
+- Add an opt-in stdio profile with buffered namespaced reads, line input, checked seeking and per-stream EOF/error indicators.
+- Reclaim unclosed streams through registered cleanup on completion, Kill and rejected initialization; retain no OS handles across waits.
+- Verify exact binary/position behavior, short/error reads, changed extents, ownership, metadata failure and 100 simultaneous streams locally.
+- Support the pinned XML DOM's load_file through the same read-only interface and verify combined C/numeric/C++/math profile linkage.
+- Add a complete binary/text/XML probe to the pending resource-registry Batch 8 without changing its kernel or the original probe binary.
+- Preserve the earlier one-probe kit, accepted artifacts, shared configuration and published releases.
+
 ## Unreleased growing resource registrations - 2026-11-01
 
 - Replace the fixed per-owner cleanup-registration limit with stable, budget-accounted record pages.

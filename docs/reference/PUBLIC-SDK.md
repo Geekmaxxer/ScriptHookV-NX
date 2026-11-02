@@ -15,8 +15,10 @@ workflow. This page describes interfaces and requirements.
 | Extensions | Matched runtime: pools, borrowed pointers, additional scripts and graphics/input |
 | C/XML | Candidate memory service: owner-backed C functions, integer parsing and XML DOM |
 | Numeric | C profile plus numeric option: strict/prefix decimal conversion and XML floats |
+| JSON | C profile plus JSON option: bounded documents, mutable copies, writer buffers and cooperative loads |
 | Math | C profile plus math option: selected toolchain libm and per-NRO errno |
-| C++ | C profile plus C++ option: nothrow objects and fallible containers |
+| C++ | C profile plus C++ option: nothrow objects, fallible containers, ring queues and captured actions |
+| Read-only C streams | C/stdio option plus memory/file/resource services: buffered reads, seeking and automatic close |
 | Files | Optional file table: bounded offset I/O and isolated nested directories |
 | Catalogs | Independent optional catalog table: paged directory metadata |
 | File mutations | Independent optional table: isolated rename/delete and explicit publication recovery |
@@ -36,6 +38,10 @@ profile adds decimal floating conversions. The separate
 Neither addition requires a new runtime table. The
 [C parsing API](NUMERIC-PARSING.md) also supplies target-width integer and decimal
 prefix conversions, using one C-profile errno value per NRO.
+The independent [JSON profile](JSON-SERVICES.md) pins its own number conversion
+and allocator. It does not enable general C numeric or hosted JSON-library ABI.
+[Ring queues and captured actions](TASK-QUEUES.md) extend the existing C++
+profile without supplying hosted standard-container or std::function ABI.
 
 The candidate heap also supports [recoverable binary/XML records](RECOVERABLE-DATA.md)
 through the existing file API. Alternating checked records preserve recovery
@@ -46,6 +52,8 @@ The independent [file service](FILE-SERVICES.md) supplies exclusive fixed-length
 creation, checked directories and chunked access to files up to 64 MiB. Check
 `scriptFilesAvailable()` explicitly; it does not depend on the heap profile.
 No file handle survives a call, and raw settings limits remain unchanged.
+The opt-in [C stream adapter](READ-STREAMS.md) retains only a namespaced logical
+position, read buffer and registered heap object across calls.
 The [catalog service](DIRECTORY-CATALOG.md) lists files and directories in bounded
 pages without retaining cursors; check `scriptCatalogAvailable()` independently.
 [Preset catalog tasks](PRESET-CATALOGS.md) provide owner-backed collection, suffix

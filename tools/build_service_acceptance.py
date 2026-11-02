@@ -1,4 +1,4 @@
-"""Build deferred batch 8: growing resource registry acceptance."""
+"""Build deferred batch 8: resources, streams, actions and JSON presets."""
 import argparse
 import contextlib
 import hashlib
@@ -12,7 +12,7 @@ from sd_permissions import stage as stage_sd_access
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_RUNTIME = 'fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa'
-PROJECTS = ('resource-registry',)
+PROJECTS = ('resource-registry', 'read-streams', 'task-queue', 'json-presets')
 
 
 def sha(path):
@@ -42,8 +42,10 @@ def build(output, devkit=None, runtime=None):
         artifacts[name] = {key:metadata[key] for key in ('nro_sha256','image_bytes','bss_bytes','accounted_bytes')}
         if metadata.get('math_runtime_enabled'):
             artifacts[name]['math_library'] = metadata['math_library']
+        if metadata.get('json_runtime_enabled'):
+            artifacts[name]['json_library'] = metadata['json_library']
     guide = (ROOT/'examples/service-acceptance/README.md').read_text(encoding='utf-8')
-    for name in ('RESOURCE-CAPACITY1.md', 'SERVICE-BATCH7.md'):
+    for name in ('RESOURCE-CAPACITY1.md', 'READ-STREAMS1.md', 'TASK-QUEUES1.md', 'JSON-SERVICES1.md', 'SERVICE-BATCH7.md'):
         guide = guide.replace('../../docs/verification/'+name,
             'https://github.com/Geekmaxxer/ScriptHookV-NX/blob/main/docs/verification/'+name)
     (stage/'READ-ME-FIRST.md').write_text(guide,encoding='utf-8')
@@ -63,7 +65,12 @@ def build(output, devkit=None, runtime=None):
         shutil.copy2(ROOT/'sdk/third_party/newlib'/name,notices/name)
     notice_file = stage/'THIRD-PARTY-NOTICES.txt'
     notice_file.write_text(notice_file.read_text(encoding='utf-8').replace(
-        'sdk/third_party/newlib/','third-party/newlib/'),encoding='utf-8')
+        'sdk/third_party/newlib/','third-party/newlib/').replace(
+        'sdk/third_party/yyjson/','third-party/yyjson/'),encoding='utf-8')
+    json_notices = stage/'third-party/yyjson'
+    json_notices.mkdir(parents=True)
+    for name in ('LICENSE.txt', 'provenance.json'):
+        shutil.copy2(ROOT/'sdk/third_party/yyjson'/name, json_notices/name)
     files = {p.relative_to(stage).as_posix():sha(p) for p in stage.rglob('*') if p.is_file()}
     archive = output/'ScriptHookV-NX-Service-Acceptance-Batch8.zip'
     with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as package:

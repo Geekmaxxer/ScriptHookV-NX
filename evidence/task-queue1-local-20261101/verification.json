@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-01",
+  "milestone": "Fallible deques, captured actions and expanded service batch 8",
+  "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+  "runtime_binary_changed": false,
+  "public_abi_layouts_changed": false,
+  "game_bindings_changed": false,
+  "runtime_defaults_changed": false,
+  "source_sha256": {
+    "include/shv/deque.h": "c7e64a7f1c4a8e96ac764a6dbc4388a7db5c2503aa044141f44b2beff49d6390",
+    "include/shv/function.h": "5ae4c464d200fc9ebeb744acc0945eb673ecc2fbe19620418d8e7478b9496190",
+    "tests/test_task_queue.py": "69f1dbc2f606e9b334a6eecd78b87409f5122652fed45587a9c6947fc9b88bb1",
+    "tests/test_service_batch8.py": "3045380c50f30655e877aaad3c3ae7a78f00e21449ba114b431fede174ff3cb4",
+    "tests/fixtures/plugin_task_queue_fixture.cpp": "9d9bc23fd5c7492b162c2e06c3501dba37ab39043432ac82d2ee51f72ff40950",
+    "tests/fixtures/plugin_task_queue_peer.cpp": "c9e47198a12d680e3bf8d3067bd82ddcdcb2127acec07c5994978d5f05432c3d",
+    "tests/fixtures/plugin_task_queue_types.hpp": "2448e7d7d6944cfb04c78150a50e5c469db5ac630265ba2b24878b3aa73c53bf",
+    "examples/task-queue/main.cpp": "47d70ff89d1e7fe377714b1a21b511b7f3a7c272fe6982737b5ade6c3ae47d31",
+    "examples/task-queue/project.json": "df0bba4ba72001e5442494be0b7efb6275714a960caa07b12f2e6cb015c6a2e9",
+    "tools/build_service_acceptance.py": "dbff029c8e65ef85f0d8022b77eb93d99c6648e781a86a38dcbfd13ec161ea6d"
+  },
+  "checks_passed": 463,
+  "portable_tests_passed": 41,
+  "reports": {
+    "containers_callables": {
+      "passed": 433,
+      "report_sha256": "9715f85bbb8371ae61bd44c6899dd4f6e725d70e91dd32b009c5258d2f06e217"
+    },
+    "combined_batch8": {
+      "passed": 25,
+      "report_sha256": "70c9cf28484dd79635638ea4b338ca16b1651af59035a8ae25245f2fed7debd5",
+      "checks": [
+        "Batch 8 identifies the matching growing-resource kernel",
+        "The kit contains three exact manual NROs and preserved rollback metadata",
+        "The probe remains manual before explicit loading",
+        "All 512 contexts complete with 513 registrations and reverse cleanup",
+        "A second natural lifetime completes with fresh records",
+        "Second completion reuses resource metadata and leaves no live registrations",
+        "Kill during construction preserves reverse order and final cleanup",
+        "Restart after construction cancellation completes a new lifetime",
+        "Kill during verification drains all 512 pinned contexts exactly once",
+        "Restart after verification cancellation completes without retained owner data",
+        "Repeated runs leave no resource or modeled filesystem failures",
+        "The added stream probe also remains manual",
+        "The stream probe completes binary, text, seek and direct XML workflows",
+        "Every retained stream fixture matches an independent byte model",
+        "A second stream lifetime validates the retained fixtures and cleans up",
+        "Kill during reading closes the buffered stream before the final audit",
+        "Stream Load after cancellation completes without editing existing fixtures",
+        "Both new workloads finish with no escaping modeled filesystem resources",
+        "The captured-action workload remains manual",
+        "768 captured actions preserve order through wrapping and relocation",
+        "A second complete action lifetime returns every captured allocation",
+        "Kill during construction destroys all pending callable captures",
+        "Action queue restart after construction cancellation completes",
+        "Kill during execution releases uninvoked actions without replaying them",
+        "Action queue restart after execution cancellation completes"
+      ]
+    },
+    "type_policies": {
+      "passed": 5,
+      "report_sha256": "3db4c3145100b7205628869ab00df1e92a6d14063c18f855e1f179412907172b",
+      "checks": [
+        "Compile-time refusal: throwing_call",
+        "Compile-time refusal: throwing_move",
+        "Compile-time refusal: oversized_alignment",
+        "Compile-time refusal: deque_move",
+        "Compile-time refusal: deque_copy"
+      ]
+    }
+  },
+  "package": {
+    "kit": "Service acceptance batch 8",
+    "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+    "artifacts": {
+      "resource-registry": {
+        "nro_sha256": "9084539914ace5886d4619f9d322d0bd865f93667a727ece4453b94b7ac68f40",
+        "image_bytes": 24576,
+        "bss_bytes": 12288,
+        "accounted_bytes": 77824
+      },
+      "read-streams": {
+        "nro_sha256": "f3ef1e8138182ce31e9ce467b015467b0932f87d98f0e45da9a7b3ebe00063d0",
+        "image_bytes": 49152,
+        "bss_bytes": 4096,
+        "accounted_bytes": 110592
+      },
+      "task-queue": {
+        "nro_sha256": "47e42b165ea576d5bdc1405f2453f2ba2c5f02c6fa814e8d35339bba275e5280",
+        "image_bytes": 28672,
+        "bss_bytes": 4096,
+        "accounted_bytes": 69632
+      }
+    },
+    "files": {
+      "LICENSE": "fe5a3c544660aaff24049783d09cc44c30bcd19eb5c3af922997388e0766c79d",
+      "manifest.json": "3be0e0b1c00667520bd9ec855b0eba3e550c84d889a25fa02897b69bac38e2d2",
+      "NOTICE": "933b76035cd1c5c10c25d4b5ef58dc4f346a87dbbfa65719c03acd8317cab74d",
+      "READ-ME-FIRST.md": "f70c16f53f3bf5b8576e948f97642f8fa6dec9e5f2a830614e207f2373b2e29e",
+      "THIRD-PARTY-NOTICES.txt": "e181aca5a5840ae7a39c7a03891d9d0b0c37a97347d777804eeda519e62bfdb4",
+      "RUNTIME-CANDIDATE/Check-Game-Layout.cmd": "09d906709bf152c33a9156d003939ff9ec057fb69ee00daf10d524f38896712c",
+      "RUNTIME-CANDIDATE/Check-Game-Layout.ps1": "c21d30b60c0befeea3856b1e240bd56741c2e2fb41a28e3557d7e5e101530869",
+      "RUNTIME-CANDIDATE/GAME-STARTUP.md": "a8bc6f7957c0ca280bd620295424b8b97703b1c242a009dd5050427a8f5f94c3",
+      "RUNTIME-CANDIDATE/Install-SD-Access.cmd": "e20d6b743bba4abaffc5ad074c59ed816c8058225de083418620145c3d1daf1b",
+      "RUNTIME-CANDIDATE/Install-SD-Access.ps1": "d5db8108b2c8a74b93181cdff0845fed8b46cd11d26836a8ad38089b670a048c",
+      "RUNTIME-CANDIDATE/SD-ACCESS.md": "55d0d1d519725221499cb7e88f8c8da893bed47e0f8056f46f913376265cd32f",
+      "third-party/newlib/LICENSE.txt": "f3afe48e4bc6ed8466a42e9dacb6be1d8f9cbf5aac15cb8e474a5ccde8b40ef6",
+      "third-party/newlib/provenance.json": "304d5c0d13f6b8e867c9cc4812f0db1d710634708561682cf8ed70d877d561a0",
+      "RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/main.npdm": "db97307619f2dd536f06c38703721e6164470742a81522edfb273778937e650f",
+      "RUNTIME-CANDIDATE/atmosphere/contents/0100b00b51230000/exefs/subsdk5": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+      "INSTALL/switch/gtav-scripthook/plugins/read-streams.nro.manual": "f3ef1e8138182ce31e9ce467b015467b0932f87d98f0e45da9a7b3ebe00063d0",
+      "INSTALL/switch/gtav-scripthook/plugins/resource-registry.nro.manual": "9084539914ace5886d4619f9d322d0bd865f93667a727ece4453b94b7ac68f40",
+      "INSTALL/switch/gtav-scripthook/plugins/task-queue.nro.manual": "47e42b165ea576d5bdc1405f2453f2ba2c5f02c6fa814e8d35339bba275e5280"
+    },
+    "zip_sha256": "85efaaf0e16e5f4d331440e008ba918eda8b4faa3ed1ca483f4539587ce7c42c",
+    "zip_bytes": 169206,
+    "zip_readback_verified": true,
+    "shared_configuration_included": false
+  },
+  "prior_resource_and_stream_probes_byte_identical": true,
+  "independently_modeled_queue_operations": 400,
+  "large_queue_values_verified": 6144,
+  "action_workload": {
+    "queued": 768,
+    "executed": 768,
+    "peak_queue": 512,
+    "sum": 295296,
+    "final_live_captures": 0
+  },
+  "scope": "Production ARM64 deque, callable, owner allocation and complete NRO code with independent sequence/lifetime models. OS, RO, filesystem and outer game scheduling remain modeled. Three exact probes run locally; no new physical acceptance or frame-time claim.",
+  "acceptance_limits": [
+    "Owner-thread exception-free types; mutations, calls, moves and destruction must not yield or reenter an active mutation/invocation",
+    "Function supports void signatures, explicit cloning and inline/owner-heap targets; it is not hosted std::function",
+    "Deque is ring storage with explicit At access and fallible operations; it is not standard-container ABI",
+    "Growth, copying and cleanup remain synchronous and may require temporary overlapping allocation",
+    "Captured borrows retain caller-managed lifetimes; cancellation destroys pending actions without invoking or rolling back completed actions",
+    "The unchanged pending kernel and all three probes need one combined physical Batch 8 acceptance",
+    "Physical stack/RAM, frame time, fragmentation, low memory, transitions and extended sessions remain open",
+    "Global constructors, static-local policy, exceptions, hosted STL and full Menyoo compatibility remain separate work"
+  ],
+  "installed": false,
+  "published": false,
+  "switch_runtime_verified": false,
+  "source_export_reproduction": {
+    "completed": true,
+    "source_zip_inventory_verified": true,
+    "outside_workspace": true,
+    "portable_tests_passed": 41,
+    "runtime_byte_reproducible": true,
+    "all_batch8_files_byte_reproducible": true,
+    "all_three_nros_byte_reproducible": true,
+    "asset_files": 0,
+    "kernel_source_snapshot_unchanged": true,
+    "runtime_sha256": "fdbbeba40b2f04e123e8a2c5f3cd5ae4bdef1ade765ba803ba5b6955fc4e19fa",
+    "source_files_verified": 596,
+    "kit_files_verified": 18,
+    "switch_runtime_verified": false
+  }
+}

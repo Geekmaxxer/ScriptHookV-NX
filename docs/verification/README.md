@@ -13,6 +13,9 @@ are separate stages. Historical records remain immutable.
 | Fallible hash maps and owned registries | [Hash-map candidate](HASH-MAP1.md) | Batch 7 bounded registry workload accepted; broader cases pending |
 | Large module configuration | [Capacity candidate](LARGE-MODULES1.md) | Explicit large image/BSS accepted; broader configurations pending |
 | Growing heap records, arenas and pointer index | [Heap-capacity candidate](HEAP-CAPACITY1.md) | Batch 7 record/index probe accepted under explicit 16 MiB; broader arena/performance work pending |
+| JSON documents and verified presets | [JSON profile](JSON-SERVICES1.md) | Local parser/writer/limit/transfer/publication checks; merged in four-probe Batch 8 |
+| Ring queues and move-only captured actions | [Queue/callable batch](TASK-QUEUES1.md) | Local independent-model/type/failure checks; merged into three-probe Batch 8 |
+| Read-only C streams and direct XML load_file | [Stream profile](READ-STREAMS1.md) | Local read/seek/failure/lifecycle checks; merged into deferred Batch 8 |
 | Growing cleanup registrations and direct pins | [Resource candidate](RESOURCE-CAPACITY1.md) | Local 1,024-context/failure checks; deferred Batch 8 |
 | Owner-accounted allocation | [Memory service](PLUGIN-MEMORY1.md) | Probe allocation/free/Trim accepted; stress pending |
 | C subset and XML DOM | [Library profile](PLUGIN-LIBRARIES1.md) | Combined XML workload accepted; broader library cases pending |

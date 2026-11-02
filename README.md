@@ -40,8 +40,11 @@ Legacy asset preparation. Each resulting port requires its own gameplay testing.
 - Isolated settings, startup policies and runtime diagnostics.
 - Opt-in owner memory, C/XML libraries, checked numeric parsing, buffer formatting,
   toolchain math and fallible C++ containers.
+- JSON configuration/presets with bounded documents, typed edits and verified file workflows.
+- Buffered read-only C streams with seeking, line input and registered cleanup.
 - Bounded file transfers, sorted preset catalogs and verified save/publication workflows.
 - Registered cleanup, explicit shared session state and configurable plugin capacity.
+- Fallible ring queues and captured actions with explicit ownership and cancellation cleanup.
 - Growing cleanup registrations with stable handles and direct heap pin tracking.
 - Growing heap records, arenas and pointer indexes with shared-budget admission.
 - Growing PNG texture caches with stable IDs and shared memory accounting.
@@ -61,7 +64,10 @@ accepts the combined preset/XML/save/restoration workload.
 [Batch 7](docs/verification/SERVICE-BATCH7.md) accepts the bounded library,
 80-image, registry and heap-record workloads under the recorded configuration.
 The next [resource-growth candidate](docs/verification/RESOURCE-CAPACITY1.md)
-has local verification and a single deferred hardware batch. The published
+has local verification and a single deferred hardware batch, now combined with
+[read-only C streams](docs/verification/READ-STREAMS1.md) and
+[captured-action queues](docs/verification/TASK-QUEUES1.md) and
+[JSON presets](docs/verification/JSON-SERVICES1.md). The published
 baseline remains unchanged.
 
 The supported target is title `0100b00b51230000`, executable build

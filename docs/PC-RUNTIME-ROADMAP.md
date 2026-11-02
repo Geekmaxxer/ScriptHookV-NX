@@ -72,6 +72,11 @@ A 2 ms cooperative check cannot preempt an infinite loop. Script stacks remain
 - [x] Merge pending math/formatter checks with parsing in one library-services workload.
 - [x] Package one manual batch 5 NRO, preserve notices and verify standalone SDK reproduction.
 - [x] Accept the consolidated parsing/math/formatter normal-completion workload in physical Batch 7.
+- [x] Provide fallible both-ended ring queues and preserve wrapped/self-borrowed elements through growth.
+- [x] Provide move-only inline/heap callables, explicit cloning and RTTI-free target identity.
+- [x] Verify independent sequence/lifetime models, 6,144 values, failure preservation and cross-source targets.
+- [x] Add a complete 768-action cancellation/restart workflow to the existing deferred Batch 8.
+- [ ] Accept the captured-action workflow on Switch alongside pending resource/stream checks.
 - [ ] Define broader hosted-container compatibility for concrete source ports.
 - [x] Provide owner-backed hash maps with move-only records and allocation-free string-view lookup.
 - [x] Verify collision chains, 6,144 keys, alias refusal, allocation failures and managed restart locally.
@@ -89,7 +94,8 @@ Evidence: [C-style parsing](verification/NUMERIC-PARSING1.md),
 [math profile](verification/MATH-PROFILE1.md),
 [formatted text](verification/FORMATTED-TEXT1.md),
 [heap](verification/PLUGIN-MEMORY1.md), [growing heap metadata](verification/HEAP-CAPACITY1.md), [C/XML](verification/PLUGIN-LIBRARIES1.md),
-[numeric conversion](verification/PLUGIN-NUMERIC1.md) and [C++ containers](verification/PLUGIN-CXX1.md).
+[numeric conversion](verification/PLUGIN-NUMERIC1.md), [C++ containers](verification/PLUGIN-CXX1.md)
+and [queues/captured actions](verification/TASK-QUEUES1.md).
 These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 
 ## 4. Persistent data and assets
@@ -118,13 +124,24 @@ These contracts do not supply a hosted STL, Windows APIs or throwing allocation.
 - [x] Consolidate XML/save/recovery and multi-page preset selection in service batch 4.
 - [x] Accept the combined preset/XML/file-transfer workload on Switch in service batch 4.
 - [x] Verify exact input/output bytes, restored original, 13 presets and final natural-completion cleanup.
+- [x] Provide opt-in read-only fopen/fread/fgets/seek/close over existing file/resource services.
+- [x] Verify byte/position models, short/error reads, changed extents and cancellation locally.
+- [x] Verify 100 simultaneous streams, metadata failure cleanup and the pinned DOM's load_file locally.
+- [x] Add the complete stream probe to the pending resource-registry Batch 8 on its unchanged kernel.
+- [x] Pin a JSON parser/writer with strict syntax, Unicode checks and independent C-profile allocation.
+- [x] Provide failure-preserving document copies, typed edits and serialized buffers under requested-memory limits.
+- [x] Verify numeric/type/byte models, nesting and allocation limits, context moves and 2,000 records locally.
+- [x] Provide cooperative JSON file loading with retained prior results after transfer/parse failure or cancellation.
+- [x] Merge a complete verified JSON publication/restoration probe into the pending four-probe Batch 8.
+- [ ] Accept the combined JSON/stream/resource/action workload on Switch.
 - [ ] Verify media errors and recovery on Switch storage.
 
 Evidence: [recoverable data](verification/RECOVERABLE-DATA1.md) and
 [bounded file services](verification/PLUGIN-FILES1.md) and
 [paged directory catalogs](verification/PLUGIN-DIRECTORY1.md) and
 [recoverable publication](verification/PLUGIN-PUBLICATION1.md) and
-[cooperative preset catalogs](verification/CATALOG-SCAN1.md). Chunked I/O uses an
+[cooperative preset catalogs](verification/CATALOG-SCAN1.md) and
+[JSON configuration/presets](verification/JSON-SERVICES1.md). Chunked I/O uses an
 independent versioned service; memory parsing does not remove filesystem limits.
 
 ## 5. Execution and initialization lifecycle
@@ -214,7 +231,7 @@ broader transition and stress gates remain open.
 normal-completion and visual checks under its exact configuration. Cancellation,
 transitions, rollback and performance remain separately open.
 The next [resource-growth candidate](verification/RESOURCE-CAPACITY1.md) groups
-its completion/cancellation probe and broader observations in one deferred
+its resource/stream/action/JSON probes and broader observations in one deferred
 [service batch 8](../examples/service-acceptance/README.md) session. Accepted
 Batch 4 and Batch 7 probes need no separate repeat installations.
 

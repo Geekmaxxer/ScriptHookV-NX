@@ -19,6 +19,57 @@ from report_summary import summarize
 from runtime_limits import definitions, build_defaults, render, validate, module_requirements, HEADER
 
 class PortableTests(unittest.TestCase):
+    def test_json_runtime_project_option(self):
+        with tempfile.TemporaryDirectory() as name:
+            folder=Path(name)/'mod';create('hello','json-example',folder);path=folder/'project.json';base=json.loads(path.read_text())
+            for enabled in (True,False):
+                path.write_text(json.dumps({**base,'c_runtime':True,'json_runtime':enabled}))
+                self.assertEqual(inputs(path)[0]['json_runtime'],enabled)
+            for value in (1,'true',{},None):
+                path.write_text(json.dumps({**base,'c_runtime':True,'json_runtime':value}))
+                with self.assertRaises(ValueError):inputs(path)
+            for extra in ({'json_runtime':True},{'json_runtime':True,'c_runtime':True,'kind':'nsc'}):
+                path.write_text(json.dumps({**base,**extra}))
+                with self.assertRaises(ValueError):inputs(path)
+
+    def test_json_runtime_build_validation(self):
+        from build_plugin import build
+        with tempfile.TemporaryDirectory() as name:
+            for kwargs in ({'json_runtime':'yes'},{'json_runtime':True}):
+                out=Path(name)/'out'
+                with self.assertRaises(ValueError):build([],out,**kwargs)
+                self.assertFalse(out.exists())
+
+    def test_pinned_json_dependency(self):
+        root=HEADER.parent.parent/'sdk/third_party/yyjson'
+        meta=json.loads((root/'provenance.json').read_text())
+        self.assertEqual(meta['commit'],'6447536015f3d600f3d65323b10976103b337ca7')
+        self.assertEqual(meta['version'],'0.13.0')
+        for relative,digest in meta['sha256'].items():
+            self.assertEqual(hashlib.sha256((root/relative).read_bytes()).hexdigest(),digest)
+        self.assertIn('MIT License',(root/'LICENSE.txt').read_text())
+
+    def test_stdio_runtime_project_option(self):
+        with tempfile.TemporaryDirectory() as name:
+            folder=Path(name)/'mod';create('hello','stdio-example',folder);path=folder/'project.json';base=json.loads(path.read_text())
+            for enabled in (True,False):
+                path.write_text(json.dumps({**base,'c_runtime':True,'stdio_runtime':enabled}))
+                self.assertEqual(inputs(path)[0]['stdio_runtime'],enabled)
+            for value in (1,'true',{},None):
+                path.write_text(json.dumps({**base,'c_runtime':True,'stdio_runtime':value}))
+                with self.assertRaises(ValueError):inputs(path)
+            for extra in ({'stdio_runtime':True},{'stdio_runtime':True,'c_runtime':True,'kind':'nsc'}):
+                path.write_text(json.dumps({**base,**extra}))
+                with self.assertRaises(ValueError):inputs(path)
+
+    def test_stdio_runtime_build_validation(self):
+        from build_plugin import build
+        with tempfile.TemporaryDirectory() as name:
+            for kwargs in ({'stdio_runtime':'yes'},{'stdio_runtime':True}):
+                out=Path(name)/'out'
+                with self.assertRaises(ValueError):build([],out,**kwargs)
+                self.assertFalse(out.exists())
+
     def test_math_runtime_project_option(self):
         with tempfile.TemporaryDirectory() as name:
             folder=Path(name)/'mod';create('hello','math-example',folder);path=folder/'project.json';base=json.loads(path.read_text())

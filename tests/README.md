@@ -135,3 +135,28 @@ nested cleanup and rejected initialization. Use `--core`, `--plugin` and `--outp
 with the private adapters. `test_service_batch8.py` runs the exact packaged
 512-object workload twice, cancels construction/verification and verifies restart.
 Use `--core`, `--artifact` and `--output`; see [resource verification](../docs/verification/RESOURCE-CAPACITY1.md).
+
+`test_stdio.py` compares buffered stream results with independent byte/position
+models and injects short/error reads, changed extents, optional-service absence
+and allocation/registration failures. Use `--core`, `--plugin` and `--output`.
+The expanded `test_service_batch8.py` also executes both exact packaged probes,
+verifies all stream fixture bytes and checks cancellation/restart cleanup.
+See [stream verification](../docs/verification/READ-STREAMS1.md).
+
+`test_task_queue.py` compares ring operations with independent sequence models
+and checks inline/heap target ownership, alias refusal, failed assignment/copy,
+move-only captures and target identity across two source files. Use `--core`,
+`--plugin` and `--output` with the private ARM64 adapters. The compiled fixture
+uses both task-queue sources and its shared header include directory. The expanded
+`test_service_batch8.py` executes all three packaged probes, including repeated
+action completion and cancellation during construction/execution.
+See [queue verification](../docs/verification/TASK-QUEUES1.md).
+
+`test_json.py` checks the pinned parser/writer against independent JSON/type/byte
+models and exercises budget/platform refusals, context moves, mutable copying,
+Unicode/depth limits and cooperative file-load failure preservation. Use `--core`,
+`--plugin` and `--output` with the private ARM64 adapters. The expanded
+`test_service_batch8.py` executes all four exact probes, including byte-verified
+JSON publication/restoration and cancellation/retry/error-preservation cases.
+The portable suite verifies dependency hashes and project/build option rules.
+See [JSON verification](../docs/verification/JSON-SERVICES1.md).

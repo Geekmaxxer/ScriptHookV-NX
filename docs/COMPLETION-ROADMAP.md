@@ -54,7 +54,18 @@ scope; hardware acceptance belongs to the exact tested artifact and configuratio
 - [x] Grow cleanup registrations through stable budget-accounted records with direct heap pin tracking.
 - [x] Verify 1,024 contexts, 256 peer registrations, budget/metadata failures and bounded nested cleanup locally.
 - [x] Prepare a 512-object combined completion/cancellation probe in deferred service batch 8.
-- [ ] Accept resource growth on Switch in one later combined session.
+- [x] Provide opt-in read-only C streams with buffering, line reads and checked seeking.
+- [x] Verify independent byte/position models, read failures, 100 streams and direct XML load_file locally.
+- [x] Merge the stream probe with resource-registry in the existing deferred Batch 8.
+- [x] Provide fallible ring deques with move-only elements and transactional copying.
+- [x] Provide inline/heap captured actions with explicit cloning and failure-preserving replacement.
+- [x] Verify wrapped sequences, 6,144 values, cross-source identity and type/lifetime policies locally.
+- [x] Merge a complete 768-action probe into the existing three-probe Batch 8.
+- [x] Provide pinned JSON parsing/writing with owner memory limits and failure-preserving document/buffer replacement.
+- [x] Verify strict syntax, Unicode, numeric bounds, mutable edits and 2,000-record workflows locally.
+- [x] Provide cooperative JSON file loading that retains prior complete data after failure/cancellation.
+- [x] Add verified JSON publication/restoration to the existing four-probe Batch 8.
+- [ ] Accept resource growth, streams, captured actions and JSON presets in one later Switch session.
 - [ ] Complete Batch 7 cancellation/transition/rollback and measured-performance gates.
 - [ ] Accept larger arena configurations, fragmentation and measured long-session behavior on hardware.
 - [x] Verify recoverable binary/XML storage and modeled recovery failures locally.

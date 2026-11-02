@@ -39,7 +39,15 @@ The kernel SHA-256 is
 not automatically accept this modification. No new native signatures, offsets,
 Windows/hosted C++ support or Menyoo gameplay claims are introduced.
 
-## One later hardware batch
+## Expanded pending hardware batch
+
+The subsequent [read-stream milestone](READ-STREAMS1.md) adds one manual probe
+to Batch 8 while retaining this exact kernel and resource-registry NRO. Use that
+single expanded kit/session. The original one-probe kit remains archived; no
+separate resource-only installation is required. Its local results below retain
+their original package scope.
+
+## Original prepared hardware workload
 
 [Service batch 8](../../examples/service-acceptance/README.md) contains one manual
 [resource-registry probe](../../examples/resource-registry/README.md). It registers
